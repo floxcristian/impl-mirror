@@ -2,8 +2,6 @@
 import { Component, OnInit } from '@angular/core';
 // Rxjs
 import { Subscription } from 'rxjs';
-// Libs
-import { BsModalRef } from 'ngx-bootstrap/modal';
 // Services
 import { GeolocationServiceV2 } from '@core/services-v2/geolocation/geolocation.service';
 // Models

@@ -30,6 +30,8 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 //B2B
 import { DireccionDespachoComponent } from './components/search-vin-b2b/components/direccion-despacho/direccion-despacho.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -63,6 +65,7 @@ import { DireccionDespachoComponent } from './components/search-vin-b2b/componen
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ReactiveFormsModule,
+    ModalModule,
   ],
   exports: [
     // components
@@ -76,5 +79,6 @@ import { DireccionDespachoComponent } from './components/search-vin-b2b/componen
     MenuCategoriasB2cComponent,
     MenuCategoriaB2cMobileComponent,
   ],
+  providers: [NgbActiveModal],
 })
 export class HeaderModule {}

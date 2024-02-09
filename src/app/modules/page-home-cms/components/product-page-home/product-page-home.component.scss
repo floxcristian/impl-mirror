@@ -127,7 +127,6 @@ a {
 
 ::ng-deep .nav-tabs .nav-link.active {
   @media screen and (min-width: 770px) {
-    background-color: white !important;
     color: #005db9 !important;
     // font-size: 30px;
     font-weight: bold;
@@ -163,7 +162,6 @@ a {
 
 ::ng-deep .nav-tabs .nav-link {
   @media screen and (min-width: 770px) {
-    background-color: white !important;
     // font-size: 30px;
 
     line-height: 39px;

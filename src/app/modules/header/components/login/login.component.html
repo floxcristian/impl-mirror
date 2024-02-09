@@ -16,13 +16,9 @@
           placeholder="Contraseña"
         />
         <span class="p-viewer" (click)="ChangeType(psw)">
-          <ng-container *ngIf="texto">
-            <i class="far fa-eye"></i>
-          </ng-container>
-          <ng-container *ngIf="!texto">
-            <i class="far fa-eye-slash"></i>
-          </ng-container>
+          <i [class]="texto ? 'far fa-eye' : 'far fa-eye-slash'"></i>
         </span>
+
       </div>
       <div class="rounded float-start" style="padding: 15px 32px">
         <a href="/sitio/recover"> ¿Olvidaste tu contraseña?</a>

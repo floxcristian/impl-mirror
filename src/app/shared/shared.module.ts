@@ -79,6 +79,7 @@ import { BlockHeaderComponent } from '../modules/blocks/components/block-header/
 import { ModalScalePriceComponent } from './components/modal-scale-price/modal-scale-price.component';
 import { RelativeTimePipe } from './pipes-v2/relative-time.pipe';
 import { CountdownTimerModule } from './components/countdown-timer/countdown-timer.module';
+import { TranslateStatusPipe } from './pipes-v2/translate-status.pipe';
 
 const BOOSTRAP_MODULES = [NgbPopoverModule, NgbNavModule];
 
@@ -138,6 +139,7 @@ const BOOSTRAP_MODULES = [NgbPopoverModule, NgbNavModule];
     BlockHeaderComponent,
     ModalScalePriceComponent,
     RelativeTimePipe,
+    TranslateStatusPipe
   ],
   imports: [
     CommonModule,
@@ -160,6 +162,7 @@ const BOOSTRAP_MODULES = [NgbPopoverModule, NgbNavModule];
     FiltroMagicoModule,
     InfiniteScrollModule,
     GoogleMapsModule,
+
   ],
   exports: [
     PipesModule,
@@ -209,6 +212,7 @@ const BOOSTRAP_MODULES = [NgbPopoverModule, NgbNavModule];
     FiltroMagicoModule,
     BlockHeaderComponent,
     RelativeTimePipe,
+    TranslateStatusPipe
   ],
   providers: [DecimalPipe, DatePipe],
 })

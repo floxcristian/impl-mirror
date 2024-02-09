@@ -17,15 +17,16 @@
         <div class="col-5 title">Estado</div>
         <div class="col-7 subtitle">
           <span
-            class="badge"
+            class="badge-status"
             [ngClass]="{
               'bg-danger': data.shoppingCart.status == 'rejected',
               'bg-warning': data.shoppingCart.status == 'pending',
               'bg-info': data.shoppingCart.status == 'generated',
-              'bg-success': data.shoppingCart.status == 'finalized'
+              'bg-success': data.shoppingCart.status == 'finalized',
+              'bg-secondary': data.shoppingCart.status == 'Desconocido'
             }"
           >
-            {{ data.shoppingCart.status | capitalizeFirst }}
+           {{ data.shoppingCart.status ?? '' | translateStatus }}
           </span>
         </div>
       </div>

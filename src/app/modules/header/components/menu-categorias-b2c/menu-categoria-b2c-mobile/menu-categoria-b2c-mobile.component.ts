@@ -32,6 +32,8 @@ import { CartService } from '@core/services-v2/cart.service';
   styleUrls: ['./menu-categoria-b2c-mobile.component.scss'],
 })
 export class MenuCategoriaB2cMobileComponent implements OnInit {
+  @ViewChild('menuTienda', { static: false }) menuTienda!: DropdownDirective;
+
   private destroy$: Subject<any> = new Subject();
   private categoriaDetalle!: ICategoryDetail;
   private arrayCategorias: NavigationLink[] = [];
@@ -95,7 +97,7 @@ export class MenuCategoriaB2cMobileComponent implements OnInit {
       ],
     },
   ];
-  @ViewChild('menuTienda', { static: false }) menuTienda!: DropdownDirective;
+
   constructor(
     public menuCategorias: MenuCategoriasB2cService,
     private modalService: BsModalService,
@@ -107,15 +109,14 @@ export class MenuCategoriaB2cMobileComponent implements OnInit {
     private readonly cmsService: CmsService,
     private readonly cartService: CartService
   ) {
+    this.selectedStore = this.geolocationService.getSelectedStore();
     this.obtieneCategorias();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.menuCategorias.isOpen$
       .pipe(takeUntil(this.destroy$))
       .subscribe((isOpen) => (this.isOpen = isOpen));
-
-    this.selectedStore = this.geolocationService.getSelectedStore();
 
     this.geolocationService.selectedStore$.subscribe({
       next: (selectedStore) => {
@@ -225,6 +226,7 @@ export class MenuCategoriaB2cMobileComponent implements OnInit {
   }
 
   showStores(): void {
+    console.log('this.');
     this.modalService.show(ModalStoresComponent);
   }
 

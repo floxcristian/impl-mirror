@@ -8,138 +8,132 @@
 }
 
 <!-- Start::navbar slideshow (lg+) -->
-<div *ngIf="!cargando && _blockElements" class="d-none d-lg-block">
+@if (!cargando && _blockElements) {
+<div class="d-none d-lg-block">
   <ul ngbNav #nav="ngbNav" class="nav-tabs">
-    <li ngbNavItem *ngFor="let item of _blockElements; let i = index">
+    @for (item of _blockElements; track item; let index = $index) {
+    <li ngbNavItem >
       <button style="font-size: 30px" ngbNavLink>{{ item.title }}</button>
       <ng-template ngbNavContent>
         <div class="row" style="margin-top: 20px">
           <div class="col-sm-6 d-flex">
             <a [href]="item.url">
-              <div
-                class="container-image"
-                *ngIf="item.image"
-                style="position: relative; width: 587px; height: 100%"
-              >
-                <div
-                  class="overlay d-flex flex-column justify-content-center align-items-center"
-                >
-                  <p align="center" style="margin-bottom: -10px">
-                    <span> Ver más </span>
-                  </p>
-
-                  <p align="center">
-                    <span
-                      ><i
-                        class="fa-solid fa-hand-back-point-up"
-                        style="color: white; font-size: 20px"
-                      ></i
-                    ></span>
-                  </p>
+              @if(item.image){
+                <div class="container-image">
+                  <div class="overlay d-flex flex-column justify-content-center align-items-center">
+                    <p align="center" style="margin-bottom: -10px">
+                      <span>Ver más</span>
+                    </p>
+                    <p align="center">
+                      <span>
+                        <i class="fa-solid fa-hand-back-point-up" style=" font-size: 20px"></i>
+                      </span>
+                    </p>
+                  </div>
+                  <img
+                    [ngSrc]="item.image"
+                    width="100"
+                    height="100"
+                    cover
+                    class="img-fluid-product"
+                    alt="Ver más"
+                  />
                 </div>
-
-                <img
-                  [ngSrc]="item.image"
-                  class="img-fluid-product"
-                  alt="Ver más"
-                  fill
-                />
-              </div>
+              }@else {
+                <div class="container-image">
+                  <div class="overlay d-flex justify-content-center align-items-center">
+                    <a [href]="item.url">Ver más</a>
+                  </div>
+                  <a [href]="item.url">
+                    <img
+                      src="../../../../../assets/img/no-image-ficha.jpg"
+                      alt="no imagen"
+                      class="img-fluid-product"
+                  /></a>
+                </div>
+              }
             </a>
-            <div class="container-image" *ngIf="!item.image">
-              <div
-                class="overlay d-flex justify-content-center align-items-center"
-              >
-                <a [href]="item.url"> Ver más </a>
-              </div>
-              <a [href]="item.url">
-                <img
-                  src="../../../../../assets/img/no-image-ficha.jpg"
-                  alt="no imagen"
-                  class="img-fluid-product"
-              /></a>
-            </div>
           </div>
           <!-- cambio de pantalla-->
 
           <div class="col-sm-6 d-flex justify-content-center">
             <div class="row">
-              <div
-                class="col-6-producto d-flex"
-                style="padding-left: 5px; padding-right: 5px"
-                *ngFor="
-                  let product of item.articles | slice : 0 : 4;
-                  let i = index
-                "
-              >
-                <div
-                  class="card-body-producto"
-                  [ngStyle]="{ 'margin-bottom': i < 2 ? '30px' : '0px' }"
-                  data-layout="grid-5-full"
-                  data-with-features="false"
-                >
-                  <app-product-card-b2c-cms
-                    [product]="product"
-                    [origen]="[ruta, '', product.name.trim(), '']"
-                    [home]="true"
-                    [layout]="layout"
-                    [cartClass]="true"
-                    (precioEscalaEvent)="get_precioEscala($event)"
-                  ></app-product-card-b2c-cms>
+              @for(product of item.articles | slice : 0 : 4; track product; let index = $index) {
+                <div class="col-6-producto d-flex" style="padding-left: 5px; padding-right: 5px">
+                  <div
+                    class="card-body-producto"
+                    [ngStyle]="{ 'margin-bottom': index < 2 ? '30px' : '0px' }"
+                    data-layout="grid-5-full"
+                    data-with-features="false"
+                  >
+                    <app-product-card-b2c-cms
+                      [product]="product"
+                      [origen]="[ruta, '', product.name.trim(), '']"
+                      [home]="true"
+                      [layout]="layout"
+                      [cartClass]="true"
+                      (precioEscalaEvent)="get_precioEscala($event)"
+                    ></app-product-card-b2c-cms>
+                  </div>
                 </div>
-              </div>
+              }
             </div>
           </div>
         </div>
       </ng-template>
     </li>
+  }
   </ul>
   <div [ngbNavOutlet]="nav"></div>
 </div>
+}
 <!-- End::navbar slideshow (lg+) -->
 
 <!-- Start::navbar slideshow (xs, sm y md) -->
-<div *ngIf="_blockElements" class="d-block d-lg-none">
-  <div *ngIf="refresh" class="w-100" style="min-height: 50px"></div>
-  <div
-    *ngIf="!refresh"
-    class="products-view__list products-list"
-    data-layout="grid-5-full"
-    data-with-features="false"
-  >
-    <owl-carousel-o
-      class="carouselTitulo"
-      [options]="carouselOptions2"
-      appOwlPreventClick
-      (translated)="getData2($event)"
+@if (_blockElements) {
+  <div class="d-block d-lg-none">
+    @if (refresh) {
+      <div class="w-100" style="min-height: 50px"></div>
+    }
+    @else {
+      <div
+      class="products-view__list products-list"
+      data-layout="grid-5-full"
+      data-with-features="false"
     >
-      <ng-container
-        *ngFor="let item of _blockElements; let i = index"
-        class="products-list__item"
+      <owl-carousel-o
+        class="carouselTitulo"
+        [options]="carouselOptions2"
+        appOwlPreventClick
+        (translated)="getData2($event)"
       >
-        <ng-template carouselSlide [id]="item.title">
-          <div
-            (click)="moveToSlide(i)"
-            [class.text-truncate]="item.title.length > 15"
-            [class.select_active]="index_seleccionado == i"
-            [class.select_inactive]="index_seleccionado != i"
-          >
-              {{ item.title }}
-          </div>
-        </ng-template>
-      </ng-container>
-    </owl-carousel-o>
+      @for (item of _blockElements; track item; let index = $index) {
+        <ng-container class="products-list__item">
+          <ng-template carouselSlide [id]="item.title">
+            <div
+              (click)="moveToSlide(index)"
+              [class.text-truncate]="item.title.length > 15"
+              [class.select_active]="index_seleccionado == index"
+              [class.select_inactive]="index_seleccionado != index"
+            >
+                {{ item.title }}
+            </div>
+          </ng-template>
+        </ng-container>
+        }
+      </owl-carousel-o>
+    </div>
+    }
   </div>
-</div>
+}
+
 <!-- End::navbar slideshow (xs, sm y md) -->
 
 <!-- Start::imagen portada slideshow (xs, sm y md) -->
-<div *ngIf="_blockElements" class="d-block d-lg-none">
-  <div
-    *ngIf="refresh2"
-    class="w-100"
-    style="min-height: 350px; border: 1px solid #005db9; border-radius: 20px"
-  >
+@if (_blockElements) {
+<div  class="d-block d-lg-none">
+  @if (refresh2) {
+    <div  class="w-100"style="min-height: 350px; border: 1px solid #005db9; border-radius: 20px"  >
     <div
       class="col-12 d-flex justify-content-center align-items-center"
       style="min-height: 320px"
@@ -150,8 +144,9 @@
       ></i>
     </div>
   </div>
-  <div
-    *ngIf="!refresh2"
+  }
+  @else {
+    <div
     class="products-view__list products-list"
     data-layout="grid-5-full"
     data-with-features="false"
@@ -162,15 +157,17 @@
       appOwlPreventClick
       (translated)="getData($event)"
     >
+    @for (item of _blockElements; track item; let index = $index) {
       <ng-container
-        *ngFor="let item of _blockElements; let i = index"
         class="products-list__item"
       >
         <ng-template carouselSlide [id]="item.title">
           <img
-            [src]="_blockElements[i].image"
+            [src]="_blockElements[index].image"
             class="img-fluid-product-mobile"
             alt="imagen"
+            width="100"
+            height="100"
           />
           <a [href]="item.url" class="image-link">
             <i class="bi bi-link-45deg"></i>
@@ -179,13 +176,17 @@
           </a>
         </ng-template>
       </ng-container>
+    }
     </owl-carousel-o>
   </div>
+  }
 </div>
+}
 <!-- End::imagen portada slideshow (xs, sm y md) -->
 
 <!-- Start::listado productos slideshow (xs, sm y md) -->
-<div *ngIf="producto_selecionado" class="d-block d-lg-none">
+@if (producto_selecionado) {
+<div class="d-block d-lg-none">
   <div
     class="products-view__list products-list"
     data-layout="grid-5-full"
@@ -196,10 +197,9 @@
       [options]="carouselOptions"
       appOwlPreventClick
     >
-      <ng-container
-        *ngFor="let prod of producto_selecionado.articles"
-        class="products-list__item"
-      >
+
+    @for (prod of producto_selecionado.articles; track $index) {
+      <ng-container class="products-list__item">
         <ng-template carouselSlide>
           <app-product-card-b2c-cms
             (mouseover)="over($event)"
@@ -212,7 +212,10 @@
           />
         </ng-template>
       </ng-container>
+    }
     </owl-carousel-o>
   </div>
 </div>
+}
+
 <!-- End::listado productos slideshow (xs, sm y md) -->

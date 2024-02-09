@@ -37,13 +37,16 @@
                   <td>{{ item.updatedAt | date : 'dd-MM-yyyy HH:mm' }}</td>
                   <td>
                     <span
-                      class="badge"
-                      [ngClass]="{
-                        'bg-danger': item?.status == 'rejected',
-                        'bg-warning': item?.status == 'pending'
-                      }"
+                    class="badge-status"
+                    [ngClass]="{
+                      'bg-danger': item.status == 'rejected',
+                      'bg-warning': item.status == 'pending',
+                      'bg-info': item.status == 'generated',
+                      'bg-success': item.status == 'finalized',
+                      'bg-secondary': item.status == 'Desconocido'
+                    }"
                     >
-                      {{ item?.status | capitalizeFirst }}
+                      {{ item.status | translateStatus }}
                     </span>
                   </td>
                   <td>{{ item?.total | currencyFormat }}</td>
