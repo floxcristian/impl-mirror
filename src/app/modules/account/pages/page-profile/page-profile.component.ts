@@ -1,3 +1,4 @@
+// Angular
 import {
   Component,
   OnDestroy,
@@ -7,11 +8,26 @@ import {
   PLATFORM_ID,
   Inject,
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+// Rxjs
+import { Subject } from 'rxjs';
+// Libs
+import { ToastrService } from 'ngx-toastr';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+// Models
+import { IConfig } from '@core/config/config.interface';
+import { ISession } from '@core/models-v2/auth/session.interface';
+import { IEcommerceUser } from '@core/models-v2/auth/user.interface';
+import { IError } from '@core/models-v2/error/error.interface';
+import {
+  ICustomer,
+  ICustomerAddress,
+  ICustomerContact,
+} from '@core/models-v2/customer/customer.interface';
+// Services
 import { RootService } from '../../../../shared/services/root.service';
 import { esEmpresa } from '../../../../shared/interfaces/login';
-import { Subject } from 'rxjs';
 import { isVacio } from '../../../../shared/utils/utilidades';
-import { ToastrService } from 'ngx-toastr';
 import { DireccionDespachoComponent } from '../../../../modules/header/components/search-vin-b2b/components/direccion-despacho/direccion-despacho.component';
 import {
   DataModal,
@@ -19,27 +35,16 @@ import {
   TipoIcon,
   TipoModal,
 } from '../../../../shared/components/modal/modal.component';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { isPlatformBrowser } from '@angular/common';
 import { SessionStorageService } from '@core/storage/session-storage.service';
 import { SessionService } from '@core/services-v2/session/session.service';
-import { ISession } from '@core/models-v2/auth/session.interface';
-import { IEcommerceUser } from '@core/models-v2/auth/user.interface';
 import { AuthApiService } from '@core/services-v2/auth/auth.service';
-import {
-  ICustomer,
-  ICustomerAddress,
-  ICustomerContact,
-} from '@core/models-v2/customer/customer.interface';
 import { CustomerContactService } from '@core/services-v2/customer-contact.service';
 import { CustomerAddressApiService } from '@core/services-v2/customer-address/customer-address-api.service';
-import { IError } from '@core/models-v2/error/error.interface';
 import { CustomerPreferenceApiService } from '@core/services-v2/customer-preference/customer-preference-api.service';
 import { AddressType } from '@core/enums/address-type.enum';
 import { CustomerPreferencesStorageService } from '@core/storage/customer-preferences-storage.service';
 import { CustomerPreferenceService } from '@core/services-v2/customer-preference/customer-preference.service';
 import { ConfigService } from '@core/config/config.service';
-import { IConfig } from '@core/config/config.interface';
 
 @Component({
   selector: 'app-page-profile',

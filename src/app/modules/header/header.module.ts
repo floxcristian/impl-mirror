@@ -26,6 +26,7 @@ import { MobileSearchComponent } from './components/mobile-search/mobile-search.
 import { ModalStoresComponent } from './components/modal-stores/modal-stores.component';
 import { SearchComponent } from './components/search/search.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 //B2B
 import { DireccionDespachoComponent } from './components/search-vin-b2b/components/direccion-despacho/direccion-despacho.component';
@@ -58,6 +59,7 @@ import { DireccionDespachoComponent } from './components/search-vin-b2b/componen
     WidgetsModule,
     NgSelectModule,
     DataTablesModule,
+    ButtonsModule.forRoot(),
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ReactiveFormsModule,

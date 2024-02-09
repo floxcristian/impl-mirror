@@ -364,11 +364,229 @@
         </span>
       </div>
 
+      <!-- Start::item vehículo -->
+      <div
+        class="indicator position-relative indicator--trigger--click"
+        appDropdown="indicator--opened"
+        #menuVehiculo="appDropdown"
+      >
+        <!-- Start::icono vehículo -->
+        <span
+          class="indicator__button flex-column mt-2 me-3"
+          style="cursor: pointer"
+          (click)="$event.preventDefault(); menuVehiculo.toggle()"
+        >
+          <img
+            src="../../../../../assets/svg/09.svg"
+            style="width: 40px; height: 40px; margin-top: -12px"
+            alt="Cambiar vehículo"
+          />
+
+          <span class="icon-title mt-1">
+            {{
+              selectedVehicle
+                ? selectedVehicle.MARCA + ' ' + selectedVehicle.PLACA_PATENTE
+                : 'Seleccionar vehículo'
+            }}
+          </span>
+        </span>
+        <!-- End::icono vehículo -->
+
+        <!-- Start::dropdown vehículo -->
+        <form
+          [formGroup]="vehicleForm"
+          class="form-inline d-flex align-items-center"
+        >
+          <div class="indicator__dropdown indicator__dropdown-vehiculo">
+            <div class="alert-session card p-5 mt-4 shadow">
+              <div *ngIf="!selectedVehicle">
+                <p
+                  class="d-flex justify-content-center"
+                  style="color: #0063b9; font-size: 18px; font-weight: bold"
+                >
+                  Seleccionar vehículo
+                  <img
+                    src="../../../../../assets/svg/23.svg"
+                    alt="información"
+                    style="
+                      width: 30px;
+                      height: 40px;
+                      margin-left: 10px;
+                      margin-top: -10px;
+                    "
+                  />
+                </p>
+
+                <div style="display: flex; justify-content: center">
+                  <div
+                    class="btn-group"
+                    btnRadioGroup
+                    formControlName="type"
+                    style="
+                      margin: 0 5px 5px;
+                      display: flex;
+                      justify-content: center;
+                      width: 60%;
+                    "
+                  >
+                    <label
+                      class="btn btn-primary"
+                      style="border-radius: 6px 0 0 6px"
+                      btnRadio="patent"
+                      >Patente</label
+                    >
+
+                    <label
+                      class="btn btn-primary"
+                      style="border-radius: 0 6px 6px 0"
+                      btnRadio="vin"
+                      >VIN</label
+                    >
+                  </div>
+                </div>
+
+                <div style="margin-bottom: 10px">
+                  <div
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      justify-content: center;
+                      align-items: center;
+                    "
+                  >
+                    <input
+                      class="patente-input"
+                      type="text"
+                      formControlName="search"
+                      [placeholder]="
+                        vehicleForm.controls['type'].value === 'patent'
+                          ? 'N° Patente'
+                          : 'N° VIN'
+                      "
+                      style="width: 100%"
+                    />
+                    <p *ngIf="notVehicleFound" class="text-error-form-2">
+                      No se encontraron resultados.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Start::botones -->
+                <div class="d-flex">
+                  <div class="col-6">
+                    <button
+                      class="btn btn-border-primary btn-lg text-center w-100"
+                      (click)="showStores()"
+                    >
+                      Limpiar
+                    </button>
+                  </div>
+                  <div class="col-6">
+                    <button
+                      [disabled]="vehicleForm.invalid"
+                      name="menuTienda"
+                      class="btn btn-secondary btn-lg w-100 text-center"
+                      (click)="searchVehicle(vehicleForm.value)"
+                    >
+                      Aplicar
+                    </button>
+                  </div>
+                </div>
+                <!-- End::botones -->
+              </div>
+
+              <div *ngIf="selectedVehicle">
+                <p
+                  class="d-flex justify-content-center"
+                  style="color: #0063b9; font-size: 18px; font-weight: bold"
+                >
+                  Mi vehículo
+                  <img
+                    src="../../../../../assets/svg/23.svg"
+                    alt="información"
+                    style="
+                      width: 30px;
+                      height: 40px;
+                      margin-left: 10px;
+                      margin-top: -10px;
+                    "
+                  />
+                </p>
+
+                <table class="vehicle-table">
+                  <tbody>
+                    <tr>
+                      <td class="font-weight-bold">PATENTE</td>
+                      <td>{{ selectedVehicle.PLACA_PATENTE }}</td>
+                    </tr>
+                    <tr>
+                      <td class="font-weight-bold">MARCA</td>
+                      <td>{{ selectedVehicle.MARCA }}</td>
+                    </tr>
+                    <tr>
+                      <td>MODELO</td>
+                      <td>{{ selectedVehicle.MODELO }}</td>
+                    </tr>
+                    <tr>
+                      <td>TIPO</td>
+                      <td>{{ selectedVehicle.IMPtipo }}</td>
+                    </tr>
+                    <tr>
+                      <td>AÑO</td>
+                      <td>{{ selectedVehicle.ANO_FABRICACION }}</td>
+                    </tr>
+                    <tr>
+                      <td>MOTOR</td>
+                      <td>{{ selectedVehicle.COD_MOTOR || '-' }}</td>
+                    </tr>
+                    <tr>
+                      <td>CHASIS</td>
+                      <td>{{ selectedVehicle.COD_CHASIS || '-' }}</td>
+                    </tr>
+                    <tr>
+                      <td>DETALLE</td>
+                      <td>{{ selectedVehicle.detalle || '-' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="d-flex">
+                  <div class="col-6">
+                    <button
+                      class="btn btn-border-primary btn-lg text-center w-100"
+                      (click)="cleanSelectedVehicle()"
+                    >
+                      Cambiar
+                    </button>
+                  </div>
+                  <div class="col-6">
+                    <button
+                      name="menuTienda"
+                      class="btn btn-secondary btn-lg w-100 text-center"
+                      (click)="menuVehiculo.toggle()"
+                    >
+                      Ver Artículos
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!--<pre>
+                {{ selectedVehicle | json }}
+              </pre> -->
+            </div>
+          </div>
+        </form>
+        <!-- End::dropdown vehículo -->
+      </div>
+      <!-- End::item vehículo -->
+
+      <!-- Start::item mapa -->
       <div
         class="indicator position-relative indicator--trigger--click"
         appDropdown="indicator--opened"
         #menuTienda="appDropdown"
       >
+        <!-- Start::icono mapa -->
         <span
           class="indicator__button flex-column mt-2 me-3"
           style="cursor: pointer"
@@ -383,7 +601,9 @@
             {{ selectedStore ? selectedStore.zone : '' }}</span
           >
         </span>
+        <!-- End::icono mapa -->
 
+        <!-- Start::dropdown mapa -->
         <div class="indicator__dropdown indicator__dropdown-tienda">
           <div class="alert-session card p-5 mt-4 shadow">
             <p
@@ -427,7 +647,9 @@
             </div>
           </div>
         </div>
+        <!-- End::dropdown mapa -->
       </div>
+      <!-- End::item mapa -->
 
       <div
         class="indicator position-relative indicator--trigger--click"

@@ -6,12 +6,18 @@ import {
   OnDestroy,
   ElementRef,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 // Libs
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import { ToastrService } from 'ngx-toastr';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 // Rxjs
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
@@ -41,7 +47,10 @@ import { DireccionDespachoComponent } from '../search-vin-b2b/components/direcci
 import { ModalStoresComponent } from '../modal-stores/modal-stores.component';
 import { RootService } from '@shared/services/root.service';
 import { CustomerAddressService } from '@core/services-v2/customer-address/customer-address.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { VehicleService } from '@core/services-v2/vehicle/vehicle.service';
+import { VehicleType } from '@core/services-v2/vehicle/vehicle-type.enum';
+import { IVehicle } from '@core/services-v2/vehicle/vehicle-response.interface';
+
 @Component({
   selector: 'app-header-search',
   templateUrl: './search.component.html',
@@ -50,6 +59,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class SearchComponent implements OnInit, OnDestroy {
   @ViewChild('menuSearch', { static: false }) listSearch!: ElementRef;
   @ViewChild('menuTienda', { static: false }) menuTienda!: DropdownDirective;
+  @ViewChild('menuVehiculo', { static: false })
+  menuVehiculo!: DropdownDirective;
   @ViewChild(DropdownDirective, { static: false })
   dropdown!: DropdownDirective;
 
@@ -84,6 +95,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   selectedStore!: ISelectedStore;
   areLoadedStores!: boolean;
 
+  vehicleSearchType: string = 'patente';
+  vehicleForm: FormGroup;
+  selectedVehicle!: IVehicle | null;
+  notVehicleFound!: boolean;
+
   constructor(
     private router: Router,
     private modalService: BsModalService,
@@ -91,6 +107,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     public menuCategorias: MenuCategoriasB2cService,
     private readonly gtmService: GoogleTagManagerService,
     public readonly root: RootService,
+    private readonly fb: FormBuilder,
     // Services V2
     private readonly sessionService: SessionService,
     private readonly authStateService: AuthStateServiceV2,
@@ -101,8 +118,14 @@ export class SearchComponent implements OnInit, OnDestroy {
     private readonly customerAddressService: CustomerAddressService,
     private readonly articleService: ArticleService,
     public readonly shoppingCartService: CartService,
-    public readonly modalServices: NgbModal
-  ) {}
+    public readonly modalServices: NgbModal,
+    private readonly vehicleService: VehicleService
+  ) {
+    this.vehicleForm = this.fb.group({
+      type: ['patent', Validators.required],
+      search: [null, Validators.required],
+    });
+  }
 
   ngOnInit(): void {
     this.onChangeSearchInput();
@@ -302,5 +325,33 @@ export class SearchComponent implements OnInit, OnDestroy {
         }
       },
     });
+  }
+
+  searchVehicle({ type, search }: { type: VehicleType; search: string }) {
+    console.log('type: ', type);
+    console.log('search: ', search);
+    this.vehicleService.getByPatentOrVin(type, search).subscribe({
+      next: (vehicle) => {
+        console.log('searchVehicle: ', vehicle);
+        this.selectedVehicle = vehicle || null;
+        this.notVehicleFound = vehicle ? false : true;
+        if (vehicle?.PLACA_PATENTE && vehicle?.codigoSii) {
+          this.router.navigateByUrl(
+            `inicio/productos/vehicle/${vehicle.PLACA_PATENTE}/${vehicle.codigoSii}`
+          );
+        }
+      },
+      error: (err) => {
+        this.notVehicleFound = true;
+      },
+    });
+  }
+
+  cleanSelectedVehicle(): void {
+    this.vehicleForm.setValue({
+      type: 'patent',
+      search: null,
+    });
+    this.selectedVehicle = null;
   }
 }

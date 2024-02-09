@@ -45,6 +45,7 @@ import { CustomerAddressService } from '@core/services-v2/customer-address/custo
 import { getOriginUrl } from './utils/util.service';
 import { ConfigService } from '@core/config/config.service';
 import { IConfig } from '@core/config/config.interface';
+import { VehicleService } from '@core/services-v2/vehicle/vehicle.service';
 
 @Component({
   selector: 'app-grid',
@@ -114,7 +115,8 @@ export class PageCategoryComponent implements OnInit {
     private readonly customerPreferenceStorage: CustomerPreferencesStorageService,
     private readonly customerPreferenceService: CustomerPreferenceService,
     private readonly customerAddressService: CustomerAddressService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    private readonly vehicleService: VehicleService
   ) {
     this.config = this.configService.getConfig();
     this.session = this.sessionService.getSession();
@@ -137,7 +139,6 @@ export class PageCategoryComponent implements OnInit {
    */
   private onSessionChange(): void {
     this.authStateService.session$.subscribe((session) => {
-      console.log('[-] onSessionChange: ', session);
       this.filters = [];
       this.session = session;
       this.parametrosBusqueda.documentId = session.documentId;
@@ -312,85 +313,79 @@ export class PageCategoryComponent implements OnInit {
 
         // SEO
         this.getDetalleSeoCategoria(category);
-      } else {
-        // 03. Búsqueda
-
-        if (params['busqueda']) {
-          this.textToSearch =
-            params['busqueda'] === 'todos' ? '' : params['busqueda'];
-          let parametros = {};
-          console.log('getSelectedStore desde PageCategoryComponent 2');
-          const tiendaSeleccionada =
-            this.geolocationService.getSelectedStore();
-          if (this.session.documentId === '0') {
-            parametros = {
-              category: '',
-              word: this.textToSearch,
-              branchCode: tiendaSeleccionada.code,
-              pageSize: this.pageSize,
-              documentId: this.session.documentId,
-              showPrice: 1,
-            };
-          } else {
-            parametros = {
-              category: '',
-              word: this.textToSearch,
-              location: this.preferences.deliveryAddress?.city
-                ? this.preferences.deliveryAddress?.city
-                    .normalize('NFD')
-                    .replace(/[\u0300-\u036f]/g, '')
-                : '',
-              pageSize: this.pageSize,
-              branchCode: tiendaSeleccionada?.code,
-              documentId: this.session.documentId,
-              showPrice: 1,
-            };
-          }
-          this.removableFilters = this.filterQuery;
-          this.parametrosBusqueda = {
-            ...parametros,
-            ...this.filterQuery,
+      } else if (params['busqueda']) {
+        this.textToSearch =
+          params['busqueda'] === 'todos' ? '' : params['busqueda'];
+        let parametros = {};
+        console.log('getSelectedStore desde PageCategoryComponent 2');
+        const tiendaSeleccionada = this.geolocationService.getSelectedStore();
+        if (this.session.documentId === '0') {
+          parametros = {
+            category: '',
+            word: this.textToSearch,
+            branchCode: tiendaSeleccionada.code,
+            pageSize: this.pageSize,
+            documentId: this.session.documentId,
+            showPrice: 1,
           };
-          this.parametrosBusqueda.page = this.currentPage;
-
-          this.cargarCatalogoProductos(
-            this.parametrosBusqueda,
-            this.textToSearch
-          );
-
-          // SEO
-          if (!metadataCount) {
-            if (this.textToSearch.trim() !== '') {
-              this.titleService.setTitle(
-                `Resultados Búsqueda de ${this.textToSearch}`
-              );
-            } else {
-              this.titleService.setTitle(
-                `Resultados de Búsqueda - ${this.config.shortUrl}`
-              );
-            }
-            if (isPlatformBrowser(this.platformId)) {
-              this.canonicalService.setCanonicalURL(location.href);
-            }
-            if (isPlatformServer(this.platformId)) {
-              this.canonicalService.setCanonicalURL(
-                environment.canonical + this.router.url
-              );
-            }
-            const kwds = this.textToSearch.replace(
-              /(\b(\w{1,3})\b(\s|$))/g,
-              ''
-            );
-
-            const meta = {
-              title: this.textToSearch,
-              description: this.textToSearch,
-              keywords: kwds,
-            };
-            this.seoService.generarMetaTag(meta);
-            metadataCount++;
-          }
+        } else {
+          parametros = {
+            category: '',
+            word: this.textToSearch,
+            location: this.preferences.deliveryAddress?.city
+              ? this.preferences.deliveryAddress?.city
+                  .normalize('NFD')
+                  .replace(/[\u0300-\u036f]/g, '')
+              : '',
+            pageSize: this.pageSize,
+            branchCode: tiendaSeleccionada?.code,
+            documentId: this.session.documentId,
+            showPrice: 1,
+          };
         }
+        this.removableFilters = this.filterQuery;
+        this.parametrosBusqueda = {
+          ...parametros,
+          ...this.filterQuery,
+        };
+        this.parametrosBusqueda.page = this.currentPage;
+
+        this.cargarCatalogoProductos(
+          this.parametrosBusqueda,
+          this.textToSearch
+        );
+
+        // SEO
+        if (!metadataCount) {
+          if (this.textToSearch.trim() !== '') {
+            this.titleService.setTitle(
+              `Resultados Búsqueda de ${this.textToSearch}`
+            );
+          } else {
+            this.titleService.setTitle(
+              `Resultados de Búsqueda - ${this.config.shortUrl}`
+            );
+          }
+          if (isPlatformBrowser(this.platformId)) {
+            this.canonicalService.setCanonicalURL(location.href);
+          }
+          if (isPlatformServer(this.platformId)) {
+            this.canonicalService.setCanonicalURL(
+              environment.canonical + this.router.url
+            );
+          }
+          const kwds = this.textToSearch.replace(/(\b(\w{1,3})\b(\s|$))/g, '');
+
+          const meta = {
+            title: this.textToSearch,
+            description: this.textToSearch,
+            keywords: kwds,
+          };
+          this.seoService.generarMetaTag(meta);
+          metadataCount++;
+        }
+      } else if (params['patent'] && params['SIICode']) {
+        this.getProductsByVehicle(params['patent'], params['SIICode']);
       }
     });
 
@@ -910,5 +905,14 @@ export class PageCategoryComponent implements OnInit {
     this.parametrosBusqueda.order = event;
     let parametros: any = this.parametrosBusqueda;
     this.cargarCatalogoProductos(parametros, this.textToSearch, false);
+  }
+
+  getProductsByVehicle(SIICode: string, patent: string) {
+    console.log('getProductsByVehicle...');
+    this.vehicleService.getProductsByVehicle(SIICode, patent).subscribe({
+      next: (res) => {
+        console.log('getProductsByVehicle: ', res);
+      },
+    });
   }
 }
