@@ -6,6 +6,10 @@ import { environment } from '@env/environment';
 import { Observable, map } from 'rxjs';
 import { VehicleType } from './vehicle-type.enum';
 import { IVehicle, IVehicleResponse } from './vehicle-response.interface';
+import {
+  IFilterVehicle,
+  IProductsVehicleResponse,
+} from './products-vehicle-response.interface';
 
 const API_VEHICLE = `${environment.apiEcommerce}/api/catalogo/`;
 
@@ -29,12 +33,17 @@ export class VehicleService {
       .pipe(map((res) => res.data.vehiculo));
   }
 
-  getProductsByVehicle(patent: string, SIICode: string) {
-    return this.http.get(`${API_VEHICLE}/vehiculofilterid`, {
-      params: {
-        codigoSII: SIICode,
-        patente: patent,
-      },
-    });
+  getProductsByVehicle(
+    patent: string,
+    SIICode: string
+  ): Observable<IFilterVehicle[]> {
+    return this.http
+      .get<IProductsVehicleResponse>(`${API_VEHICLE}/vehiculofilterid`, {
+        params: {
+          codigoSII: SIICode,
+          patente: patent,
+        },
+      })
+      .pipe(map((res) => res.data.filtros));
   }
 }

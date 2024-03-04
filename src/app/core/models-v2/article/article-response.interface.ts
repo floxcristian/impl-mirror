@@ -90,7 +90,7 @@ export interface ISearchResponse {
   suggestions: ISuggestion[];
   brands: IBrand[];
   categories: ICategorySearch[];
-  filters: IFilters[];
+  filters: IFilters; //[];
   page: number;
   pageSize: number;
   totalPages: number;

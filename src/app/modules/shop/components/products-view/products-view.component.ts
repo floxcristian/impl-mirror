@@ -39,9 +39,10 @@ export class ProductsViewComponent {
   @Input() totalRegistros = 0;
   @Output() cambiaPagina: EventEmitter<number> = new EventEmitter();
   @Output() filterState: EventEmitter<boolean> = new EventEmitter();
-  tipo_orden = null;
-  @Output() sort: EventEmitter<any> = new EventEmitter();
+
+  @Output() sort: EventEmitter<string> = new EventEmitter();
   @Input() paramsCategory!: any;
+  sortType!: string | null;
 
   listItemPage: any[] = [];
   location: String;
@@ -52,10 +53,12 @@ export class ProductsViewComponent {
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private readonly gtmService: GoogleTagManagerService,
-    // Services V2
     private readonly sessionService: SessionService
   ) {
+    this.isB2B = this.sessionService.isB2B();
+    this.sortType = null;
     this.location = document.location.search;
+    // FIXME: obtener url sin window.
     this.url = window.location.href;
 
     this.innerWidth = isPlatformBrowser(this.platformId)
@@ -80,10 +83,10 @@ export class ProductsViewComponent {
         { id: 120, value: 120 },
       ];
     }
-    this.isB2B = this.sessionService.isB2B();
   }
 
   ngOnInit(): void {
+    console.log('breadcrumbsx: ', this.breadcrumbs);
     if (!this.isB2B) {
       this.gtmService.pushTag({
         event: 'categorie_view',
@@ -142,7 +145,11 @@ export class ProductsViewComponent {
     return decodeURIComponent(cadena);
   }
 
-  ChangeOrdenar() {
-    if (this.tipo_orden != null) this.sort.emit(this.tipo_orden);
+  changeSortType(): void {
+    if (this.sortType) this.sort.emit(this.sortType);
+  }
+
+  formatUrlParam(value: string): string {
+    return value.replaceAll(/%20/g, ' ');
   }
 }

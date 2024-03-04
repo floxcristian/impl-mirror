@@ -12,6 +12,8 @@ import { ProductFilterCategory } from '../../../../shared/interfaces/product-fil
 import { ISession } from '@core/models-v2/auth/session.interface';
 import { ICustomerPreference } from '@core/services-v2/customer-preference/models/customer-preference.interface';
 import { ICategory } from './models/category.interface';
+import { Link } from '@shared/interfaces/link';
+import { ICategoryParams } from '../page-product/models/category-params.interface';
 import {
   IArticleResponse,
   IBanner,
@@ -27,11 +29,9 @@ import {
 import { StorageKey } from '@core/storage/storage-keys.enum';
 // Constants
 import { CATEGORIES_METADATA } from './constants/categories-metadata';
-import { IGNORED_FILTERS } from './constants/ignored-filters';
 // Pipes
 import { CapitalizeFirstPipe } from '../../../../shared/pipes/capitalize.pipe';
 // Services
-import { RootService } from '../../../../shared/services/root.service';
 import { SeoService } from '../../../../shared/services/seo/seo.service';
 import { CanonicalService } from '../../../../shared/services/canonical.service';
 import { LocalStorageService } from 'src/app/core/modules/local-storage/local-storage.service';
@@ -42,9 +42,14 @@ import { GeolocationServiceV2 } from '@core/services-v2/geolocation/geolocation.
 import { CustomerPreferenceService } from '@core/services-v2/customer-preference/customer-preference.service';
 import { CustomerPreferencesStorageService } from '@core/storage/customer-preferences-storage.service';
 import { CustomerAddressService } from '@core/services-v2/customer-address/customer-address.service';
-import { getOriginUrl } from './utils/util.service';
+import {
+  cleanFilterSearchParams,
+  getOriginUrl,
+  getValidFilters,
+} from './utils/util.service';
 import { ConfigService } from '@core/config/config.service';
 import { IConfig } from '@core/config/config.interface';
+
 import { VehicleService } from '@core/services-v2/vehicle/vehicle.service';
 
 @Component({
@@ -63,7 +68,7 @@ export class PageCategoryComponent implements OnInit {
   filterQuery: any;
   removableFilters: Params = [];
   removableCategory: ICategory[] = [];
-  breadcrumbs: any[] = [];
+  breadcrumbs: Link[] = [];
   productosTemp: string[] = [];
   // Paginacion
   totalPaginas: number = 0;
@@ -81,13 +86,7 @@ export class PageCategoryComponent implements OnInit {
   levelCategories: ICategoriesTree[] = [];
   level: number = 0;
   marca_tienda: string = '';
-  paramsCategory = {
-    firstCategory: '',
-    secondCategory: '',
-    thirdCategory: '',
-  };
-
-  filtersIgnored = IGNORED_FILTERS;
+  paramsCategory: ICategoryParams;
 
   visibleFilter!: boolean;
   filtrosOculto: boolean = true;
@@ -101,7 +100,6 @@ export class PageCategoryComponent implements OnInit {
     @Inject(PLATFORM_ID) private platformId: Object,
     private route: ActivatedRoute,
     private router: Router,
-    private root: RootService,
     private localS: LocalStorageService,
     private capitalize: CapitalizeFirstPipe,
     private titleService: Title,
@@ -121,6 +119,11 @@ export class PageCategoryComponent implements OnInit {
     this.config = this.configService.getConfig();
     this.session = this.sessionService.getSession();
     this.preferences = this.customerPreferenceStorage.get();
+    this.paramsCategory = {
+      firstCategory: '',
+      secondCategory: '',
+      thirdCategory: '',
+    };
     /**
      * TODO: eliminar lo de abajo en algun momento.
      */
@@ -158,7 +161,6 @@ export class PageCategoryComponent implements OnInit {
     this.customerAddressService.customerAddress$
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((customerAddress) => {
-        console.log('[-] onCustomerAddressChange');
         this.filters = [];
         this.parametrosBusqueda.location = customerAddress?.city || '';
         this.preferences.deliveryAddress = customerAddress || null;
@@ -171,26 +173,26 @@ export class PageCategoryComponent implements OnInit {
    */
   private onSelectedStoreChange(): void {
     this.geolocationService.selectedStore$.subscribe(({ code }) => {
-      console.log('[-] onSelectedStoreChange');
       this.filters = [];
       this.parametrosBusqueda.branchCode = code || '';
       this.cargarCatalogoProductos(this.parametrosBusqueda, '');
     });
   }
 
-  private onRouterParamsChange(): void {}
+  //private onRouterParamsChange(): void {}
 
   ngOnInit(): void {
     let metadataCount = 0;
     this.route.queryParams.subscribe((query) => {
       console.log('on queryParamsChange: ', query);
       this.filters = [];
-      // Seteamos el origen del buscador
-      this.setOrigenes();
+      this.origen = getOriginUrl(this.route.snapshot);
+
+      // 1. Si es tienda oficial
       if (query['tiendaOficial']) {
         this.marca_tienda = query['filter_MARCA'] || '';
         if (this.marca_tienda) {
-          let banner_local: any = this.localS.get('bannersMarca');
+          const banner_local: any = this.localS.get('bannersMarca');
           if (
             banner_local &&
             banner_local.marca?.toLowerCase() ===
@@ -213,12 +215,11 @@ export class PageCategoryComponent implements OnInit {
       // 01. Marca
       if (query['_value']?.hasOwnProperty('filter_MARCA')) {
         const marca = query['_value']['filter_MARCA'];
-        const meta = {
+        this.seoService.generarMetaTag({
           title: marca,
           description: 'Productos marca "title"',
           keywords: 'repuestos ' + marca,
-        };
-        this.seoService.generarMetaTag(meta);
+        });
         metadataCount++;
       }
 
@@ -230,9 +231,7 @@ export class PageCategoryComponent implements OnInit {
           this.route.snapshot.paramMap.get('busqueda') ||
           this.route.snapshot.paramMap.get('busqueda') === 'todos')
       ) {
-        const params: any = this.cleanFilterSearchParams(
-          this.parametrosBusqueda
-        );
+        const params = cleanFilterSearchParams(this.parametrosBusqueda);
 
         this.removableFilters = this.filterQuery;
 
@@ -247,15 +246,16 @@ export class PageCategoryComponent implements OnInit {
 
     this.route.params.subscribe((params) => {
       this.filters = [];
-      console.log('on routerParamsChange: ', params);
+
+      // 1. Categoría
       if (
         params['busqueda'] &&
         params['metodo'] &&
         params['metodo'] === 'categoria'
       ) {
-        // 02. Categoria
         this.textToSearch =
           params['busqueda'] === 'todos' ? '' : params['busqueda'];
+        console.log('textToSearch[1]: ', this.textToSearch);
 
         let category = params['nombre'];
         this.paramsCategory.firstCategory = category;
@@ -270,28 +270,27 @@ export class PageCategoryComponent implements OnInit {
         }
 
         let parametros = {};
-        console.log('getSelectedStore desde PageCategoryComponent 1');
-        const tiendaSeleccionada = this.geolocationService.getSelectedStore();
-        const sucursal = tiendaSeleccionada.code;
+        const { code: branchCode } =
+          this.geolocationService.getSelectedStore();
         if (this.session.documentId === '0') {
           parametros = {
-            category: category,
+            branchCode,
+            category,
             word: this.textToSearch,
-            branchCode: sucursal,
             pageSize: this.pageSize,
             documentId: this.session.documentId,
             showPrice: 1,
           };
         } else {
           parametros = {
-            category: category,
+            branchCode,
+            category,
             word: this.textToSearch,
             location: this.preferences.deliveryAddress?.city
               ? this.preferences.deliveryAddress?.city
                   .normalize('NFD')
                   .replace(/[\u0300-\u036f]/g, '')
               : '',
-            branchCode: sucursal,
             pageSize: this.pageSize,
             documentId: this.session.documentId,
             showPrice: 1,
@@ -313,23 +312,27 @@ export class PageCategoryComponent implements OnInit {
 
         // SEO
         this.getDetalleSeoCategoria(category);
-      } else if (params['busqueda']) {
+      }
+      // 2. Búsqueda
+      else if (params['busqueda']) {
         this.textToSearch =
           params['busqueda'] === 'todos' ? '' : params['busqueda'];
+        console.log('textToSearch[2]: ', this.textToSearch);
         let parametros = {};
-        console.log('getSelectedStore desde PageCategoryComponent 2');
-        const tiendaSeleccionada = this.geolocationService.getSelectedStore();
+        const { code: branchCode } =
+          this.geolocationService.getSelectedStore();
         if (this.session.documentId === '0') {
           parametros = {
+            branchCode,
             category: '',
             word: this.textToSearch,
-            branchCode: tiendaSeleccionada.code,
             pageSize: this.pageSize,
             documentId: this.session.documentId,
             showPrice: 1,
           };
         } else {
           parametros = {
+            branchCode,
             category: '',
             word: this.textToSearch,
             location: this.preferences.deliveryAddress?.city
@@ -338,7 +341,6 @@ export class PageCategoryComponent implements OnInit {
                   .replace(/[\u0300-\u036f]/g, '')
               : '',
             pageSize: this.pageSize,
-            branchCode: tiendaSeleccionada?.code,
             documentId: this.session.documentId,
             showPrice: 1,
           };
@@ -357,7 +359,7 @@ export class PageCategoryComponent implements OnInit {
 
         // SEO
         if (!metadataCount) {
-          if (this.textToSearch.trim() !== '') {
+          if (this.textToSearch.trim()) {
             this.titleService.setTitle(
               `Resultados Búsqueda de ${this.textToSearch}`
             );
@@ -374,17 +376,22 @@ export class PageCategoryComponent implements OnInit {
               environment.canonical + this.router.url
             );
           }
-          const kwds = this.textToSearch.replace(/(\b(\w{1,3})\b(\s|$))/g, '');
-
-          const meta = {
+          const keywords = this.textToSearch.replace(
+            /(\b(\w{1,3})\b(\s|$))/g,
+            ''
+          );
+          this.seoService.generarMetaTag({
+            keywords,
             title: this.textToSearch,
             description: this.textToSearch,
-            keywords: kwds,
-          };
-          this.seoService.generarMetaTag(meta);
+          });
           metadataCount++;
         }
-      } else if (params['patent'] && params['SIICode']) {
+      }
+      // 3. Vehículo
+      else if (params['patent'] && params['SIICode']) {
+        this.textToSearch = params['patent'];
+        console.log('textToSearch[3]: ', this.textToSearch);
         this.getProductsByVehicle(params['patent'], params['SIICode']);
       }
     });
@@ -394,34 +401,17 @@ export class PageCategoryComponent implements OnInit {
     this.onCustomerAddressChange();
   }
 
-  private cleanFilterSearchParams(params: any) {
-    delete params.chassis;
-    delete params.marca;
-    delete params.modelo;
-    delete params.anio;
-
-    const filtered = Object.keys(params)
-      .filter((key) => {
-        if (key.startsWith('filter_') === false) {
-          return true;
-        } else {
-          return false;
-        }
-      })
-      .reduce((obj: any, key) => {
-        obj[key] = params[key];
-        return obj;
-      }, {});
-
-    return filtered;
-  }
-
+  /**
+   * Obtener productos.
+   * @param parametros parametros
+   * @param texto
+   * @param scroll
+   */
   private cargarCatalogoProductos(
-    parametros: any,
+    parametros: IElasticSearch,
     texto: string,
     scroll = false
   ): void {
-    this.parametrosBusqueda = parametros;
     this.removableCategory = [];
     this.filtrosOculto = true;
 
@@ -430,20 +420,17 @@ export class PageCategoryComponent implements OnInit {
       parametros.word = texto;
       this.productosTemp = texto.split(' ');
     }
-    if (this.parametrosBusqueda.category !== '') {
-      const cat = this.root.replaceAll(
-        this.parametrosBusqueda?.category,
-        /-/g
-      );
+    if (this.parametrosBusqueda.category) {
+      const category = this.parametrosBusqueda.category.replaceAll(/-/g, ' ');
       this.removableCategory.push({
         value: this.parametrosBusqueda.category,
-        text: this.capitalize.transform(cat),
+        text: this.capitalize.transform(category),
       });
       this.filtrosOculto = false;
     }
 
     this.parametrosBusqueda.documentId = this.session.documentId;
-    if (this.preferences && this.preferences.deliveryAddress) {
+    if (this.preferences?.deliveryAddress) {
       this.parametrosBusqueda.location = this.preferences.deliveryAddress.city
         ? this.preferences.deliveryAddress.city
             .normalize('NFD')
@@ -461,7 +448,6 @@ export class PageCategoryComponent implements OnInit {
 
     this.articleService.search(parametros).subscribe({
       next: (res) => {
-        console.log('articleService.search: ', parametros);
         this.SetProductos(res, scroll);
       },
       error: (err) => {
@@ -491,15 +477,19 @@ export class PageCategoryComponent implements OnInit {
           if (item == e.sku) this.products.push(e);
         });
       });
-      if (this.products.length == 0) this.products = r.articles;
+      if (!this.products.length) {
+        this.products = r.articles;
+      }
     }
-    if (this.products.length == 0) this.breadcrumbs = [];
+    if (!this.products.length) {
+      this.breadcrumbs = [];
+    }
     this.formatoPaginacion(r);
     this.filters = [];
     this.formatCategories(r.categoriesTree, r.levelFilter);
     this.formatFilters(r.filters);
     this.agregarMatrizProducto(r.articles);
-    if (r.banners && r.banners.length > 0) {
+    if (r.banners && r.banners.length) {
       this.banners = r.banners[0];
       this.localS.set(StorageKey.bannersMarca, r.banners[0]);
     } else this.banners = null;
@@ -639,11 +629,11 @@ export class PageCategoryComponent implements OnInit {
    * Añade un filtro de producto a la lista.
    * @param atr
    */
-  private formatFilters(atr: IFilters[]): void {
-    const atributos = this.cleanFilters(atr);
+  private formatFilters(atr: IFilters): void {
+    const atributos = getValidFilters(atr);
 
-    atributos?.map((r) => {
-      r.values = (r.values as string[]).sort((a, b) => a.localeCompare(b));
+    atributos.map((r) => {
+      r.values = r.values.sort((a, b) => a.localeCompare(b));
 
       let collapsed = true;
       const field = 'filter_' + r.name;
@@ -688,33 +678,6 @@ export class PageCategoryComponent implements OnInit {
   }
 
   /**
-   * Quita los atributos no mostrables.
-   * @param atributos
-   * @returns
-   */
-  private cleanFilters(atributos: IFilters[]) {
-    const atributos2: any[] = [];
-    if (typeof atributos === 'undefined') {
-      return;
-    }
-    for (const key in atributos) {
-      if (atributos.hasOwnProperty(key)) {
-        const exist = this.filtersIgnored.includes(key.trim());
-        const elements = atributos[key];
-
-        if (!exist) {
-          const obj = {
-            name: key,
-            values: elements,
-          };
-          atributos2.push(obj);
-        }
-      }
-    }
-    return atributos2;
-  }
-
-  /**
    * Obtener query params que solo correspondan a los filtros y no a tienda oficial.
    */
   private getFiltersQuery(params: Params): Params {
@@ -745,7 +708,7 @@ export class PageCategoryComponent implements OnInit {
     let queryParams = {};
     queryParams = this.armaQueryParams(queryParams);
 
-    if (this.textToSearch === '') {
+    if (!this.textToSearch) {
       this.removableCategory = [];
     } else {
       this.removableCategory = [];
@@ -759,7 +722,7 @@ export class PageCategoryComponent implements OnInit {
     let queryParams = {};
     queryParams = this.armaQueryParams(queryParams);
 
-    if (this.textToSearch === '') {
+    if (!this.textToSearch) {
       this.removableCategory = [];
     } else {
       this.removableCategory = [];
@@ -770,7 +733,7 @@ export class PageCategoryComponent implements OnInit {
   }
 
   private armaQueryParams(queryParams: any) {
-    if (this.marca_tienda !== '')
+    if (this.marca_tienda)
       queryParams = {
         ...queryParams,
         ...{ filter_MARCA: this.marca_tienda, tiendaOficial: 1 },
@@ -780,13 +743,10 @@ export class PageCategoryComponent implements OnInit {
 
   private setBreadcrumbs(): void {
     this.breadcrumbs = [];
-    if (this.paramsCategory.firstCategory !== '') {
-      const cat = this.root.replaceAll(
-        this.paramsCategory.firstCategory,
-        /-/g
-      );
+    if (this.paramsCategory.firstCategory) {
+      const category = this.paramsCategory.firstCategory.replaceAll(/-/g, ' ');
       this.breadcrumbs.push({
-        label: this.capitalize.transform(cat),
+        label: this.capitalize.transform(category),
         url: [
           '/',
           'inicio',
@@ -798,13 +758,13 @@ export class PageCategoryComponent implements OnInit {
       });
     }
 
-    if (this.paramsCategory.secondCategory !== '') {
-      const cat = this.root.replaceAll(
-        this.paramsCategory.secondCategory,
-        /-/g
+    if (this.paramsCategory.secondCategory) {
+      const category = this.paramsCategory.secondCategory.replaceAll(
+        /-/g,
+        ' '
       );
       this.breadcrumbs.push({
-        label: this.capitalize.transform(cat),
+        label: this.capitalize.transform(category),
         url: [
           '/',
           'inicio',
@@ -817,13 +777,10 @@ export class PageCategoryComponent implements OnInit {
       });
     }
 
-    if (this.paramsCategory.thirdCategory !== '') {
-      const cat = this.root.replaceAll(
-        this.paramsCategory.thirdCategory,
-        /-/g
-      );
+    if (this.paramsCategory.thirdCategory) {
+      const category = this.paramsCategory.thirdCategory.replaceAll(/-/g, ' ');
       this.breadcrumbs.push({
-        label: this.capitalize.transform(cat),
+        label: this.capitalize.transform(category),
         url: [
           '/',
           'inicio',
@@ -849,39 +806,6 @@ export class PageCategoryComponent implements OnInit {
     this.scrollPosition = event.srcElement.children[0].scrollTop;
   }
 
-  /**
-   * Setea origen.
-   */
-  private setOrigenes(): void {
-    let categoria = '';
-    // getOriginUrl(this.route.snapshot.url[0], this.route.snapshot.params);
-    // Si el Url tiene seteada la categoria, pero su busqueda no es 'todos' (no es Banner)
-    if (
-      this.route.snapshot.paramMap.get('nombre') &&
-      this.route.snapshot.paramMap.get('busqueda') !== 'todos'
-    ) {
-      categoria = this.route.snapshot.paramMap.get('nombre') as string;
-      this.origen = ['buscador', '', categoria, ''];
-    } else {
-      const urlParams = this.route.snapshot.url[0].path.split('-');
-      //Si no existe categoria en la url y se accede desde el 'Ver más'
-      if (urlParams[0] == 'HOME') {
-        urlParams.splice(0, 1);
-        this.origen = ['home', 'ver-mas', urlParams.join(' '), ''];
-        //Si viene desde Banner
-      } else if (urlParams[0] == 'todos') {
-        urlParams.splice(0, 1);
-        categoria = this.route.snapshot.paramMap.get('nombre') || '';
-        this.origen = ['home', 'banner', categoria, ''];
-      } else {
-        this.origen = ['buscador', '', 'sinCategoria', ''];
-      }
-    }
-    console.log('origen: ', this.origen);
-    const origin2 = getOriginUrl(this.route.snapshot);
-    console.log('origen2: ', origin2);
-  }
-
   //Definicion de meta Información para optimización del SEO
   private getDetalleSeoCategoria(category: string): void {
     const meta = CATEGORIES_METADATA[category] || {
@@ -901,17 +825,31 @@ export class PageCategoryComponent implements OnInit {
     }
   }
 
-  setSort(event: any): void {
-    this.parametrosBusqueda.order = event;
-    let parametros: any = this.parametrosBusqueda;
-    this.cargarCatalogoProductos(parametros, this.textToSearch, false);
+  /**
+   * Establecer ordenamiento y obtener productos.
+   * @param sortType
+   */
+  setSort(sortType: string): void {
+    this.parametrosBusqueda.order = sortType;
+    this.cargarCatalogoProductos(
+      this.parametrosBusqueda,
+      this.textToSearch,
+      false
+    );
   }
 
-  getProductsByVehicle(SIICode: string, patent: string) {
-    console.log('getProductsByVehicle...');
+  /**
+   * Obtener productos por patente y código SII de vehiculo.
+   * @param SIICode
+   * @param patent
+   */
+  getProductsByVehicle(SIICode: string, patent: string): void {
     this.vehicleService.getProductsByVehicle(SIICode, patent).subscribe({
-      next: (res) => {
-        console.log('getProductsByVehicle: ', res);
+      next: (filters) => {
+        console.log('getProductsByVehicle: ', filters);
+        //this.cargandoProductos = true;
+        this.PagTotalRegistros = filters.length;
+        this.cargandoCatalogo = false;
       },
     });
   }

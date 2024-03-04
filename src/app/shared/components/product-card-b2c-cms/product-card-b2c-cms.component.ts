@@ -107,21 +107,22 @@ export class ProductCardB2cCmsComponent implements OnInit {
       this.preciosEscalas = this.productData.priceInfo.scalePrice;
   }
 
-  generateTags(tags: MetaTag[] | undefined) {
-    if (tags) {
-      tags.forEach((tag: MetaTag) => {
-        if (tag.code === 'cyber')
-          this.cyber = typeof tag.value === 'number' ? tag.value : 0;
-        else this.cyber = 0;
-        if (tag.code === 'cyberMonday')
-          this.cyberMonday = typeof tag.value === 'number' ? tag.value : 0;
-        else this.cyberMonday = 0;
-        if (tag.code === 'official_store') {
-          this.isOfficial = 1;
-          this.imageOEM = typeof tag.value === 'string' ? tag.value : '';
-        } else this.isOfficial = 0;
-      });
-    }
+  generateTags(tags: MetaTag[] | undefined): void {
+    if (!tags?.length) return;
+
+    tags.forEach((tag) => {
+      this.cyber =
+        tag.code === 'cyber' && typeof tag.value === 'number' ? tag.value : 0;
+
+      if (tag.code === 'cyberMonday')
+        this.cyberMonday = typeof tag.value === 'number' ? tag.value : 0;
+      else this.cyberMonday = 0;
+
+      if (tag.code === 'official_store') {
+        this.isOfficial = 1;
+        this.imageOEM = typeof tag.value === 'string' ? tag.value : '';
+      } else this.isOfficial = 0;
+    });
   }
 
   cargaPrecio() {
@@ -160,7 +161,7 @@ export class ProductCardB2cCmsComponent implements OnInit {
 
     if (this.origen) {
       // Seteamos el origen de donde se hizo click a add cart.
-      const origin: IShoppingCartProductOrigin = {
+      this.productData.origin = {
         origin: this.origen[0] || '',
         subOrigin: this.origen[1] || '',
         section: this.origen[2] || '',
@@ -168,7 +169,6 @@ export class ProductCardB2cCmsComponent implements OnInit {
         sheet: false,
         cyber: this.productData.cyber || 0,
       };
-      this.productData.origin = origin;
     }
 
     this.addingToCart = true;

@@ -56,8 +56,7 @@ export class WidgetFiltersComponent {
 
     this.filters.map((item) => {
       if (item.type === 'checkbox') {
-        // const value = [];
-        item.options.items.map((v: any) => {
+        item.options.items.map((v) => {
           if (v.checked) {
             filters[prefix + item.name] = v.label;
             return;
@@ -76,11 +75,11 @@ export class WidgetFiltersComponent {
         }
       }
     });
-    const obj: any = {
+
+    this.filtersSelected.emit({
       selected: filters,
       all: this.filters,
-    };
-    this.filtersSelected.emit(obj);
+    });
   }
 
   marcarCategorias(item: any): void {

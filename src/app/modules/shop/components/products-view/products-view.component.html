@@ -7,7 +7,7 @@
   <div class="products-view" (window:resize)="onResize($event)">
     <div
       class="col-12 col-lg-12 mt-3"
-      *ngIf="totalRegistros === 0 && !cargandoCatalogo"
+      *ngIf="!totalRegistros && !cargandoCatalogo"
     >
       <div class="alert alert-info text-center">
         No se encontraron productos.
@@ -16,7 +16,7 @@
     <ng-container *ngIf="innerWidth >= 1025">
       <div class="row w-100">
         <div
-          *ngIf="totalRegistros > 0"
+          *ngIf="totalRegistros"
           class="col-12 order-3 order-lg-2 text-justify"
           [class.ms-xl-2]="innerWidth >= 1550"
           style="padding-left: 0px; font-size: 18px"
@@ -26,11 +26,15 @@
           <ng-container *ngIf="!url.includes('_MARCA')">
             <span>{{ decodedUrl(textToSearch) }}</span>
           </ng-container>
-          <ng-container *ngIf="breadcrumbs.length > 0">
+          <ng-container *ngIf="breadcrumbs.length">
             <strong> {{ breadcrumbs[0].label || '' | titlecase }} </strong>
           </ng-container>
           <ng-container *ngIf="url.includes('_MARCA')">
-            <strong> {{ url.split('=')[1].split('&')[0] | titlecase }}</strong>
+            <strong>
+              {{
+                formatUrlParam(url.split('=')[1].split('&')[0]) | titlecase
+              }}</strong
+            >
           </ng-container>
         </div>
       </div>
@@ -72,12 +76,12 @@
           <div>
             <select
               class="form-control form-control-sm"
-              [(ngModel)]="tipo_orden"
-              (change)="ChangeOrdenar()"
+              [(ngModel)]="sortType"
+              (change)="changeSortType()"
               name=""
               id="view-options-sort"
             >
-              <option [ngValue]="null">Seleccione Orden</option>
+              <option value="null">Seleccione Orden</option>
               <option value="precio|desc">Mayor precio</option>
               <option value="precio|asc">Menor Precio</option>
               <option value="nombre|asc">Nombre</option>
@@ -109,8 +113,7 @@
             [paramsCategory]="paramsCategory"
             [origen]="origen"
             [product]="product"
-          >
-          </app-product-card-b2c-cms>
+          />
         </div>
       </div>
     </div>
