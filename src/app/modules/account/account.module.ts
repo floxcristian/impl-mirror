@@ -49,6 +49,8 @@ import { AddressModalComponent } from '../../shared/components/address-modal/add
 import { CardDashboardComponent } from '../../shared/components/card-dashboard/card-dashboard.component';
 import { OrderDetailsComponent } from '../../shared/components/order-details/order-details.component';
 import { CardDashboardNoChartComponent } from '../../shared/components/card-dashboard-no-chart/card-dashboard-no-chart.component';
+import { PageOvsListComponent } from './pages/page-ovs-list/page-ovs-list.component';
+
 
 @NgModule({
   declarations: [
@@ -87,6 +89,7 @@ import { CardDashboardNoChartComponent } from '../../shared/components/card-dash
     ModaluserComponent,
     PageComprasComponent,
     FiltroCategoriasComponent,
+    PageOvsListComponent
   ],
   imports: [
     CommonModule,

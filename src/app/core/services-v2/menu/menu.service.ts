@@ -12,7 +12,12 @@ import { MenuItem } from './menu-items';
 export class MenuService {
   get(profile: IUserRole): IMenuItem[] {
     let menuItems = [];
-    if (profile === 'supervisor') {
+    if(profile === 'superadmin'){
+      menuItems = [
+        { type: 'link', label: 'Órdenes de Venta', url: ['/', 'mi-cuenta', 'ordenes'], icon: 'far fa-file-alt' },
+        MenuItem.LOGOUT_ITEM_MENU(),
+      ]
+    }else if (profile === 'supervisor') {
       menuItems = [
         MenuItem.OVERVIEW_ITEM_MENU(),
         MenuItem.PROFILE_ITEM_MENU(),

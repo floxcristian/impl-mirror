@@ -1,0 +1,82 @@
+<div class="  ">
+
+    <div class="top-bar-categories d-flex  align-items-center">
+
+        <div class="title d-flex align-items-center mr-auto ">
+            <i _ngcontent-serverapp-c11="" class="fas fa-file-invoice mr-3"></i>
+            <h5>Órdenes de Venta</h5>
+        </div>
+    </div>
+
+    <div class="card-body position-relative">
+
+        <app-loading-element *ngIf="loadingData"></app-loading-element>
+
+        <div class="table-responsive-sm">
+
+            <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Fecha</th>
+                        <th>OV</th>
+                        <th>Bodega</th>
+                        <th>Sucursal</th>
+                        <th>RUT</th>
+                        <th>Nombre</th>
+                        <th>OC- Monto</th>
+                        <th>OC Folio</th>
+                        <th>Centro - Costo</th>
+                        <th>Credito</th>
+                        <th>Saldo</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let carro of carros">
+
+                        <td>{{ carro.modificacion }}</td>
+                        <td nowrap><a routerLink="/carro-compra/downloadpdf" [queryParams]="{numero:carro.numero}"
+                                target="_blank">{{ carro.numero }}</a></td>
+                        <td nowrap>{{ carro.codigoBodega }}</td>
+                        <td nowrap>{{ carro.codigoSucursal }}</td>
+                        <td nowrap>{{ carro.cliente.rutCliente }}</td>
+                        <td>{{ carro.cliente.nombre }}</td>
+                        <td nowrap>
+                            <a routerLink="/carro-compra/downloadpdf"
+                                [queryParams]="{numero:carro._id,tipo:'orden-compra'}" target="_blank">
+                                $ {{ carro.ordenCompra.monto }}
+                            </a>
+
+                        </td>
+                        <td nowrap>
+                            <a routerLink="/carro-compra/downloadpdf"
+                                [queryParams]="{numero:carro._id,tipo:'orden-compra'}" target="_blank">
+                                {{ carro.ordenCompra.folio }}
+                            </a>
+                        </td>
+                        <td align="right" nowrap>
+                            <ng-container *ngIf="carro.ordenCompra.centroCosto!==''">
+                                {{carro.ordenCompra.centroCosto}}
+                            </ng-container>
+                            <ng-container *ngIf="carro.ordenCompra.centroCosto===''">
+                                N/A
+                            </ng-container>
+                        </td>
+                        <td align="right" nowrap>$ {{ carro.cliente.credito }}</td>
+                        <td align="right" nowrap>$ {{ carro.cliente.creditoUtilizado }}</td>
+
+                        <!-- <td align="center"><a href="viewProducts();">Ver Productos</a></td> -->
+                        <td align="center"> <button name="Confirmar" class="btn btn-secondary"
+                                (click)="confirmarOV(carro._id)">Confirmar</button></td>
+
+                    </tr>
+                    <tr *ngIf="carros.length === 0">
+                        <td class="text-center" colspan="11">No se encontraron registros.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</div>
