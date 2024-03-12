@@ -1,6 +1,7 @@
 // Angular
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 // Services
@@ -26,15 +27,18 @@ export class PageDownloadpdfComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private activatedRoute: ActivatedRoute,
     // Services V2
-    private readonly documentDownloadService: DocumentDownloadService
+    private readonly documentDownloadService: DocumentDownloadService,
+    @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
 
   ngOnInit() {
-    this.numero = this.activatedRoute.snapshot.queryParams['numero'];
-    this.tipo = this.activatedRoute.snapshot.queryParams['tipo'];
-    if (this.tipo === 'factura') this.downloadFacturaPdf();
-    else if (this.tipo === 'orden-compra') this.downloadOcPdf();
-    else this.downloadOvPdf();
+    if(isPlatformBrowser(this.platformId)){
+      this.numero = this.activatedRoute.snapshot.queryParams['numero'];
+      this.tipo = this.activatedRoute.snapshot.queryParams['tipo'];
+      if (this.tipo === 'factura') this.downloadFacturaPdf();
+      else if (this.tipo === 'orden-compra') this.downloadOcPdf();
+      else this.downloadOvPdf();
+    }
   }
 
   headers() {
