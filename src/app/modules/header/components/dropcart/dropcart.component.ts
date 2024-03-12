@@ -4,7 +4,7 @@ import { FormControl, Validators } from '@angular/forms';
 // Env
 import { environment } from '@env/environment';
 // Rxjs
-import { takeUntil, map, first } from 'rxjs/operators';
+import { map, first } from 'rxjs/operators';
 // Libs
 import { ToastrService } from 'ngx-toastr';
 // Models
