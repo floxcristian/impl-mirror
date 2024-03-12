@@ -203,8 +203,13 @@
             style="padding-left: 0 !important; padding-right: 5px !important"
             [style.font-size]="isOnProductPage ? '17px' : '21px'"
           >
-            {{ productData.priceInfo.customerPrice | currencyFormat }}
-            <em> c/iva </em>
+            {{
+              (session.preferences.iva
+                ? productData.priceInfo.customerPrice
+                : productData.priceInfo.customerNetPrice
+              ) | currencyFormat
+            }}
+            <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
           </div>
           <div
             *ngIf="
@@ -214,8 +219,13 @@
             class="product-card__new-price text-danger col-12"
             style="padding-left: 0 !important; padding-right: 5px !important"
           >
-            {{ productData.priceInfo.customerPrice | currencyFormat }}
-            <em> c/iva </em>
+            {{
+              (session.preferences.iva
+                ? productData.priceInfo.customerPrice
+                : productData.priceInfo.customerNetPrice
+              ) | currencyFormat
+            }}
+            <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
           </div>
           <div
             *ngIf="
@@ -230,8 +240,13 @@
               padding-right: 5px !important;
             "
           >
-            {{ productData.priceInfo.commonPrice | currencyFormat }}
-            <em> c/iva </em>
+            {{
+              (session.preferences.iva
+                ? productData.priceInfo.commonPrice
+                : productData.priceInfo.commonNetPrice
+              ) | currencyFormat
+            }}
+            <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
             <br />
           </div>
         </ng-container>
@@ -257,8 +272,13 @@
             style="padding-left: 0 !important; padding-right: 5px !important"
             [style.font-size]="isOnProductPage ? '17px' : '21px'"
           >
-            {{ productData.priceInfo.customerPrice | currencyFormat }}
-            <em> c/iva </em>
+            {{
+              (session.preferences.iva
+                ? productData.priceInfo.customerPrice
+                : productData.priceInfo.customerNetPrice
+              ) | currencyFormat
+            }}
+            <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
           </div>
           <div
             *ngIf="
@@ -272,8 +292,13 @@
               margin-left: 5px;
             "
           >
-            {{ productData.priceInfo.customerPrice | currencyFormat }}
-            <em> c/iva </em>
+            {{
+              (session.preferences.iva
+                ? productData.priceInfo.customerPrice
+                : productData.priceInfo.customerNetPrice
+              ) | currencyFormat
+            }}
+            <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
           </div>
           <div
             *ngIf="
@@ -288,8 +313,13 @@
               padding-right: 5px !important;
             "
           >
-            {{ productData.priceInfo.commonPrice | currencyFormat }}
-            <em> c/iva </em>
+            {{
+              (session.preferences.iva
+                ? productData.priceInfo.commonPrice
+                : productData.priceInfo.commonNetPrice
+              ) | currencyFormat
+            }}
+            <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
             <br />
           </div>
         </ng-container>
@@ -568,7 +598,9 @@
         </tr>
       </thead>
       <tbody *ngIf="preciosEscalas">
-        <ng-container *ngFor="let precio of preciosEscalas; let i = index">
+        <ng-container
+          *ngFor="let productPrice of preciosEscalas; let i = index"
+        >
           <tr
             [ngStyle]="{
               'background-color': (i + 1) % 2 !== 0 ? '#efefef' : '#fff'
@@ -576,17 +608,15 @@
           >
             <td>
               <strong
-                >{{ precio.fromQuantity }} -
-                {{ precio.toQuantity }} ud.</strong
+                >{{ productPrice.fromQuantity }} -
+                {{ productPrice.toQuantity }} ud.</strong
               >
             </td>
             <td style="color: #0063b9">
               {{
-                (!isVacio(usuario.preferences.iva)
-                  ? usuario.preferences.iva
-                    ? precio.price
-                    : precio.price / (1 + IVA)
-                  : precio.price
+                (session.preferences.iva
+                  ? productPrice.price
+                  : productPrice.netPrice
                 ) | currencyFormat
               }}
             </td>

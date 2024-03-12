@@ -26,6 +26,7 @@ export class CustomerPreferenceService {
   getCustomerPreferences(): Observable<ICustomerPreference> {
     const preferences = this.customerPreferenceStorage.get();
     if (preferences.deliveryAddress) {
+      console.log('+ of: ', preferences);
       return of(preferences);
     }
 
@@ -38,6 +39,7 @@ export class CustomerPreferenceService {
             preferences.deliveryAddress = addresses[0];
           }
           this.customerPreferenceStorage.set(preferences);
+          console.log('+2 preferences: ', preferences);
           return preferences;
         })
       );

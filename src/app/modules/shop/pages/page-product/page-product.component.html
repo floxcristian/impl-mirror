@@ -95,7 +95,7 @@
                         <div class="col-12 skuP">
                           {{ item.sku }}
                         </div>
-  
+
                         <div
                           *ngIf="
                             item.stockSummary.branchStock > 0 ||
@@ -105,24 +105,24 @@
                         >
                           <div
                             *ngIf="
-                              item.priceInfo.commonPrice === item.priceInfo.price
+                              item.priceInfo.commonPrice ===
+                              item.priceInfo.price
                             "
                             class="product-card__new-price font-weight-bold"
                             style="color: #000"
                           >
-                            <span *ngIf="!showNetPrice"
-                              >{{ item.priceInfo.price | currencyFormat }}
+                            <span>
+                              {{
+                                (session.preferences.iva
+                                  ? item.priceInfo.customerPrice
+                                  : item.priceInfo.customerNetPrice
+                                ) | currencyFormat
+                              }}
                               <em
                                 ><span class="rounded-pill badge-implementos">
-                                  c/iva</span
-                                ></em
-                              ></span
-                            >
-                            <span *ngIf="showNetPrice"
-                              >{{ item.priceInfo.netPrice | currencyFormat }}
-                              <em
-                                ><span class="rounded-pill badge-primary-custom">
-                                  neto</span
+                                  {{
+                                    session.preferences.iva ? 'c/iva' : 's/iva'
+                                  }}</span
                                 ></em
                               ></span
                             >
@@ -130,46 +130,50 @@
                           <!-- Start::precio oferta en rojo en producto de matriz -->
                           <div
                             *ngIf="
-                              item.priceInfo.commonPrice !== item.priceInfo.price
+                              item.priceInfo.commonPrice !==
+                              item.priceInfo.price
                             "
                             class="product-card__new-price text-danger font-weight-bold"
                           >
-                            <span *ngIf="!showNetPrice"
-                              >{{ item.priceInfo.price | currencyFormat }}
+                            <span>
+                              {{
+                                (session.preferences.iva
+                                  ? item.priceInfo.customerPrice
+                                  : item.priceInfo.customerNetPrice
+                                ) | currencyFormat
+                              }}
                               <em
                                 ><span class="rounded-pill badge-implementos">
-                                  c/iva</span
-                                ></em
-                              ></span
-                            >
-                            <span *ngIf="showNetPrice"
-                              >{{ item.priceInfo.netPrice | currencyFormat }}
-                              <em
-                                ><span class="rounded-pill badge-primary-custom">
-                                  neto</span
-                                ></em
+                                  {{
+                                    session.preferences.iva ? 'c/iva' : 's/iva'
+                                  }}
+                                </span></em
                               ></span
                             >
                           </div>
                           <!-- End::precio oferta en rojo en producto de matriz -->
-  
+
                           <!-- Start::precio normal -->
                           <div
                             *ngIf="
-                              item.priceInfo.commonPrice !== item.priceInfo.price
+                              item.priceInfo.commonPrice !==
+                              item.priceInfo.price
                             "
                             tooltip="Precio normal"
                             class="product-card__old-price text-end"
                           >
-                            <span *ngIf="!showNetPrice"
-                              >{{ item.priceInfo.commonPrice | currencyFormat }}
-                              <em> c/iva </em></span
-                            >
-                            <span *ngIf="showNetPrice"
-                              >{{
-                                item.priceInfo.commonNetPrice | currencyFormat
+                            <span>
+                              {{
+                                (session.preferences.iva
+                                  ? item.priceInfo.commonPrice
+                                  : item.priceInfo.commonNetPrice
+                                ) | currencyFormat
                               }}
-                              <em> neto </em></span
+                              <em>
+                                {{
+                                  session.preferences.iva ? 'c/iva' : 's/iva'
+                                }}
+                              </em></span
                             >
                           </div>
                           <!-- End::precio normal -->
@@ -192,7 +196,9 @@
                                 class="fal fa-minus-circle fa-xl me-3"
                                 style="cursor: pointer; color: #005cb9"
                                 role="button"
-                                (click)="refreshComparedProductPrice(item, '-')"
+                                (click)="
+                                  refreshComparedProductPrice(item, '-')
+                                "
                               ></i>
                               <input
                                 type="number"
@@ -205,7 +211,9 @@
                               <i
                                 class="fal fa-plus-circle fa-xl ms-3"
                                 style="cursor: pointer; color: #005cb9"
-                                (click)="refreshComparedProductPrice(item, '+')"
+                                (click)="
+                                  refreshComparedProductPrice(item, '+')
+                                "
                                 role="button"
                               ></i>
                             </div>
@@ -534,20 +542,17 @@
                         class="product-card__new-price font-weight-bold"
                         style="color: #000"
                       >
-                        <span *ngIf="!showNetPrice"
-                          >{{ item.priceInfo.price | currencyFormat }}
+                        <span>
+                          {{
+                            (session.preferences.iva
+                              ? item.priceInfo.customerPrice
+                              : item.priceInfo.customerNetPrice
+                            ) | currencyFormat
+                          }}
                           <em
                             ><span class="rounded-pill badge-implementos">
-                              c/iva</span
-                            ></em
-                          ></span
-                        >
-                        <span *ngIf="showNetPrice"
-                          >{{ item.priceInfo.netPrice | currencyFormat }}
-                          <em
-                            ><span class="rounded-pill badge-primary-custom">
-                              neto</span
-                            ></em
+                              {{ session.preferences.iva ? 'c/iva' : 's/iva' }}
+                            </span></em
                           ></span
                         >
                       </div>
@@ -558,19 +563,18 @@
                         "
                         class="product-card__new-price text-danger font-weight-bold"
                       >
-                        <span *ngIf="!showNetPrice"
-                          >{{ item.priceInfo.price | currencyFormat }}
+                        <span>
+                          {{
+                            (session.preferences.iva
+                              ? item.priceInfo.customerPrice
+                              : item.priceInfo.customerNetPrice
+                            ) | currencyFormat
+                          }}
                           <em
                             ><span class="rounded-pill badge-implementos">
-                              c/iva</span
-                            ></em
-                          ></span
-                        >
-                        <span *ngIf="showNetPrice"
-                          >{{ item.priceInfo.netPrice | currencyFormat }}
-                          <em
-                            ><span class="rounded-pill badge-primary-custom">
-                              neto</span
+                              {{
+                                session.preferences.iva ? 'c/iva' : 's/iva'
+                              }}</span
                             ></em
                           ></span
                         >
@@ -584,15 +588,16 @@
                         tooltip="Precio normal"
                         class="product-card__old-price text-end"
                       >
-                        <span *ngIf="!showNetPrice"
-                          >{{ item.priceInfo.commonPrice | currencyFormat }}
-                          <em> c/iva </em></span
-                        >
-                        <span *ngIf="showNetPrice"
-                          >{{
-                            item.priceInfo.commonNetPrice | currencyFormat
+                        <span>
+                          {{
+                            (session.preferences.iva
+                              ? item.priceInfo.commonPrice
+                              : item.priceInfo.commonNetPrice
+                            ) | currencyFormat
                           }}
-                          <em> neto </em></span
+                          <em>
+                            {{ session.preferences.iva ? 'c/iva' : 's/iva' }}
+                          </em></span
                         >
                       </div>
                     </div>

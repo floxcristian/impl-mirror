@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import { ToastrService } from 'ngx-toastr';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 // Rxjs
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
@@ -41,7 +42,7 @@ import { DireccionDespachoComponent } from '../search-vin-b2b/components/direcci
 import { ModalStoresComponent } from '../modal-stores/modal-stores.component';
 import { RootService } from '@shared/services/root.service';
 import { CustomerAddressService } from '@core/services-v2/customer-address/customer-address.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
   selector: 'app-header-search',
   templateUrl: './search.component.html',
@@ -77,7 +78,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   direccion!: ICustomerAddress | any;
   despachoClienteRef!: Subscription;
   isVacio = isVacio;
-  usuarioRef!: Subscription;
+  sessionRef!: Subscription;
 
   // News
   session!: ISession;
@@ -122,21 +123,13 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     this.session = this.sessionService.getSession();
     if (this.session.documentId !== '0') {
-      this.customerPreferenceService.getCustomerPreferences().subscribe({
-        next: (preferences) => {
-          this.direccion = preferences.deliveryAddress;
-        },
-      });
+      this.getCustomerPreferences();
     }
 
-    this.usuarioRef = this.authStateService.session$.subscribe((user) => {
-      this.session = user;
+    this.sessionRef = this.authStateService.session$.subscribe((session) => {
+      this.session = session;
       if (this.session.documentId !== '0') {
-        this.customerPreferenceService.getCustomerPreferences().subscribe({
-          next: (preferences) => {
-            this.direccion = preferences.deliveryAddress;
-          },
-        });
+        this.getCustomerPreferences();
       }
     });
 
@@ -148,11 +141,17 @@ export class SearchComponent implements OnInit, OnDestroy {
       );
   }
 
+  private getCustomerPreferences(): void {
+    this.customerPreferenceService.getCustomerPreferences().subscribe({
+      next: ({ deliveryAddress }) => (this.direccion = deliveryAddress),
+    });
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
     this.despachoClienteRef.unsubscribe();
-    this.usuarioRef.unsubscribe();
+    this.sessionRef.unsubscribe();
   }
 
   reset(): void {

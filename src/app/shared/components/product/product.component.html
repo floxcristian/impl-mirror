@@ -171,7 +171,10 @@
         <div class="row justify-content-start px-3">
           <div style="color: black">
             <strong>SKU {{ product.sku }}</strong>
-            <span class="ms-2" *ngIf="stock && isAvailable" style="color: #408b00"
+            <span
+              class="ms-2"
+              *ngIf="stock && isAvailable"
+              style="color: #408b00"
               ><strong>EN STOCK</strong></span
             >
             <span class="ms-2 text-danger" *ngIf="!stock"
@@ -339,7 +342,13 @@
                           ? '1.6'
                           : '2'
                     }"
-                    >{{ product.priceInfo.price | currencyFormat }}</span
+                  >
+                    {{
+                      (session.preferences.iva
+                        ? product.priceInfo.customerPrice
+                        : product.priceInfo.customerNetPrice
+                      ) | currencyFormat
+                    }}</span
                   >
 
                   <span
@@ -351,8 +360,14 @@
                           ? '1.6'
                           : '2'
                     }"
-                    >{{ product.priceInfo.price | currencyFormat }}</span
                   >
+                    {{
+                      (session.preferences.iva
+                        ? product.priceInfo.customerPrice
+                        : product.priceInfo.customerNetPrice
+                      ) | currencyFormat
+                    }}
+                  </span>
 
                   <span
                     *ngIf="
@@ -366,8 +381,14 @@
                           ? '1.6'
                           : '2'
                     }"
-                    >{{ product.priceInfo.commonPrice | currencyFormat }}</span
                   >
+                    {{
+                      (session.preferences.iva
+                        ? product.priceInfo.commonPrice
+                        : product.priceInfo.commonNetPrice
+                      ) | currencyFormat
+                    }}
+                  </span>
 
                   <span class="text-civa">
                     {{ session.preferences.iva ? 'c/iva' : 's/iva' }}
@@ -516,15 +537,27 @@
                     tooltip="Precio con descuento cliente"
                     class="text-price-product me-2 text-danger"
                     style="font-size: 2rem"
-                    >{{ product.priceInfo.price | currencyFormat }}</span
                   >
+                    {{
+                      (session.preferences.iva
+                        ? product.priceInfo.customerPrice
+                        : product.priceInfo.customerNetPrice
+                      ) | currencyFormat
+                    }}
+                  </span>
 
                   <span
                     *ngIf="product.priceInfo.documentId == '0'"
                     class="text-price-product me-2"
                     style="font-size: 2rem"
-                    >{{ product.priceInfo.price | currencyFormat }}</span
                   >
+                    {{
+                      (session.preferences.iva
+                        ? product.priceInfo.customerPrice
+                        : product.priceInfo.customerNetPrice
+                      ) | currencyFormat
+                    }}
+                  </span>
 
                   <span
                     *ngIf="
@@ -533,8 +566,14 @@
                     tooltip="Precio normal"
                     class="product__old-price me-2"
                     style="font-size: 2rem"
-                    >{{ product.priceInfo.commonPrice | currencyFormat }}</span
                   >
+                    {{
+                      (session.preferences.iva
+                        ? product.priceInfo.commonPrice
+                        : product.priceInfo.commonNetPrice
+                      ) | currencyFormat
+                    }}
+                  </span>
 
                   <span class="text-civa">
                     {{ session.preferences.iva ? 'c/iva' : 's/iva' }}
@@ -559,7 +598,10 @@
         <div class="row justify-content-start px-3 mb-1">
           <div style="color: #bbb">
             SKU {{ product.sku }}
-            <span class="ms-2" *ngIf="stock && isAvailable" style="color: #408b00"
+            <span
+              class="ms-2"
+              *ngIf="stock && isAvailable"
+              style="color: #408b00"
               ><strong>EN STOCK</strong></span
             >
             <span class="ms-2 text-danger" *ngIf="!stock"
