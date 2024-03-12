@@ -226,8 +226,10 @@ export class CartService {
           this.recalculateShoppingCart(response);
         },
         error: (error: any) => {
-          // console.log('error', JSON.stringify(error));
+          this.isLoadingCart = false;
           this.data.products = [];
+          this.calc();
+          this.save();
           // if (error.errorCode !== 'SHOPPING_CART_NOT_FOUND') {
           //   this.toastrServise.error(error.message);
           // }
@@ -236,6 +238,7 @@ export class CartService {
   }
 
   recalculateShoppingCart(response: IShoppingCart) {
+    this.isLoadingCart = false;
     const usuario = this.sessionStorage.get();
     if (!usuario) {
       return;
@@ -244,7 +247,6 @@ export class CartService {
     if (!usuario.hasOwnProperty('username')) usuario.username = usuario.email;
     if (!usuario.hasOwnProperty('documentId')) usuario.documentId = '0';
 
-    this.isLoadingCart = false;
 
     this.CartData = response;
     this.cartTempData = response;
