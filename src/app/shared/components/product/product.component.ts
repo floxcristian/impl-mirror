@@ -94,7 +94,7 @@ export class ProductComponent implements OnInit, OnChanges {
     if (!value) return;
     // Eliminar?
     this.getPopularProducts();
-    this.setAvailability(value.deliverySupply);
+    this.setAvailability(value?.deliverySupply);
     this.quantity.setValue(1);
 
     this.dataProduct = value;
@@ -293,9 +293,12 @@ export class ProductComponent implements OnInit, OnChanges {
     this.estado = false;
   }
 
-  private setAvailability(deliverySupply: IDeliverySupply): void {
-    const { pickupDate, deliveryDate } = deliverySupply;
-    this.isAvailable = !pickupDate && !deliveryDate ? false : true;
+  private setAvailability(deliverySupply: IDeliverySupply | undefined): void {
+    if(!deliverySupply) this.isAvailable = false
+    else{
+      const { pickupDate, deliveryDate } = deliverySupply;
+      this.isAvailable = !pickupDate && !deliveryDate ? false : true;
+    }
   }
 
   /**

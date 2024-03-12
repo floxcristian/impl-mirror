@@ -156,7 +156,6 @@ export class PurchaseRequestComponent implements OnInit {
       .updateStatusShoppingCart(this.order.id, 'rejected', this.obsRefuse)
       .subscribe({
         next: (res) => {
-          console.log(res);
           this.loadingPage = false;
           this.toast.success('Solitud rechazada correctamente');
           this.modalRefuseRef.hide();

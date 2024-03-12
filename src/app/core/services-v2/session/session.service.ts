@@ -49,6 +49,10 @@ export class SessionService {
     }
   }
 
+  /**
+   * Verificar si la session de usuario es B2B.
+   * @returns
+   */
   isB2B(): boolean {
     const session = this.getSession();
     return ['supervisor', 'comprador'].includes(session.userRole);

@@ -195,7 +195,7 @@ export class PageCartOvSuccessComponent implements OnInit, OnDestroy {
                   })
                   .subscribe({
                     next: () => {
-                      console.log('ok gtag');
+                      // console.log('ok gtag');
                     },
                     error: (e) => console.error(e),
                   });

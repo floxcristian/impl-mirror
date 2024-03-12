@@ -67,13 +67,12 @@ export class ProductCardB2cCmsComponent implements OnInit {
   @Input() paramsCategory: any;
   @Input() origen!: string[];
   @Input() tipoOrigen: string = '';
-  usuario!: ISession;
+  session!: ISession;
   porcentaje = 0;
   addingToCart = false;
   urlImage = environment.urlFotoOmnichannel;
   productData!: IArticle & { url?: SafeUrl; gimage?: SafeUrl };
   today = Date.now();
-  IVA = 0.19;
 
   cyber: number = 0;
   cyberMonday: number = 0;
@@ -101,7 +100,7 @@ export class ProductCardB2cCmsComponent implements OnInit {
       .subscribe(() => {
         this.cd.markForCheck();
       });
-    this.usuario = this.sessionService.getSession();
+    this.session = this.sessionService.getSession();
     this.cargaPrecio();
     if (this.productData.priceInfo.hasScalePrice)
       this.preciosEscalas = this.productData.priceInfo.scalePrice;

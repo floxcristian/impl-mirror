@@ -57,7 +57,7 @@ export class RegisterVisitComponent implements OnInit, OnChanges {
   config: IConfig;
   emailDomains: IEmailDomainAutocomplete[];
   isValidDocumentId!: boolean;
-  maxPhone:number = 8
+  maxPhone: number = 8;
 
   constructor(
     private toastr: ToastrService,
@@ -231,21 +231,20 @@ export class RegisterVisitComponent implements OnInit, OnChanges {
   Select_fono(phoneCode: string): void {
     this.selectedPhoneCode = phoneCode;
 
-    if (this.selectedPhoneCode === this.config.phoneCodes.mobile.code){
+    if (this.selectedPhoneCode === this.config.phoneCodes.mobile.code) {
       this.formVisita.controls['telefono'].setValidators([
         Validators.required,
         Validators.minLength(this.config.phoneCodes.mobile.lengthRule),
         Validators.maxLength(this.config.phoneCodes.mobile.lengthRule),
       ]);
-      this.maxPhone = this.config.phoneCodes.mobile.lengthRule
-    }
-    else{
+      this.maxPhone = this.config.phoneCodes.mobile.lengthRule;
+    } else {
       this.formVisita.controls['telefono'].setValidators([
         Validators.required,
         Validators.minLength(this.config.phoneCodes.landline.lengthRule),
         Validators.maxLength(this.config.phoneCodes.landline.lengthRule),
       ]);
-      this.maxPhone = this.config.phoneCodes.landline.lengthRule
+      this.maxPhone = this.config.phoneCodes.landline.lengthRule;
     }
     this.formVisita.get('telefono')?.updateValueAndValidity();
   }

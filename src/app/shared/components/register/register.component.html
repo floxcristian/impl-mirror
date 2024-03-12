@@ -21,7 +21,7 @@
                         class="input-check__input"
                         type="checkbox"
                         id="check-factura"
-                        [checked]="isInvoice && !checkBoxPersona"
+                        [checked]="isInvoice && !isPerson"
                       />
                       <span class="input-check__box"></span>
                       <app-icon
@@ -51,7 +51,7 @@
                       <input
                         name="tipoDocumento"
                         (click)="changeUserType()"
-                        [checked]="checkBoxPersona"
+                        [checked]="isPerson"
                         class="input-check__input"
                         type="checkbox"
                         id="check-persona"
@@ -77,105 +77,23 @@
           </div>
         </div>
 
-        <form [formGroup]="userForm">
-          <div class="row">
-            <ng-container *ngIf="isInvoice">
-              <h2 class="form-title col-md-12" style="color: #0063b9">
-                Datos Empresa
-              </h2>
-              <div class="col-md-12">
-                <label style="color: #0063b9; font-weight: 100"
-                  >{{ config.document.name }}* (ej:
-                  {{ config.document.sample }})</label
-                >
-                <div class="input-group">
-                  <input
-                    formControlName="documentId"
-                    class="form-control"
-                    [placeholder]="
-                      isInvoice
-                        ? config.document.name + ' Empresa*'
-                        : config.document.name
-                    "
-                    (focusout)="checkIfDocumentIdExists($event)"
-                    [maxlength]="cantMaxRut"
-                    appRutChars
-                  />
-                  <span class="input-group-text" style="padding: 0">
-                    <button
-                      class="btn btn-sm btn-secondary"
-                      *ngIf="!isDisabledDocumentId"
-                      type="button"
-                    >
-                      <i class="fa fa-search fa-lg"></i>
-                    </button>
-                    <button
-                      class="btn btn-sm btn-secondary"
-                      (click)="cleanDocumentId()"
-                      *ngIf="isDisabledDocumentId"
-                      type="button"
-                    >
-                      <i class="fa fa-times fa-lg"></i>
-                    </button>
-                  </span>
-                </div>
-                <p
-                  *ngIf="
-                    userForm.controls['documentId'].invalid &&
-                    userForm.controls['documentId'].touched
-                  "
-                  class="text-error-form-2 float-start"
-                >
-                  El {{ config.document.name }} ingresado no es válido.
-                </p>
-              </div>
-              <div class="col-md-12 mt-3">
-                <div class="mb-3">
-                  <input
-                    formControlName="businessName"
-                    type="text"
-                    class="form-control"
-                    placeholder="Razón social*"
-                  />
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="mb-3">
-                  <ng-select
-                    [clearable]="false"
-                    [searchable]="true"
-                    [items]="businessLines"
-                    bindLabel="name"
-                    bindValue="code"
-                    formControlName="businessLine"
-                    class="form-control-select"
-                    placeholder="Giro*"
-                  >
-                  </ng-select>
-                </div>
-              </div>
-            </ng-container>
-
+        <div class="row">
+          @if(!isPerson){
+          <form *ngIf="!isPerson" [formGroup]="companyForm">
             <h2 class="form-title col-md-12" style="color: #0063b9">
-              <span *ngIf="isInvoice">Datos Contacto</span>
-              <span *ngIf="!isInvoice">Datos Cliente</span>
+              Datos Empresa
             </h2>
-            <div class="col-md-12" *ngIf="!isInvoice">
+            <div class="col-md-12">
               <label style="color: #0063b9; font-weight: 100"
-                >{{ config.document.name }}* (ej:{{
-                  config.document.sample
-                }})</label
+                >{{ config.document.name }}* (ej:
+                {{ config.document.sample }})</label
               >
               <div class="input-group">
                 <input
                   formControlName="documentId"
                   class="form-control"
-                  [placeholder]="
-                    isInvoice
-                      ? config.document.name + ' Empresa*'
-                      : config.document.name + '*'
-                  "
-                  (focusout)="checkIfDocumentIdExists($event)"
+                  [placeholder]="config.document.name + ' Empresa*'"
+                  (focusout)="checkIfDocumentIdExists(companyForm, $event)"
                   [maxlength]="cantMaxRut"
                   appRutChars
                 />
@@ -189,7 +107,7 @@
                   </button>
                   <button
                     class="btn btn-sm btn-secondary"
-                    (click)="cleanDocumentId()"
+                    (click)="cleanDocumentId(companyForm)"
                     *ngIf="isDisabledDocumentId"
                     type="button"
                   >
@@ -197,19 +115,46 @@
                   </button>
                 </span>
               </div>
-
               <p
                 *ngIf="
-                  userForm.controls['documentId'].invalid &&
-                  userForm.controls['documentId'].touched
+                  companyForm.controls['documentId'].invalid &&
+                  companyForm.controls['documentId'].touched
                 "
                 class="text-error-form-2 float-start"
               >
                 El {{ config.document.name }} ingresado no es válido.
               </p>
             </div>
+            <div class="col-md-12 mt-3">
+              <div class="mb-3">
+                <input
+                  formControlName="businessName"
+                  type="text"
+                  class="form-control"
+                  placeholder="Razón social*"
+                />
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="mb-3">
+                <ng-select
+                  [clearable]="false"
+                  [searchable]="true"
+                  [items]="businessLines"
+                  bindLabel="name"
+                  bindValue="code"
+                  formControlName="businessLine"
+                  class="form-control-select"
+                  placeholder="Giro*"
+                >
+                </ng-select>
+              </div>
+            </div>
 
-            <div class="col-12" *ngIf="isInvoice">
+            <h2 class="form-title col-md-12" style="color: #0063b9">
+              <span>Datos Contacto</span>
+            </h2>
+            <div class="col-12">
               <label style="color: #0063b9; font-weight: 100"
                 >{{ config.document.name }}* ({{
                   config.document.sample
@@ -226,16 +171,15 @@
               </div>
               <p
                 *ngIf="
-                  userForm.controls['contactDocumentId'].invalid &&
-                  userForm.controls['contactDocumentId'].touched
+                  companyForm.controls['contactDocumentId'].invalid &&
+                  companyForm.controls['contactDocumentId'].touched
                 "
                 class="text-danger float-start"
               >
                 El {{ config.document.name }} ingresado no es válido.
               </p>
             </div>
-
-            <div class="col-12 mt-3" *ngIf="isInvoice">
+            <div class="col-12 mt-3">
               <div class="mb-3">
                 <ng-select
                   [clearable]="false"
@@ -250,8 +194,67 @@
                 </ng-select>
               </div>
             </div>
-            <div class="col-md-12" *ngIf="!isInvoice"></div>
+          </form>
+          } @else {
+          <form [formGroup]="personForm">
+            <!-- Fixme -->
 
+            <h2 class="form-title col-md-12" style="color: #0063b9">
+              <span>Datos Cliente</span>
+            </h2>
+            <div class="col-md-12">
+              <label style="color: #0063b9; font-weight: 100"
+                >{{ config.document.name }}* (ej:{{
+                  config.document.sample
+                }})</label
+              >
+              <div class="input-group">
+                <input
+                  formControlName="documentId"
+                  class="form-control"
+                  [placeholder]="
+                    isInvoice
+                      ? config.document.name + ' Empresa*'
+                      : config.document.name + '*'
+                  "
+                  (focusout)="checkIfDocumentIdExists(personForm, $event)"
+                  [maxlength]="cantMaxRut"
+                  appRutChars
+                />
+                <span class="input-group-text" style="padding: 0">
+                  <button
+                    class="btn btn-sm btn-secondary"
+                    *ngIf="!isDisabledDocumentId"
+                    type="button"
+                  >
+                    <i class="fa fa-search fa-lg"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-secondary"
+                    (click)="cleanDocumentId(personForm)"
+                    *ngIf="isDisabledDocumentId"
+                    type="button"
+                  >
+                    <i class="fa fa-times fa-lg"></i>
+                  </button>
+                </span>
+              </div>
+
+              <p
+                *ngIf="
+                  personForm.controls['documentId'].invalid &&
+                  personForm.controls['documentId'].touched
+                "
+                class="text-error-form-2 float-start"
+              >
+                El {{ config.document.name }} ingresado no es válido.
+              </p>
+            </div>
+          </form>
+          }
+          <!-- End::formulario persona -->
+
+          <form [formGroup]="commonForm">
             <div class="col-md-12 mt-3">
               <div class="mb-3">
                 <input
@@ -274,7 +277,6 @@
                 />
               </div>
             </div>
-
             <div class="col-md-12">
               <div class="mb-3">
                 <label style="color: #0063b9; font-weight: 100"
@@ -344,8 +346,8 @@
 
                 <p
                   *ngIf="
-                    userForm.controls['phone'].invalid &&
-                    userForm.controls['phone'].touched
+                    commonForm.controls['phone'].invalid &&
+                    commonForm.controls['phone'].touched
                   "
                   class="text-error-form-2"
                 >
@@ -358,13 +360,11 @@
                 <autocomplete
                   #emailValidate
                   givenPlaceHolder="Email"
-                  [disabled]="!isValidDocumentId"
                   [domainNames]="domains"
                 >
                 </autocomplete>
               </div>
             </div>
-
             <div class="col-md-12">
               <div class="mb-3">
                 <input
@@ -372,11 +372,12 @@
                   formControlName="password"
                   class="form-control"
                   placeholder="Contraseña"
+                  autocomplete="new-password"
                 />
                 <p
                   *ngIf="
-                    userForm.controls['password'].invalid &&
-                    userForm.controls['password'].touched
+                    commonForm.controls['password'].invalid &&
+                    commonForm.controls['password'].touched
                   "
                   class="text-error-form-2"
                 >
@@ -384,7 +385,6 @@
                 </p>
               </div>
             </div>
-
             <div class="col-md-12">
               <div class="mb-3">
                 <input
@@ -395,20 +395,24 @@
                 />
                 <p
                   class="text-error-form-2"
-                  *ngIf="userForm.errors?.['doesMatchPassword']"
+                  *ngIf="commonForm.errors?.['doesMatchPassword']"
                 >
                   Las contraseñas no son iguales, por favor intente nuevamente.
                 </p>
 
                 <p
                   class="text-error-form-2"
-                  *ngIf="userForm.controls['confirmPassword'].errors?.['required'] && userForm.controls['confirmPassword'].touched"
+                  *ngIf="commonForm.controls['confirmPassword'].errors?.['required'] && commonForm.controls['confirmPassword'].touched"
                 >
                   El campo confirme contraseña es requerido.
                 </p>
               </div>
             </div>
-          </div>
+          </form>
+        </div>
+
+        <!-- Start::formulario de dirección -->
+        <form [formGroup]="addressForm">
           <div class="row mb-4">
             <div class="col-12">
               <app-map
@@ -417,11 +421,11 @@
                 [storeAddress]="selectedAddress?.address || ''"
                 [storeZone]="selectedAddress?.zone || ''"
                 (setDireccion)="setAddressFromMap($event)"
-                (geolocalizacion)="geolocalizacion($event)"
+                (geolocalizacion)="setMapPosition($event)"
                 [titulo]="
-                  isInvoice
-                    ? 'Ingrese Dirección de Facturación'
-                    : 'Ingrese Dirección de Despacho'
+                  isPerson
+                    ? 'Ingrese Dirección de Despacho'
+                    : 'Ingrese Dirección de Facturación'
                 "
               >
               </app-map>
@@ -487,77 +491,85 @@
               formControlName="reference"
             ></textarea>
           </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="mb-3">
-                <div class="col p-0">
-                  <div class="form-check form-check-lg">
-                    <span class="form-check-input input-check">
-                      <span class="input-check__body">
-                        <input
-                          (click)="registrar()"
-                          name="tipoSuscripcion"
-                          class="input-check__input"
-                          type="checkbox"
-                          id="check-inscripcion"
-                          [checked]="checkBoxSuscribir"
-                        />
-                        <span class="input-check__box"></span>
-                        <app-icon
-                          class="input-check__icon"
-                          name="check-9x7"
-                          size="19x19"
-                        >
-                        </app-icon>
-                      </span>
+        </form>
+        <!-- End::formulario de dirección -->
+
+        <div class="row">
+          <!-- Start::checkox suscripción -->
+          <div class="col-md-12">
+            <div class="mb-3">
+              <div class="col p-0">
+                <div class="form-check form-check-lg">
+                  <span class="form-check-input input-check">
+                    <span class="input-check__body">
+                      <input
+                        (click)="registrar()"
+                        name="tipoSuscripcion"
+                        class="input-check__input"
+                        type="checkbox"
+                        id="check-inscripcion"
+                        [checked]="checkBoxSuscribir"
+                      />
+                      <span class="input-check__box"></span>
+                      <app-icon
+                        class="input-check__icon"
+                        name="check-9x7"
+                        size="19x19"
+                      >
+                      </app-icon>
                     </span>
-                    <label
-                      class="form-check-label"
-                      for="check-inscripcion"
-                      style="color: #0063b9; font-weight: bold"
-                      >Quiero suscribirme a {{ config.url }}</label
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="mb-3">
-                <div class="col p-0">
-                  <div class="form-check form-check-lg">
-                    <span class="form-check-input input-check">
-                      <span class="input-check__body">
-                        <input
-                          name="tipoTermino"
-                          (click)="acepto()"
-                          [checked]="checkBoxTerminos"
-                          class="input-check__input"
-                          type="checkbox"
-                          id="check-acepto"
-                        />
-                        <span class="input-check__box"></span>
-                        <app-icon
-                          class="input-check__icon"
-                          name="check-9x7"
-                          size="19x19"
-                        >
-                        </app-icon>
-                      </span>
-                    </span>
-                    <label
-                      class="form-check-label"
-                      for="check-acepto"
-                      style="color: #0063b9; font-weight: bold"
-                      >Acepto terminos y condiciones *</label
-                    >
-                  </div>
+                  </span>
+                  <label
+                    class="form-check-label"
+                    for="check-inscripcion"
+                    style="color: #0063b9; font-weight: bold"
+                    >Quiero suscribirme a {{ config.url }}</label
+                  >
                 </div>
               </div>
             </div>
           </div>
-        </form>
+          <!-- End::checkox suscripción -->
+
+          <!-- Start::aceptar terminos -->
+          <div class="col-md-12">
+            <div class="mb-3">
+              <div class="col p-0">
+                <div class="form-check form-check-lg">
+                  <span class="form-check-input input-check">
+                    <span class="input-check__body">
+                      <input
+                        name="tipoTermino"
+                        (click)="acepto()"
+                        [checked]="checkBoxTerminos"
+                        class="input-check__input"
+                        type="checkbox"
+                        id="check-acepto"
+                      />
+                      <span class="input-check__box"></span>
+                      <app-icon
+                        class="input-check__icon"
+                        name="check-9x7"
+                        size="19x19"
+                      >
+                      </app-icon>
+                    </span>
+                  </span>
+                  <label
+                    class="form-check-label"
+                    for="check-acepto"
+                    style="color: #0063b9; font-weight: bold"
+                    >Acepto terminos y condiciones *</label
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End::aceptar terminos -->
+        </div>
       </div>
 
+      <!-- Start::botones de accion (desktop) -->
       <ng-container *ngIf="innerWidth >= 450">
         <div class="card-footer p-0">
           <button
@@ -565,7 +577,10 @@
             (click)="registerUser(emailValidate)"
             type="button"
             [disabled]="
-              !userForm.valid ||
+              (isPerson && !personForm.valid) ||
+              (!isPerson && !companyForm.valid) ||
+              !commonForm.valid ||
+              !addressForm.valid ||
               !checkBoxTerminos ||
               isLoading ||
               !emailValidate.correoValido
@@ -583,9 +598,11 @@
           </a>
         </div>
       </ng-container>
+      <!-- End::botones de accion (desktop) -->
     </div>
   </div>
 
+  <!-- Start::botones de accion (movil) -->
   <ng-container *ngIf="innerWidth < 450">
     <div class="col-sm-12" style="margin-top: 100px">
       <div class="footer-page">
@@ -596,7 +613,13 @@
               (click)="registerUser(emailValidate)"
               type="button"
               [disabled]="
-                !userForm.valid || isLoading || !emailValidate.correoValido
+                (isPerson && !personForm.valid) ||
+                (!isPerson && !companyForm.valid) ||
+                !commonForm.valid ||
+                !addressForm.valid ||
+                !checkBoxTerminos ||
+                isLoading ||
+                !emailValidate.correoValido
               "
               class="btn btn-lg btn-secondary w-100 text-center"
             >
@@ -614,4 +637,5 @@
       </div>
     </div>
   </ng-container>
+  <!-- End::botones de accion (movil) -->
 </div>

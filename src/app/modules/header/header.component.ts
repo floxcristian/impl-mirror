@@ -50,6 +50,9 @@ export class HeaderComponent  {
     if (this.route.url.split('?')[0] != undefined) {
       url = '' + this.route.url.split('?')[0];
     }
+    if(url.includes("/CO-")){
+      url = '' + this.route.url.split("/CO-")[0];
+    }
 
     return ![
       '/carro-compra/metodo-de-envio',
@@ -60,6 +63,7 @@ export class HeaderComponent  {
       '/carro-compra/downloadpdf',
       '/carro-compra/omni-gracias-por-tu-compra',
       '/carro-compra/confirmar-orden-oc',
+      '/carro-compra/comprobante-de-cotizacion'
     ].includes(url);
   }
 

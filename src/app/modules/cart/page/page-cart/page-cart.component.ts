@@ -152,7 +152,7 @@ export class PageCartComponent implements OnInit, OnDestroy {
     });
     if(isPlatformBrowser(this.platformId)){
       _this.shoppingCartService.calc(true);
-      if (['supervisor', 'comprador'].includes(this.user?.userRole || '')) {
+      if (['supervisor', 'buyer'].includes(this.user?.userRole || '')) {
         this.gtmService.pushTag({
           event: 'cart',
           pagePath: window.location.href,

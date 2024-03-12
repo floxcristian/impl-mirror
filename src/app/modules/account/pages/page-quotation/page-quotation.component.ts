@@ -144,7 +144,7 @@ export class PageQuotationComponent implements OnInit {
               this.router.navigate(['/carro-compra', 'resumen']);
             });
         } else {
-          console.log('cancelar');
+          // console.log('cancelar');
         }
       },
     };

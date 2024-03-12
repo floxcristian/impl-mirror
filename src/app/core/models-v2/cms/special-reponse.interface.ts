@@ -60,7 +60,7 @@ export interface IArticle {
   minimumPrice: number; // +
   images: IImage; // +
   priceInfo: IPriceInfo; // +
-  deliverySupply: IDeliverySupply; //
+  deliverySupply?: IDeliverySupply; //
   stockSummary: IStockSummary; // +
   origin: IShoppingCartProductOrigin; // + /// ESTO LO AGREGARON A MANO?
   cyber: number; // +

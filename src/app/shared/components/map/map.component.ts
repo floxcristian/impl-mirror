@@ -16,6 +16,7 @@ import { GoogleMap, MapGeocoder } from '@angular/google-maps';
 import { environment } from '@env/environment';
 // Services
 import { ScriptService } from '@core/utils-v2/script/script.service';
+import { IMapPosition } from './map-store.interface';
 
 export interface DireccionMap {
   direccion: string;
@@ -44,7 +45,7 @@ export class MapComponent implements OnInit, OnChanges {
   center: google.maps.LatLngLiteral = { lat: 0, lng: 0 };
   zoom = 15;
 
-  @Output() public geolocalizacion = new EventEmitter<any>();
+  @Output() geolocalizacion = new EventEmitter<IMapPosition>();
   @Output() public clearAdress = new EventEmitter<any>();
   @Output() public setDireccion = new EventEmitter<any>();
   @ViewChild(GoogleMap, { static: false }) map!: GoogleMap;

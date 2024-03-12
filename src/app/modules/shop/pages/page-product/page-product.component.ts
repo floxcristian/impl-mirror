@@ -80,7 +80,7 @@ export class PageProductComponent implements OnInit {
 
   minItems = 5;
   stock: boolean = true;
-  user!: ISession;
+  session!: ISession;
   isB2B!: boolean;
   origen: string[] = [];
   innerWidth: number;
@@ -113,6 +113,7 @@ export class PageProductComponent implements OnInit {
   preferenciaCliente!: ICustomerPreference;
   showNetPrice!: boolean;
   evaluationSummary!: IReviewsResponse;
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private route: ActivatedRoute,
@@ -140,7 +141,7 @@ export class PageProductComponent implements OnInit {
     this.carrouselOptionsMobile = CarouselMobileOptions;
     this.tiendaSeleccionada = this.geolocationService.getSelectedStore();
     this.preferenciaCliente = this.customerPreferenceStorage.get();
-    this.user = this.sessionService.getSession();
+    this.session = this.sessionService.getSession();
     this.isB2B = this.sessionService.isB2B();
     this.innerWidth = isPlatformBrowser(this.platformId)
       ? window.innerWidth
@@ -188,7 +189,7 @@ export class PageProductComponent implements OnInit {
     this.authStateService.session$
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
-        this.user = this.sessionService.getSession();
+        this.session = this.sessionService.getSession();
         this.customerPreferenceService.getCustomerPreferences().subscribe({
           next: (preferences) => {
             if (!this.product) return;
@@ -328,7 +329,7 @@ export class PageProductComponent implements OnInit {
 
     const params = {
       sku,
-      documentId: this.user.documentId,
+      documentId: this.session.documentId,
       branchCode: selectedStore.code,
       location: this.preferenciaCliente?.deliveryAddress?.location || '',
     };
@@ -387,7 +388,7 @@ export class PageProductComponent implements OnInit {
   private refreshProductPrice(product: IArticleResponse): void {
     this.productPriceApiService
       .getProductPrice({
-        documentId: this.user.documentId,
+        documentId: this.session.documentId,
         sku: product.sku,
         branchCode: this.tiendaSeleccionada.code,
       })
@@ -416,7 +417,7 @@ export class PageProductComponent implements OnInit {
 
     this.productPriceApiService
       .getProductPrice({
-        documentId: this.user.documentId,
+        documentId: this.session.documentId,
         sku: product.sku,
         branchCode: this.tiendaSeleccionada.code,
         quantity: product.quantity,
@@ -433,7 +434,7 @@ export class PageProductComponent implements OnInit {
    */
   addComparedProductToCart(product: IComparedProduct): void {
     if (!this.product || this.addingToCart || !product.quantity) return;
-    if (!this.user) {
+    if (!this.session) {
       this.toastr.warning(
         'Debe iniciar sesion para poder comprar',
         'Información'

@@ -257,6 +257,7 @@
                 <div style="font-size: 0.8rem; color: #b2b2b2">
                   SKU: {{ item.sku }}
                 </div>
+                <!-- FIXME: coo -->
                 <div class="row">
                   <div
                     *ngIf="
@@ -266,8 +267,14 @@
                     class="col-12 fw-bold"
                     style="color: #094cac; font-size: 1.4rem"
                   >
-                    {{ item?.priceInfo?.customerPrice | currencyFormat }}
-                    <em> c/iva </em>
+                    {{
+                      (session.preferences.iva
+                        ? item?.priceInfo?.customerPrice
+                        : item?.priceInfo?.customerNetPrice
+                      ) | currencyFormat
+                    }}
+
+                    <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }}</em>
                   </div>
 
                   <div
@@ -278,8 +285,14 @@
                     class="text-danger fw-bold col-12"
                     style="font-size: 1.4rem"
                   >
-                    {{ item?.priceInfo?.customerPrice | currencyFormat }}
-                    <em> c/iva </em>
+                    {{
+                      (session.preferences.iva
+                        ? item?.priceInfo?.customerPrice
+                        : item?.priceInfo?.customerNetPrice
+                      ) | currencyFormat
+                    }}
+
+                    <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }}</em>
                   </div>
 
                   <div
@@ -291,8 +304,13 @@
                     class="product-card__old-price col-12"
                     style="font-size: 1.3rem; line-height: 1rem"
                   >
-                    {{ item?.priceInfo?.commonPrice | currencyFormat }}
-                    <em> c/iva </em>
+                    {{
+                      (session.preferences.iva
+                        ? item?.priceInfo?.customerPrice
+                        : item?.priceInfo?.customerNetPrice
+                      ) | currencyFormat
+                    }}
+                    <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }}</em>
                     <br />
                   </div>
                 </div>

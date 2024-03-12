@@ -91,7 +91,8 @@
                     >
                       <i
                         [ngClass]="
-                          selectedPhoneCode == this.config.phoneCodes.mobile.code
+                          selectedPhoneCode ==
+                          this.config.phoneCodes.mobile.code
                             ? 'fa-solid fa-mobile-screen'
                             : 'fa-solid fa-phone'
                         "
@@ -108,7 +109,9 @@
                     >
                       <a
                         class="dropdown-item"
-                        (click)="Select_fono(this.config.phoneCodes.mobile.code)"
+                        (click)="
+                          Select_fono(this.config.phoneCodes.mobile.code)
+                        "
                         ><i
                           class="fa-solid fa-mobile-screen"
                           style="margin-right: 1px"
@@ -117,7 +120,9 @@
                       >
                       <a
                         class="dropdown-item"
-                        (click)="Select_fono(this.config.phoneCodes.landline.code)"
+                        (click)="
+                          Select_fono(this.config.phoneCodes.landline.code)
+                        "
                         ><i
                           class="fa-solid fa-phone"
                           style="margin-right: 1px"

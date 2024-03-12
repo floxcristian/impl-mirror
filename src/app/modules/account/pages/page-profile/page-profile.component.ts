@@ -40,6 +40,7 @@ import { CustomerPreferencesStorageService } from '@core/storage/customer-prefer
 import { CustomerPreferenceService } from '@core/services-v2/customer-preference/customer-preference.service';
 import { ConfigService } from '@core/config/config.service';
 import { IConfig } from '@core/config/config.interface';
+import { AuthStateServiceV2 } from '@core/services-v2/session/auth-state.service';
 
 @Component({
   selector: 'app-page-profile',
@@ -47,7 +48,7 @@ import { IConfig } from '@core/config/config.interface';
   styleUrls: ['./page-profile.component.scss'],
 })
 export class PageProfileComponent implements OnDestroy, OnInit {
-  usuario: ISession;
+  session!: ISession;
   dataUser!: IEcommerceUser;
   dataClient!: ICustomer;
   addresses!: ICustomerAddress[];
@@ -94,6 +95,7 @@ export class PageProfileComponent implements OnDestroy, OnInit {
     private readonly sessionService: SessionService,
     // Services V2
     private readonly authService: AuthApiService,
+    private readonly authState: AuthStateServiceV2,
     private readonly customerContactService: CustomerContactService,
     private readonly customerAddressService: CustomerAddressApiService,
     private readonly customerPreferenceApiService: CustomerPreferenceApiService,
@@ -101,20 +103,28 @@ export class PageProfileComponent implements OnDestroy, OnInit {
     private readonly customerPreferenceService: CustomerPreferenceService,
     private readonly configService: ConfigService
   ) {
-    this.usuario = this.sessionService.getSession();
+    this.session = this.sessionService.getSession();
     this.innerWidth = isPlatformBrowser(this.platformId)
       ? window.innerWidth
       : 900;
     this.config = this.configService.getConfig();
   }
+
   ngOnInit(): void {
     this.getDataClient();
+    this.getCustomerPreferences();
     this.dtOptions = this.root.simpleDtOptions;
+  }
+
+  /**
+   * Obtener preferencias del cliente.
+   */
+  private getCustomerPreferences(): void {
     this.customerPreferenceService
       .getCustomerPreferences()
-      .subscribe((preferences) => {
-        this.direccionDespacho = preferences.deliveryAddress;
-      });
+      .subscribe(
+        ({ deliveryAddress }) => (this.direccionDespacho = deliveryAddress)
+      );
   }
 
   getDataClient() {
@@ -138,16 +148,20 @@ export class PageProfileComponent implements OnDestroy, OnInit {
     this.dtTriggerContacts.next(null);
   }
 
-  async actualizaIVA() {
-    const iva = isVacio(this.usuario.preferences.iva)
+  updateIvaPreference(): void {
+    const iva =
+      !this.session.preferences.iva; /*isVacio(this.session.preferences.iva)
       ? false
-      : !this.usuario.preferences.iva;
+      : !this.session.preferences.iva;*/
 
     this.customerPreferenceApiService.updatePreferenceIva(iva).subscribe({
       next: () => {
-        this.toastr.success('Se actualizo con exito la configuración del IVA');
-        this.actualizaLocalStorage(iva);
-        this.usuario = this.sessionService.getSession();
+        this.toastr.success(
+          'Se actualizo con exito la configuración del IVA.'
+        );
+        this.updateSessionOnStorage(iva);
+        // FIXME: actualizar observable.c
+        this.session = this.sessionService.getSession();
       },
       error: () => {
         this.toastr.error('No se logro actualizar la configuración del IVA');
@@ -155,13 +169,14 @@ export class PageProfileComponent implements OnDestroy, OnInit {
     });
   }
 
-  actualizaLocalStorage(iva: boolean): void {
-    const user = this.sessionService.getSession();
-    user.preferences.iva = iva;
-    this.sessionStorage.set(user);
+  updateSessionOnStorage(iva: boolean): void {
+    const session = this.sessionService.getSession();
+    session.preferences.iva = iva;
+    this.sessionStorage.set(session);
+    this.authState.setSession(session);
   }
 
-  openModalAddAddress() {
+  openModalAddAddress(): void {
     this.modalAddressRef = this.modalService.show(this.modalAddress, {
       ignoreBackdropClick: true,
     });
@@ -269,7 +284,7 @@ export class PageProfileComponent implements OnDestroy, OnInit {
 
   respuesta(event: boolean): void {
     if (!event) return;
-    this.usuario = this.sessionService.getSession();
+    this.session = this.sessionService.getSession();
     this.getDataClient();
   }
 

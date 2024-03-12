@@ -73,12 +73,23 @@ export class AuthInterceptor implements HttpInterceptor {
                 return next.handle(newReq);
               }),
               catchError((error) => {
+                // console.log('Error al obtener refresh tokens: ', error);
                 return throwError(() => new Error(error));
               })
             );
           }
+          // console.log('No hay refresh token: ', error);
           return throwError(() => new Error(error));
         }
+        // console.log('No es estado 401: ', error.errors);
+        const errorMessage = error.error?.errors?.length
+          ? `${error.error.message}: ${error.error.errors[0]}`
+          : `${error.statusText}`;
+        const formattedError =
+          error.message && errorMessage
+            ? `${error.message.trim()} (${errorMessage})`
+            : error;
+        console.error(formattedError);
         return throwError(() => new Error(error));
       })
     );
