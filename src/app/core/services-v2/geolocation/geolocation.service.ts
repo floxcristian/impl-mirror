@@ -9,6 +9,7 @@ import { IStore } from './models/store.interface';
 import { GeolocationStorageService } from '@core/storage/geolocation-storage.service';
 import { GeolocationApiService } from './geolocation-api.service';
 import { environment } from '@env/environment';
+import { CallBackCartLoaded } from '@core/models-v2/cart/callback-cart-loaded.type';
 
 @Injectable({
   providedIn: 'root',
@@ -41,6 +42,7 @@ export class GeolocationServiceV2 {
     zone: string;
     code: string;
     city: string;
+    callBackCartLoaded?: CallBackCartLoaded;
   }): void {
     const { zone, code, city } = params;
     this.geolocation = {
@@ -49,6 +51,7 @@ export class GeolocationServiceV2 {
       city,
       isChangeToNearestStore: false,
       isSelectedByClient: true,
+      callBackCartLoaded: params.callBackCartLoaded,
     };
     this.geolocationStorage.set(this.geolocation);
     this.selectedStoreSubject.next(this.geolocation);
