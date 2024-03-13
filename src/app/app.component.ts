@@ -123,8 +123,11 @@ export class AppComponent implements AfterViewInit, OnInit {
   private onChangeStore(): void {
     if (this.isOmni) return;
     this.geolocationService.selectedStore$.subscribe({
-      next: () => {
-        this.shoppingCartService.load();
+      next: (geolocation) => {
+        const callBackCartLoaded = geolocation?.callBackCartLoaded;
+        this.shoppingCartService.load({
+          callBackCartLoaded,
+        });
       },
     });
   }

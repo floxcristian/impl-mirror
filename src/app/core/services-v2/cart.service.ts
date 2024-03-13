@@ -60,6 +60,7 @@ import { IUploadResponse } from '@core/models-v2/responses/file-upload.response'
 import { LocalStorageService } from '@core/modules/local-storage/local-storage.service';
 import { IComparedProduct } from './product/models/formatted-product-compare-response.interface';
 import { DefaultBranch } from '@core/utils-v2/default-branch.service';
+import { CallBackCartLoaded } from '@core/models-v2/cart/callback-cart-loaded.type';
 
 const API_CART = `${environment.apiEcommerce}/api/v1/shopping-cart`;
 
@@ -201,7 +202,7 @@ export class CartService {
     return response;
   }
 
-  load(): void {
+  load(params?: { callBackCartLoaded?: CallBackCartLoaded }): void {
     if (this.isLoadingCart) return;
 
     this.isLoadingCart = true;
@@ -217,13 +218,18 @@ export class CartService {
     const tiendaSeleccionada = this.geolocationService.getSelectedStore();
     const sucursal = DefaultBranch.getBranchCode(tiendaSeleccionada.code);
 
+    const callBackCartLoaded = params?.callBackCartLoaded;
     this.http
       .get<IShoppingCart>(
         `${API_CART}?user=${usuario.username}&branch=${sucursal}&documentId=${usuario.documentId}`
       )
       .subscribe({
-        next: (response: IShoppingCart) => {
+        next: async (response: IShoppingCart) => {
           this.recalculateShoppingCart(response);
+
+          if (callBackCartLoaded) {
+            await callBackCartLoaded(response);
+          }
         },
         error: (error: any) => {
           this.isLoadingCart = false;
@@ -246,7 +252,6 @@ export class CartService {
 
     if (!usuario.hasOwnProperty('username')) usuario.username = usuario.email;
     if (!usuario.hasOwnProperty('documentId')) usuario.documentId = '0';
-
 
     this.CartData = response;
     this.cartTempData = response;
