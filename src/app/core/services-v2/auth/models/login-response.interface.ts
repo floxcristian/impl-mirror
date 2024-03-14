@@ -30,7 +30,8 @@ export type IUserRole =
   | 'supervisor'
   | 'b2c'
   | 'buyer'
-  | 'b2b_request';
+  | 'b2b_request'
+  | 'superadmin';
 
 export interface IUserEssentials {
   documentId: string;

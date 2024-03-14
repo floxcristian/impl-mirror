@@ -1,4 +1,14 @@
-import { IShoppingCartProduct } from './shopping-cart.interface';
+import { IShoppingCart, IShoppingCartProduct } from './shopping-cart.interface';
+
+export interface IShoppingCartResponse {
+  total: number;
+  found: number;
+  limit: number;
+  page: number;
+  firstPage: number;
+  lastPage: number;
+  data: IShoppingCart[];
+}
 
 export interface IOrderDetailResponse {
   total: number;

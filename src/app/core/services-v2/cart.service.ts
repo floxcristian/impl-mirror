@@ -54,7 +54,7 @@ import { TransferShoppingCartRequest } from '@core/models-v2/requests/cart/trans
 import { ShoppingCartOmniStorageService } from '@core/storage/shopping-cart-omni-storage.service';
 import { DeliveryType } from '@core/enums/delivery-type.enum';
 import { IProduct } from '@core/models-v2/oms/order.interface';
-import { IOrderDetailResponse } from '@core/models-v2/cart/order-details.interface';
+import { IOrderDetailResponse, IShoppingCartResponse } from '@core/models-v2/cart/order-details.interface';
 import { UserRoleType } from '@core/enums/user-role-type.enum';
 import { IUploadResponse } from '@core/models-v2/responses/file-upload.response';
 import { LocalStorageService } from '@core/modules/local-storage/local-storage.service';
@@ -1050,5 +1050,19 @@ export class CartService {
     };
     product.origin = origin;
     return product;
+  }
+
+  getAllOrderGenerated(params: {
+    search?: string;
+    page?: number;
+    limit?: number;
+    sort?: string;
+  }):Observable<IShoppingCartResponse>{
+    // return this.http.get<IOrderDetailResponse>(`${API_CART}/all-order-details`, {
+    //   params,
+    // });
+    return this.http.get<IShoppingCartResponse>(`http://localhost:3200/api/v1/shopping-cart/all-order-details`, {
+      params,
+    });
   }
 }
