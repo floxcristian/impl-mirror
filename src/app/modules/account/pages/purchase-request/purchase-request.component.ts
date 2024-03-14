@@ -66,6 +66,7 @@ export class PurchaseRequestComponent implements OnInit {
       pageLength: 10,
       serverSide: true,
       processing: true,
+      order: [[0, 'desc']],
       columnDefs: [{ orderable: false, targets: 6 }],
       ajax: (dataTablesParameters: any, callback) => {
         let page_actual =

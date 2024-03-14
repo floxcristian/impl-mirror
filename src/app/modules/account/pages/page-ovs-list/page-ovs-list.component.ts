@@ -59,6 +59,7 @@ export class PageOvsListComponent implements OnInit {
       pageLength: 10,
       serverSide: true,
       processing: true,
+      order: [[0, 'desc']],
       columnDefs:
         this.innerWidth < 450
           ? [{ orderable: false, targets: 0 }]
