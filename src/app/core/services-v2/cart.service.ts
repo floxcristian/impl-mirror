@@ -1058,11 +1058,11 @@ export class CartService {
     limit?: number;
     sort?: string;
   }):Observable<IShoppingCartResponse>{
-    // return this.http.get<IOrderDetailResponse>(`${API_CART}/all-order-details`, {
-    //   params,
-    // });
-    return this.http.get<IShoppingCartResponse>(`http://localhost:3200/api/v1/shopping-cart/all-order-details`, {
+    return this.http.get<IShoppingCartResponse>(`${API_CART}/all-order-details`, {
       params,
     });
+    // return this.http.get<IShoppingCartResponse>(`http://localhost:3200/api/v1/shopping-cart/all-order-details`, {
+    //   params,
+    // });
   }
 }
