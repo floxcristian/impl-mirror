@@ -42,7 +42,7 @@ export class PagePendingOrdersComponent implements OnInit {
       'total',
       'purchaseOrder.number',
       'purchaseOrder.amount',
-      'purchaseOrder.costCenter',
+      // 'purchaseOrder.costCenter',
       'user',
     ];
     this.dtOptions = {

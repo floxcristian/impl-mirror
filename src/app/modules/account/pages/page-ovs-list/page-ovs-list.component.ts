@@ -29,7 +29,7 @@ export class PageOvsListComponent implements OnInit {
     // 'nombre cliente',
     'purchaseOrder.amount',
     'purchaseOrder.number',
-    'purchaseOrder.costCenter',
+    // 'purchaseOrder.costCenter',
     // 'credito',
     // 'saldo',
   ];

@@ -10,7 +10,7 @@
         <h5>Órdenes de Venta</h5>
       </div>
     </div>
-  
+
     <div class="row m-0">
       <div class="col-xl-12">
         <div class="card">
@@ -38,7 +38,7 @@
                       <strong>Rut: </strong>{{ item?.customer.documentId}}<br />
                       <strong>OC Monto: </strong>{{ item?.purchaseOrder.amount}}<br />
                       <strong>OC Folio: </strong>{{ item?.purchaseOrder.number}}<br />
-                      <strong>Centro Costo: </strong>{{ item?.purchaseOrder.costCenter}}<br />
+                      <!-- <strong>Centro Costo: </strong>{{ item?.purchaseOrder.costCenter}}<br /> -->
                       <div class="options">
                         <button name="Confirmar" class="btn btn-secondary"
                         (click)="confirmarOV(item._id)">Confirmar</button>
@@ -75,7 +75,7 @@
                         <!-- <th>Nombre</th> -->
                         <th>OC Monto</th>
                         <th>OC Folio</th>
-                        <th>Centro - Costo</th>
+                        <!-- <th>Centro - Costo</th> -->
                         <!-- <th>Credito</th>
                         <th>Saldo</th> -->
                         <th>&nbsp;</th>
@@ -90,7 +90,7 @@
                     <td>{{item?.customer.documentId}}</td>
                     <td>{{item?.purchaseOrder.amount}}</td>
                     <td>{{item?.purchaseOrder.number}}</td>
-                    <td>{{item?.purchaseOrder.costCenter }}</td>
+                    <!-- <td>{{item?.purchaseOrder.costCenter }}</td> -->
                     <td>
                         <button name="Confirmar" class="btn btn-secondary"
                         (click)="confirmarOV(item._id)">Confirmar</button>
