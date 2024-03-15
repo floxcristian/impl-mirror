@@ -1545,7 +1545,7 @@
             <div class="row">
               <div
                 class="col-sm-12"
-                *ngIf="cd_ver && userSession.creditLine?.requiresConfirmation"
+                *ngIf="cd_ver"
               >
                 <app-codigo-oc
                   [id]="cartSession._id"
@@ -1578,6 +1578,7 @@
                 <button
                   name="paymentOv"
                   *ngIf="
+                    !cd_ver &&
                     userSession.userRole != userRoleType.BUYER &&
                     !userSession.creditLine?.requiresConfirmation &&
                     !['webPay', 'mercadopago', 'khipu'].includes(
