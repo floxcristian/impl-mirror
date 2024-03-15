@@ -709,6 +709,7 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
 
   //  Sube documento y genera la solicitud
   purchaseRequestAll() {
+    this.loadingPage = true
     const data = this.formOv.value;
     data.file = this.archivo !== undefined ? this.archivo?.archivo : null;
     this.paymentMethodPurchaseOrderRequestService

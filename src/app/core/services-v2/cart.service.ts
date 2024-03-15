@@ -1061,8 +1061,9 @@ export class CartService {
     return this.http.get<IShoppingCartResponse>(`${API_CART}/all-order-details`, {
       params,
     });
-    // return this.http.get<IShoppingCartResponse>(`http://localhost:3200/api/v1/shopping-cart/all-order-details`, {
-    //   params,
-    // });
+  }
+
+  confirmDocument(salesId?:string):Observable<IShoppingCart>{
+    return this.http.post<IShoppingCart>(`${API_CART}/confirm-document`,{salesId})
   }
 }

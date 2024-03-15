@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, TemplateRef, Inject, PLATFORM_ID } from '@angular/core'
+import { Component, OnInit, ViewChild, Inject, PLATFORM_ID } from '@angular/core'
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { CartService } from '@core/services-v2/cart.service';
 import { DataTableDirective } from 'angular-datatables';
 import { isPlatformBrowser } from '@angular/common';
+import { IShoppingCart } from '@core/models-v2/cart/shopping-cart.interface';
 
 @Component({
   selector: 'app-page-ovs-list',
@@ -15,11 +16,9 @@ export class PageOvsListComponent implements OnInit {
   dtElement!: DataTableDirective;
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
-  // orders!: IOrderDetail[];
-  orders!:any[]
+  orders!:IShoppingCart[]
   innerWidth: any;
   loadingData:boolean = true;
-  // visible_columns = ['Fecha', 'Cliente', 'OC'];
   columns = [
     'updatedAt',
     'salesId',
@@ -33,6 +32,7 @@ export class PageOvsListComponent implements OnInit {
     // 'credito',
     // 'saldo',
   ];
+  loading:boolean = false
 
   constructor(
     private toastr: ToastrService,
@@ -64,7 +64,6 @@ export class PageOvsListComponent implements OnInit {
         this.innerWidth < 450
           ? [{ orderable: false, targets: 0 }]
           : [{ orderable: false, targets: 4 }],
-      // columnDefs: [{ orderable: false, targets: 6 }],
       ajax:(dataTablesParameters:any, callback) => {
         let page_actual =
           dataTablesParameters.start === 0
@@ -97,11 +96,24 @@ export class PageOvsListComponent implements OnInit {
     }
   }
 
-  public confirmarOV(idCarro:any) {
-    // this.carroService.confirmarOV(idCarro).subscribe((r: any) => {
-    //   this.toastr.success('Error de conexión, para obtener ovs');
-    //   window.location.reload();
-    // });
+  public confirmarOV(salesId:string | undefined) {
+    if(this.loading) return
+    if(salesId){
+      this.loading = true
+      this.cartSrv.confirmDocument(salesId).subscribe({
+        next:(res)=>{
+          this.loading = false
+          this.reloadGrilla();
+          this.toastr.success('Documento confirmado correctamente!');
+        },
+        error:(err)=>{
+          this.loading = false
+          console.log(err)
+          this.toastr.warning('Ha ocurrido un error');
+        }
+      })
+    }else
+      console.log('no existe salesId')
   }
 
   ngAfterViewInit(): void {

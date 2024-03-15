@@ -35,13 +35,14 @@
                       <strong>OV: </strong> {{ item?.salesId }}<br />
                       <strong>Bodega: </strong> {{ item?.warehouse}}<br />
                       <strong>Sucursal:</strong>{{item?.branchCode}}<br />
-                      <strong>Rut: </strong>{{ item?.customer.documentId}}<br />
-                      <strong>OC Monto: </strong>{{ item?.purchaseOrder.amount}}<br />
-                      <strong>OC Folio: </strong>{{ item?.purchaseOrder.number}}<br />
+                      <strong>Rut: </strong>{{ item?.customer?.documentId}}<br />
+                      <strong>OC Monto: </strong>{{ item?.purchaseOrder?.amount  | currencyFormat}}<br />
+                      <strong>OC Folio: </strong>{{ item?.purchaseOrder?.number}}<br />
                       <!-- <strong>Centro Costo: </strong>{{ item?.purchaseOrder.costCenter}}<br /> -->
                       <div class="options">
                         <button name="Confirmar" class="btn btn-secondary"
-                        (click)="confirmarOV(item._id)">Confirmar</button>
+                        [ngClass]="{ 'btn-loading': loading }"
+                        (click)="confirmarOV(item.salesId)">Confirmar</button>
                       </div>
                     </td>
                   </tr>
@@ -68,17 +69,17 @@
                 <thead>
                   <tr>
                     <th>Fecha</th>
-                        <th>OV</th>
-                        <th>Bodega</th>
-                        <th>Sucursal</th>
-                        <th>RUT</th>
-                        <!-- <th>Nombre</th> -->
-                        <th>OC Monto</th>
-                        <th>OC Folio</th>
-                        <!-- <th>Centro - Costo</th> -->
-                        <!-- <th>Credito</th>
-                        <th>Saldo</th> -->
-                        <th>&nbsp;</th>
+                    <th>OV</th>
+                    <th>Bodega</th>
+                    <th>Sucursal</th>
+                    <th>RUT</th>
+                    <!-- <th>Nombre</th> -->
+                    <th>OC Monto</th>
+                    <th>OC Folio</th>
+                    <!-- <th>Centro - Costo</th> -->
+                    <!-- <th>Credito</th>
+                    <th>Saldo</th> -->
+                    <th>&nbsp;</th>
                   </tr>
                 </thead>
                 <tbody *ngIf="orders?.length != 0">
@@ -87,13 +88,14 @@
                     <td>{{ item?.salesId }}</td>
                     <td>{{ item?.warehouse  }}</td>
                     <td>{{item?.branchCode}}</td>
-                    <td>{{item?.customer.documentId}}</td>
-                    <td>{{item?.purchaseOrder.amount}}</td>
-                    <td>{{item?.purchaseOrder.number}}</td>
+                    <td>{{item?.customer?.documentId}}</td>
+                    <td>{{item?.purchaseOrder?.amount  | currencyFormat}}</td>
+                    <td>{{item?.purchaseOrder?.number}}</td>
                     <!-- <td>{{item?.purchaseOrder.costCenter }}</td> -->
                     <td>
                         <button name="Confirmar" class="btn btn-secondary"
-                        (click)="confirmarOV(item._id)">Confirmar</button>
+                        [ngClass]="{ 'btn-loading': loading }"
+                        (click)="confirmarOV(item.salesId)">Confirmar</button>
                     </td>
                   </tr>
                 </tbody>
