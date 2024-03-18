@@ -80,8 +80,8 @@ export class PageDownloadpdfComponent implements OnInit {
   }
 
   downloadFacturaPdf() {
-    // const numero = this.numero.split('-');
-    const numero = 'BEL-69788'.split('-');
+    const numero = this.numero.split('-');
+    // const numero = 'BEL-69788'.split('-');
     if (numero.length < 2) {
       return;
     }

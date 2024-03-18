@@ -89,7 +89,7 @@ export class AuthInterceptor implements HttpInterceptor {
           error.message && errorMessage
             ? `${error.message.trim()} (${errorMessage})`
             : error;
-        console.error(formattedError);
+        // console.error(formattedError);
         return throwError(() => new Error(error));
       })
     );

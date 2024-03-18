@@ -85,12 +85,23 @@
                 <tbody *ngIf="orders?.length != 0">
                   <tr *ngFor="let item of orders">
                     <td>{{ item.updatedAt | date : 'dd-MM-yyyy HH:mm' }}</td>
-                    <td>{{ item?.salesId }}</td>
+                    <td><a
+                      routerLink="/carro-compra/downloadpdf"
+                      [queryParams]="{ numero: item.salesId }"
+                      target="_blank"
+                      >{{ item.salesId }}</a
+                    ></td>
                     <td>{{ item?.warehouse  }}</td>
                     <td>{{item?.branchCode}}</td>
                     <td>{{item?.customer?.documentId}}</td>
                     <td>{{item?.purchaseOrder?.amount  | currencyFormat}}</td>
                     <td>{{item?.purchaseOrder?.number}}</td>
+                    <!-- <td><a
+                      routerLink="/carro-compra/downloadpdf"
+                      [queryParams]="{ numero: item._id, tipo:'orden-compra'}"
+                      target="_blank"
+                      >{{item?.purchaseOrder?.number}}</a
+                    ></td> -->
                     <!-- <td>{{item?.purchaseOrder.costCenter }}</td> -->
                     <td>
                         <button name="Confirmar" class="btn btn-secondary"
