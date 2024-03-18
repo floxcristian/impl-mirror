@@ -22,6 +22,7 @@ export class PageDownloadpdfComponent implements OnInit {
   tipo: any = null;
   authBasic = 'Basic c2VydmljZXM6MC49ajNEMnNzMS53Mjkt';
   noDocument: boolean = false;
+  tipo_doc:any = null
   constructor(
     private http: HttpClient,
     private sanitizer: DomSanitizer,
@@ -35,6 +36,7 @@ export class PageDownloadpdfComponent implements OnInit {
     if(isPlatformBrowser(this.platformId)){
       this.numero = this.activatedRoute.snapshot.queryParams['numero'];
       this.tipo = this.activatedRoute.snapshot.queryParams['tipo'];
+      this.tipo_doc = this.activatedRoute.snapshot.queryParams['tipo_doc'];
       if (this.tipo === 'factura') this.downloadFacturaPdf();
       else if (this.tipo === 'orden-compra') this.downloadOcPdf();
       else this.downloadOvPdf();
@@ -80,12 +82,12 @@ export class PageDownloadpdfComponent implements OnInit {
   }
 
   downloadFacturaPdf() {
-    const numero = this.numero.split('-');
-    // const numero = 'BEL-69788'.split('-');
-    if (numero.length < 2) {
-      return;
-    }
-    const codigo = this.generarCodigo(numero[0], numero[1]);
+    // const numero = this.numero.split('-');
+    // if (numero.length < 2) {
+    //   return;
+    // }
+    // const codigo = this.generarCodigo(numero[0], numero[1]);
+    const codigo = this.generarCodigo(this.tipo_doc,this.numero)
     this.documentDownloadService.downloadFacturaPdf(codigo).subscribe({
       next: (data: any) => this.procesarRespuesta(data),
       error: (err) => {
