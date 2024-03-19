@@ -758,13 +758,6 @@ export class CartService {
     });
   }
 
-  generaOrdenDeCompra(data: any): Observable<ResponseApi> {
-    return this.http.post<ResponseApi>(
-      environment.apiShoppingCart + `generar`,
-      data
-    );
-  }
-
   validateStock(params: {
     shoppingCartId: string;
   }): Observable<IValidateShoppingCartStockResponse> {

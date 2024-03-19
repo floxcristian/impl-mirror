@@ -95,13 +95,13 @@
                     <td>{{item?.branchCode}}</td>
                     <td>{{item?.customer?.documentId}}</td>
                     <td>{{item?.purchaseOrder?.amount  | currencyFormat}}</td>
-                    <td>{{item?.purchaseOrder?.number}}</td>
-                    <!-- <td><a
+                    <!-- <td>{{item?.purchaseOrder?.number}}</td> -->
+                    <td><a
                       routerLink="/carro-compra/downloadpdf"
                       [queryParams]="{ numero: item._id, tipo:'orden-compra'}"
                       target="_blank"
                       >{{item?.purchaseOrder?.number}}</a
-                    ></td> -->
+                    ></td>
                     <!-- <td>{{item?.purchaseOrder.costCenter }}</td> -->
                     <td>
                         <button name="Confirmar" class="btn btn-secondary"

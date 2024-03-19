@@ -6,8 +6,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 // Services
 import { DocumentDownloadService } from '@core/services-v2/document-download.service';
-// Env
-import { environment } from '@env/environment';
 // Libs
 import { Buffer } from 'buffer';
 
@@ -42,12 +40,6 @@ export class PageDownloadpdfComponent implements OnInit {
       else this.downloadOvPdf();
     }
   }
-
-  headers() {
-    return environment.apiShoppingCart.startsWith('http://192')
-      ? new HttpHeaders()
-      : new HttpHeaders().append('Authorization', this.authBasic);
-  }
   downloadOvPdf() {
     let base64Code = '';
     if (this.tipo == 1 || this.numero.startsWith('CO-')) {
@@ -68,25 +60,15 @@ export class PageDownloadpdfComponent implements OnInit {
   }
 
   downloadOcPdf() {
-    const headers = this.headers();
-
-    const url = environment.apiShoppingCart + 'getOc?id=' + this.numero;
-    this.http
-      .get(url, { headers, responseType: 'blob' })
-      .subscribe((response: any) => {
-        var file3 = new Blob([response], { type: 'application/pdf' });
-        this.pdfBase64 = this.sanitizer.bypassSecurityTrustResourceUrl(
-          window.URL.createObjectURL(file3)
-        );
-      });
+    this.documentDownloadService.downloadOcPdf(this.numero).subscribe((arrayBuffer) =>{
+      let response = Buffer.from(arrayBuffer).toString('base64');
+      response = 'data:application/pdf;base64,' + response;
+      response = response + '#toolbar=1&statusbar=1&navpanes=1';
+      this.pdfBase64 = this.sanitizer.bypassSecurityTrustResourceUrl(response);
+    })
   }
 
   downloadFacturaPdf() {
-    // const numero = this.numero.split('-');
-    // if (numero.length < 2) {
-    //   return;
-    // }
-    // const codigo = this.generarCodigo(numero[0], numero[1]);
     const codigo = this.generarCodigo(this.tipo_doc,this.numero)
     this.documentDownloadService.downloadFacturaPdf(codigo).subscribe({
       next: (data: any) => this.procesarRespuesta(data),

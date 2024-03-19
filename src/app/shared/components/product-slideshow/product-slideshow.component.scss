@@ -78,14 +78,11 @@
 }
 
 ::ng-deep.carouselLista .owl-carousel .owl-item {
-  //   padding: 0px 10px;
   @media (min-width: 576px) {
     display: flex;
-    //   border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 20px;
     margin-left: 10px;
     margin-bottom: 10px;
-    // align-items: center;
 
     app-product-card-b2b {
       display: flex;
@@ -108,10 +105,8 @@
 
   @media (max-width: 576px) {
     display: flex;
-    //   border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 20px;
     margin-left: 10px;
-    // align-items: center;
 
     app-product-card-b2b {
       display: flex;

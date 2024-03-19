@@ -3,7 +3,6 @@ export const environment = {
   country: 'cl',
   IVA: 0.19,
   // APIs
-  apiShoppingCart: 'https://dev-api.implementos.cl/api/carro/',
   apiCustomer: 'https://dev-api.implementos.cl/api/cliente/',
   // Images Urls
   urlFotoOmnichannel:
