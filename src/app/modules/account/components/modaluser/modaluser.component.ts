@@ -43,7 +43,8 @@ export class ModaluserComponent implements OnInit, OnDestroy {
     // Services V2
     private readonly sessionService: SessionService,
     private readonly subAccountService: SubAccountService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.formUser();
@@ -63,11 +64,14 @@ export class ModaluserComponent implements OnInit, OnDestroy {
       this.formEditar();
     });
     this.subscriptions.add(subscription);
+    this.formUsuario?.get('email')?.valueChanges.subscribe((valor) => {
+      this.formUsuario.get('username')?.setValue(valor);
+    });
   }
 
   formUser() {
     this.formUsuario = this.fb.group({
-      active: [false],
+      active: [true],
       username: ['', Validators.required],
       email: [
         '',
@@ -78,18 +82,17 @@ export class ModaluserComponent implements OnInit, OnDestroy {
         ],
       ],
       password: ['', Validators.required],
-      phone: ['', Validators.required],
+      phone: ['', [Validators.required,Validators.maxLength(12)]],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      method_payment: ['OC', Validators.required],
+      // method_payment: ['OC', Validators.required],
       userRole: UserRoleType.BUYER,
     });
-
     this.editUser = false;
   }
 
   formEditar() {
-    this.formUsuario.controls['active'].setValue(this.users.active);
+    // this.formUsuario.controls['active'].setValue(this.users.active);
     this.formUsuario.controls['username'].setValue(this.users.username);
     this.formUsuario.controls['firstName'].setValue(this.users.firstName);
     this.formUsuario.controls['lastName'].setValue(this.users.lastName);
@@ -104,6 +107,7 @@ export class ModaluserComponent implements OnInit, OnDestroy {
     this.modalRef = this.modalService.show(this.modalCrearUsuario, {
       backdrop: 'static',
       keyboard: false,
+      class: 'modal-lg'
     });
   }
 
@@ -111,6 +115,7 @@ export class ModaluserComponent implements OnInit, OnDestroy {
     this.modalRef = this.modalService.show(this.modalUsuario, {
       backdrop: 'static',
       keyboard: false,
+      class: 'modal-lg'
     });
   }
 
@@ -118,6 +123,7 @@ export class ModaluserComponent implements OnInit, OnDestroy {
     this.modalRef = this.modalService.show(this.modalEliminarUsuario, {
       backdrop: 'static',
       keyboard: false,
+      class: 'modal-lg'
     });
   }
 
@@ -132,6 +138,7 @@ export class ModaluserComponent implements OnInit, OnDestroy {
       : this.sessionService.getSession().documentId;
     data.giro = this.user_raiz.giro;
     data.tipo_usuario = 1;
+    console.log('info pe:',data)
     if (this.editUser) {
       this.subAccountService
         .updateSubAccount({
@@ -162,7 +169,7 @@ export class ModaluserComponent implements OnInit, OnDestroy {
           },
           error: () => {
             this.toastr.error(
-              'No se pudo actualizar el usuario ' + data.username
+              'No se pudo crear el usuario ' + data.username
             );
             this.modalRef.hide();
             this.userService.LoadData();
