@@ -26,7 +26,6 @@ export class CustomerPreferenceService {
   getCustomerPreferences(): Observable<ICustomerPreference> {
     const preferences = this.customerPreferenceStorage.get();
     if (preferences.deliveryAddress) {
-      console.log('+ of: ', preferences);
       return of(preferences);
     }
 

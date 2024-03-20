@@ -72,7 +72,7 @@ export class ModaluserComponent implements OnInit, OnDestroy {
   formUser() {
     this.formUsuario = this.fb.group({
       active: [true],
-      username: ['', Validators.required],
+      username: [{value:'',disabled:true}, Validators.required],
       email: [
         '',
         [
@@ -85,7 +85,6 @@ export class ModaluserComponent implements OnInit, OnDestroy {
       phone: ['', [Validators.required,Validators.maxLength(12)]],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      // method_payment: ['OC', Validators.required],
       userRole: UserRoleType.BUYER,
     });
     this.editUser = false;
@@ -131,14 +130,15 @@ export class ModaluserComponent implements OnInit, OnDestroy {
     this.modalRef.hide();
   }
 
-  async onSubmit(data: any) {
+  async onSubmit() {
+    this.formUsuario.get('username')?.enable()
+    let data:any = this.formUsuario.value
     data.company = this.user_raiz.company;
     data.documentId = this.users.documentId
       ? this.users.documentId
       : this.sessionService.getSession().documentId;
     data.giro = this.user_raiz.giro;
     data.tipo_usuario = 1;
-    console.log('info pe:',data)
     if (this.editUser) {
       this.subAccountService
         .updateSubAccount({
@@ -148,6 +148,7 @@ export class ModaluserComponent implements OnInit, OnDestroy {
           next: () => {
             this.modalRef.hide();
             this.userService.LoadData();
+            this.formUsuario.get('username')?.disable()
           },
           error: () => {
             this.toastr.error(
@@ -166,6 +167,7 @@ export class ModaluserComponent implements OnInit, OnDestroy {
           next: () => {
             this.modalRef.hide();
             this.userService.LoadData();
+            this.formUsuario.get('username')?.disable()
           },
           error: () => {
             this.toastr.error(

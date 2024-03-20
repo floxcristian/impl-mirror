@@ -320,9 +320,11 @@ export class ProductComponent implements OnInit, OnChanges {
       .subscribe({
         next: (priceInfo) => {
           this.product.priceInfo = priceInfo;
-          const firstFromQuantity = priceInfo.scalePrice[0].fromQuantity;
-          this.quantityToScalePrice =
-            quantity >= firstFromQuantity ? 0 : firstFromQuantity - quantity;
+          if(priceInfo.hasScalePrice){
+            const firstFromQuantity = priceInfo.scalePrice[0].fromQuantity;
+            this.quantityToScalePrice =
+              quantity >= firstFromQuantity ? 0 : firstFromQuantity - quantity;
+          }
         },
       });
   }

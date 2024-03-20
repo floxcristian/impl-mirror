@@ -12,7 +12,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <form [formGroup]="formUsuario" (ngSubmit)="onSubmit(formUsuario.value)">
+    <form [formGroup]="formUsuario" (ngSubmit)="onSubmit()">
       <!-- <div class="mb-3">
         <input
           type="hidden"
@@ -110,7 +110,7 @@
         "
         class="text-error-form-2"
       >
-        Debe Ingresar Celular
+        Debe Ingresar Contraseña
       </p>
       <div class="mb-3">
         <label for="userRole">ROL</label>
@@ -169,7 +169,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <form [formGroup]="formUsuario" (ngSubmit)="onSubmit(formUsuario.value)">
+    <form [formGroup]="formUsuario" (ngSubmit)="onSubmit()">
       <!-- <div class="mb-3">
         <input
           type="hidden"
@@ -224,7 +224,8 @@
           class="form-control"
           id="username"
           formControlName="username"
-          placeholder="Ingrese Nombre de Usuario"
+          placeholder=""
+          [disabled]="true"
         />
       </div>
       <div class="mb-3">
