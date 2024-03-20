@@ -59,6 +59,7 @@ export class PageCartComponent implements OnInit, OnDestroy {
   showresumen = false;
   IVA = environment.IVA;
   isVacio = isVacio;
+  relleno: any[] = [1, 2, 3, 4, 5, 6];
 
   recommendedProducts: IArticle[] = [];
   user!: ISession;

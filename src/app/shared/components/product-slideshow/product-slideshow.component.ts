@@ -40,11 +40,16 @@ export class ProductSlideshowComponent
   carouselOptions = {
     lazyLoad: true,
     items: 6,
-    nav: false,
+    nav: true,
+    navText: [
+      `<i class="fas fa-chevron-left"></i>`,
+      `<i class="fas fa-chevron-right"></i>`,
+    ],
     dots: true,
     loop: true,
-    autoplay: true,
-    autoplayTimeout: 4000,
+    slideBy: 'page',
+    // autoplay: true,
+    // autoplayTimeout: 4000,
     responsive: {
       1366: { items: 6 },
       1100: { items: 6 },

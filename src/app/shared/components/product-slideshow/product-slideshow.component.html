@@ -56,6 +56,17 @@
                     ></app-product-card-b2c-ficha>
                   </ng-template>
                 </ng-container>
+                <ng-container *ngIf="obj.articles.length < 6">
+                  <ng-template
+                    carouselSlide
+                    *ngFor="
+                      let item of relleno
+                        | slice : 0 : 6 - obj.articles.length
+                    "
+                  >
+                    <div class="d-flex w-100"></div>
+                  </ng-template>
+                </ng-container>
               </owl-carousel-o>
               }
             </div>
