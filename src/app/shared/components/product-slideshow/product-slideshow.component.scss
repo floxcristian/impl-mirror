@@ -48,9 +48,10 @@
 }
 
 ::ng-deep.carouselLista .owl-carousel .owl-item img {
-  display: block;
+  // display: block;
   width: 90% !important;
-  max-height: 200px;
+  // max-height: 200px;
+  display: inherit !important;
 }
 
 ::ng-deep.carouselLista .owl-carousel .owl-nav .owl-prev .m-arrow__container {
@@ -78,55 +79,70 @@
 }
 
 ::ng-deep.carouselLista .owl-carousel .owl-item {
-  @media (min-width: 576px) {
-    display: flex;
-    border-radius: 20px;
-    margin-left: 10px;
-    margin-bottom: 10px;
+  padding: 5px;
+  display: flex;
 
-    app-product-card-b2b {
-      display: flex;
-      width: 115%;
-
-      .product-card {
-        flex: 1 1 auto !important;
-      }
-    }
-
-    app-product-card-b2c-ficha {
-      display: flex;
-      width: 100%;
-
-      .product-card {
-        flex: 1 1 auto !important;
-      }
-    }
+  img {
+    max-height: 105px;
   }
 
-  @media (max-width: 576px) {
+  app-product-card-b2c-ficha {
     display: flex;
-    border-radius: 20px;
-    margin-left: 10px;
+    width: 115%;
 
-    app-product-card-b2b {
-      display: flex;
-      width: 115%;
-
-      .product-card {
-        flex: 1 1 auto !important;
-      }
-    }
-
-    app-product-card-b2c-ficha {
-      display: flex;
-      width: 100%;
-
-      .product-card {
-        flex: 1 1 auto !important;
-        padding: 10px;
-      }
+    .product-card {
+      flex: 1 1 auto !important;
     }
   }
+  // @media (min-width: 576px) {
+  //   display: flex;
+  //   border-radius: 20px;
+  //   margin-left: 10px;
+  //   margin-bottom: 10px;
+
+  //   app-product-card-b2b {
+  //     display: flex;
+  //     width: 115%;
+
+  //     .product-card {
+  //       flex: 1 1 auto !important;
+  //     }
+  //   }
+
+  //   app-product-card-b2c-ficha {
+  //     display: flex;
+  //     width: 100%;
+
+  //     .product-card {
+  //       flex: 1 1 auto !important;
+  //     }
+  //   }
+  // }
+
+  // @media (max-width: 576px) {
+  //   display: flex;
+  //   border-radius: 20px;
+  //   margin-left: 10px;
+
+  //   app-product-card-b2b {
+  //     display: flex;
+  //     width: 115%;
+
+  //     .product-card {
+  //       flex: 1 1 auto !important;
+  //     }
+  //   }
+
+  //   app-product-card-b2c-ficha {
+  //     display: flex;
+  //     width: 100%;
+
+  //     .product-card {
+  //       flex: 1 1 auto !important;
+  //       padding: 10px;
+  //     }
+  //   }
+  // }
 }
 
 ::ng-deep.carouselLista .owl-carousel .owl-stage {

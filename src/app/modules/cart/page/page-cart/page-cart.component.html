@@ -349,7 +349,7 @@
         <div
           class="col-12"
           [ngStyle]="{
-            'margin-bottom': showresumen == true ? '300px' : '200px'
+            'margin-bottom': showresumen == true ? '300px' : '80px'
           }"
         >
           <div class="mb-5" (window:resize)="onResize($event)">
@@ -362,10 +362,6 @@
                   ></app-block-header>
                 </div>
                 <div class="products-view">
-                  <div
-                    class="products-view__list products-list"
-                    data-with-features="false"
-                  ></div>
                   <div
                     class="products-view__list products-list"
                     data-layout="grid-5-full"
