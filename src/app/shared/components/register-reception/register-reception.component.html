@@ -37,13 +37,13 @@
               <div class="mb-3">
                 <label style="color: #0063b9">Telefono fijo/Celular</label>
                 <div class="input-group">
-                  <div class="input-group-prepend">
+                  <div class="input-group-prepend" dropdown>
                     <button
+                      id="button-basic"
                       class="btn btn-outline-secondary dropdown-toggle"
                       type="button"
-                      data-bs-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
+                      dropdownToggle
+                      aria-controls="dropdown-phone"
                     >
                       <i
                         [ngClass]="
@@ -55,7 +55,11 @@
                       ></i>
                       {{ selectedPhoneCode }}
                     </button>
-                    <div class="dropdown-menu">
+                    <div id="dropdown-phone"
+                        *dropdownMenu
+                        class="dropdown-menu"
+                        role="menu"
+                        aria-labelledby="button-basic">
                       <a
                         class="dropdown-item"
                         (click)="Select_fono(config.phoneCodes.mobile.code)"
@@ -79,9 +83,10 @@
                   <input
                     formControlName="phone"
                     type="text"
-                    maxLength="9"
                     class="form-control"
-                    placeholder="Numero Contacto*"
+                    placeholder="Número Contacto*"
+                    [maxLength]="maxPhone"
+                    appPhoneChar
                   />
                 </div>
 
@@ -106,6 +111,7 @@
                   formControlName="documentId"
                   class="form-control"
                   [placeholder]="config.document.name + '*'"
+                  [maxlength]="cantMaxRut"
                   formatRut
                 />
                 <!-- FIXME: RUT ERROR  -->
@@ -116,11 +122,14 @@
                   El RUT ingresado no es válido
                 </p> -->
                 <p
-                  *ngIf="formRecibe.controls['documentId'].touched"
-                  class="text-error-form-2 pull-right"
-                >
-                  El {{ config.document.name }} ingresado no es válido
-                </p>
+                *ngIf="
+                  formRecibe.controls['documentId'].invalid &&
+                  formRecibe.controls['documentId'].touched
+                "
+                class="text-danger float-start"
+              >
+                El {{ config.document.name }} ingresado no es válido.
+              </p>
               </div>
             </div>
           </div>
