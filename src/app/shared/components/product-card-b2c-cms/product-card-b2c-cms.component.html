@@ -120,6 +120,7 @@
         [class.imgH]="home"
         [class.imgC]="cartClass"
         [alt]="productData.name"
+        (error)="root.errorLoadImage($event)"
       />
     </a>
   </div>
