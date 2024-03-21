@@ -36,6 +36,7 @@ export class MapComponent implements OnInit, OnChanges {
   @Input() storeZone!: string;
   @Input() autocompletado!: boolean;
   @Input() infoWindowContent!: string;
+  @Input() coordinates!: google.maps.LatLngLiteral;
   @ViewChild('search', { static: true }) searchElementRef!: ElementRef;
 
   showSearchBar: boolean = true;
@@ -49,7 +50,6 @@ export class MapComponent implements OnInit, OnChanges {
   @Output() public clearAdress = new EventEmitter<any>();
   @Output() public setDireccion = new EventEmitter<any>();
   @ViewChild(GoogleMap, { static: false }) map!: GoogleMap;
-  @Input() coordinates!: google.maps.LatLngLiteral;
 
   autocomplete!: google.maps.places.Autocomplete;
   isMapLoaded!: boolean;
@@ -65,8 +65,8 @@ export class MapComponent implements OnInit, OnChanges {
       this.buildMap();
       this.isMapLoaded = true;
       if (this.coordinates) {
+        this.showSearchBar = true;
         this.updateMapByCoordinates(this.coordinates);
-        this.showSearchBar = false;
       } else {
         this.geocodePosition();
       }
@@ -129,9 +129,9 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.storeAddress && this.isMapLoaded) {
-      this.geocodePosition();
-    }
+    console.log('pe',changes)
+    if (this.storeAddress && this.isMapLoaded) this.geocodePosition();
+    if(!changes['coordinates']?.firstChange && this.coordinates) this.updateMapByCoordinates(this.coordinates);
   }
 
   private geocodePosition(): void {
@@ -208,7 +208,7 @@ export class MapComponent implements OnInit, OnChanges {
     const { lat, lng } = coordinates;
     const newCenter: google.maps.LatLngLiteral = { lat, lng };
     this.center = newCenter;
-    this.map.panTo(newCenter);
+    this.map?.panTo(newCenter);
     this.markerPositions = [newCenter];
   }
 }
