@@ -45,7 +45,7 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
   providers: [
     provideClientHydration(),
     provideHttpClient(withFetch()),
-    { provide: 'googleTagManagerId', useValue: 'GTM-M6TH726' },
+    { provide: 'googleTagManagerId', useValue: 'GTM-NFMB4X39' },
     { provide: LOCALE_ID, useValue: 'CLP' },
 
     Title,

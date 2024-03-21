@@ -108,7 +108,7 @@ export class LoginComponent implements OnInit {
               ) {
                 (resp?.length || 0) > 0
                   ? this.router.navigate(['/carro-compra', 'resumen'])
-                  : ['supervisor', 'comprador', 'buyer'].includes(
+                  : ['supervisor', 'buyer'].includes(
                       res.user.userRole
                     )
                   ? this.router.navigate(['/inicio']).then(() => {

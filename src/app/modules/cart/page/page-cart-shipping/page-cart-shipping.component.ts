@@ -72,9 +72,9 @@ import { IError } from '@core/models-v2/error/error.interface';
 import { ConfigService } from '@core/config/config.service';
 import { IConfig } from '@core/config/config.interface';
 import { CallBackCartLoaded } from '@core/models-v2/cart/callback-cart-loaded.type';
+import { UserRoleType } from '@core/enums/user-role-type.enum';
 
 export let browserRefresh = false;
-declare let dataLayer: any;
 @Component({
   selector: 'app-page-cart-shipping',
   templateUrl: './page-cart-shipping.component.html',
@@ -163,6 +163,7 @@ export class PageCartShippingComponent implements OnInit {
 
   stores: IStore[] = [];
   config: IConfig;
+  userRoleType = UserRoleType;
 
   constructor(
     private toast: ToastrService,
@@ -249,8 +250,8 @@ export class PageCartShippingComponent implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       this.onSelect(null, 'retiro');
       if (
-        this.userSession.userRole !== 'supervisor' &&
-        this.userSession.userRole !== 'comprador'
+        this.userSession.userRole !== UserRoleType.SUPERVISOR &&
+        this.userSession.userRole !== UserRoleType.BUYER
       ) {
         this.gtmService.pushTag({
           event: 'shipping',

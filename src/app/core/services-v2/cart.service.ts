@@ -349,7 +349,7 @@ export class CartService {
       this.cartTempData.groups?.forEach((item: IShoppingCartGroup) => {
         if (
           array_precio[index] >= 60000 ||
-          (usuario.userRole != 'compradorb2c' &&
+          (usuario.userRole != 'b2c' &&
             usuario.userRole != 'temp' &&
             usuario.userRole != UserRoleType.BUYER)
         ) {

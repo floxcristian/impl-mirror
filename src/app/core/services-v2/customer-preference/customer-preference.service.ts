@@ -38,7 +38,6 @@ export class CustomerPreferenceService {
             preferences.deliveryAddress = addresses[0];
           }
           this.customerPreferenceStorage.set(preferences);
-          console.log('+2 preferences: ', preferences);
           return preferences;
         })
       );

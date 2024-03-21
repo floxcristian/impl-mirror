@@ -84,7 +84,7 @@ export class ProductSlideshowSpecialsComponent implements OnInit {
   async ngOnInit() {
     this.user = this.sessionService.getSession();
     const role = this.user.userRole;
-    this.isB2B = role === 'supervisor' || role === 'comprador';
+    this.isB2B = role === 'supervisor' || role === 'buyer';
 
     let url: string = this.router.url;
     this.ruta = url.split('/');
