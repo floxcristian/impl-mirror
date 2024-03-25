@@ -164,6 +164,10 @@ export class PageCartShippingComponent implements OnInit {
   stores: IStore[] = [];
   config: IConfig;
   userRoleType = UserRoleType;
+  addressCustomerSelected!:(ICustomerAddress & {
+    fullAddress: string;
+    isDefault: boolean;
+  })
 
   constructor(
     private toast: ToastrService,
@@ -290,6 +294,7 @@ export class PageCartShippingComponent implements OnInit {
               const fullAddress = address.departmentHouse
                 ? `${startAddress} depto/casa: ${address.departmentHouse}, ${address.city}`
                 : `${startAddress} ${address.city}`;
+              if(address.id === this.selectedShippingId) this.addressCustomerSelected = { ...address, fullAddress, isDefault }
               return { ...address, fullAddress, isDefault };
             });
             if (this.shippingType === 'despacho') this.obtieneDespachos();
@@ -849,7 +854,7 @@ export class PageCartShippingComponent implements OnInit {
       }
     } else if (formaEntrega === 'despacho' && this.isLogin) {
       this.selectedShippingId = null;
-
+      this.retiroFlag = false;
       // if (this.HideResumen()) {
       //   this.recibeType = 'yo';
       // } else {
@@ -1160,6 +1165,8 @@ export class PageCartShippingComponent implements OnInit {
       this.showDetalleProductos = false;
       this.obtieneDespachos();
       window.scrollTo({ top: 0 });
+      let address = this.addresses.find((address) => address.id == this.selectedShippingId);
+      if(address) this.addressCustomerSelected = address
     }
   }
 
