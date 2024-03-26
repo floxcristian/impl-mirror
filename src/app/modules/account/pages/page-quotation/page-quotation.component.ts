@@ -43,7 +43,7 @@ export class PageQuotationComponent implements OnInit {
   usuario!: ISession;
   orders!: IOrderDetail[];
   innerWidth: any;
-  columns = ['createdAt', 'salesId', 'total', 'deliveryMode', 'vendedor'];
+  columns = ['updatedAt', 'salesId', 'total', 'deliveryMode', 'vendedor'];
 
   constructor(
     private toast: ToastrService,
@@ -144,7 +144,7 @@ export class PageQuotationComponent implements OnInit {
               this.router.navigate(['/carro-compra', 'resumen']);
             });
         } else {
-          console.log('cancelar');
+          // console.log('cancelar');
         }
       },
     };

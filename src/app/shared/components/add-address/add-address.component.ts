@@ -15,6 +15,7 @@ import { ICity } from '@core/services-v2/geolocation/models/city.interface';
 import { CustomerAddressApiService } from '@core/services-v2/customer-address/customer-address-api.service';
 import { firstValueFrom } from 'rxjs';
 import { AddressType } from '@core/enums/address-type.enum';
+import { DireccionMap } from '../map/map.component';
 
 @Component({
   selector: 'app-add-address',
@@ -29,7 +30,8 @@ export class AddAddressComponent implements OnInit {
   cities!: ICity[];
   localidades!: any[];
   formDireccion: FormGroup;
-  tienda: any;
+  // tienda: any;
+  tienda: DireccionMap | null;
   coleccionComuna!: any[];
   autocompletado: boolean = true;
   disableDireccion: boolean = true;
@@ -58,15 +60,15 @@ export class AddAddressComponent implements OnInit {
       longitud: new FormControl(null),
       referencia: new FormControl(null),
     });
-    this.tienda = {
-      direccion: '',
-      zona: '',
-    };
+    // this.tienda = {
+    //   direccion: '',
+    //   zona: '',
+    // };
+    this.tienda = null;
   }
 
   ngOnInit() {
     this.getCities();
-    //this.formDireccion.statusChanges(value=>console.log('value',value))
   }
 
   set_direccion(data: any[]) {
@@ -79,11 +81,11 @@ export class AddAddressComponent implements OnInit {
 
     if (existe.length != 0) {
       this.formDireccion.controls['comuna'].setValue(
-        this.findComuna(this.getAddressData(data[0], 'locality'))
+        this.getCityId(this.getAddressData(data[0], 'locality'))
       );
     } else {
       this.formDireccion.controls['comuna'].setValue(
-        this.findComuna(
+        this.getCityId(
           this.getAddressData(data[0], 'administrative_area_level_3')
         )
       );
@@ -139,19 +141,52 @@ export class AddAddressComponent implements OnInit {
     }
   }
 
-  findLozalizacion(nombre: string) {
-    nombre = nombre.split('@')[0];
+  /**
+   * Obtener id de una ciudad.
+   * @param city
+   * @returns
+   */
+  private getCityId(city: string): string {
+    if (!city) return '';
 
+    city = this.quitarAcentos(city);
+    const result = this.cities.find(
+      (item) => this.quitarAcentos(item.city) === city
+    );
+
+    if (result && result.id) {
+      this.obtenerLocalidades(result);
+      this.findComunaLocalizacion(result.city);
+      return result.id;
+    } else {
+      return '';
+    }
+  }
+
+  findComunaLocalizacion(nombre: string) {
     if (nombre != '') {
       nombre = this.quitarAcentos(nombre);
 
       var result = this.localidades.find(
-        (data) => this.quitarAcentos(data.localidad) === nombre
+        (data) => this.quitarAcentos(data.location) === nombre
       );
-      if (result && result.localidad) {
-        this.formDireccion.controls['localizacion'].setValue(result.localidad);
+
+      if (result && result.location) {
+        this.formDireccion.controls['localizacion'].setValue(result.location);
       }
     }
+    // nombre = nombre.split('@')[0];
+
+    // if (nombre != '') {
+    //   nombre = this.quitarAcentos(nombre);
+
+    //   var result = this.localidades.find(
+    //     (data) => this.quitarAcentos(data.localidad) === nombre
+    //   );
+    //   if (result && result.localidad) {
+    //     this.formDireccion.controls['localizacion'].setValue(result.localidad);
+    //   }
+    // }
   }
 
   quitarAcentos(cadena: string) {
@@ -205,16 +240,16 @@ export class AddAddressComponent implements OnInit {
     const direccion = {
       documentId: usuario.documentId,
       addressType: AddressType.DELIVERY,
-      location: localizacion,
-      city: comunaArr[0],
       region: comunaArr[2],
-      province: comunaArr[1],
+      city: comunaArr[0],
       number: numero.toString(),
+      province: comunaArr[1],
       street: calle,
-      departmentOrHouse: depto,
-      reference: referencia,
+      location: localizacion,
       latitude: latitud,
       longitude: longitud,
+      departmentOrHouse: depto || '',
+      reference: referencia,
     };
 
     try {
@@ -257,14 +292,20 @@ export class AddAddressComponent implements OnInit {
   obtenerLocalidades(event: any) {
     const localidades: any[] = [];
     const comunaArr = event.id.split('@');
-    const comunas: any[] = (this.coleccionComuna || []).filter(
-      (comuna) => comuna.comuna == comunaArr[0]
+    const comunas = this.cities.filter(
+      (comuna) => comuna.city == comunaArr[0]
     );
     comunas.map((comuna) =>
-      comuna.localidades.map((localidad: any) => localidades.push(localidad))
+      comuna.localities.map((localidad: any) => localidades.push(localidad))
     );
+    // const comunas: any[] = (this.coleccionComuna || []).filter(
+    //   (comuna) => comuna.comuna == comunaArr[0]
+    // );
+    // comunas.map((comuna) =>
+    //   comuna.localidades.map((localidad: any) => localidades.push(localidad))
+    // );
     this.localidades = localidades;
-    this.findLozalizacion(this.formDireccion.controls['comuna'].value);
+    // this.findComunaLocalizacion(this.formDireccion.controls['comuna'].value);
   }
 
   geolocalizacion(event: any) {

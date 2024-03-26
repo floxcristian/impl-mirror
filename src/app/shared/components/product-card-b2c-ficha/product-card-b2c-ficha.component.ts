@@ -39,7 +39,6 @@ import { MetaTag } from '@core/models-v2/article/article-response.interface';
 })
 export class ProductCardB2cFichaComponent implements OnInit {
   readonly IMAGE_URL: string = environment.imageUrl;
-  IVA = environment.IVA;
   private destroy$: Subject<void> = new Subject();
   @Input() isOnProductPage!: boolean;
   @Input() home: boolean = false;
@@ -69,7 +68,7 @@ export class ProductCardB2cFichaComponent implements OnInit {
   @Input() paramsCategory!: any;
   @Input() origen!: string[];
   @Input() tipoOrigen: string = '';
-  usuario!: ISession;
+  session: ISession;
   porcentaje = 0;
   addingToCart = false;
   urlImage = environment.urlFotoOmnichannel;
@@ -90,6 +89,7 @@ export class ProductCardB2cFichaComponent implements OnInit {
     private readonly sessionService: SessionService,
     public readonly cartService: CartV2Service
   ) {
+    this.session = this.sessionService.getSession();
     if (this.route.url.includes('/especial/')) this.home = true;
   }
 
@@ -97,7 +97,7 @@ export class ProductCardB2cFichaComponent implements OnInit {
     this.currency.changes$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.cd.markForCheck();
     });
-    this.usuario = this.sessionService.getSession();
+
     this.cargaPrecio();
     if (this.productData.priceInfo.hasScalePrice)
       this.preciosEscalas = this.productData.priceInfo.scalePrice;

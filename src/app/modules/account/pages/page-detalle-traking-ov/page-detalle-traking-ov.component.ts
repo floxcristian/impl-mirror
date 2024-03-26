@@ -4,7 +4,11 @@ import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 // Components
 import { Modal_reciboComponent } from '../../components/modal_recibo/modal_recibo/modal_recibo.component';
-import { IProduct, ITracking, IOrder } from '@core/models-v2/oms/order.interface';
+import {
+  IProduct,
+  ITracking,
+  IOrder,
+} from '@core/models-v2/oms/order.interface';
 import { EcommerceDocumentService } from '@core/services-v2/ecommerce-document.service';
 import { IBackupOrder } from '@core/models-v2/ecommerce-document/backup-oder.interface';
 
@@ -26,7 +30,7 @@ export class DetalleTrakingOvComponent implements OnInit {
   constructor(
     private modalService: BsModalService,
     //Services v2
-    private readonly ecommerceDocumentService:EcommerceDocumentService
+    private readonly ecommerceDocumentService: EcommerceDocumentService
   ) {
     this.loadingShippingAll = true;
   }
@@ -46,21 +50,22 @@ export class DetalleTrakingOvComponent implements OnInit {
       this.suma = this.suma + r.total;
     });
     this.OVEstados = this.detalle.tracking;
-    if (this.OVEstados[this.OVEstados.length-1].status === 'received') {
+    if (this.OVEstados[this.OVEstados.length - 1].status === 'received') {
       this.ver_recibo();
     }
   }
 
   async ver_recibo() {
-    this.ecommerceDocumentService.getSalesOrderBackup({number:this.Ov}).subscribe({
-      next:(res)=>{
-        console.log('asddas',res)
-        this.recibo = res[0]
-      },
-      error:(err)=>{
-        console.log(err)
-      }
-    })
+    this.ecommerceDocumentService
+      .getSalesOrderBackup({ number: this.Ov })
+      .subscribe({
+        next: (res) => {
+          this.recibo = res[0];
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
   OpenModal() {

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 // Env
 import { environment } from '@env/environment';
 // Models
-import { IBusinessLine } from './business-line.interface';
+import { IBusinessLine, ILegalBusinessLine } from './business-line.interface';
 
 const API_CUSTOMER = `${environment.apiEcommerce}/api/v1/customer`;
 
@@ -21,5 +21,15 @@ export class CustomerBusinessLineApiService {
    */
   getBusinessLines(): Observable<IBusinessLine[]> {
     return this.http.get<IBusinessLine[]>(`${API_CUSTOMER}/business-lines`);
+  }
+
+  /**
+   *  Obtener giros Sii por documentId
+   */
+  getLegalBusinessLines(documentId: string): Observable<ILegalBusinessLine> {
+    return this.http.get<ILegalBusinessLine>(
+      `${API_CUSTOMER}/legal-business-lines`,
+      { params: { documentId } }
+    );
   }
 }

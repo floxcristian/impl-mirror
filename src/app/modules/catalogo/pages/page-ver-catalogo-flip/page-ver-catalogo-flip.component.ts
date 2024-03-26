@@ -124,7 +124,7 @@ export class PageVerCatalogoFlipComponent implements OnInit {
       this.screenHeight = isPlatformBrowser(this.platformId)
         ? window.innerHeight
         : 900;
-    } else console.log('not client');
+    }
   }
 
   async validarParametros() {
@@ -525,7 +525,7 @@ export class PageVerCatalogoFlipComponent implements OnInit {
         x++
       ) {
         if (objeto.body[i].leftSide[x].type != 'portada') {
-          if (objeto.body[i].leftSide[x].products.attributes) {
+          if (objeto.body[i].leftSide[x].products?.attributes.length) {
             if (objeto.body[i].leftSide[x].products.attributes[5].value) {
               let marca =
                 objeto.body[i].leftSide[x].products.attributes[5].value;
@@ -545,7 +545,7 @@ export class PageVerCatalogoFlipComponent implements OnInit {
         z++
       ) {
         if (objeto.body[i].rightSide[z].type != 'portada') {
-          if (objeto.body[i].rightSide[z].products.attributes) {
+          if (objeto.body[i].rightSide[z].products?.attributes.length) {
             if (objeto.body[i].rightSide[z].products.attributes[5].value) {
               let marca =
                 objeto.body[i].rightSide[z].products.attributes[5].value;

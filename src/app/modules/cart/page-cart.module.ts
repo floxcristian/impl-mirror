@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Libs
 import { NgSelectModule } from '@ng-select/ng-select';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 // Routing
 import { CartRoutingModule } from './page-cart-routing.module';
 // Modules
@@ -93,6 +94,7 @@ import { CardProductCardComponent } from './components/card-product-card/card-pr
     WidgetsModule,
     NgSelectModule,
     HeaderModule,
+    BsDropdownModule,
   ],
 })
 export class ShopModule {}

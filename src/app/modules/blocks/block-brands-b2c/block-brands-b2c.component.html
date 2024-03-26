@@ -4,6 +4,7 @@
     colorText="text-primary"
   ></app-block-header>
 
+  @if (brands && brands.length > 0) {
   <owl-carousel-o
     class="marcas"
     [options]="carouselOptions"
@@ -23,4 +24,5 @@
       </ng-template>
     </ng-container>
   </owl-carousel-o>
+  }
 </div>

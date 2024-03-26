@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AddCommentModalComponent } from '../../../../shared/components/add-comment-modal/add-comment-modal.component';
 import {
@@ -23,7 +30,8 @@ import { IReviewsResponse } from '@core/models-v2/article/review-response.interf
 })
 export class ComentariosComponent implements OnChanges {
   @Input() producto!: IArticleResponse | undefined;
-  @Output() evaluationSummary: EventEmitter<IReviewsResponse> = new EventEmitter();
+  @Output() evaluationSummary: EventEmitter<IReviewsResponse> =
+    new EventEmitter();
 
   rating = 0;
   starWidth = 25;
@@ -90,7 +98,7 @@ export class ComentariosComponent implements OnChanges {
             }
           },
           error: (error) => {
-            console.warn('Error al obtener comentarios', error);
+            console.log('Error al obtener comentarios', error);
           },
         });
     }

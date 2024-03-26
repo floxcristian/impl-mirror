@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  Inject,
+  OnInit,
+  PLATFORM_ID,
+  ViewChild,
+} from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Observable, Subject } from 'rxjs';
 import { RootService } from '../../../../shared/services/root.service';
@@ -7,6 +13,7 @@ import { GeolocationServiceV2 } from '@core/services-v2/geolocation/geolocation.
 import { CustomerService } from '@core/services-v2/customer.service';
 import { IArticlePrice } from '@core/models-v2/customer/customer.interface';
 import { environment } from '@env/environment';
+import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'app-page-lista-precios',
   templateUrl: './page-lista-precios.component.html',
@@ -15,7 +22,7 @@ import { environment } from '@env/environment';
 export class PageListaPreciosComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: false })
   datatableElement!: DataTableDirective;
-  innerWidth: number;
+  innerWidth!: number;
   precios!: IArticlePrice[];
   loadingData = true;
   paginaActual: number = 1;
@@ -34,19 +41,16 @@ export class PageListaPreciosComponent implements OnInit {
     this.localizacion$.asObservable();
 
   constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
     public root: RootService,
     // Services V2
     private readonly sessionService: SessionService,
     private readonly geolocationService: GeolocationServiceV2,
     private readonly customerService: CustomerService
   ) {
-    this.innerWidth = window.innerWidth;
     // cambio de sucursal
     this.geolocationService.selectedStore$.subscribe({
       next: () => {
-        console.log(
-          'selectedStore$ desde [PageListaPreciosComponent]===================='
-        );
         this.reDraw();
         this.buscarPrecios();
       },
@@ -54,6 +58,10 @@ export class PageListaPreciosComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.innerWidth = window.innerWidth;
+    }
+
     if (this.innerWidth >= 1200) {
       this.paginaActual = null || 0;
       this.preciosPorPagina = null || 0;
@@ -89,7 +97,6 @@ export class PageListaPreciosComponent implements OnInit {
 
   async buscarPrecios() {
     this.showLoading = true;
-    console.log('getSelectedStore desde buscarPrecios');
     const tiendaSeleccionada = this.geolocationService.getSelectedStore();
     const user = this.sessionService.getSession();
 
@@ -105,7 +112,7 @@ export class PageListaPreciosComponent implements OnInit {
       searching: true,
       language: {
         url: '//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json',
-        processing: 'Cargando Ordenes de ventas..',
+        processing: 'Cargando Órdenes de ventas..',
       },
       ajax: (dataTablesParameters: any, callback) => {
         this.loadingData = true;
@@ -125,7 +132,6 @@ export class PageListaPreciosComponent implements OnInit {
           .getCustomerPriceList(user.documentId, params)
           .subscribe({
             next: async (res) => {
-              console.log('response customer price list', res);
               this.precios = res.data;
               this.precios = await Promise.all(
                 this.precios.map((p) => {
@@ -155,9 +161,8 @@ export class PageListaPreciosComponent implements OnInit {
 
   busquedaCategoria(event: any) {
     this.categoria = event;
-    this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      console.log('event pa', event);
-      dtInstance.draw();
-    });
+    this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) =>
+      dtInstance.draw()
+    );
   }
 }

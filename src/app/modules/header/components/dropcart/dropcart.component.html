@@ -49,22 +49,14 @@
           <span class="product-price">
             <span class="price-save fw-bold">
               {{
-                (!isVacio(usuario.preferences.iva)
-                  ? usuario.preferences.iva
+                (!isVacio(session.preferences.iva)
+                  ? session.preferences.iva
                     ? item.ProductCart.price
                     : item.ProductCart.price / (1 + IVA)
                   : item.ProductCart.price
                 ) | currencyFormat
               }}
-              <em>
-                {{
-                  !isVacio(usuario.preferences.iva)
-                    ? usuario.preferences.iva
-                      ? 'c/iva'
-                      : 's/iva'
-                    : 'c/iva'
-                }}</em
-              >
+              <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }}</em>
             </span>
           </span>
         </div>
@@ -83,22 +75,14 @@
         <div class="cart-price col-2 my-auto text-center">
           <span class="cart-price-value fw-bold"
             >{{
-              (!isVacio(usuario.preferences.iva)
-                ? (usuario.preferences.iva
+              (!isVacio(session.preferences.iva)
+                ? (session.preferences.iva
                     ? item.ProductCart.price
                     : item.ProductCart.price / (1 + IVA)) * item.quantity
                 : item.ProductCart.price * item.quantity
               ) | currencyFormat
             }}
-            <em>
-              {{
-                !isVacio(usuario.preferences.iva)
-                  ? usuario.preferences.iva
-                    ? 'c/iva'
-                    : 's/iva'
-                  : 'c/iva'
-              }}</em
-            ></span
+            <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }}</em></span
           >
         </div>
 

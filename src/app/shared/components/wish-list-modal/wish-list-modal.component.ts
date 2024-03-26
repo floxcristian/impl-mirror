@@ -32,7 +32,7 @@ export class WishListModalComponent implements OnInit {
   constructor(
     public ModalRef: BsModalRef,
     private toast: ToastrService,
-    private renderer:Renderer2,
+    private renderer: Renderer2,
     // Services V2
     private readonly sessionService: SessionService,
     private readonly wishlistStorage: WishlistStorageService,
@@ -68,14 +68,26 @@ export class WishListModalComponent implements OnInit {
   }
 
   ingresaNombre(): void {
-      this.renderer.removeClass(this.renderer.selectRootElement('.validacion',true),'d-block')
-      this.renderer.addClass(this.renderer.selectRootElement('.validacion',true),'d-none')
+    this.renderer.removeClass(
+      this.renderer.selectRootElement('.validacion', true),
+      'd-block'
+    );
+    this.renderer.addClass(
+      this.renderer.selectRootElement('.validacion', true),
+      'd-none'
+    );
   }
 
   createWishlist(): void {
     if (!this.nombre.length) {
-      this.renderer.removeClass(this.renderer.selectRootElement('.validacion',true),'d-none')
-      this.renderer.addClass(this.renderer.selectRootElement('.validacion',true),'d-block')
+      this.renderer.removeClass(
+        this.renderer.selectRootElement('.validacion', true),
+        'd-none'
+      );
+      this.renderer.addClass(
+        this.renderer.selectRootElement('.validacion', true),
+        'd-block'
+      );
       return;
     }
     this.wishlistApiService
@@ -102,8 +114,8 @@ export class WishListModalComponent implements OnInit {
 
   // agrega o elimina SKU de una lista
   async selectWishlist(wishlist: IWishlist) {
-    let id = `ID-${wishlist.id}`
-    const objHTML: any = this.renderer.selectRootElement(`#${id}`,true);
+    let id = `ID-${wishlist.id}`;
+    const objHTML: any = this.renderer.selectRootElement(`#${id}`, true);
 
     if (objHTML.checked) {
       this.wishlistApiService
@@ -153,7 +165,6 @@ export class WishListModalComponent implements OnInit {
    */
   closeModal(): void {
     const listas: NodeListOf<Element> = document.querySelectorAll('.listas');
-    console.log('listas: ', listas);
     let checked = false;
     listas.forEach((e: any) => {
       if (e.checked) {

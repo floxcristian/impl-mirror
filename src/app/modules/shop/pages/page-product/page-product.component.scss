@@ -16,6 +16,12 @@
   }
 }
 
+@media (min-width: 0px) and (max-width: 575px) {
+  .card {
+    padding: 0.5rem;
+  }
+}
+
 .nav-link {
   color: #000;
   font-weight: bolder;
@@ -106,15 +112,6 @@ ul.product-card__features-list {
 
   img {
     max-height: 105px;
-  }
-
-  app-product-card-b2b {
-    display: flex;
-    width: 115%;
-
-    .product-card {
-      flex: 1 1 auto !important;
-    }
   }
 
   app-product-card-b2c-ficha {
@@ -256,15 +253,34 @@ table > .color-gris:nth-child(odd) .sticky {
   background-color: white;
 }
 table > .color-gris:nth-child(even) .sticky {
-  background-color: gray;
+  background-color: white;
 }
 table > .mobile:nth-child(odd) .sticky {
   background-color: white;
 }
 table > .mobile:nth-child(even) .sticky {
-  background-color: gray;
+  background-color: white;
 }
 
 tr > td.sticky {
   background-color: white;
+  min-width: 118px;
+}
+
+.accordion-body {
+  padding: 10px 5px;
+}
+
+.accordion-button {
+  background-color: #0063b9;
+  color: white;
+}
+
+.mobile-table {
+  font-size: 14px;
+  td {
+    border-bottom: 1px solid #ccc;
+    min-width: 151px;
+    padding: 4px 6px;
+  }
 }

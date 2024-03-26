@@ -188,7 +188,6 @@ export class PageCategoryComponent implements OnInit {
      * QUERY PARAMS
      ****************************************************/
     this.route.queryParams.subscribe((query) => {
-      console.log('on queryParamsChange: ', query);
       this.filters = [];
       this.origen = getOriginUrl(this.route.snapshot);
 
@@ -538,7 +537,6 @@ export class PageCategoryComponent implements OnInit {
       const user = this.sessionService.getSession();
       if (user) {
         const producto: IArticleResponse = productos[0];
-        console.log('getSelectedStore desde PageCategoryComponent 3');
         let tienda = this.geolocationService.getSelectedStore();
         let codigo = tienda.code || '';
         let params = {
@@ -842,6 +840,37 @@ export class PageCategoryComponent implements OnInit {
       ? window.innerWidth
       : 900;
     this.scrollPosition = event.srcElement.children[0].scrollTop;
+  }
+
+  /**
+   * Setea origen.
+   */
+  private setOrigenes(): void {
+    let categoria = '';
+    // getOriginUrl(this.route.snapshot.url[0], this.route.snapshot.params);
+    // Si el Url tiene seteada la categoria, pero su busqueda no es 'todos' (no es Banner)
+    if (
+      this.route.snapshot.paramMap.get('nombre') &&
+      this.route.snapshot.paramMap.get('busqueda') !== 'todos'
+    ) {
+      categoria = this.route.snapshot.paramMap.get('nombre') as string;
+      this.origen = ['buscador', '', categoria, ''];
+    } else {
+      const urlParams = this.route.snapshot.url[0].path.split('-');
+      //Si no existe categoria en la url y se accede desde el 'Ver más'
+      if (urlParams[0] == 'HOME') {
+        urlParams.splice(0, 1);
+        this.origen = ['home', 'ver-mas', urlParams.join(' '), ''];
+        //Si viene desde Banner
+      } else if (urlParams[0] == 'todos') {
+        urlParams.splice(0, 1);
+        categoria = this.route.snapshot.paramMap.get('nombre') || '';
+        this.origen = ['home', 'banner', categoria, ''];
+      } else {
+        this.origen = ['buscador', '', 'sinCategoria', ''];
+      }
+    }
+    const origin2 = getOriginUrl(this.route.snapshot);
   }
 
   //Definicion de meta Información para optimización del SEO

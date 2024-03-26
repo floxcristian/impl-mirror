@@ -8,8 +8,8 @@
     <i _ngcontent-serverapp-c11="" class="fas fa-tachometer-alt me-3"></i>
     <h5>Mi perfil</h5>
     <h2 class="float-start">
-      Bienvenido(a) {{ usuario.firstName || '' | titlecase }}
-      {{ usuario.lastName || '' | titlecase }}
+      Bienvenido(a) {{ session.firstName || '' | titlecase }}
+      {{ session.lastName || '' | titlecase }}
     </h2>
   </div>
 </div>
@@ -64,15 +64,15 @@
         </app-loading-element>
 
         <div class="big-title">
-          {{ usuario.firstName || '' | titlecase }}
-          {{ usuario.lastName || '' | titlecase }}
+          {{ session.firstName || '' | titlecase }}
+          {{ session.lastName || '' | titlecase }}
         </div>
 
-        <div><span class="title2">Usuario</span>{{ usuario.username }}</div>
+        <div><span class="title2">Usuario</span>{{ session.username }}</div>
         <div>
-          <span class="title2">Email de Contacto</span>{{ usuario.email }}
+          <span class="title2">Email de Contacto</span>{{ session.email }}
         </div>
-        <div><span class="title2">Teléfono</span>{{ usuario.phone }}</div>
+        <div><span class="title2">Teléfono</span>{{ session.phone }}</div>
         <div class="mt-3">
           <a href="javascript:" (click)="openModalPassword()"
             >¿Desea cambiar la contraseña? <i class="fas fa-key"></i
@@ -100,12 +100,12 @@
                 class="form-check-input"
                 id="iva"
                 [checked]="
-                  !isVacio(usuario.preferences.iva)
-                    ? usuario.preferences.iva
+                  !isVacio(session.preferences.iva)
+                    ? session.preferences.iva
                     : false
                 "
                 [disabled]="cargandoIVA"
-                (change)="actualizaIVA()"
+                (change)="updateIvaPreference()"
                 style="cursor: pointer"
               />
               <label
@@ -117,8 +117,8 @@
                   padding-left: 10px;
                 "
                 >{{
-                  !isVacio(usuario.preferences.iva)
-                    ? usuario.preferences.iva
+                  !isVacio(session.preferences.iva)
+                    ? session.preferences.iva
                       ? 'Con IVA'
                       : 'Sin IVA'
                     : 'Con IVA'
@@ -295,7 +295,7 @@
   </div>
 
   <ng-container
-    *ngIf="usuario.userRole != 'compradorb2c' && usuario.userRole != 'b2c'"
+    *ngIf="session.userRole != 'compradorb2c' && session.userRole != 'b2c'"
   >
     <div class="col-lg-12 mb-3" *ngIf="esEmpresa()">
       <div class="card">

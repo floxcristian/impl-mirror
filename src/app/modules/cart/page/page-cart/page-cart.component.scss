@@ -250,23 +250,6 @@ div #saveCartModal.show {
     max-height: 105px;
   }
 
-  app-product-card-b2b {
-    display: flex;
-    width: 115%;
-
-    .product-card {
-      flex: 1 1 auto !important;
-    }
-  }
-
-  app-product-card-b2c-cms {
-    display: flex;
-    width: 115%;
-
-    .product-card {
-      flex: 1 1 auto !important;
-    }
-  }
   app-product-card-b2c-ficha {
     display: flex;
     width: 115%;

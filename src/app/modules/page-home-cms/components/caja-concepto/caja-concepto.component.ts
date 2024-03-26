@@ -43,10 +43,6 @@ export class CajaConceptoComponent implements OnInit, OnDestroy {
 
   buildGridStyles(): void {
     // let h = 0;
-    console.log(
-      'this.concepto.element.data.layout: ',
-      this.concepto.element.data.layout
-    );
     let y_array: any = [
       ...new Set(this.concepto.element.data.layout.map((item: any) => item.y)),
     ];

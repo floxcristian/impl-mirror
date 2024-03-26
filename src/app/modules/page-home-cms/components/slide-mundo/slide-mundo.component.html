@@ -92,6 +92,7 @@
 
 <!-- Start:slideshow xs, sm y md -->
 <div class="block-slideshow d-block d-lg-none">
+  @if(slides && slides.length > 0) {
   <owl-carousel-o
     class="carouselMundo"
     [options]="carouselOptions2"
@@ -139,4 +140,5 @@
       </ng-template>
     </ng-container>
   </owl-carousel-o>
+  }
 </div>

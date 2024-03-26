@@ -26,6 +26,7 @@ import { IWorldResponse } from '@core/models-v2/cms/world-response.interface';
 import { environment } from '@env/environment';
 import { Observable, map } from 'rxjs';
 import { BlogService } from './blog/blog.service';
+import { DefaultBranch } from '@core/utils-v2/default-branch.service';
 
 const API_CMS = `${environment.apiEcommerce}/api/v1/cms`;
 
@@ -66,6 +67,8 @@ export class CmsService {
     branchCode: string,
     location: string
   ): Observable<IHomePageResponse> {
+    branchCode = DefaultBranch.getBranchCode(branchCode);
+
     return this.http.get<IHomePageResponse>(`${API_CMS}/homepage`, {
       params: { documentId, branchCode, location },
     });
@@ -76,6 +79,8 @@ export class CmsService {
     branchCode: string,
     location: string
   ): Observable<ICustomHomePage> {
+    branchCode = DefaultBranch.getBranchCode(branchCode);
+
     return this.http.get<ICustomHomePage>(`${API_CMS}/custom-homepage`, {
       params: { documentId, branchCode, location },
     });
@@ -96,6 +101,8 @@ export class CmsService {
     page: number = 1,
     limit: number = 30
   ): Observable<IPaginated> {
+    branchCode = DefaultBranch.getBranchCode(branchCode);
+
     return this.http.get<IPaginated>(`${API_CMS}/special/${id}`, {
       params: { special, documentId, branchCode, location, page, limit },
     });

@@ -76,7 +76,6 @@ export class PageListasDeProductosComponent implements OnInit {
     this.showLoading = true;
     this.wishlistApiService.getWishlists(this.usuario.documentId).subscribe({
       next: (wishlists) => {
-        console.log('wishlists: ', wishlists);
         this.listas = wishlists;
         this.listas_temp = this.listas;
         this.showLoading = false;

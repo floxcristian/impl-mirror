@@ -1,8 +1,17 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  Input,
+  Inject,
+  PLATFORM_ID,
+} from '@angular/core';
 import { Usuario } from '../../interfaces/login';
 import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import { IEcommerceUser } from '@core/models-v2/auth/user.interface';
 import { IGuest } from '@core/models-v2/storage/guest.interface';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-login-register',
@@ -15,13 +24,18 @@ export class LoginRegisterComponent implements OnInit {
   @Input() innerWidth!: number;
   @Input() invitado!: IEcommerceUser | IGuest;
 
-  constructor(private readonly gtmService: GoogleTagManagerService) {}
+  constructor(
+    private readonly gtmService: GoogleTagManagerService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit() {
-    this.gtmService.pushTag({
-      event: 'profile',
-      pagePath: window.location.href,
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      this.gtmService.pushTag({
+        event: 'profile',
+        pagePath: window.location.href,
+      });
+    }
   }
   returnInvitado(invitado: any) {
     this.outInvitado.emit(invitado);

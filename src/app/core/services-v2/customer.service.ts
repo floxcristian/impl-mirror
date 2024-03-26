@@ -13,6 +13,7 @@ import {
   ICustomerCredit,
   ICustomerPriceListResponse,
 } from '@core/models-v2/customer/customer.interface';
+import { DefaultBranch } from '@core/utils-v2/default-branch.service';
 
 const API_CUSTOMER = `${environment.apiEcommerce}/api/v1/customer`;
 
@@ -71,6 +72,8 @@ export class CustomerService {
       urlCategory?: string;
     }
   ): Observable<ICustomerPriceListResponse> {
+    params.branchCode = DefaultBranch.getBranchCode(params.branchCode);
+
     return this.http.get<ICustomerPriceListResponse>(
       `${API_CUSTOMER}/${documentId}/price-list`,
       { params }

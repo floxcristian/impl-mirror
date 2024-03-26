@@ -94,7 +94,7 @@ export class ProductComponent implements OnInit, OnChanges {
     if (!value) return;
     // Eliminar?
     this.getPopularProducts();
-    this.setAvailability(value.deliverySupply);
+    this.setAvailability(value?.deliverySupply);
     this.quantity.setValue(1);
 
     this.dataProduct = value;
@@ -237,20 +237,23 @@ export class ProductComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.onChangeStore();
     this.setIsMobile();
-    window.onresize = () => this.setIsMobile();
+
     if (isPlatformBrowser(this.platformId)) {
+      window.onresize = () => this.setIsMobile();
+
       this.photoSwipe
         .load()
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe();
+
+      if (!this.sessionService.isB2B()) {
+        this.gtmService.pushTag({
+          event: 'productView',
+          pagePath: window.location.href,
+        });
+      }
     }
 
-    if (!this.sessionService.isB2B()) {
-      this.gtmService.pushTag({
-        event: 'productView',
-        pagePath: window.location.href,
-      });
-    }
     // Observable cuyo fin es saber cuando se presiona el boton agregar al carro utilizado para los dispositivos moviles.
     this.cart.onAddingmovilButton$
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -290,9 +293,12 @@ export class ProductComponent implements OnInit, OnChanges {
     this.estado = false;
   }
 
-  private setAvailability(deliverySupply: IDeliverySupply): void {
-    const { pickupDate, deliveryDate } = deliverySupply;
-    this.isAvailable = !pickupDate && !deliveryDate ? false : true;
+  private setAvailability(deliverySupply: IDeliverySupply | undefined): void {
+    if (!deliverySupply) this.isAvailable = false;
+    else {
+      const { pickupDate, deliveryDate } = deliverySupply;
+      this.isAvailable = !pickupDate && !deliveryDate ? false : true;
+    }
   }
 
   /**
@@ -314,9 +320,11 @@ export class ProductComponent implements OnInit, OnChanges {
       .subscribe({
         next: (priceInfo) => {
           this.product.priceInfo = priceInfo;
-          const firstFromQuantity = priceInfo.scalePrice[0].fromQuantity;
-          this.quantityToScalePrice =
-            quantity >= firstFromQuantity ? 0 : firstFromQuantity - quantity;
+          if (priceInfo.hasScalePrice) {
+            const firstFromQuantity = priceInfo.scalePrice[0].fromQuantity;
+            this.quantityToScalePrice =
+              quantity >= firstFromQuantity ? 0 : firstFromQuantity - quantity;
+          }
         },
       });
   }
@@ -629,6 +637,8 @@ export class ProductComponent implements OnInit, OnChanges {
    * Métodos de responsive.
    *************************************************/
   setIsMobile(): void {
-    this.showMobile = window.innerWidth < this.puntoQuiebre;
+    if (isPlatformBrowser(this.platformId)) {
+      this.showMobile = window.innerWidth < this.puntoQuiebre;
+    }
   }
 }

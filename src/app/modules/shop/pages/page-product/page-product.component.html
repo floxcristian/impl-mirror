@@ -19,27 +19,27 @@
           No se encontro el producto.
         </div>
       </div>
-           @if (product) {
-          <app-product
-          [product]="product"
-          [origen]="origen"
-          [stock]="stock"
-          [recommendedProducts]="recommendedProducts"
-          (leerComentarios)="abrirTabEvaluacion()"
-          [evaluationSummary]="evaluationSummary"
-        />
-        }@else {
-         <div  class="d-flex justify-content-center align-items-center" style="height: 60vh;">
-           <div class="text-primary" role="status">
-            <div class="spinner-border" role="status">
-              <span class="sr-only">Cargando ...</span>
-            </div>
-           </div>
-         </div>
-         }
-
-
-      <div #ancla id="ancla"></div>
+      @if (product && product.visible === 1) {
+      <app-product
+        [product]="product"
+        [origen]="origen"
+        [stock]="stock"
+        [recommendedProducts]="recommendedProducts"
+        (leerComentarios)="abrirTabEvaluacion()"
+        [evaluationSummary]="evaluationSummary"
+      />
+      }@else {
+      <div
+        class="d-flex justify-content-center align-items-center"
+        style="height: 60vh"
+      >
+        <div class="text-primary" role="status">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Cargando ...</span>
+          </div>
+        </div>
+      </div>
+      }
 
       <div
         *ngIf="!showMobile && product?.visible === 1"
@@ -77,193 +77,203 @@
                   style="margin: auto; background-color: #fff"
                   class="mb-3"
                 >
-                  <tr style="background-color: #fff; border-top: 0px">
-                    <td class="border-top-0"></td>
-                    <td
-                      *ngFor="let item of matriz"
-                      class="text-center border-top-0"
-                      style="vertical-align: middle"
-                    >
-                      <img
-                        class="img-fluid"
-                        [routerLink]="root.product(item.sku, item.name)"
-                        [src]="root.getUrlImagenMiniatura(item)"
-                        alt="{{ item.name }}"
-                        style="width: 40%; cursor: pointer"
-                      />
-                      <div class="col-12 skuP">
-                        {{ item.sku }}
-                      </div>
-
-                      <div
-                        *ngIf="
-                          item.stockSummary.branchStock > 0 ||
-                          item.stockSummary.companyStock > 0
-                        "
-                        class="d-flex flex-column justify-content-center align-items-center"
+                  <tbody>
+                    <tr style="background-color: #fff; border-top: 0px">
+                      <td class="border-top-0"></td>
+                      <td
+                        *ngFor="let item of matriz"
+                        class="text-center border-top-0"
+                        style="vertical-align: middle"
                       >
-                        <div
-                          *ngIf="
-                            item.priceInfo.commonPrice === item.priceInfo.price
-                          "
-                          class="product-card__new-price font-weight-bold"
-                          style="color: #000"
-                        >
-                          <span *ngIf="!showNetPrice"
-                            >{{ item.priceInfo.price | currencyFormat }}
-                            <em
-                              ><span class="rounded-pill badge-implementos">
-                                c/iva</span
-                              ></em
-                            ></span
-                          >
-                          <span *ngIf="showNetPrice"
-                            >{{ item.priceInfo.netPrice | currencyFormat }}
-                            <em
-                              ><span class="rounded-pill badge-primary-custom">
-                                neto</span
-                              ></em
-                            ></span
-                          >
+                        <img
+                          class="img-fluid"
+                          [routerLink]="root.product(item.sku, item.name)"
+                          [src]="root.getUrlImagenMiniatura(item)"
+                          alt="{{ item.name }}"
+                          style="width: 40%; cursor: pointer"
+                        />
+                        <div class="col-12 skuP">
+                          {{ item.sku }}
                         </div>
-                        <!-- Start::precio oferta en rojo en producto de matriz -->
-                        <div
-                          *ngIf="
-                            item.priceInfo.commonPrice !== item.priceInfo.price
-                          "
-                          class="product-card__new-price text-danger font-weight-bold"
-                        >
-                          <span *ngIf="!showNetPrice"
-                            >{{ item.priceInfo.price | currencyFormat }}
-                            <em
-                              ><span class="rounded-pill badge-implementos">
-                                c/iva</span
-                              ></em
-                            ></span
-                          >
-                          <span *ngIf="showNetPrice"
-                            >{{ item.priceInfo.netPrice | currencyFormat }}
-                            <em
-                              ><span class="rounded-pill badge-primary-custom">
-                                neto</span
-                              ></em
-                            ></span
-                          >
-                        </div>
-                        <!-- End::precio oferta en rojo en producto de matriz -->
 
-                        <!-- Start::precio normal -->
                         <div
                           *ngIf="
-                            item.priceInfo.commonPrice !== item.priceInfo.price
+                            item.stockSummary.branchStock > 0 ||
+                            item.stockSummary.companyStock > 0
                           "
-                          tooltip="Precio normal"
-                          class="product-card__old-price text-end"
+                          class="d-flex flex-column justify-content-center align-items-center"
                         >
-                          <span *ngIf="!showNetPrice"
-                            >{{ item.priceInfo.commonPrice | currencyFormat }}
-                            <em> c/iva </em></span
-                          >
-                          <span *ngIf="showNetPrice"
-                            >{{
-                              item.priceInfo.commonNetPrice | currencyFormat
-                            }}
-                            <em> neto </em></span
-                          >
-                        </div>
-                        <!-- End::precio normal -->
-                      </div>
-                      <div class="col-12 marcaP text-center">
-                        {{ item.brand }}
-                      </div>
-                      <div
-                        *ngIf="
-                          item.stockSummary.branchStock > 0 ||
-                          item.stockSummary.companyStock > 0
-                        "
-                        class="mb-2 d-flex flex-column justify-content-center align-items-center"
-                      >
-                        <div class="row">
                           <div
-                            class="col-12 d-flex justify-content-center align-items-center"
+                            *ngIf="
+                              item.priceInfo.commonPrice ===
+                              item.priceInfo.price
+                            "
+                            class="product-card__new-price font-weight-bold"
+                            style="color: #000"
                           >
-                            <i
-                              class="fal fa-minus-circle fa-xl me-3"
-                              style="cursor: pointer; color: #005cb9"
-                              role="button"
-                              (click)="refreshComparedProductPrice(item, '-')"
-                            ></i>
-                            <input
-                              type="number"
-                              size="4"
-                              style="width: 50px"
-                              class="text-center"
-                              [(ngModel)]="item.quantity"
-                              (change)="refreshComparedProductPrice(item)"
-                            />
-                            <i
-                              class="fal fa-plus-circle fa-xl ms-3"
-                              style="cursor: pointer; color: #005cb9"
-                              (click)="refreshComparedProductPrice(item, '+')"
-                              role="button"
-                            ></i>
+                            <span>
+                              {{
+                                (session.preferences.iva
+                                  ? item.priceInfo.customerPrice
+                                  : item.priceInfo.customerNetPrice
+                                ) | currencyFormat
+                              }}
+                              <em
+                                ><span class="rounded-pill badge-implementos">
+                                  {{
+                                    session.preferences.iva ? 'c/iva' : 's/iva'
+                                  }}</span
+                                ></em
+                              ></span
+                            >
+                          </div>
+                          <!-- Start::precio oferta en rojo en producto de matriz -->
+                          <div
+                            *ngIf="
+                              item.priceInfo.commonPrice !==
+                              item.priceInfo.price
+                            "
+                            class="product-card__new-price text-danger font-weight-bold"
+                          >
+                            <span>
+                              {{
+                                (session.preferences.iva
+                                  ? item.priceInfo.customerPrice
+                                  : item.priceInfo.customerNetPrice
+                                ) | currencyFormat
+                              }}
+                              <em
+                                ><span class="rounded-pill badge-implementos">
+                                  {{
+                                    session.preferences.iva ? 'c/iva' : 's/iva'
+                                  }}
+                                </span></em
+                              ></span
+                            >
+                          </div>
+                          <!-- End::precio oferta en rojo en producto de matriz -->
+
+                          <!-- Start::precio normal -->
+                          <div
+                            *ngIf="
+                              item.priceInfo.commonPrice !==
+                              item.priceInfo.price
+                            "
+                            tooltip="Precio normal"
+                            class="product-card__old-price text-end"
+                          >
+                            <span>
+                              {{
+                                (session.preferences.iva
+                                  ? item.priceInfo.commonPrice
+                                  : item.priceInfo.commonNetPrice
+                                ) | currencyFormat
+                              }}
+                              <em>
+                                {{
+                                  session.preferences.iva ? 'c/iva' : 's/iva'
+                                }}
+                              </em></span
+                            >
+                          </div>
+                          <!-- End::precio normal -->
+                        </div>
+                        <div class="col-12 marcaP text-center">
+                          {{ item.brand }}
+                        </div>
+                        <div
+                          *ngIf="
+                            item.stockSummary.branchStock > 0 ||
+                            item.stockSummary.companyStock > 0
+                          "
+                          class="mb-2 d-flex flex-column justify-content-center align-items-center"
+                        >
+                          <div class="row">
+                            <div
+                              class="col-12 d-flex justify-content-center align-items-center"
+                            >
+                              <i
+                                class="fal fa-minus-circle fa-xl me-3"
+                                style="cursor: pointer; color: #005cb9"
+                                role="button"
+                                (click)="
+                                  refreshComparedProductPrice(item, '-')
+                                "
+                              ></i>
+                              <input
+                                type="number"
+                                size="4"
+                                style="width: 50px"
+                                class="text-center"
+                                [(ngModel)]="item.quantity"
+                                (change)="refreshComparedProductPrice(item)"
+                              />
+                              <i
+                                class="fal fa-plus-circle fa-xl ms-3"
+                                style="cursor: pointer; color: #005cb9"
+                                (click)="
+                                  refreshComparedProductPrice(item, '+')
+                                "
+                                role="button"
+                              ></i>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div
-                        class="col-12 marcaP text-center"
-                        *ngIf="
-                          !item.stockSummary.branchStock &&
-                          !item.stockSummary.companyStock
-                        "
-                      >
-                        <div class="no_stock">
-                          <div
-                            class="text-center"
-                            style="margin: 0px; padding: 0"
-                          >
-                            <span>Sujeto a disponibilidad </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        class="mb-2 d-flex flex-column justify-content-center align-items-center"
-                      >
-                        <button
-                          *ngIf="
-                            item.stockSummary.branchStock ||
-                            item.stockSummary.companyStock
-                          "
-                          class="btn btn-sm btn-secondary"
-                          (click)="addComparedProductToCart(item)"
-                        >
-                          AGREGAR
-                        </button>
-                        <button
+                        <div
+                          class="col-12 marcaP text-center"
                           *ngIf="
                             !item.stockSummary.branchStock &&
                             !item.stockSummary.companyStock
                           "
-                          class="btn btn-sm btn-secondary"
-                          [routerLink]="root.product(item.sku, item.name)"
                         >
-                          SOLICITAR
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="color-gris" *ngFor="let item of comparacion">
-                    <td>
-                      <b>{{ item.name | capitalizeFirst }}</b>
-                    </td>
-                    <td
-                      *ngFor="let dato of item.values"
-                      class="text-center"
-                      [class.text-muted]="dato === 'N/A'"
-                    >
-                      {{ dato }}
-                    </td>
-                  </tr>
+                          <div class="no_stock">
+                            <div
+                              class="text-center"
+                              style="margin: 0px; padding: 0"
+                            >
+                              <span>Sujeto a disponibilidad </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="mb-2 d-flex flex-column justify-content-center align-items-center"
+                        >
+                          <button
+                            *ngIf="
+                              item.stockSummary.branchStock ||
+                              item.stockSummary.companyStock
+                            "
+                            class="btn btn-sm btn-secondary"
+                            (click)="addComparedProductToCart(item)"
+                          >
+                            AGREGAR
+                          </button>
+                          <button
+                            *ngIf="
+                              !item.stockSummary.branchStock &&
+                              !item.stockSummary.companyStock
+                            "
+                            class="btn btn-sm btn-secondary"
+                            [routerLink]="root.product(item.sku, item.name)"
+                          >
+                            SOLICITAR
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="color-gris" *ngFor="let item of comparacion">
+                      <td>
+                        <b>{{ item.name | capitalizeFirst }}</b>
+                      </td>
+                      <td
+                        *ngFor="let dato of item.values"
+                        class="text-center"
+                        [class.text-muted]="dato === 'N/A'"
+                      >
+                        {{ dato }}
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             </div>
@@ -403,6 +413,8 @@
         <!-- Fin Recomendados de productos -->
         <hr />
 
+        <div #ancla id="ancla"></div>
+
         <ul
           class="nav mb-3 mt-5 justify-content-center justify-content-lg-start"
           id="myTab"
@@ -456,7 +468,7 @@
               #comentarios
               [producto]="product"
               (evaluationSummary)="handleEvaluationSummary($event)"
-              />
+            />
           </div>
         </div>
       </div>
@@ -472,7 +484,7 @@
               class="text-center"
               style="
                 text-align: center;
-                font-size: 39px;
+                font-size: 23px;
                 font-weight: 900;
                 line-height: 53px;
                 font-style: normal;
@@ -495,7 +507,10 @@
               *ngIf="matriz.length > 1"
               style="overflow-x: scroll; border-radius: 0px; border: none"
             >
-              <table style="margin: auto; background-color: #fff" class="mb-3">
+              <table
+                style="margin: auto; background-color: #fff"
+                class="mb-3 mobile-table"
+              >
                 <tr style="background-color: #fff; border-top: 0px">
                   <td class="border-top-0 sticky"></td>
                   <td
@@ -527,20 +542,17 @@
                         class="product-card__new-price font-weight-bold"
                         style="color: #000"
                       >
-                        <span *ngIf="!showNetPrice"
-                          >{{ item.priceInfo.price | currencyFormat }}
+                        <span>
+                          {{
+                            (session.preferences.iva
+                              ? item.priceInfo.customerPrice
+                              : item.priceInfo.customerNetPrice
+                            ) | currencyFormat
+                          }}
                           <em
                             ><span class="rounded-pill badge-implementos">
-                              c/iva</span
-                            ></em
-                          ></span
-                        >
-                        <span *ngIf="showNetPrice"
-                          >{{ item.priceInfo.netPrice | currencyFormat }}
-                          <em
-                            ><span class="rounded-pill badge-primary-custom">
-                              neto</span
-                            ></em
+                              {{ session.preferences.iva ? 'c/iva' : 's/iva' }}
+                            </span></em
                           ></span
                         >
                       </div>
@@ -551,19 +563,18 @@
                         "
                         class="product-card__new-price text-danger font-weight-bold"
                       >
-                        <span *ngIf="!showNetPrice"
-                          >{{ item.priceInfo.price | currencyFormat }}
+                        <span>
+                          {{
+                            (session.preferences.iva
+                              ? item.priceInfo.customerPrice
+                              : item.priceInfo.customerNetPrice
+                            ) | currencyFormat
+                          }}
                           <em
                             ><span class="rounded-pill badge-implementos">
-                              c/iva</span
-                            ></em
-                          ></span
-                        >
-                        <span *ngIf="showNetPrice"
-                          >{{ item.priceInfo.netPrice | currencyFormat }}
-                          <em
-                            ><span class="rounded-pill badge-primary-custom">
-                              neto</span
+                              {{
+                                session.preferences.iva ? 'c/iva' : 's/iva'
+                              }}</span
                             ></em
                           ></span
                         >
@@ -577,15 +588,16 @@
                         tooltip="Precio normal"
                         class="product-card__old-price text-end"
                       >
-                        <span *ngIf="!showNetPrice"
-                          >{{ item.priceInfo.commonPrice | currencyFormat }}
-                          <em> c/iva </em></span
-                        >
-                        <span *ngIf="showNetPrice"
-                          >{{
-                            item.priceInfo.commonNetPrice | currencyFormat
+                        <span>
+                          {{
+                            (session.preferences.iva
+                              ? item.priceInfo.commonPrice
+                              : item.priceInfo.commonNetPrice
+                            ) | currencyFormat
                           }}
-                          <em> neto </em></span
+                          <em>
+                            {{ session.preferences.iva ? 'c/iva' : 's/iva' }}
+                          </em></span
                         >
                       </div>
                     </div>
@@ -694,7 +706,7 @@
               class="text-center"
               style="
                 text-align: center;
-                font-size: 39px;
+                font-size: 23px;
                 font-weight: 900;
                 line-height: 53px;
                 font-style: normal;
@@ -760,7 +772,7 @@
               class="text-center"
               style="
                 text-align: center;
-                font-size: 39px;
+                font-size: 23px;
                 font-weight: 900;
                 line-height: 53px;
                 font-style: normal;
@@ -866,11 +878,11 @@
               data-bs-parent="#accordionExample"
             >
               <div class="accordion-body">
-                     <app-comentarios
-              #comentarios
-              [producto]="product"
-              (evaluationSummary)="handleEvaluationSummary($event)"
-              />
+                <app-comentarios
+                  #comentarios
+                  [producto]="product"
+                  (evaluationSummary)="handleEvaluationSummary($event)"
+                />
               </div>
             </div>
           </div>

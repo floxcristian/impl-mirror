@@ -5,6 +5,7 @@
   <app-guided-steps [step]="2"></app-guided-steps>
 
   <div class="row">
+    <!-- formulario inicio sesión -->
     <div class="col-12 col-lg-7 col-xl-8" *ngIf="!isLogin">
       <div class="card" *ngIf="!usuarioInvitado && !isLogin">
         <div class="card-body">
@@ -74,6 +75,18 @@
               "
             >
               {{ tienda.address }}
+            </p>
+            <p
+              *ngIf="!retiroFlag && addressCustomerSelected"
+              class="subtitle"
+              style="
+                font-weight: normal;
+                padding: 0.5rem 2px;
+                margin-bottom: 0px;
+                color: #0063b9 !important;
+              "
+            >
+              {{ addressCustomerSelected.address }}
             </p>
             <ng-container *ngIf="select_grupos">
               <p
@@ -962,8 +975,7 @@
                 </div>
                 <!-- Start::agregar dirección -->
                 <div class="row" *ngIf="showNewAddress">
-                  se debe mostrar esto
-                  <div class="col-12 collapse" id="collapsenewAddress">
+                  <div class="col-12" id="collapsenewAddress">
                     <app-add-address
                       [invitado]="false"
                       (respuesta)="respuesta($event)"
@@ -1092,7 +1104,7 @@
                 documentType != 'cotizacion' &&
                 userSession.userRole !== 'compradorb2c' &&
                 userSession.userRole !== 'b2c' &&
-                !invitado
+                userSession.userRole !== 'temp'
               "
             >
               <div class="col-12 text-end">

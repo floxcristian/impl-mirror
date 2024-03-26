@@ -1,3 +1,4 @@
+@if (slides && slides.length > 0) {
 <div class="block-slideshow">
   <owl-carousel-o
     [options]="options"
@@ -6,7 +7,7 @@
   >
     <ng-container *ngFor="let slide of slides; index as i">
       <ng-template carouselSlide [id]="slide.imageClassic">
-        @if(i === 0){
+        @if (i === 0) {
         <a [href]="slide.buttonUrl">
           <div
             class="slide_container d-block d-sm-none"
@@ -46,3 +47,4 @@
     </ng-container>
   </owl-carousel-o>
 </div>
+}

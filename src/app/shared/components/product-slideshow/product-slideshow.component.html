@@ -10,11 +10,11 @@
 
 <div
   class="container"
-  style="margin-top: 50px"
+  style="margin-top: 35px"
   *ngIf="lstProductos.length > 0"
 >
   <div class="col-sm-12 p-0">
-    <div class="mb-5 mt-2">
+    <div class="mb-2 mt-2">
       <ng-container *ngFor="let obj of lstProductos; let i = index">
         <div *ngIf="obj.articles.length > 0" class="mb-5">
           <div class="row mt-2">
@@ -27,12 +27,16 @@
               </h1>
             </div>
           </div>
-          <div style="margin-top: 15px">
+          <div
+            class="products-view px-sm-3 mx-sm-3 mx-xl-5"
+            style="margin-top: 15px"
+          >
             <div
               class="products-view__list products-list"
               data-layout="grid-5-full"
               data-with-features="false"
             >
+              @if(obj.articles && obj.articles.length > 0) {
               <owl-carousel-o
                 class="carouselLista"
                 [options]="carouselOptions"
@@ -44,17 +48,27 @@
                 >
                   <ng-template carouselSlide>
                     <app-product-card-b2c-ficha
-                      (mouseover)="over($event)"
-                      (mouseleave)="leave($event)"
                       [product]="prod"
                       [origen]="[ruta, '', prod.name.trim(), '']"
                       [home]="true"
                       [layout]="layout"
                       [cartClass]="true"
+                      [isOnProductPage]="true"
                     ></app-product-card-b2c-ficha>
                   </ng-template>
                 </ng-container>
+                <ng-container *ngIf="obj.articles.length < 6">
+                  <ng-template
+                    carouselSlide
+                    *ngFor="
+                      let item of relleno | slice : 0 : 6 - obj.articles.length
+                    "
+                  >
+                    <div class="d-flex w-100"></div>
+                  </ng-template>
+                </ng-container>
               </owl-carousel-o>
+              }
             </div>
           </div>
         </div>

@@ -88,7 +88,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   direccion!: ICustomerAddress | any;
   despachoClienteRef!: Subscription;
   isVacio = isVacio;
-  usuarioRef!: Subscription;
+  sessionRef!: Subscription;
 
   // News
   session!: ISession;
@@ -135,34 +135,24 @@ export class SearchComponent implements OnInit, OnDestroy {
       .pipe(first((stores) => stores.length > 0))
       .subscribe({
         next: () => {
-          //console.log('stores desde el search component: ', stores);
           this.areLoadedStores = true;
-          console.log('tiendaSeleccionada 1');
+          this.searchControl.enable();
           // Obtengo tienda seleccionada,
           // como aun espera a que acepte... se hace un setdefault
           this.selectedStore = this.geolocationService.getSelectedStore();
-          //console.log('tiendaSeleccionada: ', this.tiendaSeleccionada);
           this.onChangeStore();
         },
       });
 
     this.session = this.sessionService.getSession();
     if (this.session.documentId !== '0') {
-      this.customerPreferenceService.getCustomerPreferences().subscribe({
-        next: (preferences) => {
-          this.direccion = preferences.deliveryAddress;
-        },
-      });
+      this.getCustomerPreferences();
     }
 
-    this.usuarioRef = this.authStateService.session$.subscribe((user) => {
-      this.session = user;
+    this.sessionRef = this.authStateService.session$.subscribe((session) => {
+      this.session = session;
       if (this.session.documentId !== '0') {
-        this.customerPreferenceService.getCustomerPreferences().subscribe({
-          next: (preferences) => {
-            this.direccion = preferences.deliveryAddress;
-          },
-        });
+        this.getCustomerPreferences();
       }
     });
 
@@ -174,18 +164,30 @@ export class SearchComponent implements OnInit, OnDestroy {
       );
   }
 
+  private getCustomerPreferences(): void {
+    this.customerPreferenceService.getCustomerPreferences().subscribe({
+      next: ({ deliveryAddress }) => (this.direccion = deliveryAddress),
+    });
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
     this.despachoClienteRef.unsubscribe();
-    this.usuarioRef.unsubscribe();
+    this.sessionRef.unsubscribe();
   }
 
   reset(): void {
     this.buscando = true;
   }
 
+  clearSearch() {
+    this.searchControl.setValue('');
+  }
+
   buscar() {
+    this.textToSearch = this.searchControl.value || '';
+
     this.gtmService.pushTag({
       event: 'search',
       busqueda: this.textToSearch,
@@ -310,7 +312,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    * Se activa al detectar cambios en el search input.
    */
   private onChangeSearchInput(): void {
-    this.searchControl = new FormControl('');
+    this.searchControl = new FormControl({ value: '', disabled: true });
     this.searchControl.valueChanges
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((query) => {
@@ -328,7 +330,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   private onChangeStore(): void {
     this.geolocationService.selectedStore$.subscribe({
       next: (selectedStore) => {
-        console.log('tiendaSeleccionada 2');
         this.selectedStore = selectedStore;
         this.shoppingCartService.calc();
         if (selectedStore.isChangeToNearestStore) {

@@ -75,23 +75,24 @@
             </div>
 
             <div class="col-md-12">
-              <div class="mb-3" style="color: #0063b9">
-                <label style="color: #0063b9; font-weight: bold"
+              <div class="mb-3">
+                <label style="color: #0063b9; font-weight: 100"
                   ><font style="margin-right: 10px">Código*</font> Teléfono
                   Fijo/Celular</label
                 >
                 <div class="input-group">
-                  <div class="input-group-prepend">
+                  <div class="input-group-prepend" dropdown>
                     <button
-                      class="btn btn-outline-secondary dropdown-toggle"
+                      id="button-basic"
+                      dropdownToggle
                       type="button"
-                      data-bs-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
+                      class="btn btn-outline-secondary dropdown-toggle"
+                      aria-controls="dropdown-phone"
                     >
                       <i
                         [ngClass]="
-                          selectedPhoneCode == config.phoneCodes.mobile.code
+                          selectedPhoneCode ==
+                          this.config.phoneCodes.mobile.code
                             ? 'fa-solid fa-mobile-screen'
                             : 'fa-solid fa-phone'
                         "
@@ -99,24 +100,34 @@
                       ></i>
                       {{ selectedPhoneCode }}
                     </button>
-                    <div class="dropdown-menu">
+                    <div
+                      id="dropdown-phone"
+                      *dropdownMenu
+                      class="dropdown-menu"
+                      role="menu"
+                      aria-labelledby="button-basic"
+                    >
                       <a
                         class="dropdown-item"
-                        (click)="Select_fono(config.phoneCodes.mobile.code)"
+                        (click)="
+                          Select_fono(this.config.phoneCodes.mobile.code)
+                        "
                         ><i
                           class="fa-solid fa-mobile-screen"
                           style="margin-right: 1px"
                         ></i
-                        >{{ config.phoneCodes.mobile.code }}</a
+                        >{{ this.config.phoneCodes.mobile.code }}</a
                       >
                       <a
                         class="dropdown-item"
-                        (click)="Select_fono(config.phoneCodes.landline.code)"
+                        (click)="
+                          Select_fono(this.config.phoneCodes.landline.code)
+                        "
                         ><i
                           class="fa-solid fa-phone"
                           style="margin-right: 1px"
                         ></i
-                        >{{ config.phoneCodes.landline.code }}</a
+                        >{{ this.config.phoneCodes.landline.code }}</a
                       >
                     </div>
                   </div>
@@ -125,7 +136,8 @@
                     type="text"
                     class="form-control"
                     placeholder="Numero Contacto*"
-                    maxLength="9"
+                    [maxLength]="maxPhone"
+                    appPhoneChar
                   />
                 </div>
 

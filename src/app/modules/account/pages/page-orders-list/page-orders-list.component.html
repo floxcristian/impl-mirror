@@ -92,7 +92,8 @@
                       routerLink="/carro-compra/downloadpdf"
                       [queryParams]="{
                         numero: order.invoiceNumber,
-                        tipo: 'factura'
+                        tipo: 'factura',
+                        tipo_doc: order.observation
                       }"
                       target="_blank"
                       >{{ order.invoiceNumber }}</a

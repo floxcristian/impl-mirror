@@ -79,13 +79,12 @@ export class ProductSlideshowSpecialsComponent implements OnInit {
     this.innerWidth = isPlatformBrowser(this.platformId)
       ? window.innerWidth
       : 900;
-    this.onResize(event);
   }
 
   async ngOnInit() {
     this.user = this.sessionService.getSession();
     const role = this.user.userRole;
-    this.isB2B = role === 'supervisor' || role === 'comprador';
+    this.isB2B = role === 'supervisor' || role === 'buyer';
 
     let url: string = this.router.url;
     this.ruta = url.split('/');

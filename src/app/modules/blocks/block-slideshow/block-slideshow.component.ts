@@ -17,13 +17,16 @@ export class BlockSlideshowComponent implements OnInit {
     lazyLoad: true,
     dots: true,
     //dragging: false,
-    loop: true,
+    loop: false,
     autoplay: true,
     autoplayHoverPause: true,
     autoplayTimeout: 8000,
     nav: false,
     responsive: {
-      0: { items: 1 },
+      0: {
+        items: 1,
+        loop: true,
+      },
     },
     autoplaySpeed: 1000,
   };
