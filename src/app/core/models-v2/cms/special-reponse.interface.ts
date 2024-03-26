@@ -59,10 +59,10 @@ export interface IArticle {
   brand: string; // +
   minimumPrice: number; // +
   images: IImage; // +
-  priceInfo: IPriceInfo; // +
-  deliverySupply?: IDeliverySupply; //
-  stockSummary: IStockSummary; // +
-  origin: IShoppingCartProductOrigin; // + /// ESTO LO AGREGARON A MANO?
+  priceInfo: IPriceInfo; // quitar ?
+  deliverySupply?: IDeliverySupply; // 
+  stockSummary: IStockSummary; // quitar ?
+  origin?: IShoppingCartProductOrigin; // quitar ?
   cyber: number; // +
   metaTags?: MetaTag[];
 }

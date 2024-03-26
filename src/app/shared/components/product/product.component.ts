@@ -377,7 +377,7 @@ export class ProductComponent implements OnInit, OnChanges {
     this.modalService.show(ModalScalePriceComponent, {
       class: 'modal-dialog-centered',
       initialState: {
-        scalePrices: this.dataProduct.priceInfo.scalePrice,
+        scalePrices: this.dataProduct.priceInfo?.scalePrice,
       },
     });
   }

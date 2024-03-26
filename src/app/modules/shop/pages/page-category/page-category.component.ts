@@ -914,10 +914,18 @@ export class PageCategoryComponent implements OnInit {
    * @param patent
    */
   getProductsByVehicle(SIICode: string, patent: string): void {
+    const { code: branchCode } =
+          this.geolocationService.getSelectedStore();
     this.removableCategory = [];
     this.cargandoProductos = true;
     this.vehicleService.getProductsByVehicle(SIICode, patent).subscribe({
       next: (filters) => {
+        //const skus = filters.map(filter => itemsku);
+        let skus  = filters.reduce((acc, el) => {
+          acc.push(...el.skus.filter(Boolean));
+          return acc;
+        }, [] as string[]);
+        skus = [...new Set(skus)];
         /*this.removableCategory.push({
           value: '',
           text: '',
@@ -926,6 +934,19 @@ export class PageCategoryComponent implements OnInit {
         //this.cargandoProductos = true;
         this.PagTotalRegistros = filters.length;
         this.cargandoCatalogo = false;
+        // this.cargandoProductos = false
+        this.vehicleService.searchVehicleFilters({ rut: this.session.documentId,
+          skus,
+          sort: '',
+          sucursal: branchCode}).subscribe({
+            next:(res)=>{
+              console.log("searchVehicleFilters: ", res)
+              this.products = res.articles
+            },
+            error:(err)=>{
+              console.log('gg',err)
+            }
+        })
       },
       error: (err) => {
         console.log('Ha ocurrido un error al obtener productos: ', err);

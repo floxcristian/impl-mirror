@@ -557,8 +557,8 @@
       <div
         class="product-card__buttons"
         *ngIf="
-          productData.stockSummary.branchStock === 0 &&
-          productData.stockSummary.companyStock === 0
+          productData.stockSummary?.branchStock === 0 &&
+          productData.stockSummary?.companyStock === 0
         "
       >
         <button

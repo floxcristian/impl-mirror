@@ -342,9 +342,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   searchVehicle({ type, search }: { type: VehicleType; search: string }) {
-    console.log('type: ', type);
-    console.log('search: ', search);
-    this.vehicleService.getByPatentOrVin(type, search).subscribe({
+
+    this.vehicleService.getByPatentOrVin({type, search, username: this.session.username || ''}).subscribe({
       next: (vehicle) => {
         console.log('searchVehicle: ', vehicle);
         this.selectedVehicle = vehicle || null;

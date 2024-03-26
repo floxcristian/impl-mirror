@@ -102,8 +102,8 @@ export class ProductCardB2cCmsComponent implements OnInit {
       });
     this.session = this.sessionService.getSession();
     this.cargaPrecio();
-    if (this.productData.priceInfo.hasScalePrice)
-      this.preciosEscalas = this.productData.priceInfo.scalePrice;
+    if (this.productData.priceInfo?.hasScalePrice)
+      this.preciosEscalas = this.productData.priceInfo?.scalePrice;
   }
 
   generateTags(tags: MetaTag[] | undefined): void {
@@ -127,8 +127,8 @@ export class ProductCardB2cCmsComponent implements OnInit {
   cargaPrecio() {
     if (this.home) {
       if (
-        (this.productData.priceInfo.commonPrice || 0) >
-        this.productData.priceInfo.customerPrice
+        (this.productData.priceInfo?.commonPrice || 0) >
+        (this.productData.priceInfo?.customerPrice || 0)
       ) {
         this.porcentaje_descuento();
       }
@@ -137,8 +137,8 @@ export class ProductCardB2cCmsComponent implements OnInit {
 
     //calcular porcentaje de descuento
     if (
-      (this.productData.priceInfo.commonPrice || 0) >
-      this.productData.priceInfo.customerPrice
+      (this.productData.priceInfo?.commonPrice || 0) >
+      (this.productData.priceInfo?.customerPrice || 0)
     ) {
       this.porcentaje_descuento();
     }
@@ -179,10 +179,10 @@ export class ProductCardB2cCmsComponent implements OnInit {
 
   porcentaje_descuento() {
     let descuento =
-      (this.productData.priceInfo.commonPrice || 0) -
-      this.productData.priceInfo.customerPrice;
+      (this.productData.priceInfo?.commonPrice || 0) -
+      (this.productData.priceInfo?.customerPrice || 0);
     this.porcentaje = Math.round(
-      (descuento / (this.productData.priceInfo.commonPrice || 1)) * 100
+      (descuento / (this.productData.priceInfo?.commonPrice || 1)) * 100
     );
   }
 
