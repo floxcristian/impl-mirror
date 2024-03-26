@@ -129,6 +129,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.onChangeSearchInput();
+    this.onChangeTypeInput();
 
     this.geolocationService.stores$
       .pipe(first((stores) => stores.length > 0))
@@ -296,6 +297,18 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.modalServices.open(ModalStoresComponent, { size: 'md' });
   }
 
+  /**
+   * Se activa al detectar cambios en el type input.
+   */
+  onChangeTypeInput(): void {
+    this.vehicleForm.get('type')?.valueChanges.subscribe(() => {
+      this.notVehicleFound = false;
+    });
+  }
+
+  /**
+   * Se activa al detectar cambios en el search input.
+   */
   private onChangeSearchInput(): void {
     this.searchControl = new FormControl('');
     this.searchControl.valueChanges
@@ -347,11 +360,23 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Quitar vehículo seleccionado.
+   */
   cleanSelectedVehicle(): void {
     this.vehicleForm.setValue({
       type: 'patent',
       search: null,
     });
     this.selectedVehicle = null;
+  }
+
+  /**
+   * Ir a la página de artículos para ver productos del vehículo seleccionado.
+   */
+  goToProductsPage() {
+    //this.menuVehiculo.toggle();
+    this.searchVehicle(this.vehicleForm.value);
+    this.menuVehiculo.toggle();
   }
 }

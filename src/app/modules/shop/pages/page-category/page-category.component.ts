@@ -183,6 +183,10 @@ export class PageCategoryComponent implements OnInit {
 
   ngOnInit(): void {
     let metadataCount = 0;
+
+    /****************************************************
+     * QUERY PARAMS
+     ****************************************************/
     this.route.queryParams.subscribe((query) => {
       console.log('on queryParamsChange: ', query);
       this.filters = [];
@@ -244,7 +248,11 @@ export class PageCategoryComponent implements OnInit {
       }
     });
 
+    /****************************************************
+     * ROUTE PARAMS
+     ****************************************************/
     this.route.params.subscribe((params) => {
+      console.log('route params: ', params);
       this.filters = [];
 
       // 1. Categoría
@@ -253,6 +261,7 @@ export class PageCategoryComponent implements OnInit {
         params['metodo'] &&
         params['metodo'] === 'categoria'
       ) {
+        console.log('===================1. categoria');
         this.textToSearch =
           params['busqueda'] === 'todos' ? '' : params['busqueda'];
         console.log('textToSearch[1]: ', this.textToSearch);
@@ -313,8 +322,10 @@ export class PageCategoryComponent implements OnInit {
         // SEO
         this.getDetalleSeoCategoria(category);
       }
+
       // 2. Búsqueda
       else if (params['busqueda']) {
+        console.log('===================2. busqueda');
         this.textToSearch =
           params['busqueda'] === 'todos' ? '' : params['busqueda'];
         console.log('textToSearch[2]: ', this.textToSearch);
@@ -388,10 +399,35 @@ export class PageCategoryComponent implements OnInit {
           metadataCount++;
         }
       }
+
       // 3. Vehículo
       else if (params['patent'] && params['SIICode']) {
+        console.log('===================3. vehiculo');
         this.textToSearch = params['patent'];
         console.log('textToSearch[3]: ', this.textToSearch);
+        const { code: branchCode } =
+          this.geolocationService.getSelectedStore();
+        const parametros = {
+          branchCode,
+          category: '',
+          word: this.textToSearch,
+          location: this.preferences.deliveryAddress?.city
+            ? this.preferences.deliveryAddress?.city
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+            : '',
+          pageSize: this.pageSize,
+          documentId: this.session.documentId,
+          showPrice: 1,
+        };
+        this.removableFilters = this.filterQuery;
+        this.parametrosBusqueda = {
+          ...parametros,
+          ...this.filterQuery,
+        };
+        this.parametrosBusqueda.page = this.currentPage;
+        console.log('parametrosBusqueda: ', this.parametrosBusqueda);
+
         this.getProductsByVehicle(params['patent'], params['SIICode']);
       }
     });
@@ -438,6 +474,7 @@ export class PageCategoryComponent implements OnInit {
         : '';
     }
 
+    console.log('scroll: ', scroll);
     if (!scroll) {
       this.parametrosBusqueda.page = 1;
       this.currentPage = 1;
@@ -448,6 +485,7 @@ export class PageCategoryComponent implements OnInit {
 
     this.articleService.search(parametros).subscribe({
       next: (res) => {
+        console.log('articleService.search: ', res);
         this.SetProductos(res, scroll);
       },
       error: (err) => {
@@ -844,12 +882,21 @@ export class PageCategoryComponent implements OnInit {
    * @param patent
    */
   getProductsByVehicle(SIICode: string, patent: string): void {
+    this.removableCategory = [];
+    this.cargandoProductos = true;
     this.vehicleService.getProductsByVehicle(SIICode, patent).subscribe({
       next: (filters) => {
+        /*this.removableCategory.push({
+          value: '',
+          text: '',
+        });*/
         console.log('getProductsByVehicle: ', filters);
         //this.cargandoProductos = true;
         this.PagTotalRegistros = filters.length;
         this.cargandoCatalogo = false;
+      },
+      error: (err) => {
+        console.log('Ha ocurrido un error al obtener productos: ', err);
       },
     });
   }
