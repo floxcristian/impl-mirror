@@ -45,7 +45,6 @@ import { AddressType } from '@core/enums/address-type.enum';
 import { CustomerPreferencesStorageService } from '@core/storage/customer-preferences-storage.service';
 import { CustomerPreferenceService } from '@core/services-v2/customer-preference/customer-preference.service';
 import { ConfigService } from '@core/config/config.service';
-import { IConfig } from '@core/config/config.interface';
 import { AuthStateServiceV2 } from '@core/services-v2/session/auth-state.service';
 
 @Component({

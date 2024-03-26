@@ -21,7 +21,7 @@ import { SessionService } from '@core/services-v2/session/session.service';
   styleUrls: ['./products-view.component.scss'],
 })
 export class ProductsViewComponent {
-  isB2B: boolean;
+  isB2B!: boolean;
   // Analizando
   @Input() products!: any[];
   @Input() limit = 12;

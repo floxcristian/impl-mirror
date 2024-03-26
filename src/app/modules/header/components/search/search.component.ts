@@ -349,11 +349,6 @@ export class SearchComponent implements OnInit, OnDestroy {
         console.log('searchVehicle: ', vehicle);
         this.selectedVehicle = vehicle || null;
         this.notVehicleFound = vehicle ? false : true;
-        if (vehicle?.PLACA_PATENTE && vehicle?.codigoSii) {
-          this.router.navigateByUrl(
-            `inicio/productos/vehicle/${vehicle.PLACA_PATENTE}/${vehicle.codigoSii}`
-          );
-        }
       },
       error: (err) => {
         this.notVehicleFound = true;
@@ -376,8 +371,10 @@ export class SearchComponent implements OnInit, OnDestroy {
    * Ir a la página de artículos para ver productos del vehículo seleccionado.
    */
   goToProductsPage() {
-    //this.menuVehiculo.toggle();
-    this.searchVehicle(this.vehicleForm.value);
-    this.menuVehiculo.toggle();
+    if(this.selectedVehicle?.PLACA_PATENTE && this.selectedVehicle?.codigoSii){
+      this.router.navigateByUrl(`inicio/productos/vehicle/${this.selectedVehicle?.PLACA_PATENTE}/${this.selectedVehicle?.codigoSii}`);
+      this.searchVehicle(this.vehicleForm.value);
+      this.menuVehiculo.toggle();
+    }
   }
 }

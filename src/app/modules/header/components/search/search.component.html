@@ -405,7 +405,7 @@
             {{
               selectedVehicle
                 ? selectedVehicle.MARCA + ' ' + selectedVehicle.PLACA_PATENTE
-                : 'Seleccionar vehículo'
+                : 'Buscar vehículo'
             }}
           </span>
         </span>
@@ -423,7 +423,7 @@
                   class="d-flex justify-content-center"
                   style="color: #0063b9; font-size: 18px; font-weight: bold"
                 >
-                  Seleccionar vehículo
+                  Buscar vehículo
                   <img
                     src="../../../../../assets/svg/23.svg"
                     alt="información"
@@ -495,7 +495,7 @@
                   <div class="col-6">
                     <button
                       class="btn btn-border-primary btn-lg text-center w-100"
-                      (click)="showStores()"
+                      (click)="cleanSelectedVehicle()"
                     >
                       Limpiar
                     </button>
