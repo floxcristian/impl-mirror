@@ -173,9 +173,11 @@ export class PageCategoryComponent implements OnInit {
    */
   private onSelectedStoreChange(): void {
     this.geolocationService.selectedStore$.subscribe(({ code }) => {
-      this.filters = [];
-      this.parametrosBusqueda.branchCode = code || '';
-      this.cargarCatalogoProductos(this.parametrosBusqueda, '');
+      if(!this.route.snapshot.paramMap.get('patent')){
+        this.filters = [];
+        this.parametrosBusqueda.branchCode = code || '';
+        this.cargarCatalogoProductos(this.parametrosBusqueda, '');
+      }
     });
   }
 
@@ -188,6 +190,7 @@ export class PageCategoryComponent implements OnInit {
      * QUERY PARAMS
      ****************************************************/
     this.route.queryParams.subscribe((query) => {
+      console.log("query pe:",query)
       this.filters = [];
       this.origen = getOriginUrl(this.route.snapshot);
 
@@ -404,28 +407,28 @@ export class PageCategoryComponent implements OnInit {
         console.log('===================3. vehiculo');
         this.textToSearch = params['patent'];
         console.log('textToSearch[3]: ', this.textToSearch);
-        const { code: branchCode } =
-          this.geolocationService.getSelectedStore();
-        const parametros = {
-          branchCode,
-          category: '',
-          word: this.textToSearch,
-          location: this.preferences.deliveryAddress?.city
-            ? this.preferences.deliveryAddress?.city
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-            : '',
-          pageSize: this.pageSize,
-          documentId: this.session.documentId,
-          showPrice: 1,
-        };
-        this.removableFilters = this.filterQuery;
-        this.parametrosBusqueda = {
-          ...parametros,
-          ...this.filterQuery,
-        };
-        this.parametrosBusqueda.page = this.currentPage;
-        console.log('parametrosBusqueda: ', this.parametrosBusqueda);
+        // const { code: branchCode } =
+        //   this.geolocationService.getSelectedStore();
+        // const parametros = {
+        //   branchCode,
+        //   category: '',
+        //   word: this.textToSearch,
+        //   location: this.preferences.deliveryAddress?.city
+        //     ? this.preferences.deliveryAddress?.city
+        //         .normalize('NFD')
+        //         .replace(/[\u0300-\u036f]/g, '')
+        //     : '',
+        //   pageSize: this.pageSize,
+        //   documentId: this.session.documentId,
+        //   showPrice: 1,
+        // };
+        // this.removableFilters = this.filterQuery;
+        // this.parametrosBusqueda = {
+        //   ...parametros,
+        //   ...this.filterQuery,
+        // };
+        // this.parametrosBusqueda.page = this.currentPage;
+        // console.log('parametrosBusqueda: ', this.parametrosBusqueda);
 
         this.getProductsByVehicle(params['patent'], params['SIICode']);
       }

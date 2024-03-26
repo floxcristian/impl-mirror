@@ -11,7 +11,7 @@ import {
   IProductsVehicleResponse,
 } from './products-vehicle-response.interface';
 
-const API_VEHICLE = `${environment.apiEcommerce}/api/catalogo/`;
+const API_VEHICLE = `${environment.apiEcommerce}/api/catalogo`;
 
 @Injectable({
   providedIn: 'root',
