@@ -1,6 +1,6 @@
 // Angular
-import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 // Environment
 import { environment } from '@env/environment';
 import { Observable, map } from 'rxjs';
@@ -17,6 +17,11 @@ const API_VEHICLE = `${environment.apiEcommerce}/api/catalogo/`;
   providedIn: 'root',
 })
 export class VehicleService {
+  headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    Authorization: `Basic c2VydmljZXM6MC49ajNEMnNzMS53Mjkt`,
+  });
+
   constructor(private http: HttpClient) {}
   /**
    * Obtener vehículo por patente o VIN.
@@ -45,5 +50,22 @@ export class VehicleService {
         },
       })
       .pipe(map((res) => res.data.filtros));
+  }
+
+  searchVehicleFilters(params: any) {
+    return this.http
+      .post(environment.apiElastic + 'busquedaFiltros', params, {
+        headers: this.headers,
+      })
+      .pipe(
+        map((res: any) => {
+          return {
+            articles: res.articulos,
+            banners: [],
+            brands: res.marcas,
+            categories: res.categorias,
+          };
+        })
+      );
   }
 }
