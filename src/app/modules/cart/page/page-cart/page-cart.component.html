@@ -349,7 +349,7 @@
         <div
           class="col-12"
           [ngStyle]="{
-            'margin-bottom': showresumen == true ? '300px' : '200px'
+            'margin-bottom': showresumen == true ? '300px' : '80px'
           }"
         >
           <div class="mb-5" (window:resize)="onResize($event)">
@@ -364,14 +364,12 @@
                 <div class="products-view">
                   <div
                     class="products-view__list products-list"
-                    data-with-features="false"
-                  ></div>
-                  <div
-                    class="products-view__list products-list"
                     data-layout="grid-5-full"
                     data-with-features="false"
                   >
                     <div>
+                      @if (recommendedProducts && recommendedProducts.length >
+                      0) {
                       <owl-carousel-o
                         class="carouselCart"
                         [options]="carouselOptions"
@@ -392,7 +390,19 @@
                             </app-product-card-b2c-ficha>
                           </ng-template>
                         </ng-container>
+                        <ng-container *ngIf="recommendedProducts.length < 6">
+                          <ng-template
+                            carouselSlide
+                            *ngFor="
+                              let item of relleno
+                                | slice : 0 : 6 - recommendedProducts.length
+                            "
+                          >
+                            <div class="d-flex w-100"></div>
+                          </ng-template>
+                        </ng-container>
                       </owl-carousel-o>
+                      }
                     </div>
                   </div>
                 </div>
@@ -428,6 +438,8 @@
                     data-with-features="false"
                   >
                     <div>
+                      @if (recommendedProducts && recommendedProducts.length >
+                      0) {
                       <owl-carousel-o
                         class="carouselCart"
                         [options]="carrouselOptionsMobile"
@@ -449,6 +461,7 @@
                           </ng-template>
                         </ng-container>
                       </owl-carousel-o>
+                      }
                     </div>
                   </div>
                 </div>

@@ -17,14 +17,14 @@ export class ButtonsSlideshowComponent implements OnInit {
     lazyLoad: true,
     dots: false,
     dragging: false,
-    loop: true,
+    loop: false,
     autoplay: false,
     autoplayHoverPause: true,
     autoplayTimeout: 8000,
     nav: false,
     responsive: {
-      0: { items: 1.5 },
-      700: { items: 2.5 },
+      0: { items: 1.5, loop: true },
+      700: { items: 2.5, loop: true },
     },
     autoplaySpeed: 3000,
   };
@@ -37,10 +37,7 @@ export class ButtonsSlideshowComponent implements OnInit {
 
   getValueBoxes(): void {
     this.cmsService.getValueBoxes().subscribe({
-      next: (valueBoxes) => {
-        this.botones1 = valueBoxes;
-        console.log('valueBoxes: ', valueBoxes);
-      },
+      next: (valueBoxes) => (this.botones1 = valueBoxes),
       error: (err) => console.log(err),
     });
   }

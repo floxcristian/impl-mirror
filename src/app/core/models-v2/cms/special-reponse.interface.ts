@@ -37,19 +37,19 @@ export interface IBanner {
 }
 
 export interface ISpecialData {
-  id: string
-  title: string
-  order: number
+  id: string;
+  title: string;
+  order: number;
 }
 
 export interface IPaginated {
-  total: number
-  found: number
-  limit: number
-  page: number
-  firstPage: number
-  lastPage: number
-  data: IArticle[]
+  total: number;
+  found: number;
+  limit: number;
+  page: number;
+  firstPage: number;
+  lastPage: number;
+  data: IArticle[];
 }
 
 export interface IArticle {
@@ -60,7 +60,7 @@ export interface IArticle {
   minimumPrice: number; // +
   images: IImage; // +
   priceInfo: IPriceInfo; // +
-  deliverySupply: IDeliverySupply; //
+  deliverySupply?: IDeliverySupply; //
   stockSummary: IStockSummary; // +
   origin: IShoppingCartProductOrigin; // + /// ESTO LO AGREGARON A MANO?
   cyber: number; // +
@@ -92,7 +92,7 @@ export interface IPriceInfo {
   comments: string[];
   documentId: string;
   customerPrice: number;
-  customerNetPrice: number
+  customerNetPrice: number;
 }
 
 export interface IScalePrice {

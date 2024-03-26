@@ -12,7 +12,17 @@ import { MenuItem } from './menu-items';
 export class MenuService {
   get(profile: IUserRole): IMenuItem[] {
     let menuItems = [];
-    if (profile === 'supervisor') {
+    if (profile === 'superadmin') {
+      menuItems = [
+        {
+          type: 'link',
+          label: 'Órdenes de Venta',
+          url: ['/', 'mi-cuenta', 'ordenes'],
+          icon: 'far fa-file-alt',
+        },
+        MenuItem.LOGOUT_ITEM_MENU(),
+      ];
+    } else if (profile === 'supervisor') {
       menuItems = [
         MenuItem.OVERVIEW_ITEM_MENU(),
         MenuItem.PROFILE_ITEM_MENU(),
@@ -87,7 +97,7 @@ export class MenuService {
         MenuItem.TRACKING_ITEM_MENU(),
         MenuItem.LOGOUT_ITEM_MENU(),
       ];
-    } else if (profile === 'comprador' || profile === 'buyer') {
+    } else if (profile === 'buyer') {
       menuItems = [
         MenuItem.OVERVIEW_ITEM_MENU(),
         MenuItem.PROFILE_ITEM_MENU(),
@@ -146,7 +156,7 @@ export class MenuService {
       ];
     } else if (profile === 'cms') {
       menuItems = [MenuItem.LOGOUT_ITEM_MENU()];
-    } else if (profile === 'compradorb2c' || profile === 'b2c') {
+    } else if (profile === 'b2c') {
       menuItems = [
         MenuItem.OVERVIEW_ITEM_MENU(),
         MenuItem.PROFILE_ITEM_MENU(),

@@ -155,6 +155,7 @@
                         notFoundText="No se han encontrado giros"
                         [loading]="cargandoGiros"
                         [disabled]="cargandoGiros"
+                        [clearable]="false"
                       >
                         <ng-option
                           *ngFor="let document of documentOptions"
@@ -335,6 +336,7 @@
                         notFoundText="No se han encontrado giros"
                         [loading]="cargandoGiros"
                         [disabled]="cargandoGiros"
+                        [clearable]="false"
                       >
                         <ng-option
                           *ngFor="let document of documentOptions"
@@ -386,16 +388,12 @@
                   tooltip="Dirección"
                   *ngIf="selectedDocument === invoiceType.INVOICE && guest"
                 >
-                  <div
-                    class="col-12"
-                    style="padding: 0 !important"
-                    *ngIf="tienda"
-                  >
+                  <div class="col-12" style="padding: 0 !important">
                     <app-map
                       titulo="DIRECCIÓN"
                       (clearAdress)="clearAddress()"
-                      [storeAddress]="tienda.direccion"
-                      [storeZone]="tienda.zona"
+                      [storeAddress]="tienda?.direccion || ''"
+                      [storeZone]="tienda?.zona || ''"
                       [autocompletado]="autocompletado"
                       (setDireccion)="setAddress($event)"
                       (geolocalizacion)="geolocalizacion($event)"
@@ -1542,10 +1540,7 @@
           <ng-container *ngIf="innerWidth >= 450">
             <!-- Start:: -->
             <div class="row">
-              <div
-                class="col-sm-12"
-                *ngIf="cd_ver && userSession.creditLine?.requiresConfirmation"
-              >
+              <div class="col-sm-12" *ngIf="cd_ver">
                 <app-codigo-oc
                   [id]="cartSession._id"
                   [purchaseOrderId]="purchaseOrderId"
@@ -1577,6 +1572,7 @@
                 <button
                   name="paymentOv"
                   *ngIf="
+                    !cd_ver &&
                     userSession.userRole != userRoleType.BUYER &&
                     !userSession.creditLine?.requiresConfirmation &&
                     !['webPay', 'mercadopago', 'khipu'].includes(
@@ -2210,6 +2206,10 @@
                       <ng-select
                         [(ngModel)]="selectedDocument"
                         placeholder="Seleccionar documento..."
+                        notFoundText="No se han encontrado giros"
+                        [loading]="cargandoGiros"
+                        [disabled]="cargandoGiros"
+                        [clearable]="false"
                       >
                         <ng-option
                           *ngFor="let document of documentOptions"
@@ -2257,12 +2257,12 @@
                   tooltip="Dirección"
                   *ngIf="selectedDocument === invoiceType.INVOICE && guest"
                 >
-                  <div *ngIf="tienda">
+                  <div>
                     <app-map
                       titulo="DIRECCIÓN"
                       (clearAdress)="clearAddress()"
-                      [storeAddress]="tienda.direccion"
-                      [storeZone]="tienda.zona"
+                      [storeAddress]="tienda?.direccion || ''"
+                      [storeZone]="tienda?.zona || ''"
                       [autocompletado]="autocompletado"
                       (setDireccion)="setAddress($event)"
                       (geolocalizacion)="geolocalizacion($event)"

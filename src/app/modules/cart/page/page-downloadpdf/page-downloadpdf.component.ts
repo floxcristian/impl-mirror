@@ -1,12 +1,11 @@
 // Angular
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 // Services
 import { DocumentDownloadService } from '@core/services-v2/document-download.service';
-// Env
-import { environment } from '@env/environment';
 // Libs
 import { Buffer } from 'buffer';
 
@@ -21,27 +20,25 @@ export class PageDownloadpdfComponent implements OnInit {
   tipo: any = null;
   authBasic = 'Basic c2VydmljZXM6MC49ajNEMnNzMS53Mjkt';
   noDocument: boolean = false;
+  tipo_doc: any = null;
   constructor(
     private http: HttpClient,
     private sanitizer: DomSanitizer,
     private activatedRoute: ActivatedRoute,
     // Services V2
-    private readonly documentDownloadService: DocumentDownloadService
+    private readonly documentDownloadService: DocumentDownloadService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit() {
-    this.numero = this.activatedRoute.snapshot.queryParams['numero'];
-    this.tipo = this.activatedRoute.snapshot.queryParams['tipo'];
-    console.log(this.tipo);
-    if (this.tipo === 'factura') this.downloadFacturaPdf();
-    else if (this.tipo === 'orden-compra') this.downloadOcPdf();
-    else this.downloadOvPdf();
-  }
-
-  headers() {
-    return environment.apiShoppingCart.startsWith('http://192')
-      ? new HttpHeaders()
-      : new HttpHeaders().append('Authorization', this.authBasic);
+    if (isPlatformBrowser(this.platformId)) {
+      this.numero = this.activatedRoute.snapshot.queryParams['numero'];
+      this.tipo = this.activatedRoute.snapshot.queryParams['tipo'];
+      this.tipo_doc = this.activatedRoute.snapshot.queryParams['tipo_doc'];
+      if (this.tipo === 'factura') this.downloadFacturaPdf();
+      else if (this.tipo === 'orden-compra') this.downloadOcPdf();
+      else this.downloadOvPdf();
+    }
   }
   downloadOvPdf() {
     let base64Code = '';
@@ -63,31 +60,23 @@ export class PageDownloadpdfComponent implements OnInit {
   }
 
   downloadOcPdf() {
-    const headers = this.headers();
-
-    const url = environment.apiShoppingCart + 'getOc?id=' + this.numero;
-    this.http
-      .get(url, { headers, responseType: 'blob' })
-      .subscribe((response: any) => {
-        var file3 = new Blob([response], { type: 'application/pdf' });
-        this.pdfBase64 = this.sanitizer.bypassSecurityTrustResourceUrl(
-          window.URL.createObjectURL(file3)
-        );
+    this.documentDownloadService
+      .downloadOcPdf(this.numero)
+      .subscribe((arrayBuffer) => {
+        let response = Buffer.from(arrayBuffer).toString('base64');
+        response = 'data:application/pdf;base64,' + response;
+        response = response + '#toolbar=1&statusbar=1&navpanes=1';
+        this.pdfBase64 =
+          this.sanitizer.bypassSecurityTrustResourceUrl(response);
       });
   }
 
   downloadFacturaPdf() {
-    // const numero = this.numero.split('-');
-    const numero = 'BEL-69788'.split('-');
-    if (numero.length < 2) {
-      console.warn('Formato de número no válido');
-      return;
-    }
-    const codigo = this.generarCodigo(numero[0], numero[1]);
+    const codigo = this.generarCodigo(this.tipo_doc, this.numero);
     this.documentDownloadService.downloadFacturaPdf(codigo).subscribe({
       next: (data: any) => this.procesarRespuesta(data),
       error: (err) => {
-        console.warn('Error al descargar el PDF:', err);
+        console.log('Error al descargar el PDF:', err);
         this.noDocument = true;
       },
     });

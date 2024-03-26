@@ -1,6 +1,6 @@
 <ng-template #template_usuario>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Usuario</h4>
+    <h4 class="modal-title pull-left">Editar usuario</h4>
     <button
       name="modalRef"
       type="button"
@@ -12,43 +12,15 @@
     </button>
   </div>
   <div class="modal-body">
-    <form [formGroup]="formUsuario" (ngSubmit)="onSubmit(formUsuario.value)">
-      <div class="mb-3">
+    <form [formGroup]="formUsuario" (ngSubmit)="onSubmit()">
+      <!-- <div class="mb-3">
         <input
           type="hidden"
           class="form-control"
           id="_id"
           formControlName="_id"
         />
-      </div>
-      <div class="mb-3 form-check form-switch">
-        <input
-          type="checkbox"
-          class="form-check-input"
-          formControlName="active"
-          id="active"
-        />
-        <label class="form-check-label" for="active">Activo</label>
-      </div>
-      <div class="mb-3">
-        <label for="username">Usuario:</label>
-        <input
-          type="text"
-          class="form-control"
-          id="username"
-          formControlName="username"
-          placeholder="Ingrese Nombre de Usuario"
-        />
-      </div>
-      <p
-        *ngIf="
-          formUsuario.controls['username'].invalid &&
-          formUsuario.controls['username'].touched
-        "
-        class="text-error-form-2"
-      >
-        Debe Ingresar Nombre de Usuario
-      </p>
+      </div> -->
       <div class="mb-3">
         <label for="firstName">Nombres:</label>
         <input
@@ -90,7 +62,16 @@
       >
         Debe Ingresar el correo correctamente.
       </p>
-
+      <div class="mb-3">
+        <label for="username">Usuario:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          formControlName="username"
+          placeholder="Ingrese Nombre de Usuario"
+        />
+      </div>
       <div class="mb-3">
         <label for="phone">Celular:</label>
         <input
@@ -99,6 +80,7 @@
           id="phone"
           formControlName="phone"
           placeholder="Ingrese Telefono"
+          maxlength="12"
         />
       </div>
       <p
@@ -112,7 +94,7 @@
       </p>
 
       <div class="mb-3">
-        <label for="password">Password:</label>
+        <label for="password">Contraseña:</label>
         <input
           type="password"
           class="form-control"
@@ -128,7 +110,7 @@
         "
         class="text-error-form-2"
       >
-        Debe Ingresar Contacto
+        Debe Ingresar Contraseña
       </p>
       <div class="mb-3">
         <label for="userRole">ROL</label>
@@ -148,7 +130,7 @@
         "
         class="text-error-form-2"
       >
-        Debe Ingresar Contacto
+        Debe Ingresar Rol
       </p>
       <button
         name="salir"
@@ -175,7 +157,7 @@
 
 <ng-template #template_crearusuario>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Usuario</h4>
+    <h4 class="modal-title pull-left">Crear usuario</h4>
     <button
       name="modalRef"
       type="button"
@@ -187,43 +169,15 @@
     </button>
   </div>
   <div class="modal-body">
-    <form [formGroup]="formUsuario" (ngSubmit)="onSubmit(formUsuario.value)">
-      <div class="mb-3">
+    <form [formGroup]="formUsuario" (ngSubmit)="onSubmit()">
+      <!-- <div class="mb-3">
         <input
           type="hidden"
           class="form-control"
           id="_id"
           formControlName="_id"
         />
-      </div>
-      <div class="mb-3 form-check form-switch">
-        <input
-          type="checkbox"
-          class="form-check-input"
-          formControlName="active"
-          id="active"
-        />
-        <label class="form-check-label" for="active">Activo</label>
-      </div>
-      <div class="mb-3">
-        <label for="username">Usuario:</label>
-        <input
-          type="text"
-          class="form-control"
-          id="username"
-          formControlName="username"
-          placeholder="Ingrese Nombre de Usuario"
-        />
-      </div>
-      <p
-        *ngIf="
-          formUsuario.controls['username'].invalid &&
-          formUsuario.controls['username'].touched
-        "
-        class="text-error-form-2"
-      >
-        Debe Ingresar Nombre de Usuario
-      </p>
+      </div> -->
       <div class="mb-3">
         <label for="firstName">Nombres:</label>
         <input
@@ -234,7 +188,6 @@
           placeholder="Ingrese Nombres"
         />
       </div>
-
       <div class="mb-3">
         <label for="lastName">Apellidos:</label>
         <input
@@ -245,7 +198,6 @@
           placeholder="Ingrese Apellidos"
         />
       </div>
-
       <div class="mb-3">
         <label for="email">Email:</label>
         <input
@@ -265,7 +217,17 @@
       >
         Debe Ingresar el correo correctamente.
       </p>
-
+      <div class="mb-3">
+        <label for="username">Usuario:</label>
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          formControlName="username"
+          placeholder=""
+          [disabled]="true"
+        />
+      </div>
       <div class="mb-3">
         <label for="phone">Celular:</label>
         <input
@@ -274,6 +236,7 @@
           id="phone"
           formControlName="phone"
           placeholder="Ingrese Telefono"
+          maxlength="12"
         />
       </div>
       <p
@@ -283,11 +246,11 @@
         "
         class="text-error-form-2"
       >
-        Debe Ingresar Contacto
+        Debe Ingresar Celular
       </p>
 
       <div class="mb-3">
-        <label for="password">Password:</label>
+        <label for="password">Contraseña:</label>
         <input
           type="password"
           class="form-control"

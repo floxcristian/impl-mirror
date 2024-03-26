@@ -231,7 +231,6 @@ export class PagesCartPaymentOcComponent implements OnInit {
   }
 
   async validaLogin($event: any) {
-    console.log($event);
     if ($event) {
       this.usuarioTemp = !$event;
       // this.user = this.localS.get('usuario');

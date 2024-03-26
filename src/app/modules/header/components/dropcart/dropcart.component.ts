@@ -1,11 +1,10 @@
 // Angular
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, DestroyRef, inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 // Env
 import { environment } from '@env/environment';
 // Rxjs
-import { Subject } from 'rxjs';
-import { takeUntil, map, first } from 'rxjs/operators';
+import { map, first } from 'rxjs/operators';
 // Libs
 import { ToastrService } from 'ngx-toastr';
 // Models
@@ -21,6 +20,8 @@ import {
   IShoppingCart,
   IShoppingCartProduct,
 } from '@core/models-v2/cart/shopping-cart.interface';
+import { AuthStateServiceV2 } from '@core/services-v2/session/auth-state.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 interface Item {
   ProductCart: IShoppingCartProduct;
@@ -33,16 +34,15 @@ interface Item {
   templateUrl: './dropcart.component.html',
   styleUrls: ['./dropcart.component.scss'],
 })
-export class DropcartComponent implements OnInit, OnDestroy {
+export class DropcartComponent implements OnInit {
+  private readonly destroyRef: DestroyRef = inject(DestroyRef);
   removedItems: IShoppingCart[] = [];
-
-  private destroy$: Subject<void> = new Subject();
 
   items: Item[] = [];
   updating = false;
   saveTimer: any;
   saveTimerLocalCart: any;
-  usuario!: ISession;
+  session: ISession;
   IVA = environment.IVA;
   isVacio = isVacio;
 
@@ -54,8 +54,11 @@ export class DropcartComponent implements OnInit, OnDestroy {
     // Services V2
     private readonly sessionService: SessionService,
     private readonly geolocationService: GeolocationServiceV2,
-    public readonly shoppingCartService: CartService
-  ) {}
+    public readonly shoppingCartService: CartService,
+    private readonly authStateService: AuthStateServiceV2
+  ) {
+    this.session = this.sessionService.getSession();
+  }
 
   onStoresLoaded(): void {
     this.geolocationService.stores$
@@ -69,10 +72,10 @@ export class DropcartComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.onStoresLoaded();
-    this.usuario = this.sessionService.getSession();
+
     this.shoppingCartService.items$
       .pipe(
-        takeUntil(this.destroy$),
+        takeUntilDestroyed(this.destroyRef),
         map((ProductCarts) =>
           (ProductCarts || []).map((item): Item => {
             return {
@@ -89,15 +92,14 @@ export class DropcartComponent implements OnInit, OnDestroy {
       .subscribe((items) => {
         this.items = items;
       });
+
+    this.authStateService.session$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((session) => (this.session = session));
   }
 
   remove(item: IShoppingCartProduct): void {
     this.shoppingCartService.remove(item);
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   async updateCart(cantidad: any, item: Item) {

@@ -1,8 +1,6 @@
 <div class="row">
   <div class="col-12 text-center mb-3">
-    <h1 class="customized-title ">
-      No te lo puedes perder
-    </h1>
+    <h1 class="customized-title">No te lo puedes perder</h1>
     <h4 class="customized-title-h4">
       Contamos con el mayor stock de productos a nivel nacional
     </h4>
@@ -28,15 +26,22 @@
   </div>
 </div>
 
-
 <div class="d-block d-md-none">
   <div class="gallery-tablet">
+    @if(grid_layout && grid_layout.length > 0) {
     <owl-carousel-o class="carouselConcepto" [options]="carouselOptions">
-      <ng-container *ngFor="let item of grid_layout; let i = index" class="products-list__item">
+      <ng-container
+        *ngFor="let item of grid_layout; let i = index"
+        class="products-list__item"
+      >
         <ng-template carouselSlide>
-          <app-concepto-mobile [concepto]="concepto_array[i]" [tipo]="'slide'" />
+          <app-concepto-mobile
+            [concepto]="concepto_array[i]"
+            [tipo]="'slide'"
+          />
         </ng-template>
       </ng-container>
     </owl-carousel-o>
+    }
   </div>
 </div>

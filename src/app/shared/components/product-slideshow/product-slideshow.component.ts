@@ -37,28 +37,49 @@ export class ProductSlideshowComponent
   preferenciasCliente!: ICustomerPreference;
   despachoCliente!: Subscription;
   layout = 'grid-lg';
-  window = window;
-  carouselOptions: OwlOptions = {
+  carouselOptions = {
     lazyLoad: true,
-    items: 5,
+    items: 6,
     nav: true,
     navText: [
-      `<div class="m-arrow__container" ><i class="fa-regular fa-chevron-left"></i></div>`,
-      `<div class="m-arrow__container"><i class="fa-regular fa-chevron-right"></i></div>`,
+      `<i class="fas fa-chevron-left"></i>`,
+      `<i class="fas fa-chevron-right"></i>`,
     ],
-    slideBy: 'page',
     dots: true,
     loop: true,
-    autoplay: true,
-    autoplayTimeout: 4000,
+    slideBy: 'page',
+    // autoplay: true,
+    // autoplayTimeout: 4000,
     responsive: {
-      1100: { items: 5 },
-      920: { items: 5 },
+      1366: { items: 6 },
+      1100: { items: 6 },
+      920: { items: 6 },
       680: { items: 3 },
-      500: { items: 2 },
+      500: { items: 3 },
       0: { items: 2 },
     },
   };
+  // carouselOptions: OwlOptions = {
+  //   lazyLoad: true,
+  //   items: 5,
+  //   nav: true,
+  //   navText: [
+  //     `<div class="m-arrow__container" ><i class="fa-regular fa-chevron-left"></i></div>`,
+  //     `<div class="m-arrow__container"><i class="fa-regular fa-chevron-right"></i></div>`,
+  //   ],
+  //   slideBy: 'page',
+  //   dots: true,
+  //   loop: true,
+  //   autoplay: true,
+  //   autoplayTimeout: 4000,
+  //   responsive: {
+  //     1100: { items: 5 },
+  //     920: { items: 5 },
+  //     680: { items: 3 },
+  //     500: { items: 2 },
+  //     0: { items: 2 },
+  //   },
+  // };
 
   lastCustomHomepageKey = '';
 
@@ -138,7 +159,6 @@ export class ProductSlideshowComponent
   cargarHome() {
     this.cargando = true;
     const rut = this.user?.documentId || '0';
-    console.log('getSelectedStore desde ProductSlideshowComponent');
     const tiendaSeleccionada = this.geolocationService.getSelectedStore();
     const sucursal = tiendaSeleccionada.code;
     const localidad = !isVacio(this.preferenciasCliente?.deliveryAddress)
@@ -158,7 +178,6 @@ export class ProductSlideshowComponent
         .getCustomHomePage(rut, sucursal, localidad_limpia)
         .subscribe({
           next: (res) => {
-            // this.lstProductos = res.data;
             this.lstProductos = this.quitarElementos(res.data);
             this.cargando = false;
           },

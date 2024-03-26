@@ -25,7 +25,10 @@ import { SessionService } from '@core/services-v2/session/session.service';
 import { ConfigService } from '@core/config/config.service';
 import { CustomerSaleService } from '@core/services-v2/customer-sale/customer-sale.service';
 import { IFormattedPaymentButton } from './models/formatted-payment-button.model';
-import { ICustomerSale, IDebtSales } from '@core/services-v2/customer-sale/models/debt-sale.interface';
+import {
+  ICustomerSale,
+  IDebtSales,
+} from '@core/services-v2/customer-sale/models/debt-sale.interface';
 
 @Component({
   selector: 'app-page-payment-portal',
@@ -41,19 +44,19 @@ export class PagePaymentPortalComponent implements OnInit {
   dtTrigger: Subject<any> = new Subject();
   user!: ISession;
   customerDebt!: ICustomerSale[];
-  loading:boolean = true;
+  loading: boolean = true;
   documentToPay: ICustomerSale[] = [];
   documentsSelected: any[] = [];
-  total:number = 0;
-  totalExpired:number = 0;
-  totalDocuments:number = 0;
-  totalToPay:number = 0;
+  total: number = 0;
+  totalExpired: number = 0;
+  totalDocuments: number = 0;
+  totalToPay: number = 0;
   paymentBtns!: IFormattedPaymentButton[];
-  debtSales!:IDebtSales
+  debtSales!: IDebtSales;
 
-  paymentSelected:string = '';
-  loadingPayment:boolean = false;
-  paymentMsgSuccess:boolean = false;
+  paymentSelected: string = '';
+  loadingPayment: boolean = false;
+  paymentMsgSuccess: boolean = false;
   innerWidth: any;
   config!: IConfig;
 
@@ -89,23 +92,30 @@ export class PagePaymentPortalComponent implements OnInit {
   private getSalesDebt(): void {
     this.customerSaleService.getCustomerSalesDebt().subscribe({
       next: (res) => {
-        this.debtSales = res
-        const overSales:ICustomerSale[] = this.debtSales.overdueCustomerSales.map((m:ICustomerSale) => {return {...m,"status":"VENCIDA"}} )
-        const dueSales:ICustomerSale[] = this.debtSales.dueCustomerSales.map((m:ICustomerSale) => {return {...m,"status":"PENDIENTE"}} )
-        this.customerDebt = [...overSales,...dueSales]
-        this.dtTrigger.next('')
-        this.addCheckBoxs(this.customerDebt)
+        this.debtSales = res;
+        const overSales: ICustomerSale[] =
+          this.debtSales.overdueCustomerSales.map((m: ICustomerSale) => {
+            return { ...m, status: 'VENCIDA' };
+          });
+        const dueSales: ICustomerSale[] = this.debtSales.dueCustomerSales.map(
+          (m: ICustomerSale) => {
+            return { ...m, status: 'PENDIENTE' };
+          }
+        );
+        this.customerDebt = [...overSales, ...dueSales];
+        this.dtTrigger.next('');
+        this.addCheckBoxs(this.customerDebt);
         this.calcTotalSelected();
-        this.customerDebt.forEach((e:ICustomerSale) =>{
-          let date_string = e.dueDate
-          let diff = +new Date() - +new Date(date_string)
-          e.days = Math.ceil(diff/ (1000* 3600 *24))
-        })
+        this.customerDebt.forEach((e: ICustomerSale) => {
+          let date_string = e.dueDate;
+          let diff = +new Date() - +new Date(date_string);
+          e.days = Math.ceil(diff / (1000 * 3600 * 24));
+        });
         this.loading = false;
       },
-      error: (err) =>{
-        console.log(err)
-      }
+      error: (err) => {
+        console.log(err);
+      },
     });
   }
 
@@ -125,7 +135,8 @@ export class PagePaymentPortalComponent implements OnInit {
     this.documentToPay = [];
     this.documentsSelected = [];
     this.total = 0;
-    this.totalDocuments = this.debtSales.totalDueAmount + this.debtSales.totalOverdueAmount;
+    this.totalDocuments =
+      this.debtSales.totalDueAmount + this.debtSales.totalOverdueAmount;
     this.totalToPay = 0;
     this.totalExpired = this.debtSales.totalOverdueAmount;
 
@@ -233,7 +244,6 @@ export class PagePaymentPortalComponent implements OnInit {
   }
 
   resetPayment() {
-    console.log('reset check')
     this.calcTotalSelected();
     this.paymentMsgSuccess = true;
     this.modalPaymentMethodsRef.hide();

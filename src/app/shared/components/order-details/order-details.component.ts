@@ -46,7 +46,6 @@ export class OrderDetailsComponent {
           let tiendas: IStore[] | any = await this.geolocationApiService
             .getStores()
             .toPromise();
-          console.log('tieeendas', tiendas);
           if (tiendas) {
             let tienda = tiendas.filter(
               (item: any) => item.code === this.data.shoppingCart.branchCode

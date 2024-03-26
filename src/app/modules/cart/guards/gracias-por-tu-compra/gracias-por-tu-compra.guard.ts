@@ -32,6 +32,8 @@ export class GraciasPorTuCompraGuard {
     let haveAccess = false;
     const queryParams = route.queryParams;
 
+    return true;
+
     if (this.isPaymentWait(queryParams)) {
       return true;
     }

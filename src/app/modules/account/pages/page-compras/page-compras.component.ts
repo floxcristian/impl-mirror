@@ -65,13 +65,11 @@ export class PageComprasComponent implements OnInit {
   }
 
   addToCart(index: number) {
-    console.log(index);
     if (this.addingToCart) {
       return;
     }
     this.addingToCart = true;
     let products: IProduct[] = this.data[index]?.products || [];
-    console.log(products);
     if (products.length) {
       this.cart.addLista(products).subscribe(() => {
         this.addingToCart = false;

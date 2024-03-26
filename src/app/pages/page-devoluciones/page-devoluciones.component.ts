@@ -70,10 +70,8 @@ export class PageDevolucionesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('entro en devoluciones');
     this.route.queryParams.subscribe((params) => {
       this.data = params['data'];
-      console.log('data: ', this.data);
 
       if (!this.data) {
         this.router.navigate(['/', 'inicio']);
@@ -100,9 +98,12 @@ export class PageDevolucionesComponent implements OnInit {
     });
 
     this.formulario = this.fb.group({
-      nombre: [this.nombre, [Validators.required, Validators.maxLength(100)]],
+      nombre: [
+        { value: this.nombre, disabled: true },
+        [Validators.required, Validators.maxLength(100)],
+      ],
       rut: [
-        this.rut,
+        { value: this.rut, disabled: true },
         [
           Validators.required,
           Validators.maxLength(10),
@@ -131,7 +132,7 @@ export class PageDevolucionesComponent implements OnInit {
           ),
         ],
       ],
-      numeroOv: [this.ov, [Validators.required]],
+      numeroOv: [{ value: this.ov, disabled: true }, [Validators.required]],
       monto: [this.monto, [Validators.required]],
       tipoDevolucion: [this.tipoDevolucion, [Validators.required]],
       formaPago: [this.formaPago, [Validators.required]],

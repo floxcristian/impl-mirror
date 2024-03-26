@@ -108,9 +108,7 @@ export class LoginComponent implements OnInit {
               ) {
                 (resp?.length || 0) > 0
                   ? this.router.navigate(['/carro-compra', 'resumen'])
-                  : ['supervisor', 'comprador', 'buyer'].includes(
-                      res.user.userRole
-                    )
+                  : ['supervisor', 'buyer'].includes(res.user.userRole)
                   ? this.router.navigate(['/inicio']).then(() => {
                       window.location.reload();
                     })
@@ -158,7 +156,8 @@ export class LoginComponent implements OnInit {
         },
         error: (err) => {
           console.error(err);
-          this.toastr.error(err.message);
+          // this.toastr.error(err.message);
+          this.toastr.error('Credenciales inválidas');
         },
       });
   }

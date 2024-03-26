@@ -16,3 +16,9 @@ table {
   background-color: #094cac !important;
   color: white !important;
 }
+
+.card {
+  @media (min-width: 0px) and (max-width: 575px) {
+    padding: 0rem;
+  }
+}

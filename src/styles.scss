@@ -2,6 +2,8 @@
 * Clases de bootstrap 4 que no están en el 5.
 ********************************************/
 
+@import url('./scss/_preload.scss');
+
 .row > * {
   padding-left: 0 !important;
   padding-right: 0 !important;
@@ -196,44 +198,41 @@ agm-map {
   font-weight: bold;
   left: calc(100% - 85px) !important;
   top: calc(100% - 85px) !important;
-  -webkit-animation: scale-in-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-  animation: scale-in-center 0.1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  -webkit-animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
+  animation: scale-in-center 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
 .webchatContainer {
   right: 0.5% !important;
 }
 
-
-
-
-
 /**
  * ----------------------------------------
  * animation scale-in-center
  * ----------------------------------------
  */
- @-webkit-keyframes scale-in-center {
+@-webkit-keyframes scale-in-center {
   0% {
     -webkit-transform: scale(0);
-            transform: scale(0);
+    transform: scale(0);
     opacity: 1;
   }
   100% {
     -webkit-transform: scale(1);
-            transform: scale(1);
+    transform: scale(1);
     opacity: 1;
   }
 }
 @keyframes scale-in-center {
   0% {
     -webkit-transform: scale(0);
-            transform: scale(0);
+    transform: scale(0);
     opacity: 1;
   }
   100% {
     -webkit-transform: scale(1);
-            transform: scale(1);
+    transform: scale(1);
     opacity: 1;
   }
 }

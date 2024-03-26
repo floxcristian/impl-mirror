@@ -21,6 +21,8 @@ export class RegisterReceptionComponent {
   selectedPhoneCode: string;
   slices = 8;
   config: IConfig;
+  maxPhone: number = 8;
+  cantMaxRut: number = 10;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -73,18 +75,21 @@ export class RegisterReceptionComponent {
   Select_fono(phoneCode: string): void {
     this.selectedPhoneCode = phoneCode;
 
-    if (this.selectedPhoneCode === this.config.phoneCodes.mobile.code)
+    if (this.selectedPhoneCode === this.config.phoneCodes.mobile.code) {
       this.formRecibe.controls['phone'].setValidators([
         Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(8),
+        Validators.minLength(this.config.phoneCodes.mobile.lengthRule),
+        Validators.maxLength(this.config.phoneCodes.mobile.lengthRule),
       ]);
-    else
+      this.maxPhone = this.config.phoneCodes.mobile.lengthRule;
+    } else {
       this.formRecibe.controls['phone'].setValidators([
         Validators.required,
-        Validators.minLength(9),
-        Validators.maxLength(9),
+        Validators.minLength(this.config.phoneCodes.landline.lengthRule),
+        Validators.maxLength(this.config.phoneCodes.landline.lengthRule),
       ]);
+      this.maxPhone = this.config.phoneCodes.landline.lengthRule;
+    }
 
     this.formRecibe.get('phone')?.updateValueAndValidity();
   }

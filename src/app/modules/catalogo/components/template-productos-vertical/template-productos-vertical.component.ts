@@ -30,9 +30,7 @@ export class TemplateProductosVerticalComponent implements OnChanges {
     private readonly cartService: CartService
   ) {}
 
-  ngOnInit(): void {
-    console.log('tipoCatalogo', this.tipoCatalogo);
-  }
+  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const resto = this.page % 2;

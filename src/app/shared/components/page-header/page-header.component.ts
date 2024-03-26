@@ -37,7 +37,7 @@ export class PageHeaderComponent {
 
   ngOnInit() {}
   ngonChanges() {
-    this.url = window.location.href;
+    if (isPlatformBrowser(this.platformId)) this.url = window.location.href;
   }
   // Funcion que esconde el label "mostrando resultado...." dentro de la ficha de un item y la pagina de contactos.
   HideOnFicha() {

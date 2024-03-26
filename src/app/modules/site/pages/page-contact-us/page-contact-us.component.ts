@@ -65,7 +65,6 @@ export class PageContactUsComponent {
 
     this.notificationService.sendContactFormEmail(params).subscribe({
       next: (res) => {
-        console.log('res envio correo', res);
         this.toastr.success(`Correo Enviado correctamente`);
         this.formContacto.reset();
       },

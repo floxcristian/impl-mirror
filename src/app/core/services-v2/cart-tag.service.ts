@@ -29,6 +29,6 @@ export class CartTagService {
   markGtag(params: { shoppingCartId: string }): Observable<ITagMarkResponse> {
     const { shoppingCartId } = params;
     const url = `${API_CART}/${shoppingCartId}/gtag/mark`;
-    return this.http.post<ITagMarkResponse>(url, {});
+    return this.http.post<ITagMarkResponse>(url, undefined);
   }
 }

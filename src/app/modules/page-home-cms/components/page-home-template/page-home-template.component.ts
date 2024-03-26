@@ -1,5 +1,14 @@
 // Angular
-import { Component, OnInit, AfterViewInit, OnDestroy, Renderer2, afterNextRender } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  OnDestroy,
+  Renderer2,
+  afterNextRender,
+  Inject,
+  PLATFORM_ID,
+} from '@angular/core';
 // Rxjs
 import { Subscription, first } from 'rxjs';
 // Models
@@ -15,6 +24,7 @@ import { ICustomerPreference } from '@core/services-v2/customer-preference/model
 import { CustomerPreferenceService } from '@core/services-v2/customer-preference/customer-preference.service';
 import { CustomerAddressService } from '@core/services-v2/customer-address/customer-address.service';
 import { ChatService } from '@core/utils-v2/chat/chat.service';
+import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'app-page-home-template',
   templateUrl: './page-home-template.component.html',
@@ -32,6 +42,7 @@ export class PageHomeTemplateComponent
 
   lastLoadKey: string = '';
   subscription: Subscription = new Subscription();
+  isMobile: boolean = false;
 
   constructor(
     // Services V2
@@ -42,11 +53,19 @@ export class PageHomeTemplateComponent
     private readonly geolocationStorage: GeolocationStorageService,
     private readonly customerPreferenceService: CustomerPreferenceService,
     private readonly customerAddressService: CustomerAddressService,
-    private renderer:Renderer2,
+    private renderer: Renderer2,
     public chatService: ChatService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     afterNextRender(() => {
-      this.chatService.loadChatScript();
+      if (isPlatformBrowser(platformId)) {
+        const userAgent = window.navigator.userAgent;
+        this.isMobile =
+          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            userAgent
+          );
+        if (!this.isMobile) this.chatService.loadChatScript();
+      }
     });
   }
 
@@ -71,22 +90,21 @@ export class PageHomeTemplateComponent
               this.getHomePageItems();
             }
           } else {
-            console.log('cargarPage 2');
             this.getHomePageItems();
           }
         },
       });
 
     this.subscription.add(storeSubscription);
-    this.chatService.showChatButton()
+    if (isPlatformBrowser(this.platformId)) {
+      this.chatService.showChatButton();
+    }
   }
 
   ngAfterViewInit(): void {
     const selectedStoreSubscription =
       this.geolocationService.selectedStore$.subscribe({
         next: (location) => {
-          console.log('location: ', location);
-          console.log('cargarPage 3');
           this.getHomePageItems();
         },
       });
@@ -118,8 +136,8 @@ export class PageHomeTemplateComponent
   }
 
   private getHomePageItems(): void {
-    console.log('getHomePageItems...');
     this.carga = true;
+    this.user = this.sessionService.getSession();
     const rut = this.user.documentId;
     const tiendaSeleccionada = this.geolocationService.getSelectedStore();
     const sucursal = tiendaSeleccionada.code;
@@ -148,14 +166,16 @@ export class PageHomeTemplateComponent
   }
 
   scrollToTop(): void {
-    const body_e = this.renderer.selectRootElement('body',true) // safari
-    this.renderer.setProperty(body_e,'scrollTop',0)
-    const html_e = this.renderer.selectRootElement('html',true) //other
-    this.renderer.setProperty(html_e,'scrollTop',0)
+    const body_e = this.renderer.selectRootElement('body', true); // safari
+    this.renderer.setProperty(body_e, 'scrollTop', 0);
+    const html_e = this.renderer.selectRootElement('html', true); //other
+    this.renderer.setProperty(html_e, 'scrollTop', 0);
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
-    this.chatService.hideChatButton();
+    if (isPlatformBrowser(this.platformId)) {
+      this.chatService.hideChatButton();
+    }
   }
 }

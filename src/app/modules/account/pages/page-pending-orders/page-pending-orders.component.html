@@ -25,14 +25,14 @@
                   <th>Monto OV</th>
                   <th>Folio OC</th>
                   <th>Monto OC</th>
-                  <th>Centro Costo</th>
-                  <th>Email Usuario</th>
+                  <!-- <th>Centro Costo</th> -->
+                  <th>Email</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody *ngIf="orders?.length != 0">
                 <tr *ngFor="let item of orders">
-                  <td>{{ item.updatedAt | date : "dd-MM-yyyy HH:mm" }}</td>
+                  <td>{{ item.updatedAt | date : 'dd-MM-yyyy HH:mm' }}</td>
                   <td>
                     <span
                       class="badge"
@@ -50,7 +50,7 @@
                   <td>{{ item?.total | currencyFormat }}</td>
                   <td>{{ item?.purchaseOrder?.number }}</td>
                   <td>{{ item?.purchaseOrder?.amount | currencyFormat }}</td>
-                  <td>{{ item?.purchaseOrder?.costCenter }}</td>
+                  <!-- <td>{{ item?.purchaseOrder?.costCenter }}</td> -->
                   <td>{{ item?.user }}</td>
                   <td>
                     <div class="btn-group" dropdown>

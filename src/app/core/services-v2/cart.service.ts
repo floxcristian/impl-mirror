@@ -54,11 +54,16 @@ import { TransferShoppingCartRequest } from '@core/models-v2/requests/cart/trans
 import { ShoppingCartOmniStorageService } from '@core/storage/shopping-cart-omni-storage.service';
 import { DeliveryType } from '@core/enums/delivery-type.enum';
 import { IProduct } from '@core/models-v2/oms/order.interface';
-import { IOrderDetailResponse } from '@core/models-v2/cart/order-details.interface';
+import {
+  IOrderDetailResponse,
+  IShoppingCartResponse,
+} from '@core/models-v2/cart/order-details.interface';
 import { UserRoleType } from '@core/enums/user-role-type.enum';
 import { IUploadResponse } from '@core/models-v2/responses/file-upload.response';
 import { LocalStorageService } from '@core/modules/local-storage/local-storage.service';
 import { IComparedProduct } from './product/models/formatted-product-compare-response.interface';
+import { DefaultBranch } from '@core/utils-v2/default-branch.service';
+import { CallBackCartLoaded } from '@core/models-v2/cart/callback-cart-loaded.type';
 
 const API_CART = `${environment.apiEcommerce}/api/v1/shopping-cart`;
 
@@ -149,7 +154,7 @@ export class CartService {
    * @returns
    */
   async add(
-    product: IArticle | IProduct | IComparedProduct,   // sku, name, origin, images, quantity
+    product: IArticle | IProduct | IComparedProduct, // sku, name, origin, images, quantity
     quantity: number
   ): Promise<IShoppingCart | undefined> {
     const { code: storeCode } = this.geolocationService.getSelectedStore();
@@ -193,14 +198,14 @@ export class CartService {
       this.save();
       this.calc();
     } catch (error) {
-      console.log('error', JSON.stringify(error));
+      // console.log('error', JSON.stringify(error));
       this.data.products = [];
     }
 
     return response;
   }
 
-  load(): void {
+  load(params?: { callBackCartLoaded?: CallBackCartLoaded }): void {
     if (this.isLoadingCart) return;
 
     this.isLoadingCart = true;
@@ -213,21 +218,27 @@ export class CartService {
     if (!usuario.hasOwnProperty('documentId')) usuario.documentId = '0';
 
     // Sucursal
-    console.log('getSelectedStore desde load');
     const tiendaSeleccionada = this.geolocationService.getSelectedStore();
-    const sucursal = tiendaSeleccionada.code;
+    const sucursal = DefaultBranch.getBranchCode(tiendaSeleccionada.code);
 
+    const callBackCartLoaded = params?.callBackCartLoaded;
     this.http
       .get<IShoppingCart>(
         `${API_CART}?user=${usuario.username}&branch=${sucursal}&documentId=${usuario.documentId}`
       )
       .subscribe({
-        next: (response: IShoppingCart) => {
+        next: async (response: IShoppingCart) => {
           this.recalculateShoppingCart(response);
+
+          if (callBackCartLoaded) {
+            await callBackCartLoaded(response);
+          }
         },
         error: (error: any) => {
-          console.log('error', JSON.stringify(error));
+          this.isLoadingCart = false;
           this.data.products = [];
+          this.calc();
+          this.save();
           // if (error.errorCode !== 'SHOPPING_CART_NOT_FOUND') {
           //   this.toastrServise.error(error.message);
           // }
@@ -236,6 +247,7 @@ export class CartService {
   }
 
   recalculateShoppingCart(response: IShoppingCart) {
+    this.isLoadingCart = false;
     const usuario = this.sessionStorage.get();
     if (!usuario) {
       return;
@@ -243,8 +255,6 @@ export class CartService {
 
     if (!usuario.hasOwnProperty('username')) usuario.username = usuario.email;
     if (!usuario.hasOwnProperty('documentId')) usuario.documentId = '0';
-
-    this.isLoadingCart = false;
 
     this.CartData = response;
     this.cartTempData = response;
@@ -342,7 +352,7 @@ export class CartService {
       this.cartTempData.groups?.forEach((item: IShoppingCartGroup) => {
         if (
           array_precio[index] >= 60000 ||
-          (usuario.userRole != 'compradorb2c' &&
+          (usuario.userRole != 'b2c' &&
             usuario.userRole != 'temp' &&
             usuario.userRole != UserRoleType.BUYER)
         ) {
@@ -474,7 +484,6 @@ export class CartService {
 
   updateShipping(indexGroup: number, indexTripDate: number) {
     // Sucursal
-    console.log('getSelectedStore desde updateShipping');
 
     const usuario: ISession = this.sessionService.getSession();
 
@@ -573,7 +582,6 @@ export class CartService {
 
   saveCart(products: IShoppingCartProduct[]) {
     // Sucursal
-    console.log('getSelectedStore desde saveCart');
     const tiendaSeleccionada = this.geolocationService.getSelectedStore();
     const sucursal = tiendaSeleccionada.code;
     const usuario = this.sessionService.getSession();
@@ -629,7 +637,10 @@ export class CartService {
       throw Error('Debe iniciar sesion para guardar el carro');
     }
 
-    return this.http.put<boolean>(`${API_CART}/${id}/status/${status}`, {});
+    return this.http.put<boolean>(
+      `${API_CART}/${id}/status/${status}`,
+      undefined
+    );
   }
 
   setNotificationContact(id: string, data: AddNotificacionContactRequest) {
@@ -750,13 +761,6 @@ export class CartService {
     });
   }
 
-  generaOrdenDeCompra(data: any): Observable<ResponseApi> {
-    return this.http.post<ResponseApi>(
-      environment.apiShoppingCart + `generar`,
-      data
-    );
-  }
-
   validateStock(params: {
     shoppingCartId: string;
   }): Observable<IValidateShoppingCartStockResponse> {
@@ -812,7 +816,7 @@ export class CartService {
   }): Observable<IThanksForYourPurchase> {
     const { shoppingCartId } = params;
     const url = `${API_CART}/${shoppingCartId}/thanksForYourPurchase`;
-    return this.http.put<IThanksForYourPurchase>(url, {});
+    return this.http.put<IThanksForYourPurchase>(url, undefined);
   }
 
   generateQuotation(params: {
@@ -820,7 +824,7 @@ export class CartService {
   }): Observable<IShoppingCartDetail> {
     const { shoppingCartId } = params;
     const url = `${API_CART}/${shoppingCartId}/generate-quotation`;
-    return this.http.post<IShoppingCartDetail>(url, {});
+    return this.http.post<IShoppingCartDetail>(url, undefined);
   }
 
   /*********************************
@@ -1042,5 +1046,25 @@ export class CartService {
     };
     product.origin = origin;
     return product;
+  }
+
+  getAllOrderGenerated(params: {
+    search?: string;
+    page?: number;
+    limit?: number;
+    sort?: string;
+  }): Observable<IShoppingCartResponse> {
+    return this.http.get<IShoppingCartResponse>(
+      `${API_CART}/all-order-details`,
+      {
+        params,
+      }
+    );
+  }
+
+  confirmDocument(salesId?: string): Observable<IShoppingCart> {
+    return this.http.post<IShoppingCart>(`${API_CART}/confirm-document`, {
+      salesId,
+    });
   }
 }

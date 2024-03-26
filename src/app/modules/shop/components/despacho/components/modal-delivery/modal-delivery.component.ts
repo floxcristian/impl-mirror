@@ -35,8 +35,6 @@ export class ModalDeliveryComponent {
    * @param filters
    */
   onSelectCity(filters: any): void {
-    console.log('onFiltersChange: ', filters);
-    console.log(typeof filters);
     this.selectedLocality = filters?.localidad || null;
     if (this.selectedLocality) {
       this.getAvailability();

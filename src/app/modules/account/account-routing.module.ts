@@ -19,6 +19,7 @@ import { PageListasDeProductosComponent } from './pages/page-listas-de-productos
 import { PageCentrosCostoComponent } from './pages/page-centros-costo/page-centros-costo.component';
 import { PageGestionUsuarioComponent } from './pages/page-gestion-usuario/page-gestion-usuario.component';
 import { PageComprasComponent } from './pages/page-compras/page-compras.component';
+import { PageOvsListComponent } from './pages/page-ovs-list/page-ovs-list.component';
 
 const routes: Routes = [
   {
@@ -94,6 +95,10 @@ const routes: Routes = [
       {
         path: 'mis-centros-costos',
         component: PageCentrosCostoComponent,
+      },
+      {
+        path: 'ordenes',
+        component: PageOvsListComponent,
       },
     ],
   },

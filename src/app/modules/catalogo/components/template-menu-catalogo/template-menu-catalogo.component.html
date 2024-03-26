@@ -1,3 +1,4 @@
+@if(tags && tags.length > 0) {
 <div class="row mb-3">
   <div class="col-1 p-0 text-end" *ngIf="tipoCatalogo === 'Automatico'">
     <a class="btn p2" (click)="owlCar.prev()"
@@ -33,3 +34,4 @@
     ></a>
   </div>
 </div>
+}

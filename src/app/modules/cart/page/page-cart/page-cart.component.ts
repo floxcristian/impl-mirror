@@ -59,6 +59,7 @@ export class PageCartComponent implements OnInit, OnDestroy {
   showresumen = false;
   IVA = environment.IVA;
   isVacio = isVacio;
+  relleno: any[] = [1, 2, 3, 4, 5, 6];
 
   recommendedProducts: IArticle[] = [];
   user!: ISession;
@@ -147,15 +148,17 @@ export class PageCartComponent implements OnInit, OnDestroy {
         this.getRecommendedProductsList();
       });
 
-    _this.shoppingCartService.calc(true);
     setTimeout(() => {
       this.shoppingCartService.dropCartActive$.next(false);
     });
-    if (['supervisor', 'comprador'].includes(this.user?.userRole || '')) {
-      this.gtmService.pushTag({
-        event: 'cart',
-        pagePath: window.location.href,
-      });
+    if (isPlatformBrowser(this.platformId)) {
+      _this.shoppingCartService.calc(true);
+      if (!['supervisor', 'buyer'].includes(this.user?.userRole || '')) {
+        this.gtmService.pushTag({
+          event: 'cart',
+          pagePath: window.location.href,
+        });
+      }
     }
   }
 
@@ -227,7 +230,6 @@ export class PageCartComponent implements OnInit, OnDestroy {
     let respuesta: any = await this.shoppingCartService
       .setSaveCart(cartSession._id, 'saved')
       .toPromise();
-    console.log('cart load desde PageCartComponent');
     this.shoppingCartService.load();
     if (!respuesta.error) {
       this.toast.success('Carro guardado exitosamente');
@@ -244,12 +246,9 @@ export class PageCartComponent implements OnInit, OnDestroy {
       let listaSku: string[] = [];
       let rut = '';
       let localidad = '';
-      console.log(this.items);
       this.items.forEach((item) => {
-        console.log(item);
         listaSku.push(item.ProductCart.sku);
       });
-      console.log(listaSku);
       if (this.user) {
         rut = this.user.documentId;
       }

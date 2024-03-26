@@ -21,6 +21,7 @@
   class="container block-slideshow mb-0 d-xl-none d-block"
   style="background-color: white; padding: 50px 10px 20px 10px"
 >
+  @if(botones1 && botones1.length > 0) {
   <owl-carousel-o
     class="carouselButtons"
     [options]="options"
@@ -45,4 +46,5 @@
       </ng-template>
     </ng-container>
   </owl-carousel-o>
+  }
 </div>

@@ -233,7 +233,7 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
   }
 
   onBlur() {
-    this.obtenerGiros();
+    // this.obtenerGiros();
   }
 
   isValidRut(rut: string) {
@@ -256,57 +256,35 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
 
     if (this.isValidRut(rut ?? '')) {
       this.cargandoGiros = true;
-      this.customerBusinessLineApiService.getBusinessLines().subscribe({
-        next: (businessLines) => {
-          this.girosOptions = businessLines || [];
+      this.customerBusinessLineApiService
+        .getLegalBusinessLines(rut)
+        .subscribe({
+          next: (res) => {
+            this.girosOptions = res.businessLines || [];
 
-          if (this.girosOptions.length) {
-            this.documentOptions = [
-              { id: InvoiceType.RECEIPT, name: 'BOLETA' },
-              { id: InvoiceType.INVOICE, name: 'FACTURA' },
-            ];
-          } else {
-            this.documentOptions = [
-              { id: InvoiceType.RECEIPT, name: 'BOLETA' },
-            ];
-            this.selectedDocument = InvoiceType.RECEIPT;
-          }
+            if (this.girosOptions.length) {
+              this.documentOptions = [
+                { id: InvoiceType.RECEIPT, name: 'BOLETA' },
+                { id: InvoiceType.INVOICE, name: 'FACTURA' },
+              ];
+            } else {
+              this.toastr.info(
+                'No se han encontrado giros disponibles para su rut.'
+              );
+              this.documentOptions = [
+                { id: InvoiceType.RECEIPT, name: 'BOLETA' },
+              ];
+              this.selectedDocument = InvoiceType.RECEIPT;
+            }
 
-          this.cargandoGiros = false;
-        },
-        error: (e) => {
-          console.error(e);
-          this.toastr.error('Ha ocurrido un error al obtener los giros.');
-          this.cargandoGiros = false;
-        },
-      });
-      this.customerBusinessLineApiService.getBusinessLines().subscribe(
-        (res: any) => {
-          this.girosOptions = res.giros || [];
-
-          if (this.girosOptions.length) {
-            this.documentOptions = [
-              { id: InvoiceType.RECEIPT, name: 'BOLETA' },
-              { id: InvoiceType.INVOICE, name: 'FACTURA' },
-            ];
-          } else {
-            this.documentOptions = [
-              { id: InvoiceType.RECEIPT, name: 'BOLETA' },
-            ];
-            this.selectedDocument = InvoiceType.RECEIPT;
-          }
-          /*if (!this.girosOptions.length) {
-            this.documentOptions = [{ id: 'BEL', name: 'BOLETA' }];
-            this.selectedDocument = 'BEL';
-          }*/
-
-          this.cargandoGiros = false;
-        },
-        (error) => {
-          this.toastr.error('Ha ocurrido un error al obtener los giros.');
-          this.cargandoGiros = false;
-        }
-      );
+            this.cargandoGiros = false;
+          },
+          error: (e) => {
+            console.error(e);
+            // this.toastr.error('Ha ocurrido un error al obtener los giros.');
+            this.cargandoGiros = false;
+          },
+        });
     } else {
       this.documentOptions = [{ id: InvoiceType.RECEIPT, name: 'BOLETA' }];
       this.selectedDocument = InvoiceType.RECEIPT;
@@ -439,7 +417,7 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
         pagePath: window.location.href,
       });
     }
-    if (!this.userSession?.businessLine) {
+    if (!this.userSession?.businessLine && !this.guest) {
       this.obtenerGiros();
     }
   }
@@ -731,6 +709,7 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
 
   //  Sube documento y genera la solicitud
   purchaseRequestAll() {
+    this.loadingPage = true;
     const data = this.formOv.value;
     data.file = this.archivo !== undefined ? this.archivo?.archivo : null;
     this.paymentMethodPurchaseOrderRequestService
@@ -915,18 +894,18 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
             email: user.email,
           })
         );
-
-        let userCambio = this.sessionService.getSession();
-        // let userCambio: any = this.root.getDataSesionUsuario();
-        //userCambio._id = user.email;
-        userCambio.email = user.email;
-        userCambio.userRole = UserRoleType.B2C;
-        userCambio.documentId = user.documentId;
-        userCambio.login_temp = true;
-        userCambio.firstName = this.formVisita.value.nombre || '';
-        userCambio.lastName = this.formVisita.value.apellido || '';
-        this.sessionStorage.set(userCambio);
-        // this.localS.set('usuario', userCambio);
+        //* Esta informacion cambia el user
+        // let userCambio = this.sessionService.getSession();
+        // // let userCambio: any = this.root.getDataSesionUsuario();
+        // //userCambio._id = user.email;
+        // userCambio.email = user.email;
+        // userCambio.userRole = UserRoleType.B2C;
+        // userCambio.documentId = user.documentId;
+        // userCambio.login_temp = true;
+        // userCambio.firstName = this.formVisita.value.nombre || '';
+        // userCambio.lastName = this.formVisita.value.apellido || '';
+        // this.sessionStorage.set(userCambio);
+        // // this.localS.set('usuario', userCambio);
       } catch (e) {
         console.error(e);
         this.toastr.error('No puedo guardarse los datos del invitado');
@@ -1158,7 +1137,7 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
 
       const data: any = this.formOv.value;
       data.file = this.archivo !== undefined ? this.archivo?.archivo : null;
-
+      this.cd_ver = false;
       this.paymentMethodPurchaseOrderRequestService
         .upload(this.formOv.value)
         .subscribe({
@@ -1166,9 +1145,22 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
             this.purchaseOrderId = r._id.toString();
             await this.updateCartAndUserTurn();
             await this.prepararCarroPrePago();
-            await this.finishPaymentOv(r);
+            if (this.userSession.creditLine) {
+              if (!this.userSession.creditLine.requiresConfirmation) {
+                this.cd_ver = true;
+              } else if (
+                this.userSession.creditLine.requiresConfirmation &&
+                this.totalCarro >= this.userSession.creditLine.fromAmount &&
+                (this.totalCarro < this.userSession.creditLine.toAmount ||
+                  this.userSession.creditLine.toAmount == -1)
+              ) {
+                this.cd_ver = true;
+              } else {
+                await this.finishPaymentOv(r);
+              }
+            }
             // aqui se pone el cambio para la mensajeria
-            this.archivo = null;
+            // this.archivo = null;
             this.loadingPage = false;
           },
           error: (e) => {
@@ -1204,17 +1196,33 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
       this.cd_ver = false;
       let data: any = this.formOv.value;
       data.file = this.archivo !== undefined ? this.archivo?.archivo : null;
+      // if (this.userSession.creditLine) {
+      //   if (
+      //     this.totalCarro >= this.userSession.creditLine.fromAmount &&
+      //     (this.totalCarro < this.userSession.creditLine.toAmount ||
+      //       this.userSession.creditLine.toAmount == -1)
+      //   ) {
+      //     data.credito = true;
+      //   } else {
+      //     data.credito = false;
+      //   }
+      //   this.cd_ver = true;
+      // }
       if (this.userSession.creditLine) {
-        if (
+        if (!this.userSession.creditLine.requiresConfirmation) {
+          this.cd_ver = true;
+          data.credito = true;
+        } else if (
+          this.userSession.creditLine.requiresConfirmation &&
           this.totalCarro >= this.userSession.creditLine.fromAmount &&
           (this.totalCarro < this.userSession.creditLine.toAmount ||
             this.userSession.creditLine.toAmount == -1)
         ) {
+          this.cd_ver = true;
           data.credito = true;
         } else {
           data.credito = false;
         }
-        this.cd_ver = true;
       }
 
       data.file = this.archivo !== undefined ? this.archivo?.archivo : null;
@@ -1224,7 +1232,7 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
           if (!data.credito) {
             this.purchaseRequest();
           }
-          this.archivo = null;
+          // this.archivo = null;
         },
         error: (e) => {
           console.error(e);
@@ -1281,7 +1289,6 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
 
   setAddress(data: any[]): void {
     this.clearAddress();
-
     if (this.getAddress(data[0], 'street_number')) {
       this.formDireccion.controls['calle'].enable();
 
@@ -1326,11 +1333,11 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
   obtenerLocalidades(event: any) {
     const localidades: any[] = [];
     const comunaArr = event.id.split('@');
-    const comunas = this.coleccionComuna.filter(
-      (comuna) => comuna.comuna == comunaArr[0]
+    const comunas = this.cities.filter(
+      (comuna) => comuna.city == comunaArr[0]
     );
     comunas.map((comuna) =>
-      (comuna.localidades as any[]).map((localidad) =>
+      (comuna.localities as any[]).map((localidad) =>
         localidades.push(localidad)
       )
     );
@@ -1347,23 +1354,23 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
   }
 
   findCommune(nombre: string) {
-    if (nombre != '') {
-      nombre = this.quitarAcentos(nombre);
+    if (!nombre) return '';
+    nombre = this.quitarAcentos(nombre);
 
-      var result = this.cities.find(
-        (item) => this.quitarAcentos(item.city) === nombre
-      );
+    var result = this.cities.find(
+      (item) => this.quitarAcentos(item.city) === nombre
+    );
 
-      if (result && result.id) {
-        this.obtenerLocalidades(result);
-        this.findComunaLozalizacion(result.city);
-        return result.id;
-      } else {
-        return '';
-      }
+    if (result && result.id) {
+      this.obtenerLocalidades(result);
+      this.findComunaLozalizacion(result.city);
+      return result.id;
     } else {
       return '';
     }
+    // } else {
+    //   return '';
+    // }
   }
 
   clearAddress(): void {

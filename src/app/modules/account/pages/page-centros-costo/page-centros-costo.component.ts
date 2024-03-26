@@ -169,7 +169,6 @@ export class PageCentrosCostoComponent implements OnInit, OnDestroy {
         .deleteCostCenter(this.userSession.documentId, centroCosto.code)
         .subscribe({
           next: (res) => {
-            console.log('eliminar center', res);
             this.toastr.success('Centro de costo eliminado exitosamente.');
             this.reDraw();
             this.getData();

@@ -1,9 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AddCommentModalComponent } from '../add-comment-modal/add-comment-modal.component';
@@ -61,11 +56,11 @@ export class ProductRatingComponent {
           this.resumen = resp.summary;
           this.updateRatingAndStars();
         } else {
-          console.warn(resp.msg);
+          console.log(resp.msg);
         }
       },
       error: (error) =>
-        console.warn('Error al cargar el resumen de comentarios'),
+        console.log('Error al cargar el resumen de comentarios'),
     });
   }
 

@@ -4,9 +4,11 @@ import {
   OnInit,
   ViewChild,
   ChangeDetectorRef,
+  Inject,
+  PLATFORM_ID,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { DatePipe } from '@angular/common';
+import { DatePipe, isPlatformBrowser } from '@angular/common';
 // Libs
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
@@ -69,9 +71,10 @@ import { StorageKey } from '@core/storage/storage-keys.enum';
 import { IError } from '@core/models-v2/error/error.interface';
 import { ConfigService } from '@core/config/config.service';
 import { IConfig } from '@core/config/config.interface';
+import { CallBackCartLoaded } from '@core/models-v2/cart/callback-cart-loaded.type';
+import { UserRoleType } from '@core/enums/user-role-type.enum';
 
 export let browserRefresh = false;
-declare let dataLayer: any;
 @Component({
   selector: 'app-page-cart-shipping',
   templateUrl: './page-cart-shipping.component.html',
@@ -160,6 +163,11 @@ export class PageCartShippingComponent implements OnInit {
 
   stores: IStore[] = [];
   config: IConfig;
+  userRoleType = UserRoleType;
+  addressCustomerSelected!: ICustomerAddress & {
+    fullAddress: string;
+    isDefault: boolean;
+  };
 
   constructor(
     private toast: ToastrService,
@@ -183,11 +191,14 @@ export class PageCartShippingComponent implements OnInit {
     private readonly receiveStorage: ReceiveStorageService,
     private readonly customerService: CustomerService,
     private readonly customerAddressApiService: CustomerAddressApiService,
-    public readonly configService: ConfigService
+    public readonly configService: ConfigService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.config = this.configService.getConfig();
     this.receiveStorage.set({} as IReceive);
-    this.innerWidth = window.innerWidth;
+    this.innerWidth = isPlatformBrowser(this.platformId)
+      ? window.innerWidth
+      : 900;
 
     this.tienda_actual = this.geolocationStorage.get();
   }
@@ -240,16 +251,18 @@ export class PageCartShippingComponent implements OnInit {
         this.items = items;
       });
     //marcaje google tag
-    if (
-      this.userSession.userRole !== 'supervisor' &&
-      this.userSession.userRole !== 'comprador'
-    ) {
-      this.gtmService.pushTag({
-        event: 'shipping',
-        pagePath: window.location.href,
-      });
+    if (isPlatformBrowser(this.platformId)) {
+      this.onSelect(null, 'retiro');
+      if (
+        this.userSession.userRole !== UserRoleType.SUPERVISOR &&
+        this.userSession.userRole !== UserRoleType.BUYER
+      ) {
+        this.gtmService.pushTag({
+          event: 'shipping',
+          pagePath: window.location.href,
+        });
+      }
     }
-    this.onSelect(null, 'retiro');
   }
 
   ngAfterContentChecked(): void {
@@ -281,6 +294,12 @@ export class PageCartShippingComponent implements OnInit {
               const fullAddress = address.departmentHouse
                 ? `${startAddress} depto/casa: ${address.departmentHouse}, ${address.city}`
                 : `${startAddress} ${address.city}`;
+              if (address.id === this.selectedShippingId)
+                this.addressCustomerSelected = {
+                  ...address,
+                  fullAddress,
+                  isDefault,
+                };
               return { ...address, fullAddress, isDefault };
             });
             if (this.shippingType === 'despacho') this.obtieneDespachos();
@@ -437,7 +456,6 @@ export class PageCartShippingComponent implements OnInit {
         this.TiendasCargadas = true;
 
         // Poner tienda seleccionada al comienzo de la lista.
-        console.log('getSelectedStore desde PageCartShippingComponent');
         const selectedStore = this.geolocationService.getSelectedStore();
         const tiendaActual = this.stores.find((store) => {
           return store.code === selectedStore.code /*selectedStore.codigo*/;
@@ -462,7 +480,6 @@ export class PageCartShippingComponent implements OnInit {
    * Obtiene retiro en tienda.
    */
   async obtieneRetiro(removeShipping = true) {
-    console.log('obtieneRetiro...');
     this.loadingShippingStore = true;
 
     this.fechas = [];
@@ -477,82 +494,86 @@ export class PageCartShippingComponent implements OnInit {
     if (!resultado) return;
 
     this.tienda = resultado;
-    this.cambiarTienda(this.tienda);
-    this.localS.set(StorageKey.tiendaRetiro, resultado);
 
-    let disponible = resultado;
-    const data: GetLogisticPromiseRequest = {
-      user: usuario.username,
-      deliveryMode: 'pickup',
-      destination: disponible.code + '|' + disponible.regionCode,
-      address: disponible.name,
-      addressId: disponible.id,
-    };
+    this.cambiarTienda(this.tienda, async (_: IShoppingCart) => {
+      this.localS.set(StorageKey.tiendaRetiro, resultado);
 
-    /*
-    const sucursal = {
-      usuario: usuario.username,
-      sucursal: disponible.codigo
-    };*/
+      let disponible = resultado;
+      const data: GetLogisticPromiseRequest = {
+        user: usuario.username,
+        deliveryMode: 'pickup',
+        destination: disponible.code + '|' + disponible.regionCode,
+        address: disponible.name,
+        addressId: disponible.id,
+      };
 
-    if (removeShipping) {
-      this.shippingSelected = null;
-      // reiniciamos las variables del despacho
-      this.shippingDays = [];
-      this.cardShippingActive = 0;
-      this.cardShippingActiveStore = 0;
-      this.selectedShippingId = null;
-      this.cart.removeTotalShipping();
-      this.cart.removeTotalDiscount();
-    }
+      /*
+      const sucursal = {
+        usuario: usuario.username,
+        sucursal: disponible.codigo
+      };*/
 
-    try {
-      const response: GetLogisticPromiseResponse = await lastValueFrom(
-        this.cart.logisticPromise(data)
-      );
-      if (response.shoppingCart.groups) {
+      if (removeShipping) {
+        this.shippingSelected = null;
+        // reiniciamos las variables del despacho
+        this.shippingDays = [];
+        this.cardShippingActive = 0;
+        this.cardShippingActiveStore = 0;
+        this.selectedShippingId = null;
+        this.cart.removeTotalShipping();
+        this.cart.removeTotalDiscount();
+      }
+
+      try {
+        const response: GetLogisticPromiseResponse = await lastValueFrom(
+          this.cart.logisticPromise(data)
+        );
+        if (response.shoppingCart.groups) {
+          this.shippingDaysStore = [];
+
+          response.shoppingCart.groups.forEach((group: IShoppingCartGroup) => {
+            let i = 0;
+            let dia_despacho: ShippingService[] = [];
+
+            group.tripDates.forEach((item: IShoppingCartTripDate) => {
+              let isSabado = this.valFindeSemana(
+                item.requestedDate.toString()
+              );
+              const obj = {
+                index: i++,
+                id: group.id,
+                diasdemora: item.businessDays,
+                fecha: item.requestedDate,
+                fechaPicking: item.pickingDate,
+                origen: group.warehouse,
+                precio: item.price,
+                proveedor: item.carrier.description,
+                tipoenvio: 'TIENDA',
+                tipopedido: 'VEN- RPTDA',
+                isSabado: isSabado,
+              };
+
+              dia_despacho.push(obj);
+            });
+
+            this.shippingDaysStore.push({
+              grupo: group.id,
+              productodespacho: group.products,
+              fechas: dia_despacho,
+            });
+          });
+        }
+        if (this.userSession.userRole == 'temp') {
+          this.loadingResumen = false;
+        }
+        this.loadingShippingStore = false;
+        this.ver_fechas();
+      } catch (e) {
+        console.log(e);
         this.shippingDaysStore = [];
-
-        response.shoppingCart.groups.forEach((group: IShoppingCartGroup) => {
-          let i = 0;
-          let dia_despacho: ShippingService[] = [];
-
-          group.tripDates.forEach((item: IShoppingCartTripDate) => {
-            let isSabado = this.valFindeSemana(item.requestedDate.toString());
-            const obj = {
-              index: i++,
-              id: group.id,
-              diasdemora: item.businessDays,
-              fecha: item.requestedDate,
-              fechaPicking: item.pickingDate,
-              origen: group.warehouse,
-              precio: item.price,
-              proveedor: item.carrier.description,
-              tipoenvio: 'TIENDA',
-              tipopedido: 'VEN- RPTDA',
-              isSabado: isSabado,
-            };
-
-            dia_despacho.push(obj);
-          });
-
-          this.shippingDaysStore.push({
-            grupo: group.id,
-            productodespacho: group.products,
-            fechas: dia_despacho,
-          });
-        });
       }
-      if (this.userSession.userRole == 'temp') {
-        this.loadingResumen = false;
-      }
-      this.loadingShippingStore = false;
-      this.ver_fechas();
-    } catch (e) {
-      console.log(e);
-      this.shippingDaysStore = [];
-    }
-    //});
+      //});
+    });
   }
 
   /**
@@ -838,7 +859,7 @@ export class PageCartShippingComponent implements OnInit {
       }
     } else if (formaEntrega === 'despacho' && this.isLogin) {
       this.selectedShippingId = null;
-
+      this.retiroFlag = false;
       // if (this.HideResumen()) {
       //   this.recibeType = 'yo';
       // } else {
@@ -1149,6 +1170,10 @@ export class PageCartShippingComponent implements OnInit {
       this.showDetalleProductos = false;
       this.obtieneDespachos();
       window.scrollTo({ top: 0 });
+      let address = this.addresses.find(
+        (address) => address.id == this.selectedShippingId
+      );
+      if (address) this.addressCustomerSelected = address;
     }
   }
 
@@ -1180,12 +1205,15 @@ export class PageCartShippingComponent implements OnInit {
     this.selectedShippingId = String(Math.max(...addressIds));
   }
 
-  cambiarTienda(newStore: IStore): void {
-    console.log('cambiarTienda: ');
+  cambiarTienda(
+    newStore: IStore,
+    callBackCartLoaded: CallBackCartLoaded
+  ): void {
     this.geolocationService.setSelectedStore({
       zone: newStore.zone,
       code: newStore.code,
       city: newStore.city,
+      callBackCartLoaded: callBackCartLoaded,
     });
   }
 
@@ -1265,7 +1293,6 @@ export class PageCartShippingComponent implements OnInit {
   async eliminarGrupo(index: any) {
     this.loadingShipping = true;
     this.loadingResumen = true;
-    console.log('inicio shipping', this.selectedShippingId);
     const resultado: any = this.addresses.find(
       (address) => address.id == this.selectedShippingId
     );
@@ -1296,14 +1323,11 @@ export class PageCartShippingComponent implements OnInit {
 
       this.obtieneDespachos();
       this.obtieneTiendas();
-      console.log('shipping', this.selectedShippingId);
-      console.log('addresses:', this.addresses);
     });
   }
 
   ver_fechas() {
     if (this.shippingDaysStore.length) {
-      console.log('xxx: ', this.shippingDaysStore);
       let menor = this.shippingDaysStore[0].fechas?.[0].fecha;
       let menor_fecha: any = new Date(menor);
       this.shippingDaysStore.map((item) => {

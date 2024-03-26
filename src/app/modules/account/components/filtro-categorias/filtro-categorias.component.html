@@ -7,7 +7,7 @@
       aria-label="Default select example"
     >
       <option [ngValue]="null">
-        {{ 'Elija alguna categoria' | uppercase }}
+        {{ 'Elija alguna categoría' | uppercase }}
       </option>
       <option *ngFor="let item of categorias" value="{{ item.url }}">
         {{ item.title }}

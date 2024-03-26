@@ -33,7 +33,7 @@ export class AddressModalComponent implements OnInit {
   cities!: ICity[];
   localidades!: any[];
   formDireccion: FormGroup;
-  tienda: DireccionMap | null
+  tienda: DireccionMap | null;
   // tienda: any;
   coleccionComuna!: any[];
   autocompletado = true;
@@ -52,7 +52,7 @@ export class AddressModalComponent implements OnInit {
         { value: null, disabled: true },
         { validators: [Validators.required] }
       ),
-      depto: new FormControl(""),
+      depto: new FormControl(''),
       numero: new FormControl(null),
       comuna: new FormControl(null, { validators: [Validators.required] }),
       localizacion: new FormControl(null, {
@@ -70,7 +70,6 @@ export class AddressModalComponent implements OnInit {
   }
 
   set_direccion(data: any[]) {
-    console.log('data map',data)
     this.clearAddress();
 
     if (this.getAddressData(data[0], 'street_number')) {
@@ -220,7 +219,7 @@ export class AddressModalComponent implements OnInit {
       location: localizacion,
       latitude: latitud,
       longitude: longitud,
-      departmentOrHouse: depto || "",
+      departmentOrHouse: depto || '',
       reference: referencia,
     };
 
