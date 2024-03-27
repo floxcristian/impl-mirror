@@ -40,22 +40,22 @@ export class VehicleService {
       .pipe(map((res) => res.data.vehiculo));
   }
 
-  getProductsByVehicleV2(
-    patent: string,
-    SIICode: string
-  ): Observable<any> {
-    return this.http
-      .get<IProductsVehicleResponse>(`${API_VEHICLE}/vehiculofilterid`, {
-        params: {
-          codigoSII: SIICode,
-          patente: patent,
-        },
-      })
-      .pipe(switchMap((res: any) => {
-        return this.searchVehicleFilters({ rut: '',skus: [], sort: '',
-        sucursal: '' })
-      }))
-  }
+  // getProductsByVehicleV2(
+  //   patent: string,
+  //   SIICode: string
+  // ): Observable<any> {
+  //   return this.http
+  //     .get<IProductsVehicleResponse>(`${API_VEHICLE}/vehiculofilterid`, {
+  //       params: {
+  //         codigoSII: SIICode,
+  //         patente: patent,
+  //       },
+  //     })
+  //     .pipe(switchMap((res: any) => {
+  //       return this.searchVehicleFilters({ rut: '',skus: [], sort: '',
+  //       sucursal: '' })
+  //     }))
+  // }
 
   /**
    * Obtener skus de filtros para un vehículo.
@@ -83,62 +83,19 @@ export class VehicleService {
    * @returns
    */
   searchVehicleFilters(params: {
-    rut: string;
-    skus: string[];
-    sort: string;
-    sucursal: string;
+    page?: number;
+    pageSize?: number;
+    showPrice?: number;
+    documentId?: string;
+    branchCode?: string;
+    category?: string;
+    order?: string;
+    brand?: string;
+    filters?: string;
+    location?: string;
+    skus?:string[]
   }) {
-    return this.http
-      .post(environment.apiElastic + 'busquedaFiltros', params, {
-        headers: this.headers,
-      })
-      .pipe(
-        map((res: any) => {
-          return {
-            articles: res.articulos.map((articulo:any) =>{
-              return {
-                sku: articulo.sku,
-                name: articulo.nombre,
-                description: articulo.descripcion,
-                brand: articulo.marca,
-                minimumPrice: articulo.p_minimo,
-                images: articulo.images[0],
-                priceInfo: [],
-                stockSummary: [],
-                // origin: IShoppingCartProductOrigin,
-                cyber: articulo.cyber,
-              }
-            } ),
-            banners: [],
-            brands: res.marcas,
-            categories: res.categorias,
-            categoriesTree: [],
-            filters: res.filtros,
-            levelFilter: 0,
-            page: res.page,
-            pageSize: res.pageSize,
-            suggestions: res.sugerencias,
-            totalPages: res.totalPages,
-            totalResult: res.totalResult,
-          };
-        })
-      );
+    return this.http.get('http://localhost:3400/api/v1/article/filters', {params})
   }
 
-  asd(articulos:any){
-    articulos.map((articulo:any) =>{
-      return {
-        sku: articulo.sku,
-        name: articulo.nombre,
-        description: articulo.descripcion,
-        brand: articulo.marca,
-        minimumPrice: articulo.p_minimo,
-        images: articulo.images[0],
-        priceInfo: [],
-        stockSummary: [],
-        // origin: IShoppingCartProductOrigin,
-        cyber: articulo.cyber,
-      }
-    } )
-  }
 }

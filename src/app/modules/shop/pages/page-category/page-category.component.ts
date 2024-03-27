@@ -935,14 +935,15 @@ export class PageCategoryComponent implements OnInit {
         this.PagTotalRegistros = filters.length;
         this.cargandoCatalogo = false;
         // this.cargandoProductos = false
-        this.vehicleService.searchVehicleFilters({ rut: this.session.documentId,
+        this.vehicleService.searchVehicleFilters({ documentId: this.session.documentId,
           skus,
-          sort: '',
-          sucursal: branchCode}).subscribe({
-            next:(res)=>{
+          showPrice:1,
+          branchCode}).subscribe({
+            next:(res:any)=>{
               console.log("searchVehicleFilters: ", res)
               this.products = res.articles
               this.formatFilters(res.filters);
+              this.formatCategories(res.categoriesTree, res.levelFilter);
               // this.filtrosOculto = false;
             },
             error:(err)=>{
