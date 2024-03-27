@@ -548,7 +548,8 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
     const username = this.sessionService.getSession().username ?? '';
     this.paymentMethodService.getPaymentMethods({ username }).subscribe({
       next: (data) => {
-        const hasOC = data.some((r) => r.code === PaymentMethodType.OC);
+        const ordenCompraCode = 'ordenCompra';
+        const hasOC = data.some((r) => r.code === ordenCompraCode);
         if (hasOC) {
           this.customerService.getCustomerBlocked(documentId).subscribe({
             next: (resp) => {
@@ -556,7 +557,7 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
                 this.bloqueoCliente = 'Línea de crédito bloqueada';
                 this.clienteBloqueado = true;
                 this.getBloqueoError = true;
-                data = data.filter((r) => r.code !== 'OC');
+                data = data.filter((r) => r.code !== ordenCompraCode);
               }
               this.paymentMethods = data;
 
@@ -568,7 +569,7 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
               this.bloqueoCliente = 'No pudo verificarse línea de crédito';
               this.clienteBloqueado = true;
               this.getBloqueoError = true;
-              data = data.filter((r) => r.code !== 'OC');
+              data = data.filter((r) => r.code !== ordenCompraCode);
               this.paymentMethods = data;
 
               if (this.paymentMethods.length > 0)
@@ -709,7 +710,7 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
 
   //  Sube documento y genera la solicitud
   purchaseRequestAll() {
-    this.loadingPage = true
+    this.loadingPage = true;
     const data = this.formOv.value;
     data.file = this.archivo !== undefined ? this.archivo?.archivo : null;
     this.paymentMethodPurchaseOrderRequestService
@@ -1137,7 +1138,7 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
 
       const data: any = this.formOv.value;
       data.file = this.archivo !== undefined ? this.archivo?.archivo : null;
-      this.cd_ver = false
+      this.cd_ver = false;
       this.paymentMethodPurchaseOrderRequestService
         .upload(this.formOv.value)
         .subscribe({
@@ -1146,13 +1147,16 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
             await this.updateCartAndUserTurn();
             await this.prepararCarroPrePago();
             if (this.userSession.creditLine) {
-              if(!this.userSession.creditLine.requiresConfirmation){
+              if (!this.userSession.creditLine.requiresConfirmation) {
                 this.cd_ver = true;
-              }else if(this.userSession.creditLine.requiresConfirmation && (this.totalCarro >= this.userSession.creditLine.fromAmount &&
+              } else if (
+                this.userSession.creditLine.requiresConfirmation &&
+                this.totalCarro >= this.userSession.creditLine.fromAmount &&
                 (this.totalCarro < this.userSession.creditLine.toAmount ||
-                  this.userSession.creditLine.toAmount == -1))){
-                    this.cd_ver = true;
-              }else {
+                  this.userSession.creditLine.toAmount == -1)
+              ) {
+                this.cd_ver = true;
+              } else {
                 await this.finishPaymentOv(r);
               }
             }
@@ -1206,15 +1210,18 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
       //   this.cd_ver = true;
       // }
       if (this.userSession.creditLine) {
-        if(!this.userSession.creditLine.requiresConfirmation){
+        if (!this.userSession.creditLine.requiresConfirmation) {
           this.cd_ver = true;
           data.credito = true;
-        }else if(this.userSession.creditLine.requiresConfirmation && (this.totalCarro >= this.userSession.creditLine.fromAmount &&
+        } else if (
+          this.userSession.creditLine.requiresConfirmation &&
+          this.totalCarro >= this.userSession.creditLine.fromAmount &&
           (this.totalCarro < this.userSession.creditLine.toAmount ||
-            this.userSession.creditLine.toAmount == -1))){
-              this.cd_ver = true;
-              data.credito = true;
-        }else {
+            this.userSession.creditLine.toAmount == -1)
+        ) {
+          this.cd_ver = true;
+          data.credito = true;
+        } else {
           data.credito = false;
         }
       }
