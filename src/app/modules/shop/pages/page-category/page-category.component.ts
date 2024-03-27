@@ -942,6 +942,8 @@ export class PageCategoryComponent implements OnInit {
             next:(res)=>{
               console.log("searchVehicleFilters: ", res)
               this.products = res.articles
+              this.formatFilters(res.filters);
+              // this.filtrosOculto = false;
             },
             error:(err)=>{
               console.log('gg',err)
