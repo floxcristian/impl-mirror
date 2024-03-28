@@ -233,7 +233,11 @@ export class PageCategoryComponent implements OnInit {
       }
 
       this.filterQuery = this.getFiltersQuery(query);
-
+      if(Object.keys(query).length && this.route.snapshot.paramMap.get('patent') && this.route.snapshot.paramMap.get('SIICode'))
+      {
+        let category = this.route.snapshot.paramMap.get('nombre') || ''
+        this.getProductsByVehicle(this.route.snapshot.paramMap.get('SIICode') || '',this.route.snapshot.paramMap.get('patent') || '', category);
+      }
       if (
         typeof this.parametrosBusqueda !== 'undefined' &&
         (this.parametrosBusqueda.word ===
@@ -423,7 +427,7 @@ export class PageCategoryComponent implements OnInit {
         console.log('===================3. vehiculo');
         console.log('parametrosBusqueda: ', this.parametrosBusqueda);
 
-        this.getProductsByVehicle(params['patent'], params['SIICode'], category);
+        this.getProductsByVehicle(params['SIICode'],params['patent'], category);
       }
     });
 
@@ -875,10 +879,10 @@ export class PageCategoryComponent implements OnInit {
    * @param SIICode
    * @param patent
    */
-  getProductsByVehicle(SIICode: string, patent: string, category:string): void {
+  getProductsByVehicle(SIICode: string, patent: string, category?:string): void {
     this.removableCategory = [];
     this.cargandoProductos = true;
-    this.vehicleService.getProductsByVehicle(SIICode, patent).subscribe({
+    this.vehicleService.getProductsByVehicle(patent,SIICode).subscribe({
       next: (filters) => {
         //const skus = filters.map(filter => itemsku);
         let skus  = filters.reduce((acc, el) => {
