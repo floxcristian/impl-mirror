@@ -421,8 +421,6 @@ export class PageCategoryComponent implements OnInit {
           this.paramsCategory.thirdCategory = params['thirdCategory'];
         }
         console.log('===================3. vehiculo');
-        this.textToSearch = params['patent'];
-        console.log('textToSearch[3]: ', this.textToSearch);
         console.log('parametrosBusqueda: ', this.parametrosBusqueda);
 
         this.getProductsByVehicle(params['patent'], params['SIICode'], category);
@@ -741,7 +739,7 @@ export class PageCategoryComponent implements OnInit {
   clearCategory(): void {
     let queryParams = {};
     queryParams = this.armaQueryParams(queryParams);
-
+    if(this.patentVehicle && this.siiCodeVehicle) this.router.navigate(['/', 'inicio', 'productos','vehicle', this.patentVehicle,this.siiCodeVehicle]);
     if (!this.textToSearch) {
       this.removableCategory = [];
     } else {
@@ -932,8 +930,9 @@ export class PageCategoryComponent implements OnInit {
               this.cargandoProductos = false
               console.log("searchVehicleFilters: ", res)
               this.products = res.articles
+              this.filters = [];
+              this.formatVehicleCategories(res.categoriesTree, res.levelFilter)
               this.formatFilters(res.filters);
-              this.formatVehicleCategories(res.categoriesTree, res.levelFilter);
             },
             error:(err)=>{
               console.log('gg',err)
@@ -955,10 +954,6 @@ export class PageCategoryComponent implements OnInit {
     categorias: ICategoriesTree[],
     levelFilter: number
   ): void {
-    const productoBuscado =
-      this.parametrosBusqueda.word === ''
-        ? 'todos'
-        : this.parametrosBusqueda.word;
     let collapsed = false;
     if (this.parametrosBusqueda.category !== '') {
       collapsed = false;
@@ -999,6 +994,7 @@ export class PageCategoryComponent implements OnInit {
             url: [
               '/',
               'inicio',
+              'productos',
               'vehicle',
               this.patentVehicle,
               this.siiCodeVehicle,
