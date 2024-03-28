@@ -95,6 +95,9 @@ export class PageCategoryComponent implements OnInit {
   origen: string[] = [];
   banners!: IBanner | null;
   config: IConfig;
+  // filter vehicle
+  patentVehicle:string = ''
+  siiCodeVehicle:string = ''
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -404,33 +407,25 @@ export class PageCategoryComponent implements OnInit {
 
       // 3. Vehículo
       else if (params['patent'] && params['SIICode']) {
+        this.patentVehicle = params['patent']
+        this.siiCodeVehicle = params['SIICode']
+        let category = params['nombre'] || '';
+        this.paramsCategory.firstCategory = category;
+
+        if (params['secondCategory']) {
+          category = params['secondCategory'];
+          this.paramsCategory.secondCategory = params['secondCategory'];
+        }
+        if (params['thirdCategory']) {
+          category = params['thirdCategory'];
+          this.paramsCategory.thirdCategory = params['thirdCategory'];
+        }
         console.log('===================3. vehiculo');
         this.textToSearch = params['patent'];
         console.log('textToSearch[3]: ', this.textToSearch);
-        // const { code: branchCode } =
-        //   this.geolocationService.getSelectedStore();
-        // const parametros = {
-        //   branchCode,
-        //   category: '',
-        //   word: this.textToSearch,
-        //   location: this.preferences.deliveryAddress?.city
-        //     ? this.preferences.deliveryAddress?.city
-        //         .normalize('NFD')
-        //         .replace(/[\u0300-\u036f]/g, '')
-        //     : '',
-        //   pageSize: this.pageSize,
-        //   documentId: this.session.documentId,
-        //   showPrice: 1,
-        // };
-        // this.removableFilters = this.filterQuery;
-        // this.parametrosBusqueda = {
-        //   ...parametros,
-        //   ...this.filterQuery,
-        // };
-        // this.parametrosBusqueda.page = this.currentPage;
         console.log('parametrosBusqueda: ', this.parametrosBusqueda);
 
-        this.getProductsByVehicle(params['patent'], params['SIICode']);
+        this.getProductsByVehicle(params['patent'], params['SIICode'], category);
       }
     });
 
@@ -882,9 +877,7 @@ export class PageCategoryComponent implements OnInit {
    * @param SIICode
    * @param patent
    */
-  getProductsByVehicle(SIICode: string, patent: string): void {
-    const { code: branchCode } =
-          this.geolocationService.getSelectedStore();
+  getProductsByVehicle(SIICode: string, patent: string, category:string): void {
     this.removableCategory = [];
     this.cargandoProductos = true;
     this.vehicleService.getProductsByVehicle(SIICode, patent).subscribe({
@@ -907,7 +900,7 @@ export class PageCategoryComponent implements OnInit {
           this.geolocationService.getSelectedStore();
         const parametros = {
           branchCode,
-          category: '',
+          category,
           word: this.textToSearch,
           location: this.preferences.deliveryAddress?.city
             ? this.preferences.deliveryAddress?.city
@@ -928,11 +921,19 @@ export class PageCategoryComponent implements OnInit {
         // this.vehicleService.searchVehicleFilters({ documentId: this.session.documentId,skus,showPrice:1,branchCode}).subscribe({
         this.vehicleService.searchVehicleFilters(this.parametrosBusqueda).subscribe({
             next:(res:any)=>{
+              if (this.parametrosBusqueda.category) {
+                const category = this.parametrosBusqueda.category.replaceAll(/-/g, ' ');
+                this.removableCategory.push({
+                  value: this.parametrosBusqueda.category,
+                  text: this.capitalize.transform(category),
+                });
+                this.filtrosOculto = false;
+              }
               this.cargandoProductos = false
               console.log("searchVehicleFilters: ", res)
               this.products = res.articles
               this.formatFilters(res.filters);
-              this.formatCategories(res.categoriesTree, res.levelFilter);
+              this.formatVehicleCategories(res.categoriesTree, res.levelFilter);
             },
             error:(err)=>{
               console.log('gg',err)
@@ -943,5 +944,91 @@ export class PageCategoryComponent implements OnInit {
         console.log('Ha ocurrido un error al obtener productos: ', err);
       },
     });
+  }
+
+   /**
+   * Añade un filtro de categoría a la lista de filtro vehiculos.
+   * @param categorias
+   * @param levelFilter
+   */
+   private formatVehicleCategories(
+    categorias: ICategoriesTree[],
+    levelFilter: number
+  ): void {
+    const productoBuscado =
+      this.parametrosBusqueda.word === ''
+        ? 'todos'
+        : this.parametrosBusqueda.word;
+    let collapsed = false;
+    if (this.parametrosBusqueda.category !== '') {
+      collapsed = false;
+    }
+
+    const filtros: ProductFilterCategory = {
+      type: 'categories',
+      name: 'CATEGORÍAS',
+      collapsed,
+      options: {
+        items: [],
+      },
+    };
+    this.levelCategories = categorias;
+    let queryParams = {};
+    queryParams = this.armaQueryParams(queryParams);
+
+    this.levelCategories.map((lvl1) => {
+      filtros.options.items?.push({
+        type: 'parent',
+        count: lvl1.count,
+        name: lvl1.name,
+        url: [
+          '/',
+          'inicio',
+          'productos',
+          'vehicle',
+          this.patentVehicle,
+          this.siiCodeVehicle,
+          lvl1.slug,
+        ],
+        open: [1, 2, 3].includes(levelFilter),
+        children: lvl1.children?.map((lvl2) => {
+          return {
+            type: 'parent',
+            count: lvl2.count,
+            name: lvl2.name,
+            url: [
+              '/',
+              'inicio',
+              'vehicle',
+              this.patentVehicle,
+              this.siiCodeVehicle,
+              lvl2.slug,
+            ],
+            open: levelFilter == 2 || levelFilter == 3,
+            children: lvl2.children?.map((lvl3: any) => {
+              return {
+                type: 'parent',
+                count: lvl3.count,
+                name: lvl3.name,
+                url: [
+                  '/',
+                  'inicio',
+                  'productos',
+                  'vehicle',
+                  this.patentVehicle,
+                  this.siiCodeVehicle,
+                  lvl3.slug,
+                ],
+                open: levelFilter == 3,
+                queryParams,
+              };
+            }),
+            queryParams,
+          };
+        }),
+        queryParams,
+      });
+    });
+    this.filters.push(filtros);
   }
 }

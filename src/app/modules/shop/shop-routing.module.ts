@@ -32,6 +32,10 @@ const routes: Routes = [
     component: PageCategoryComponent,
   },
   {
+    path: 'vehicle/:patent/:SIICode/:nombre',
+    component: PageCategoryComponent,
+  },
+  {
     path: ':busqueda/:metodo/:nombre',
     component: PageCategoryComponent,
   },
