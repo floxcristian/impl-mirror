@@ -9,11 +9,10 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+// Libs
+import { GoogleTagManagerService } from 'angular-google-tag-manager';
 // Models
 import { Link } from '../../../../shared/interfaces/link';
-// Services
-import { GoogleTagManagerService } from 'angular-google-tag-manager';
-import { SessionService } from '@core/services-v2/session/session.service';
 
 @Component({
   selector: 'app-products-view',
@@ -23,10 +22,10 @@ import { SessionService } from '@core/services-v2/session/session.service';
 export class ProductsViewComponent {
   isB2B!: boolean;
   // Analizando
+  @Input() isInitialLoading = true;
+  @Input() isScrollLoading = false;
   @Input() products!: any[];
   @Input() limit = 12;
-  @Input() cargandoCatalogo = true;
-  @Input() cargandoProductos = false;
   @Input() showProductOptions = true;
   @Input() origen!: string[];
   @Input() breadcrumbs: Link[] = [];
@@ -37,7 +36,7 @@ export class ProductsViewComponent {
   @Input() hasta = 0;
   @Input() currentPage: number = 1;
   @Input() totalRegistros = 0;
-  @Output() cambiaPagina: EventEmitter<number> = new EventEmitter();
+  @Output() onInfiniteScrollEvent: EventEmitter<number> = new EventEmitter();
   @Output() filterState: EventEmitter<boolean> = new EventEmitter();
 
   @Output() sort: EventEmitter<string> = new EventEmitter();
@@ -52,9 +51,7 @@ export class ProductsViewComponent {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
-    private readonly gtmService: GoogleTagManagerService,
-    // Services V2
-    private readonly sessionService: SessionService
+    private readonly gtmService: GoogleTagManagerService
   ) {
     if (isPlatformBrowser(this.platformId)) {
       this.location = document.location.search;
@@ -85,7 +82,6 @@ export class ProductsViewComponent {
   }
 
   ngOnInit(): void {
-    console.log('breadcrumbsx: ', this.breadcrumbs);
     if (!this.isB2B) {
       this.gtmService.pushTag({
         event: 'categorie_view',
@@ -105,10 +101,10 @@ export class ProductsViewComponent {
       this.textToSearch = 'Búsqueda personalizada';
   }
 
-  onPageChange(pageNumber: number): void {
+  onInfiniteScroll(pageNumber: number): void {
     const page = pageNumber + 1;
     if (page <= this.totalPaginas) {
-      this.cambiaPagina.emit(page);
+      this.onInfiniteScrollEvent.emit(page);
     }
   }
 

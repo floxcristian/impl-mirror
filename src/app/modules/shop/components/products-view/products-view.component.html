@@ -1,13 +1,15 @@
+isInitialLoading: {{ isInitialLoading }} totalRegistros: {{ totalRegistros }}
+
 <div
   infiniteScroll
   [infiniteScrollDistance]="2"
-  (scrolled)="onPageChange(currentPage)"
+  (scrolled)="onInfiniteScroll(currentPage)"
 >
   <app-scroll-top [fast]="true"> </app-scroll-top>
   <div class="products-view" (window:resize)="onResize($event)">
     <div
       class="col-12 col-lg-12 mt-3"
-      *ngIf="!totalRegistros && !cargandoCatalogo"
+      *ngIf="!totalRegistros && !isInitialLoading"
     >
       <div class="alert alert-info text-center">
         No se encontraron productos.
@@ -45,7 +47,7 @@
         *ngIf="totalRegistros"
       >
         <div
-          *ngIf="!cargandoCatalogo"
+          *ngIf="!isInitialLoading"
           class="col-4 col-lg w-auto d-flex justify-content-start"
           style="margin-right: 5px"
         >
@@ -62,7 +64,7 @@
           </div>
         </div>
         <div
-          *ngIf="!cargandoCatalogo"
+          *ngIf="!isInitialLoading"
           [class.col-11]="innerWidth > 991"
           [class.col-8]="innerWidth <= 991"
           class="me-2 d-flex justify-content-end"
@@ -101,8 +103,9 @@
     >
       <div class="products-list__body w-100">
         <app-loading-element
-          *ngIf="cargandoCatalogo"
+          *ngIf="isInitialLoading"
           text="Cargando productos"
+          style="background-color: red"
         ></app-loading-element>
 
         <div
@@ -120,8 +123,9 @@
   </div>
 
   <div
-    *ngIf="cargandoProductos"
+    *ngIf="isScrollLoading"
     class="row flex-column justify-content-center align-content-center mt-4"
+    style="background-color: blue"
   >
     <div class="text-center">
       <i class="fas fa-spinner fa-2x fa-spin fa-fw"></i>

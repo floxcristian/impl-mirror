@@ -76,8 +76,8 @@ export class PageCategoryComponent implements OnInit {
   PagHasta: number = 0;
   PagTotalRegistros: number = 0;
   pageSize: number = 12;
-  cargandoCatalogo: boolean = true;
-  cargandoProductos: boolean = false;
+  isInitialLoading: boolean;
+  isScrollLoading!: boolean;
   currentPage: number = 1;
 
   // Filtro
@@ -96,8 +96,8 @@ export class PageCategoryComponent implements OnInit {
   banners!: IBanner | null;
   config: IConfig;
   // filter vehicle
-  patentVehicle:string = ''
-  siiCodeVehicle:string = ''
+  patentVehicle: string = '';
+  siiCodeVehicle: string = '';
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -119,6 +119,7 @@ export class PageCategoryComponent implements OnInit {
     private readonly configService: ConfigService,
     private readonly vehicleService: VehicleService
   ) {
+    this.isInitialLoading = true;
     this.config = this.configService.getConfig();
     this.session = this.sessionService.getSession();
     this.preferences = this.customerPreferenceStorage.get();
@@ -176,7 +177,7 @@ export class PageCategoryComponent implements OnInit {
    */
   private onSelectedStoreChange(): void {
     this.geolocationService.selectedStore$.subscribe(({ code }) => {
-      if(!this.route.snapshot.paramMap.get('patent')){
+      if (!this.route.snapshot.paramMap.get('patent')) {
         this.filters = [];
         this.parametrosBusqueda.branchCode = code || '';
         this.cargarCatalogoProductos(this.parametrosBusqueda, '');
@@ -193,7 +194,7 @@ export class PageCategoryComponent implements OnInit {
      * QUERY PARAMS
      ****************************************************/
     this.route.queryParams.subscribe((query) => {
-      console.log("query pe:",query)
+      console.log('query pe:', query);
       this.filters = [];
       this.origen = getOriginUrl(this.route.snapshot);
 
@@ -233,10 +234,17 @@ export class PageCategoryComponent implements OnInit {
       }
 
       this.filterQuery = this.getFiltersQuery(query);
-      if(Object.keys(query).length && this.route.snapshot.paramMap.get('patent') && this.route.snapshot.paramMap.get('SIICode'))
-      {
-        let category = this.route.snapshot.paramMap.get('nombre') || ''
-        this.getProductsByVehicle(this.route.snapshot.paramMap.get('SIICode') || '',this.route.snapshot.paramMap.get('patent') || '', category);
+      if (
+        Object.keys(query).length &&
+        this.route.snapshot.paramMap.get('patent') &&
+        this.route.snapshot.paramMap.get('SIICode')
+      ) {
+        let category = this.route.snapshot.paramMap.get('nombre') || '';
+        this.getProductsByVehicle(
+          this.route.snapshot.paramMap.get('SIICode') || '',
+          this.route.snapshot.paramMap.get('patent') || '',
+          category
+        );
       }
       if (
         typeof this.parametrosBusqueda !== 'undefined' &&
@@ -411,8 +419,8 @@ export class PageCategoryComponent implements OnInit {
 
       // 3. Vehículo
       else if (params['patent'] && params['SIICode']) {
-        this.patentVehicle = params['patent']
-        this.siiCodeVehicle = params['SIICode']
+        this.patentVehicle = params['patent'];
+        this.siiCodeVehicle = params['SIICode'];
         let category = params['nombre'] || '';
         this.paramsCategory.firstCategory = category;
 
@@ -427,7 +435,11 @@ export class PageCategoryComponent implements OnInit {
         console.log('===================3. vehiculo');
         console.log('parametrosBusqueda: ', this.parametrosBusqueda);
 
-        this.getProductsByVehicle(params['SIICode'],params['patent'], category);
+        this.getProductsByVehicle(
+          params['SIICode'],
+          params['patent'],
+          category
+        );
       }
     });
 
@@ -477,9 +489,9 @@ export class PageCategoryComponent implements OnInit {
     if (!scroll) {
       this.parametrosBusqueda.page = 1;
       this.currentPage = 1;
-      this.cargandoCatalogo = true;
+      this.isInitialLoading = true;
     } else {
-      this.cargandoProductos = true;
+      this.isScrollLoading = true;
     }
 
     this.articleService.search(parametros).subscribe({
@@ -493,9 +505,14 @@ export class PageCategoryComponent implements OnInit {
     });
   }
 
+  /**
+   * Formatear respuesta de productos para reenderizarlas.
+   * @param r
+   * @param scroll
+   */
   private SetProductos(r: ISearchResponse, scroll = false): void {
-    this.cargandoCatalogo = false;
-    this.cargandoProductos = false;
+    this.isInitialLoading = false;
+    this.isScrollLoading = false;
 
     if (scroll) {
       r.articles.forEach((e: any) => {
@@ -531,6 +548,7 @@ export class PageCategoryComponent implements OnInit {
       this.localS.set(StorageKey.bannersMarca, r.banners[0]);
     } else this.banners = null;
   }
+
   //Trae productos matriz para cuando hay 1 solo article de resultado en la busqueda
   private agregarMatrizProducto(productos: IArticleResponse[]) {
     if (productos.length === 1) {
@@ -725,7 +743,11 @@ export class PageCategoryComponent implements OnInit {
     return clonedParams;
   }
 
-  paginacionProductos(page: number): void {
+  /**
+   * Cargar productos al hacer scroll.
+   * @param page
+   */
+  onInfiniteScroll(page: number): void {
     this.filters = [];
     this.parametrosBusqueda.page = page;
     this.currentPage = page;
@@ -743,7 +765,15 @@ export class PageCategoryComponent implements OnInit {
   clearCategory(): void {
     let queryParams = {};
     queryParams = this.armaQueryParams(queryParams);
-    if(this.patentVehicle && this.siiCodeVehicle) this.router.navigate(['/', 'inicio', 'productos','vehicle', this.patentVehicle,this.siiCodeVehicle]);
+    if (this.patentVehicle && this.siiCodeVehicle)
+      this.router.navigate([
+        '/',
+        'inicio',
+        'productos',
+        'vehicle',
+        this.patentVehicle,
+        this.siiCodeVehicle,
+      ]);
     if (!this.textToSearch) {
       this.removableCategory = [];
     } else {
@@ -879,20 +909,20 @@ export class PageCategoryComponent implements OnInit {
    * @param SIICode
    * @param patent
    */
-  getProductsByVehicle(SIICode: string, patent: string, category?:string): void {
-    this.cargandoProductos = true;
-    this.vehicleService.getProductsByVehicle(patent,SIICode).subscribe({
+  getProductsByVehicle(
+    SIICode: string,
+    patent: string,
+    category?: string
+  ): void {
+    this.isInitialLoading = true;
+    this.vehicleService.getProductsByVehicle(patent, SIICode).subscribe({
       next: (filters) => {
-        //const skus = filters.map(filter => itemsku);
-        let skus  = filters.reduce((acc, el) => {
+        let skus = filters.reduce((acc, el) => {
           acc.push(...el.skus.filter(Boolean));
           return acc;
         }, [] as string[]);
         skus = [...new Set(skus)];
-        console.log('getProductsByVehicle: ', filters);
-        this.PagTotalRegistros = filters.length;
-        this.cargandoCatalogo = false;
-        console.log('categorias',this.removableCategory)
+
         const { code: branchCode } =
           this.geolocationService.getSelectedStore();
         const parametros = {
@@ -912,33 +942,43 @@ export class PageCategoryComponent implements OnInit {
         this.parametrosBusqueda = {
           ...parametros,
           ...this.filterQuery,
-          skus
+          skus,
         };
         this.parametrosBusqueda.page = this.currentPage;
-        // this.vehicleService.searchVehicleFilters({ documentId: this.session.documentId,skus,showPrice:1,branchCode}).subscribe({
-        this.vehicleService.searchVehicleFilters(this.parametrosBusqueda).subscribe({
-            next:(res:any)=>{
+
+        this.vehicleService
+          .searchVehicleFilters(this.parametrosBusqueda)
+          .subscribe({
+            next: (res: any) => {
               this.removableCategory = [];
               if (this.parametrosBusqueda.category) {
-                const category = this.parametrosBusqueda.category.replaceAll(/-/g, ' ');
+                const category = this.parametrosBusqueda.category.replaceAll(
+                  /-/g,
+                  ' '
+                );
                 this.removableCategory.push({
                   value: this.parametrosBusqueda.category,
                   text: this.capitalize.transform(category),
                 });
                 this.filtrosOculto = false;
               }
-              this.cargandoProductos = false
-              console.log("searchVehicleFilters: ", res)
-              this.products = res.articles
+              this.isScrollLoading = false;
+              this.isInitialLoading = false;
+              console.log('searchVehicleFilters: ', res);
+              this.products = res.articles;
+              this.PagTotalRegistros = res.totalResult;
               this.filters = [];
-              this.formatVehicleCategories(res.categoriesTree, res.levelFilter)
+              this.formatVehicleCategories(
+                res.categoriesTree,
+                res.levelFilter
+              );
               this.formatFilters(res.filters);
-              console.log('categorias',this.removableCategory)
+              console.log('categorias', this.removableCategory);
             },
-            error:(err)=>{
-              console.log('gg',err)
-            }
-        })
+            error: (err) => {
+              console.log('gg', err);
+            },
+          });
       },
       error: (err) => {
         console.log('Ha ocurrido un error al obtener productos: ', err);
@@ -946,12 +986,12 @@ export class PageCategoryComponent implements OnInit {
     });
   }
 
-   /**
+  /**
    * Añade un filtro de categoría a la lista de filtro vehiculos.
    * @param categorias
    * @param levelFilter
    */
-   private formatVehicleCategories(
+  private formatVehicleCategories(
     categorias: ICategoriesTree[],
     levelFilter: number
   ): void {
