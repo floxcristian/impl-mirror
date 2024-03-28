@@ -42,7 +42,7 @@ export class ProductsViewComponent {
 
   @Output() sort: EventEmitter<string> = new EventEmitter();
   @Input() paramsCategory!: any;
-  sortType!: string | null;
+  sortType: string | null = null;
 
   listItemPage: any[] = [];
   location!: String;
