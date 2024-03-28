@@ -880,7 +880,6 @@ export class PageCategoryComponent implements OnInit {
    * @param patent
    */
   getProductsByVehicle(SIICode: string, patent: string, category?:string): void {
-    this.removableCategory = [];
     this.cargandoProductos = true;
     this.vehicleService.getProductsByVehicle(patent,SIICode).subscribe({
       next: (filters) => {
@@ -890,14 +889,10 @@ export class PageCategoryComponent implements OnInit {
           return acc;
         }, [] as string[]);
         skus = [...new Set(skus)];
-        /*this.removableCategory.push({
-          value: '',
-          text: '',
-        });*/
         console.log('getProductsByVehicle: ', filters);
-        //this.cargandoProductos = true;
         this.PagTotalRegistros = filters.length;
         this.cargandoCatalogo = false;
+        console.log('categorias',this.removableCategory)
         const { code: branchCode } =
           this.geolocationService.getSelectedStore();
         const parametros = {
@@ -923,6 +918,7 @@ export class PageCategoryComponent implements OnInit {
         // this.vehicleService.searchVehicleFilters({ documentId: this.session.documentId,skus,showPrice:1,branchCode}).subscribe({
         this.vehicleService.searchVehicleFilters(this.parametrosBusqueda).subscribe({
             next:(res:any)=>{
+              this.removableCategory = [];
               if (this.parametrosBusqueda.category) {
                 const category = this.parametrosBusqueda.category.replaceAll(/-/g, ' ');
                 this.removableCategory.push({
@@ -937,6 +933,7 @@ export class PageCategoryComponent implements OnInit {
               this.filters = [];
               this.formatVehicleCategories(res.categoriesTree, res.levelFilter)
               this.formatFilters(res.filters);
+              console.log('categorias',this.removableCategory)
             },
             error:(err)=>{
               console.log('gg',err)
