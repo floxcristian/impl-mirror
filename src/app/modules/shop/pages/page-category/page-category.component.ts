@@ -428,7 +428,7 @@ export class PageCategoryComponent implements OnInit {
         //   ...this.filterQuery,
         // };
         // this.parametrosBusqueda.page = this.currentPage;
-        // console.log('parametrosBusqueda: ', this.parametrosBusqueda);
+        console.log('parametrosBusqueda: ', this.parametrosBusqueda);
 
         this.getProductsByVehicle(params['patent'], params['SIICode']);
       }
@@ -934,17 +934,36 @@ export class PageCategoryComponent implements OnInit {
         //this.cargandoProductos = true;
         this.PagTotalRegistros = filters.length;
         this.cargandoCatalogo = false;
-        // this.cargandoProductos = false
-        this.vehicleService.searchVehicleFilters({ documentId: this.session.documentId,
-          skus,
-          showPrice:1,
-          branchCode}).subscribe({
+        const { code: branchCode } =
+          this.geolocationService.getSelectedStore();
+        const parametros = {
+          branchCode,
+          category: '',
+          word: this.textToSearch,
+          location: this.preferences.deliveryAddress?.city
+            ? this.preferences.deliveryAddress?.city
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+            : '',
+          pageSize: this.pageSize,
+          documentId: this.session.documentId,
+          showPrice: 1,
+        };
+        this.removableFilters = this.filterQuery;
+        this.parametrosBusqueda = {
+          ...parametros,
+          ...this.filterQuery,
+          skus
+        };
+        this.parametrosBusqueda.page = this.currentPage;
+        // this.vehicleService.searchVehicleFilters({ documentId: this.session.documentId,skus,showPrice:1,branchCode}).subscribe({
+        this.vehicleService.searchVehicleFilters(this.parametrosBusqueda).subscribe({
             next:(res:any)=>{
+              this.cargandoProductos = false
               console.log("searchVehicleFilters: ", res)
               this.products = res.articles
               this.formatFilters(res.filters);
               this.formatCategories(res.categoriesTree, res.levelFilter);
-              // this.filtrosOculto = false;
             },
             error:(err)=>{
               console.log('gg',err)
