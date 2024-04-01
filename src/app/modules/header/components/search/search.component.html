@@ -385,6 +385,7 @@
 
       <!-- Start::item vehículo -->
       <div
+        *ngIf="session?.documentId != '0'"
         class="indicator position-relative indicator--trigger--click"
         appDropdown="indicator--opened"
         #menuVehiculo="appDropdown"

@@ -460,6 +460,10 @@ export class PageCategoryComponent implements OnInit {
     texto: string,
     scroll = false
   ): void {
+    //* dejar con string vacio para no ser pescado en el sort
+    this.siiCodeVehicle = ''
+    this.patentVehicle = ''
+
     this.removableCategory = [];
     this.filtrosOculto = true;
 
@@ -906,12 +910,27 @@ export class PageCategoryComponent implements OnInit {
    * @param sortType
    */
   setSort(sortType: string): void {
-    this.parametrosBusqueda.order = sortType;
-    this.cargarCatalogoProductos(
-      this.parametrosBusqueda,
-      this.textToSearch,
-      false
-    );
+    if(this.siiCodeVehicle !== '' && this.patentVehicle !== ''){
+      let order=''
+      if(sortType === 'price|desc') order= 'price|-1'
+      else if(sortType === 'price|asc') order= 'price|1'
+      else if(sortType === 'name|asc') order= 'name|1'
+      else if(sortType === 'brand|asc') order= 'brand|1'
+      let category = this.route.snapshot.paramMap.get('nombre') || '';
+        this.getProductsByVehicle(
+          this.route.snapshot.paramMap.get('SIICode') || '',
+          this.route.snapshot.paramMap.get('patent') || '',
+          category,
+          order
+        );
+    }else{
+      this.parametrosBusqueda.order = sortType;
+      this.cargarCatalogoProductos(
+        this.parametrosBusqueda,
+        this.textToSearch,
+        false
+      );
+    }
   }
 
   /**
@@ -922,7 +941,8 @@ export class PageCategoryComponent implements OnInit {
   getProductsByVehicle(
     SIICode: string,
     patent: string,
-    category?: string
+    category?: string,
+    order?:string
   ): void {
     this.isInitialLoading = true;
     this.vehicleService.getProductsByVehicle(patent, SIICode).subscribe({
@@ -955,7 +975,7 @@ export class PageCategoryComponent implements OnInit {
           skus,
         };
         this.parametrosBusqueda.page = this.currentPage;
-
+        if(order) this.parametrosBusqueda.order = order
         this.vehicleService
           .searchVehicleFilters(this.parametrosBusqueda)
           .subscribe({
@@ -974,7 +994,6 @@ export class PageCategoryComponent implements OnInit {
               }
               this.isScrollLoading = false;
               this.isInitialLoading = false;
-              console.log('searchVehicleFilters: ', res);
               this.products = res.articles;
               this.PagTotalRegistros = res.totalResult;
               this.filters = [];
@@ -983,8 +1002,6 @@ export class PageCategoryComponent implements OnInit {
                 res.levelFilter
               );
               this.formatFilters(res.filters);
-              console.log('categorias', this.removableCategory);
-              console.log('filtros removable:',this.removableFilters)
             },
             error: (err) => {
               console.log('gg', err);
