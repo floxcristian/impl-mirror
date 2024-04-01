@@ -911,17 +911,12 @@ export class PageCategoryComponent implements OnInit {
    */
   setSort(sortType: string): void {
     if(this.siiCodeVehicle !== '' && this.patentVehicle !== ''){
-      let order=''
-      if(sortType === 'price|desc') order= 'price|-1'
-      else if(sortType === 'price|asc') order= 'price|1'
-      else if(sortType === 'name|asc') order= 'name|1'
-      else if(sortType === 'brand|asc') order= 'brand|1'
       let category = this.route.snapshot.paramMap.get('nombre') || '';
         this.getProductsByVehicle(
           this.route.snapshot.paramMap.get('SIICode') || '',
           this.route.snapshot.paramMap.get('patent') || '',
           category,
-          order
+          sortType
         );
     }else{
       this.parametrosBusqueda.order = sortType;
