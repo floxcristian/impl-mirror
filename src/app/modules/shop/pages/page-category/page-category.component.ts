@@ -235,10 +235,11 @@ export class PageCategoryComponent implements OnInit {
 
       this.filterQuery = this.getFiltersQuery(query);
       if (
-        Object.keys(query).length &&
+        typeof this.parametrosBusqueda !== 'undefined' &&
+        this.parametrosBusqueda.word === '' &&
         this.route.snapshot.paramMap.get('patent') &&
         this.route.snapshot.paramMap.get('SIICode')
-      ) {
+        ) {
         let category = this.route.snapshot.paramMap.get('nombre') || '';
         this.getProductsByVehicle(
           this.route.snapshot.paramMap.get('SIICode') || '',
@@ -755,9 +756,10 @@ export class PageCategoryComponent implements OnInit {
   }
 
   updateFilters(filtersObj: any): void {
+    console.log('updateFilters:', filtersObj)
     let filters = filtersObj.selected;
     const url = this.router.url.split('?')[0];
-
+    console.log('url:',url)
     filters = this.armaQueryParams(filters);
     this.router.navigate([url], { queryParams: filters });
   }
@@ -787,7 +789,15 @@ export class PageCategoryComponent implements OnInit {
   clearAll(): void {
     let queryParams = {};
     queryParams = this.armaQueryParams(queryParams);
-
+    if (this.patentVehicle && this.siiCodeVehicle)
+      this.router.navigate([
+        '/',
+        'inicio',
+        'productos',
+        'vehicle',
+        this.patentVehicle,
+        this.siiCodeVehicle,
+      ]);
     if (!this.textToSearch) {
       this.removableCategory = [];
     } else {
@@ -974,6 +984,7 @@ export class PageCategoryComponent implements OnInit {
               );
               this.formatFilters(res.filters);
               console.log('categorias', this.removableCategory);
+              console.log('filtros removable:',this.removableFilters)
             },
             error: (err) => {
               console.log('gg', err);
