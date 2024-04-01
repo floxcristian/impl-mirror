@@ -548,7 +548,8 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
     const username = this.sessionService.getSession().username ?? '';
     this.paymentMethodService.getPaymentMethods({ username }).subscribe({
       next: (data) => {
-        const hasOC = data.some((r) => r.code === PaymentMethodType.OC);
+        const ordenCompraCode = 'ordenCompra';
+        const hasOC = data.some((r) => r.code === ordenCompraCode);
         if (hasOC) {
           this.customerService.getCustomerBlocked(documentId).subscribe({
             next: (resp) => {
@@ -556,7 +557,7 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
                 this.bloqueoCliente = 'Línea de crédito bloqueada';
                 this.clienteBloqueado = true;
                 this.getBloqueoError = true;
-                data = data.filter((r) => r.code !== 'OC');
+                data = data.filter((r) => r.code !== ordenCompraCode);
               }
               this.paymentMethods = data;
 
@@ -568,7 +569,7 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
               this.bloqueoCliente = 'No pudo verificarse línea de crédito';
               this.clienteBloqueado = true;
               this.getBloqueoError = true;
-              data = data.filter((r) => r.code !== 'OC');
+              data = data.filter((r) => r.code !== ordenCompraCode);
               this.paymentMethods = data;
 
               if (this.paymentMethods.length > 0)

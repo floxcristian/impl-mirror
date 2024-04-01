@@ -255,7 +255,7 @@
           </div>
           <div
             *ngIf="
-              productData.priceInfo.commonPrice !=
+              productData.priceInfo.commonPrice !==
               productData.priceInfo.customerPrice
             "
             class="product-card__new-price text-danger col-12"
@@ -284,8 +284,8 @@
           >
             {{
               (session.preferences.iva
-                ? productData.priceInfo.customerPrice
-                : productData.priceInfo.customerNetPrice
+                ? productData.priceInfo.commonPrice
+                : productData.priceInfo.commonNetPrice
               ) | currencyFormat
             }}
             <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
