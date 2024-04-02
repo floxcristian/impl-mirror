@@ -25,8 +25,9 @@
           >
         </span>
         <span
+          *ngIf="this.usuario.documentId !== '0'"
           class="indicator__button"
-          (click)="validarCuenta(); menuCategorias.close()"
+          (click)="showVehicle()"
         >
           <img
             src="../../../../../assets/svg/09.svg"

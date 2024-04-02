@@ -32,6 +32,7 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { DireccionDespachoComponent } from './components/search-vin-b2b/components/direccion-despacho/direccion-despacho.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalVehicleComponent } from './components/modal-vehicle/modal-vehicle.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
     SearchComponent,
     TopbarComponent,
     ModalStoresComponent,
+    ModalVehicleComponent,
     AccountComponent,
     MobileSearchComponent,
     DireccionDespachoComponent,
@@ -72,6 +74,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
     HeaderComponent,
     MenuComponent,
     ModalStoresComponent,
+    ModalVehicleComponent,
     MobileSearchComponent,
     TopbarComponent,
     SearchComponent,

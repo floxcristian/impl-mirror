@@ -1,0 +1,47 @@
+.modal-header {
+    .btn {
+        padding: 0 !important;
+    }
+}
+
+.patente-input {
+    background-color: #f6f6f6;
+    border: none;
+    color: #0d0d0d;
+    padding: 5px 32px;
+    text-align: justify;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 5px;
+    width: 85%;
+    border: 2px solid #f6f6f6;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.patente-input:focus {
+    background-color: #fff;
+    border-bottom: 2px solid #5fbae9;
+}
+
+.patente-input:placeholder {
+    color: #cccccc;
+}
+
+.vehicle-table {
+    margin-bottom: 20px;
+    border: 1px solid #e7e7e7;
+    //border-radius: 5px;
+    tbody tr:nth-child(odd) td {
+        background-color: #ebebeb;
+    }
+    tbody tr td:nth-child(odd) {
+        font-weight: 700;
+    }
+}
