@@ -26,4 +26,5 @@ export enum StorageKey {
   utm_campaign = 'utm_campaign',
   tokens = '_t',
   idCarro = 'cartId',
+  busquedaVehiculo = 'searchVehicle'
 }

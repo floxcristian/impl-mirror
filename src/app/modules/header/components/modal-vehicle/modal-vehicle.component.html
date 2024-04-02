@@ -15,7 +15,7 @@
   [formGroup]="vehicleForm"
   class="form-inline d-flex align-items-center justify-content-center"
 >
-<div class="alert-session p-4">
+<div class="alert-session p-2">
   <div *ngIf="!selectedVehicle">
     <div style="display: flex; justify-content: center">
       <div
@@ -84,7 +84,7 @@
       <div class="col-6">
         <button
           [disabled]="vehicleForm.invalid"
-          name="menuTienda"
+          name="searchVehicle"
           class="btn btn-secondary btn-lg w-100 text-center"
           (click)="searchVehicle(vehicleForm.value)"
           [ngClass]="{ 'btn-loading': isLoading }"
@@ -161,11 +161,12 @@
       </div>
       <div class="col-6">
         <button
-          name="menuTienda"
+          name="searchVehicle"
           class="btn btn-secondary btn-lg w-100 text-center"
           (click)="goToProductsPage()"
+          style="display: flex; align-items: center;"
         >
-          Ver Artículos
+          Ver Productos
         </button>
       </div>
     </div>

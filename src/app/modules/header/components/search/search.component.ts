@@ -50,6 +50,7 @@ import { CustomerAddressService } from '@core/services-v2/customer-address/custo
 import { VehicleService } from '@core/services-v2/vehicle/vehicle.service';
 import { VehicleType } from '@core/services-v2/vehicle/vehicle-type.enum';
 import { IVehicle } from '@core/services-v2/vehicle/vehicle-response.interface';
+import { SerchVehicleStorageService } from '@core/storage/search-vehicle-storage.service';
 
 @Component({
   selector: 'app-header-search',
@@ -119,7 +120,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     private readonly articleService: ArticleService,
     public readonly shoppingCartService: CartService,
     public readonly modalServices: NgbModal,
-    private readonly vehicleService: VehicleService
+    private readonly vehicleService: VehicleService,
+    private readonly searchVehicleStorage:SerchVehicleStorageService
   ) {
     this.vehicleForm = this.fb.group({
       type: ['patent', Validators.required],
@@ -128,6 +130,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.selectedVehicle = this.searchVehicleStorage.get()
     this.onChangeSearchInput();
     this.onChangeTypeInput();
 
@@ -342,10 +345,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   searchVehicle({ type, search }: { type: VehicleType; search: string }) {
-
     this.vehicleService.getByPatentOrVin({type, search, username: this.session.username || ''}).subscribe({
       next: (vehicle) => {
-        console.log('searchVehicle: ', vehicle);
+        this.searchVehicleStorage.set(vehicle)
         this.selectedVehicle = vehicle || null;
         this.notVehicleFound = vehicle ? false : true;
       },
@@ -363,6 +365,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       type: 'patent',
       search: null,
     });
+    this.searchVehicleStorage.remove()
     this.selectedVehicle = null;
   }
 
