@@ -18,7 +18,8 @@ import { IProductCompareResponse } from './product/models/product-compare-respon
 import { IFormmatedProductCompareResponse } from './product/models/formatted-product-compare-response.interface';
 import { DefaultBranch } from '@core/utils-v2/default-branch.service';
 
-const API_ARTICLE = `http://localhost:3400/api/v1/article`; //`${environment.apiEcommerce}/api/v1/article`;
+// const API_ARTICLE = `http://localhost:3400/api/v1/article`; //`${environment.apiEcommerce}/api/v1/article`;
+const API_ARTICLE = `${environment.apiEcommerce}/api/v1/article`;
 
 @Injectable({
   providedIn: 'root',
