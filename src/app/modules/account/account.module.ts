@@ -50,6 +50,7 @@ import { CardDashboardComponent } from '../../shared/components/card-dashboard/c
 import { OrderDetailsComponent } from '../../shared/components/order-details/order-details.component';
 import { CardDashboardNoChartComponent } from '../../shared/components/card-dashboard-no-chart/card-dashboard-no-chart.component';
 import { PageOvsListComponent } from './pages/page-ovs-list/page-ovs-list.component';
+import { PageFlotaComponent } from './pages/page-flota/page-flota.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +90,7 @@ import { PageOvsListComponent } from './pages/page-ovs-list/page-ovs-list.compon
     PageComprasComponent,
     FiltroCategoriasComponent,
     PageOvsListComponent,
+    PageFlotaComponent,
   ],
   imports: [
     CommonModule,

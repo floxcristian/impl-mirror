@@ -32,6 +32,7 @@ export class MenuService {
           url: ['/', 'mi-cuenta', 'gestion-usuariob2b'],
           icon: 'fas fa-users',
         },
+        MenuItem.FLOTA_ITEM_MENU(),
         {
           type: 'link',
           label: 'Centros de costo',
@@ -101,6 +102,7 @@ export class MenuService {
       menuItems = [
         MenuItem.OVERVIEW_ITEM_MENU(),
         MenuItem.PROFILE_ITEM_MENU(),
+        MenuItem.FLOTA_ITEM_MENU(),
         {
           type: 'link',
           label: 'Centros de costo',
@@ -160,6 +162,7 @@ export class MenuService {
       menuItems = [
         MenuItem.OVERVIEW_ITEM_MENU(),
         MenuItem.PROFILE_ITEM_MENU(),
+        MenuItem.FLOTA_ITEM_MENU(),
         MenuItem.PURCHASE_HISTORY_ITEM_MENU(),
         MenuItem.TRACKING_ITEM_MENU(),
         MenuItem.LOGOUT_ITEM_MENU(),
