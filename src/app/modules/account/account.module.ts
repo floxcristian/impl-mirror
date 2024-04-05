@@ -51,7 +51,10 @@ import { OrderDetailsComponent } from '../../shared/components/order-details/ord
 import { CardDashboardNoChartComponent } from '../../shared/components/card-dashboard-no-chart/card-dashboard-no-chart.component';
 import { PageOvsListComponent } from './pages/page-ovs-list/page-ovs-list.component';
 import { PageFlotaComponent } from './pages/page-flota/page-flota.component';
-
+// Primeng
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
 @NgModule({
   declarations: [
     LayoutComponent,
@@ -102,6 +105,9 @@ import { PageFlotaComponent } from './pages/page-flota/page-flota.component';
     FormsModule,
     ReactiveFormsModule,
     PaginationModule,
+    TableModule,
+    ButtonModule,
+    InputTextModule,
   ],
   providers: [PaginationConfig],
 })

@@ -1,10 +1,21 @@
-import { Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin, Subject } from 'rxjs';
 import { AddFlotaModalComponent } from '../../../../shared/components/add-flota-modal/add-flota-modal.component';
-import { DataModal, ModalComponent, TipoIcon, TipoModal } from '../../../../shared/components/modal/modal.component';
+import {
+  DataModal,
+  ModalComponent,
+  TipoIcon,
+  TipoModal,
+} from '../../../../shared/components/modal/modal.component';
 import { UpdateFlotaModalComponent } from '../../../../shared/components/update-flota-modal/update-flota-modal.component';
 import { Flota } from '../../../../shared/interfaces/flota';
 import { ClientsService } from '../../../../shared/services/clients.service';
@@ -12,11 +23,12 @@ import { RootService } from '../../../../shared/services/root.service';
 import { SessionService } from '@core/services-v2/session/session.service';
 import { ISession } from '@core/models-v2/auth/session.interface';
 import { FlotaService } from '@core/services-v2/flota.service';
+import { Column } from './table-column.interface';
 
 @Component({
   selector: 'app-page-flota',
   templateUrl: './page-flota.component.html',
-  styleUrls: ['./page-flota.component.scss']
+  styleUrls: ['./page-flota.component.scss'],
 })
 export class PageFlotaComponent implements OnInit, OnDestroy {
   @ViewChildren(DataTableDirective) dtElements!: QueryList<DataTableDirective>;
@@ -32,6 +44,9 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
   collapsed1State = true;
   collapsed2State = false;
   cargando = true;
+  // Table variables
+  selectedColumns!: Column[];
+  cols!: Column[];
 
   constructor(
     private clientsService: ClientsService,
@@ -40,13 +55,16 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
     private modalService: BsModalService,
     //Services v2
     private readonly sessionService: SessionService,
-    private readonly flotaService:FlotaService
+    private readonly flotaService: FlotaService
   ) {}
 
   ngOnInit() {
     this.userSession = this.sessionService.getSession();
     this.dtOptions = this.root.simpleDtOptions;
-    this.dtOptions = { ...this.dtOptions, ...{ dom: '<"row"<"col-6"l><"col-6"f>><"row"<"col-6"i><"col-6"p>> t' } };
+    this.dtOptions = {
+      ...this.dtOptions,
+      ...{ dom: '<"row"<"col-6"l><"col-6"f>><"row"<"col-6"i><"col-6"p>> t' },
+    };
 
     this.getData();
   }
@@ -60,10 +78,22 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
     this.cargando = true;
     forkJoin([
       this.flotaService.getSearchVin(this.userSession.documentId),
-      this.flotaService.getFlota(this.userSession.documentId)
+      this.flotaService.getFlota(this.userSession.documentId),
     ]).subscribe((resp: any[]) => {
       this.busquedasRecientes = resp[0].data;
-      this.flota = resp[1].data;
+      this.flota = [
+        ...resp[1].data,
+        ...resp[1].data,
+        ...resp[1].data,
+        ...resp[1].data,
+        ...resp[1].data,
+        ...resp[1].data,
+        ...resp[1].data,
+        ...resp[1].data,
+        ...resp[1].data,
+        ...resp[1].data,
+        ...resp[1].data,
+      ];
       this.cargando = false;
 
       if (this.busquedasRecientes.length > 0) {
@@ -86,17 +116,23 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
     });
   }
 
-  clickCollapse(item:any) {
+  clickCollapse(item: any) {
     switch (item) {
       case 1:
-        if (document.getElementById('busquedasRecientes')?.classList.contains('collapsing')) {
+        if (
+          document
+            .getElementById('busquedasRecientes')
+            ?.classList.contains('collapsing')
+        ) {
           return;
         }
         this.collapsed1State = !this.collapsed1State;
         this.collapsed2State = true;
         break;
       case 2:
-        if (document.getElementById('miFlota')?.classList.contains('collapsing')) {
+        if (
+          document.getElementById('miFlota')?.classList.contains('collapsing')
+        ) {
           return;
         }
         this.collapsed2State = !this.collapsed2State;
@@ -108,16 +144,21 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
   agregarVinFlota(busqueda: Flota) {
     const initialState = {
       vin: busqueda?.vehiculo?.chasis,
-      closeToOk: false
+      closeToOk: false,
     };
-    const bsModalRef: BsModalRef = this.modalService.show(AddFlotaModalComponent, { initialState });
-    bsModalRef.content.event.subscribe(async (res:any) => {
+    const bsModalRef: BsModalRef = this.modalService.show(
+      AddFlotaModalComponent,
+      { initialState }
+    );
+    bsModalRef.content.event.subscribe(async (res: any) => {
       if (res !== '') {
         const request: any = {
           idFlota: busqueda._id,
-          alias: res
+          alias: res,
         };
-        const respuesta: any = await this.flotaService.setFlota(request).toPromise();
+        const respuesta: any = await this.flotaService
+          .setFlota(request)
+          .toPromise();
         if (!respuesta.error) {
           this.toastr.success('VIN guardado exitosamente.');
           bsModalRef.hide();
@@ -133,16 +174,21 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
     const initialState = {
       vin: flota.vehiculo?.chasis,
       alias: flota.alias,
-      closeToOk: false
+      closeToOk: false,
     };
-    const bsModalRef: BsModalRef = this.modalService.show(UpdateFlotaModalComponent, { initialState });
-    bsModalRef.content.event.subscribe(async (res:any) => {
+    const bsModalRef: BsModalRef = this.modalService.show(
+      UpdateFlotaModalComponent,
+      { initialState }
+    );
+    bsModalRef.content.event.subscribe(async (res: any) => {
       if (res !== '') {
         const request: any = {
           idFlota: flota._id,
-          alias: res
+          alias: res,
         };
-        const respuesta: any = await this.flotaService.updatedFlota(request).toPromise();
+        const respuesta: any = await this.flotaService
+          .updatedFlota(request)
+          .toPromise();
         if (!respuesta.error) {
           this.toastr.success('Vehículo actualizado exitosamente.');
           bsModalRef.hide();
@@ -159,12 +205,16 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
       titulo: 'Confirmación',
       mensaje: `¿Esta seguro que desea <strong>eliminar</strong> el VIN ${busqueda.vehiculo?.chasis} de las busquedas recientes?`,
       tipoIcon: TipoIcon.QUESTION,
-      tipoModal: TipoModal.QUESTION
+      tipoModal: TipoModal.QUESTION,
     };
-    const bsModalRef: BsModalRef = this.modalService.show(ModalComponent, { initialState });
-    bsModalRef.content.event.subscribe(async (res:any) => {
+    const bsModalRef: BsModalRef = this.modalService.show(ModalComponent, {
+      initialState,
+    });
+    bsModalRef.content.event.subscribe(async (res: any) => {
       if (res) {
-        const respuesta: any = await this.flotaService.deleteSearchVin(busqueda).toPromise();
+        const respuesta: any = await this.flotaService
+          .deleteSearchVin(busqueda)
+          .toPromise();
         if (!respuesta.error) {
           this.toastr.success('VIN eliminado exitosamente.');
 
@@ -182,12 +232,16 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
       titulo: 'Confirmación',
       mensaje: `¿Está seguro que desea <strong>eliminar</strong> el vehículo alias ${flota.alias} de tu flota?`,
       tipoIcon: TipoIcon.QUESTION,
-      tipoModal: TipoModal.QUESTION
+      tipoModal: TipoModal.QUESTION,
     };
-    const bsModalRef: BsModalRef = this.modalService.show(ModalComponent, { initialState });
-    bsModalRef.content.event.subscribe(async (res:any) => {
+    const bsModalRef: BsModalRef = this.modalService.show(ModalComponent, {
+      initialState,
+    });
+    bsModalRef.content.event.subscribe(async (res: any) => {
       if (res) {
-        const respuesta: any = await this.flotaService.deleteFlota(flota).toPromise();
+        const respuesta: any = await this.flotaService
+          .deleteFlota(flota)
+          .toPromise();
         if (!respuesta.error) {
           this.toastr.success('Vehículo eliminado exitosamente.');
 
