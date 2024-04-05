@@ -9,7 +9,7 @@ const API_CUSTOMER = `${environment.apiEcommerce}/api/v1/customer`;
 @Injectable({
     providedIn: 'root',
 })
-export class ArticleService {
+export class CustomerVehicleService {
     constructor(private http: HttpClient) {}
 
     getAll(documentId:string){
