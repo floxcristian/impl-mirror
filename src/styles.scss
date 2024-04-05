@@ -280,3 +280,19 @@ body {
   margin: 0 !important;
   padding: 0 !important;
 }
+
+.p-paginator .p-paginator-current {
+  margin-left: auto !important;
+}
+
+.p-datatable .p-datatable-header {
+  border: 1px solid #e5e7eb !important;
+  border-width: 1px 1px 0 1px !important;
+}
+
+/*********
+*
+*/
+.p-button {
+  border-radius: 6px !important;
+}

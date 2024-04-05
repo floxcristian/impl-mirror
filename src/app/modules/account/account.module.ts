@@ -55,6 +55,8 @@ import { PageFlotaComponent } from './pages/page-flota/page-flota.component';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { TooltipModule as PrimeTooltip } from 'primeng/tooltip';
+import { CardModule } from 'primeng/card';
 @NgModule({
   declarations: [
     LayoutComponent,
@@ -108,6 +110,8 @@ import { InputTextModule } from 'primeng/inputtext';
     TableModule,
     ButtonModule,
     InputTextModule,
+    PrimeTooltip,
+    CardModule,
   ],
   providers: [PaginationConfig],
 })
