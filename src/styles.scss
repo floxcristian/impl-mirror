@@ -296,3 +296,85 @@ body {
 .p-button {
   border-radius: 6px !important;
 }
+
+/****************
+*
+*/
+.pt-5 {
+  padding-top: 2rem !important;
+}
+
+.w-full {
+  width: 100% !important;
+}
+
+.gap-2 {
+  gap: 0.5rem !important;
+}
+
+.gap-3 {
+  gap: 1rem !important;
+}
+
+.flex {
+  display: flex !important;
+}
+
+.block {
+  display: block !important;
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem !important;
+}
+
+.mt-3 {
+  margin-top: 1rem !important;
+}
+
+.flex-column {
+  flex-direction: column !important;
+}
+
+.text-base {
+  font-size: 1rem !important;
+}
+
+.text-color {
+  color: var(--text-color) !important;
+}
+
+.p-input-icon-left,
+.p-input-icon-right {
+  position: relative;
+  display: inline-block;
+}
+
+.m-0 {
+  margin: 0rem !important;
+}
+
+.font-semibold {
+  font-weight: 600 !important;
+}
+
+.text-xl {
+  font-size: 1.25rem !important;
+}
+
+.line-height-3 {
+  line-height: 1.5 !important;
+}
+
+.justify-content-end {
+  justify-content: flex-end !important;
+}
+
+.border-top-1 {
+  border-top-width: 1px !important;
+  border-top-style: solid;
+}
+
+.surface-border {
+  border-color: var(--surface-border) !important;
+}

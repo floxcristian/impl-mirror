@@ -57,6 +57,11 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule as PrimeTooltip } from 'primeng/tooltip';
 import { CardModule } from 'primeng/card';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { ToastModule } from 'primeng/toast';
+import { VehicleFormComponent } from './pages/page-flota/modals/vehicle-form/vehicle-form.component';
+
 @NgModule({
   declarations: [
     LayoutComponent,
@@ -112,6 +117,10 @@ import { CardModule } from 'primeng/card';
     InputTextModule,
     PrimeTooltip,
     CardModule,
+    ConfirmDialogModule,
+    DynamicDialogModule,
+    ToastModule,
+    VehicleFormComponent,
   ],
   providers: [PaginationConfig],
 })

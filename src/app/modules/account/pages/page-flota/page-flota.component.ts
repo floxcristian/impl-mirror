@@ -18,14 +18,21 @@ import {
 } from '../../../../shared/components/modal/modal.component';
 import { UpdateFlotaModalComponent } from '../../../../shared/components/update-flota-modal/update-flota-modal.component';
 import { Flota } from '../../../../shared/interfaces/flota';
-import { ClientsService } from '../../../../shared/services/clients.service';
 import { RootService } from '../../../../shared/services/root.service';
 import { SessionService } from '@core/services-v2/session/session.service';
 import { ISession } from '@core/models-v2/auth/session.interface';
 import { FlotaService } from '@core/services-v2/flota.service';
 import { Column } from './table-column.interface';
+import { CustomerVehicleService } from '@core/services-v2/customer-vehicle/customer-vehicle.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
+import { DialogService } from 'primeng/dynamicdialog';
+import { VehicleFormComponent } from './modals/vehicle-form/vehicle-form.component';
+import { VehicleFormFooter } from './modals/vehicle-form/vehicle-form-footer.component';
+import { VehicleFormHeader } from './modals/vehicle-form/vehicle-form-header.component';
 
 @Component({
+  providers: [ConfirmationService, DialogService, MessageService],
   selector: 'app-page-flota',
   templateUrl: './page-flota.component.html',
   styleUrls: ['./page-flota.component.scss'],
@@ -45,21 +52,54 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
   collapsed2State = false;
   cargando = true;
   // Table variables
+  loading!: boolean;
   selectedColumns!: Column[];
   cols!: Column[];
+  vehicles: any[] = [];
+  totalRows: number = 0;
+  rows: number = 2;
+  first: number = 0;
 
   constructor(
-    private clientsService: ClientsService,
+    private readonly customerVehicleService: CustomerVehicleService,
     public root: RootService,
     private toastr: ToastrService,
     private modalService: BsModalService,
-    //Services v2
     private readonly sessionService: SessionService,
-    private readonly flotaService: FlotaService
+    private readonly flotaService: FlotaService,
+    private confirmationService: ConfirmationService,
+    public dialogService: DialogService,
+    private readonly messageService: MessageService
   ) {}
+
+  fetchVehicles(event: TableLazyLoadEvent) {
+    console.log('event: ', event);
+
+    this.first = event.first || 0;
+    this.rows = event.rows || this.rows;
+    const sort = event.sortField
+      ? `${event.sortField}|${event.sortOrder}`
+      : '';
+
+    this.loading = true;
+    this.customerVehicleService
+      .getPaginatedCustomerVehicles(this.userSession.documentId, {
+        page: this.first / this.rows + 1,
+        limit: this.rows,
+        sort,
+      })
+      .subscribe((res: any) => {
+        console.log('getPaginatedCustomerVehicles: ', res);
+        this.vehicles = res.data;
+        this.totalRows = res.total;
+        this.loading = false;
+      });
+  }
 
   ngOnInit() {
     this.userSession = this.sessionService.getSession();
+    // this.fetchVehicles();
+
     this.dtOptions = this.root.simpleDtOptions;
     this.dtOptions = {
       ...this.dtOptions,
@@ -251,6 +291,57 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
           this.toastr.error(respuesta.msg);
         }
       }
+    });
+  }
+
+  confirmDeleteVehicle(event: Event, id: string) {
+    console.log('event: ', event);
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: '¿Está seguro que desea eliminar este registro?',
+      header: 'Confirmación de eliminación',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass: 'p-button-danger p-button-text',
+      rejectButtonStyleClass: 'p-button-text p-button-text',
+      acceptLabel: 'Eliminar',
+      rejectLabel: 'Cancelar',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+
+      accept: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Vehículo eliminado',
+          detail: 'El vehículo se ha eliminado correctamente.',
+        });
+      },
+    });
+  }
+
+  deleteVehicle(id: string) {
+    this.customerVehicleService.delete(id).subscribe({
+      next: () => {},
+      error: () => {},
+    });
+  }
+
+  openUpdateVehicle(vehicle: any) {
+    /*this.ref = */
+    this.dialogService.open(VehicleFormComponent, {
+      header: 'Actualizar vehículo',
+      width: '50vw',
+      contentStyle: { overflow: 'auto' },
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw',
+      },
+      data: {
+        vehicle,
+      },
+      templates: {
+        footer: VehicleFormFooter,
+        header: VehicleFormHeader,
+      },
     });
   }
 }
