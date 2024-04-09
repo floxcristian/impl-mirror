@@ -33,6 +33,12 @@ import { DireccionDespachoComponent } from './components/search-vin-b2b/componen
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalVehicleComponent } from './components/modal-vehicle/modal-vehicle.component';
+//PRIMENG
+import { DropdownModule } from 'primeng/dropdown';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [
@@ -68,6 +74,11 @@ import { ModalVehicleComponent } from './components/modal-vehicle/modal-vehicle.
     TooltipModule.forRoot(),
     ReactiveFormsModule,
     ModalModule,
+    DropdownModule,
+    AutoCompleteModule,
+    InputGroupModule,
+    InputGroupAddonModule,
+    ButtonModule
   ],
   exports: [
     // components
