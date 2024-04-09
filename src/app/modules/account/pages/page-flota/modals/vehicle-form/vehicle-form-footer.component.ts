@@ -49,7 +49,7 @@ export class VehicleFormFooter {
     });
   }
 
-  private formatYear(date: Date) {
-    return date.getFullYear();
+  private formatYear(date: Date | number): number {
+    return typeof date === 'number' ? date : date.getFullYear();
   }
 }

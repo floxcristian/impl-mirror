@@ -297,7 +297,7 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
     });
   }
 
-  confirmDeleteVehicle(event: Event, id: string) {
+  confirmDeleteVehicle(event: Event, id: string): void {
     console.log('event: ', event);
     this.confirmationService.confirm({
       target: event.target as EventTarget,
@@ -312,19 +312,27 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
       rejectIcon: 'none',
 
       accept: () => {
+        this.deleteVehicle(id);
+      },
+    });
+  }
+
+  deleteVehicle(id: string) {
+    this.customerVehicleService.delete(this.session.documentId, id).subscribe({
+      next: () => {
         this.messageService.add({
           severity: 'success',
           summary: 'Vehículo eliminado',
           detail: 'El vehículo se ha eliminado correctamente.',
         });
       },
-    });
-  }
-
-  deleteVehicle(documentId:string,id: string) {
-    this.customerVehicleService.delete(documentId,id).subscribe({
-      next: () => {},
-      error: () => {},
+      error: () => {
+        this.messageService.add({
+          severity: 'danger',
+          summary: 'Vehículo no eliminado',
+          detail: 'Ha ocurrido un error al eliminar el vehículo.',
+        });
+      },
     });
   }
 
