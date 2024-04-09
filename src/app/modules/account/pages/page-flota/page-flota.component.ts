@@ -321,8 +321,8 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
     });
   }
 
-  deleteVehicle(id: string) {
-    this.customerVehicleService.delete(id).subscribe({
+  deleteVehicle(documentId:string,id: string) {
+    this.customerVehicleService.delete(documentId,id).subscribe({
       next: () => {},
       error: () => {},
     });
