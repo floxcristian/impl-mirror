@@ -22,7 +22,7 @@ export class CustomerVehicleService {
       page?: number;
       limit?: number;
       sort?: string;
-      search?:string
+      search?: string;
     }
   ) {
     return this.http.get(
@@ -53,7 +53,9 @@ export class CustomerVehicleService {
     );
   }
 
-  delete(documentId:string,customerVehicleId: string) {
-    return this.http.delete(`${API_CUSTOMER}/${documentId}/customer-vehicle`,{params:{customerVehicleId}});
+  delete(documentId: string, customerVehicleId: string) {
+    return this.http.delete(`${API_CUSTOMER}/${documentId}/customer-vehicle`, {
+      params: { customerVehicleId },
+    });
   }
 }
