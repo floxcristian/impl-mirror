@@ -51,6 +51,12 @@ import { VehicleService } from '@core/services-v2/vehicle/vehicle.service';
 import { VehicleType } from '@core/services-v2/vehicle/vehicle-type.enum';
 import { IVehicle } from '@core/services-v2/vehicle/vehicle-response.interface';
 import { SerchVehicleStorageService } from '@core/storage/search-vehicle-storage.service';
+import { CustomerVehicleService } from '@core/services-v2/customer-vehicle/customer-vehicle.service';
+
+interface AutoCompleteCompleteEvent {
+  originalEvent: Event;
+  query: string;
+}
 
 @Component({
   selector: 'app-header-search',
@@ -101,6 +107,13 @@ export class SearchComponent implements OnInit, OnDestroy {
   selectedVehicle!: IVehicle | null;
   notVehicleFound!: boolean;
 
+  customerVehiclesFilter!:any[]
+  customerVehiclesOriginal!:any[]
+  isLoadingVehicles:boolean = false
+  getTypeFilter(){
+    return this.vehicleForm.get('type')?.value === 'patent' ? this.vehicleForm.get('type')?.value : 'codeChasis'
+  }
+
   constructor(
     private router: Router,
     private modalService: BsModalService,
@@ -121,7 +134,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     public readonly shoppingCartService: CartService,
     public readonly modalServices: NgbModal,
     private readonly vehicleService: VehicleService,
-    private readonly searchVehicleStorage:SerchVehicleStorageService
+    private readonly searchVehicleStorage:SerchVehicleStorageService,
+    private readonly customerVehicleService: CustomerVehicleService
   ) {
     this.vehicleForm = this.fb.group({
       type: ['patent', Validators.required],
@@ -379,4 +393,59 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.menuVehiculo.toggle();
     }
   }
+
+  /**
+   *  Obtiene vehiculos del cliente logueado
+   */
+  getAllCustomerVehicle(){
+    if (this.session.documentId !== '0'){
+      this.customerVehicleService.getAll(this.session.documentId).subscribe({
+        next:(vehicles:any) =>{
+          this.customerVehiclesOriginal = vehicles
+          this.customerVehiclesFilter = vehicles
+        },
+        error:(err) =>{
+          console.log(err)
+        }
+      })
+    }
+  }
+
+  /**
+   * Filtra los vehiculos
+   */
+  filterVehicle(){
+    let valueSearch = this.vehicleForm.get('search')?.value.toUpperCase()
+    if(!valueSearch || valueSearch === '') this.customerVehiclesFilter = this.customerVehiclesOriginal
+    else {
+      let typeFilter = this.getTypeFilter()
+      if(typeFilter === 'patent') this.customerVehiclesFilter = this.customerVehiclesOriginal.filter((vehicle:any) => vehicle.patent.toUpperCase().includes(valueSearch))
+      else this.customerVehiclesFilter = this.customerVehiclesOriginal.filter((vehicle:any) => vehicle.codeChasis.toUpperCase().includes(valueSearch))
+    }
+  }
+
+  filterVehicle2(event: AutoCompleteCompleteEvent) {
+    let filtered: any[] = [];
+    let query = event.query;
+
+    for (let i = 0; i < (this.customerVehiclesOriginal as any[]).length; i++) {
+        let country = (this.customerVehiclesOriginal as any[])[i];
+        if (country.patent.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+            filtered.push(country);
+        }
+    }
+
+    this.customerVehiclesFilter = filtered;
+  }
+
+  filterVehicle3(event: AutoCompleteCompleteEvent) {
+    let query = event.query.toUpperCase();
+    if(!query || query === '') this.customerVehiclesFilter = this.customerVehiclesOriginal
+    else {
+      let typeFilter = this.getTypeFilter()
+      if(typeFilter === 'patent') this.customerVehiclesFilter = this.customerVehiclesOriginal.filter((vehicle:any) => vehicle.patent.toUpperCase().includes(query))
+      else this.customerVehiclesFilter = this.customerVehiclesOriginal.filter((vehicle:any) => vehicle.codeChasis.toUpperCase().includes(query))
+    }
+  }
+
 }
