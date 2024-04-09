@@ -17,13 +17,14 @@
       [totalRecords]="totalRows"
       [showCurrentPageReport]="true"
       currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} registros"
-      [rowsPerPageOptions]="[2, 25, 50]"
+      [rowsPerPageOptions]="[10, 25, 50]"
       styleClass="p-datatable-striped"
       [tableStyle]="{ 'min-width': '50rem' }"
     >
       <ng-template pTemplate="caption">
         <div style="display: flex; justify-content: end">
           <button
+            (click)="openVehicleModal(VehicleAction.CREATE)"
             pButton
             label="Añadir vehículo"
             class="p-button"
@@ -259,7 +260,7 @@
           <td>
             <div style="display: flex; gap: 10px">
               <button
-                (click)="openUpdateVehicle(vehicle)"
+                (click)="openVehicleModal(VehicleAction.UPDATE, vehicle)"
                 pButton
                 pRipple
                 pTooltip="Editar"
@@ -369,7 +370,7 @@
 
         <div class="d-none d-md-block">
           <div
-            [ngStyle]="{ display: flota?.length || 0 > 0 ? 'block' : 'none' }"
+            [ngStyle]="{ display: flota.length || 0 > 0 ? 'block' : 'none' }"
           >
             <table
               datatable

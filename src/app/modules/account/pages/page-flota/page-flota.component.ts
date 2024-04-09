@@ -26,10 +26,11 @@ import { Column } from './table-column.interface';
 import { CustomerVehicleService } from '@core/services-v2/customer-vehicle/customer-vehicle.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { DialogService } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { VehicleFormComponent } from './modals/vehicle-form/vehicle-form.component';
 import { VehicleFormFooter } from './modals/vehicle-form/vehicle-form-footer.component';
 import { VehicleFormHeader } from './modals/vehicle-form/vehicle-form-header.component';
+import { VehicleAction } from './vehicle-action.enum';
 
 @Component({
   providers: [ConfirmationService, DialogService, MessageService],
@@ -40,7 +41,8 @@ import { VehicleFormHeader } from './modals/vehicle-form/vehicle-form-header.com
 export class PageFlotaComponent implements OnInit, OnDestroy {
   @ViewChildren(DataTableDirective) dtElements!: QueryList<DataTableDirective>;
 
-  userSession!: ISession;
+  VehicleAction = VehicleAction;
+  session!: ISession;
 
   busquedasRecientes: any[] = [];
   flota: any[] = [];
@@ -57,8 +59,9 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
   cols!: Column[];
   vehicles: any[] = [];
   totalRows: number = 0;
-  rows: number = 2;
+  rows: number = 10;
   first: number = 0;
+  ref: DynamicDialogRef | undefined;
 
   constructor(
     private readonly customerVehicleService: CustomerVehicleService,
@@ -83,7 +86,7 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
 
     this.loading = true;
     this.customerVehicleService
-      .getPaginatedCustomerVehicles(this.userSession.documentId, {
+      .getPaginatedCustomerVehicles(this.session.documentId, {
         page: this.first / this.rows + 1,
         limit: this.rows,
         sort,
@@ -97,7 +100,7 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.userSession = this.sessionService.getSession();
+    this.session = this.sessionService.getSession();
     // this.fetchVehicles();
 
     this.dtOptions = this.root.simpleDtOptions;
@@ -117,8 +120,8 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
   getData() {
     this.cargando = true;
     forkJoin([
-      this.flotaService.getSearchVin(this.userSession.documentId),
-      this.flotaService.getFlota(this.userSession.documentId),
+      this.flotaService.getSearchVin(this.session.documentId),
+      this.flotaService.getFlota(this.session.documentId),
     ]).subscribe((resp: any[]) => {
       this.busquedasRecientes = resp[0].data;
       this.flota = [
@@ -325,9 +328,8 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
     });
   }
 
-  openUpdateVehicle(vehicle: any) {
-    /*this.ref = */
-    this.dialogService.open(VehicleFormComponent, {
+  openVehicleModal(action: VehicleAction, vehicle?: any): void {
+    const ref = this.dialogService.open(VehicleFormComponent, {
       header: 'Actualizar vehículo',
       width: '50vw',
       contentStyle: { overflow: 'auto' },
@@ -335,13 +337,40 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
         '960px': '75vw',
         '640px': '90vw',
       },
+      appendTo: 'body',
       data: {
-        vehicle,
+        vehicle: action === VehicleAction.UPDATE ? vehicle : null,
+        action,
       },
       templates: {
         footer: VehicleFormFooter,
         header: VehicleFormHeader,
       },
     });
+
+    ref.onClose.subscribe(
+      ({ confirm, newVehicle }: { confirm: boolean; newVehicle: any }) => {
+        if (!confirm) return;
+        if (vehicle) {
+          this.updateVehicle(newVehicle);
+        } else {
+          this.createVehicle(newVehicle);
+        }
+      }
+    );
+  }
+
+  createVehicle(vehicle: any) {
+    console.log('vehicle create: ', vehicle);
+    /*this.customerVehicleService
+      .createCustomerVehicle(this.session.documentId, vehicle)
+      .subscribe({
+        next: (res) => {},
+        error: (err) => {},
+      });*/
+  }
+
+  updateVehicle(vehicle: any) {
+    console.log('vehicle update: ', vehicle);
   }
 }

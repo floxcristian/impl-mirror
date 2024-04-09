@@ -1,94 +1,98 @@
-<form class="flex flex-column gap-3 mt-3">
+<form [formGroup]="vehicleForm" class="flex flex-column gap-3 mt-3">
   <div class="flex gap-3">
     <div class="w-full">
-      <label for="cvc" class="block mb-1 text-color text-base">Patente</label>
+      <label for="patent" class="block mb-1 text-color text-base"
+        >Patente</label
+      >
       <span class="w-full">
         <input
-          name="cvc"
+          formControlName="patent"
           type="text"
+          id="patent"
           class="w-full"
-          id="cvc"
           pInputText
           pKeyFilter="int"
-          placeholder="123"
+          placeholder="Ingrese patente"
         />
       </span>
     </div>
     <div class="w-full">
-      <label for="expiration" class="block mb-1 text-color text-base"
+      <label for="codeChasis" class="block mb-1 text-color text-base"
         >VIN</label
       >
       <span class="w-full">
         <input
-          name="exp"
           type="text"
           class="w-full"
-          id="expiration"
+          formControlName="codeChasis"
+          id="codeChasis"
           pInputText
-          placeholder="12/22"
+          placeholder="Ingrese VIN"
         />
       </span>
     </div>
   </div>
   <div class="flex gap-3">
     <div class="w-full">
-      <label for="cvc" class="block mb-1 text-color text-base">Tipo</label>
+      <label for="typeImp" class="block mb-1 text-color text-base">Tipo</label>
       <span class="w-full">
         <input
-          name="cvc"
+          formControlName="typeImp"
           type="text"
           class="w-full"
-          id="cvc"
+          id="typeImp"
           pInputText
           pKeyFilter="int"
-          placeholder="123"
+          placeholder="Ingrese tipo"
         />
       </span>
     </div>
     <div class="w-full">
-      <label for="expiration" class="block mb-1 text-color text-base"
-        >Marca</label
-      >
+      <label for="brand" class="block mb-1 text-color text-base">Marca</label>
       <span class="w-full">
         <input
-          name="exp"
+          formControlName="brand"
           type="text"
           class="w-full"
-          id="expiration"
+          id="brand"
           pInputText
-          placeholder="12/22"
+          placeholder="Ingrese marca"
         />
       </span>
     </div>
   </div>
   <div class="flex gap-3">
     <div class="w-full">
-      <label for="cvc" class="block mb-1 text-color text-base">Modelo</label>
+      <label for="model" class="block mb-1 text-color text-base">Modelo</label>
       <span class="w-full">
         <input
-          name="cvc"
+          formControlName="model"
           type="text"
           class="w-full"
-          id="cvc"
+          id="model"
           pInputText
           pKeyFilter="int"
-          placeholder="123"
+          placeholder="Ingrese modelo"
         />
       </span>
     </div>
     <div class="w-full">
-      <label for="expiration" class="block mb-1 text-color text-base"
+      <label for="manufactureYear" class="block mb-1 text-color text-base"
         >Año</label
       >
       <span class="w-full">
-        <input
-          name="exp"
-          type="text"
+        <p-calendar
+          formControlName="manufactureYear"
+          appendTo="body"
+          view="year"
+          placeholder="Ingrese año"
+          dateFormat="yy"
+          inputId="yearpicker"
           class="w-full"
-          id="expiration"
-          pInputText
-          placeholder="12/22"
-        />
+          [style]="{ width: '100%' }"
+          [maxDate]="maxDate"
+          [minDate]="minDate"
+        ></p-calendar>
       </span>
     </div>
   </div>
