@@ -50,7 +50,6 @@ import { CustomerAddressService } from '@core/services-v2/customer-address/custo
 import { VehicleService } from '@core/services-v2/vehicle/vehicle.service';
 import { VehicleType } from '@core/services-v2/vehicle/vehicle-type.enum';
 import { IVehicle } from '@core/services-v2/vehicle/vehicle-response.interface';
-import { SerchVehicleStorageService } from '@core/storage/search-vehicle-storage.service';
 import { CustomerVehicleService } from '@core/services-v2/customer-vehicle/customer-vehicle.service';
 
 interface AutoCompleteCompleteEvent {
@@ -134,7 +133,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     public readonly shoppingCartService: CartService,
     public readonly modalServices: NgbModal,
     private readonly vehicleService: VehicleService,
-    private readonly searchVehicleStorage:SerchVehicleStorageService,
     private readonly customerVehicleService: CustomerVehicleService
   ) {
     this.vehicleForm = this.fb.group({
@@ -144,7 +142,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.selectedVehicle = this.searchVehicleStorage.get()
     this.onChangeSearchInput();
     this.onChangeTypeInput();
 
@@ -361,7 +358,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   searchVehicle({ type, search }: { type: VehicleType; search: string }) {
     this.vehicleService.getByPatentOrVin({type, search, username: this.session.username || ''}).subscribe({
       next: (vehicle) => {
-        this.searchVehicleStorage.set(vehicle)
         this.selectedVehicle = vehicle || null;
         this.notVehicleFound = vehicle ? false : true;
       },
@@ -379,7 +375,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       type: 'patent',
       search: null,
     });
-    this.searchVehicleStorage.remove()
     this.selectedVehicle = null;
   }
 
@@ -388,6 +383,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   goToProductsPage() {
     if(this.selectedVehicle?.PLACA_PATENTE && this.selectedVehicle?.codigoSii){
+      this.cleanSelectedVehicle()
       this.router.navigateByUrl(`inicio/productos/vehicle/${this.selectedVehicle?.PLACA_PATENTE}/${this.selectedVehicle?.codigoSii}`);
       this.searchVehicle(this.vehicleForm.value);
       this.menuVehiculo.toggle();
@@ -423,29 +419,4 @@ export class SearchComponent implements OnInit, OnDestroy {
       else this.customerVehiclesFilter = this.customerVehiclesOriginal.filter((vehicle:any) => vehicle.codeChasis.toUpperCase().includes(valueSearch))
     }
   }
-
-  filterVehicle2(event: AutoCompleteCompleteEvent) {
-    let filtered: any[] = [];
-    let query = event.query;
-
-    for (let i = 0; i < (this.customerVehiclesOriginal as any[]).length; i++) {
-        let country = (this.customerVehiclesOriginal as any[])[i];
-        if (country.patent.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-            filtered.push(country);
-        }
-    }
-
-    this.customerVehiclesFilter = filtered;
-  }
-
-  filterVehicle3(event: AutoCompleteCompleteEvent) {
-    let query = event.query.toUpperCase();
-    if(!query || query === '') this.customerVehiclesFilter = this.customerVehiclesOriginal
-    else {
-      let typeFilter = this.getTypeFilter()
-      if(typeFilter === 'patent') this.customerVehiclesFilter = this.customerVehiclesOriginal.filter((vehicle:any) => vehicle.patent.toUpperCase().includes(query))
-      else this.customerVehiclesFilter = this.customerVehiclesOriginal.filter((vehicle:any) => vehicle.codeChasis.toUpperCase().includes(query))
-    }
-  }
-
 }

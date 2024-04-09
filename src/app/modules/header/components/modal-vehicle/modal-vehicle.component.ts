@@ -8,7 +8,6 @@ import { ISession } from '@core/models-v2/auth/session.interface';
 import { SessionService } from '@core/services-v2/session/session.service';
 import { Router } from '@angular/router';
 import { MenuCategoriasB2cService } from '@shared/services/menu-categorias-b2c.service';
-import { SerchVehicleStorageService } from '@core/storage/search-vehicle-storage.service';
 
 @Component({
   selector: 'app-modal-vehicle',
@@ -31,7 +30,6 @@ export class ModalVehicleComponent implements OnInit {
     private readonly fb: FormBuilder,
     private readonly vehicleService: VehicleService,
     private readonly sessionService: SessionService,
-    private readonly searchVehicleStorage:SerchVehicleStorageService
   ) {
     this.vehicleForm = this.fb.group({
       type: ['patent', Validators.required],
@@ -40,7 +38,6 @@ export class ModalVehicleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.selectedVehicle = this.searchVehicleStorage.get()
     this.session = this.sessionService.getSession();
   }
 
@@ -52,7 +49,6 @@ export class ModalVehicleComponent implements OnInit {
       type: 'patent',
       search: null,
     });
-    this.searchVehicleStorage.remove()
     this.selectedVehicle = null;
   }
 
@@ -61,7 +57,6 @@ export class ModalVehicleComponent implements OnInit {
     this.vehicleService.getByPatentOrVin({type, search, username: this.session.username || ''}).subscribe({
       next: (vehicle) => {
         this.isLoading = false
-        this.searchVehicleStorage.set(vehicle)
         this.selectedVehicle = vehicle || null;
         this.notVehicleFound = vehicle ? false : true;
       },
@@ -76,6 +71,7 @@ export class ModalVehicleComponent implements OnInit {
    */
   goToProductsPage() {
     if(this.selectedVehicle?.PLACA_PATENTE && this.selectedVehicle?.codigoSii){
+      this.cleanSelectedVehicle()
       this.router.navigateByUrl(`inicio/productos/vehicle/${this.selectedVehicle?.PLACA_PATENTE}/${this.selectedVehicle?.codigoSii}`);
       this.searchVehicle(this.vehicleForm.value);
       this.activeModal.close();
