@@ -464,67 +464,31 @@
                     >
                   </div>
                 </div>
+                <!-- <div class="flex justify-content-center">
+                  <p-button label="Save" icon="pi pi-check"></p-button>
+                  <p-button label="Delete" icon="pi pi-trash"></p-button>
+                  <p-button label="Cancel" icon="pi pi-times"></p-button>
+                </div> -->
                 <br>
                 <div>
                   <!-- Select V2 dropdown editable-->
                   <div class="flex justify-content-center">
-                    <!-- <p-dropdown [options]="customerVehiclesFilter" [optionLabel]="getTypeFilter()" [optionValue]="getTypeFilter()" formControlName="search" placeholder="Buscar"
-                      [editable]="true" emptyMessage="No hay resultados" [showClear]="true" (onChange)="filterVehicle()">
-                        <ng-template let-vehicle pTemplate="item" >
-                          <div class="flex align-items-center gap-2">
-                              <div>{{ vehicle.patent }}-{{vehicle.codeChasis}}</div>
-                          </div>
-                        </ng-template>
-                    </p-dropdown> -->
                     <p-inputGroup>
                       <p-dropdown [options]="customerVehiclesFilter" [optionLabel]="getTypeFilter()" [optionValue]="getTypeFilter()" formControlName="search" placeholder="Buscar"
                       [editable]="true" emptyMessage="No hay resultados" [showClear]="true" (onChange)="filterVehicle()">
                         <ng-template let-vehicle pTemplate="item" >
                           <div class="flex align-items-center gap-2">
-                              <div>{{ vehicle.patent }}-{{vehicle.codeChasis}}</div>
+                              <div>{{ vehicle.patent }} - {{vehicle.codeChasis}}</div>
                           </div>
                         </ng-template>
                       </p-dropdown>
-                      <button type="button" pButton icon="pi pi-search" class="p-button-warning" [disabled]="vehicleForm.invalid" (click)="searchVehicle(vehicleForm.value)"></button>
+                      <button type="button" pButton icon="pi pi-search" [loading]="isLoadingVehicles" [disabled]="vehicleForm.invalid" (click)="searchVehicle(vehicleForm.value)"></button>
                     </p-inputGroup>
                   </div>
-
-                  <!-- Select V3 autocomplete -->
-                  <!-- <div class="flex justify-content-center">
-                    <p-autoComplete formControlName="search"  placeholder="Buscar" [dropdown]="true" [suggestions]="customerVehiclesFilter" (completeMethod)="filterVehicle3($event)"
-                    field="patent">
-                      <ng-template let-vehicle pTemplate="item" >
-                        <div class="flex align-items-center gap-2">
-                            <div class="autocom">{{ vehicle.patent }}-{{vehicle.codeChasis}}</div>
-                        </div>
-                      </ng-template>
-                    </p-autoComplete>
-                  </div> -->
-
+                  <p *ngIf="notVehicleFound" class="text-error-form-2 text-center text-danger pt-2">
+                    No se encontraron resultados.
+                  </p>
                 </div>
-                <br>
-                <!-- Start::botones -->
-                <!-- <div class="d-flex">
-                  <div class="col-6">
-                    <button
-                      class="btn btn-border-primary btn-lg text-center w-100"
-                      (click)="cleanSelectedVehicle()"
-                    >
-                      Limpiar
-                    </button>
-                  </div>
-                  <div class="col-6">
-                    <button
-                      [disabled]="vehicleForm.invalid"
-                      name="menuTienda"
-                      class="btn btn-secondary btn-lg w-100 text-center"
-                      (click)="searchVehicle(vehicleForm.value)"
-                    >
-                      Aplicar
-                    </button>
-                  </div>
-                </div> -->
-                <!-- End::botones -->
               </div>
 
               <div *ngIf="selectedVehicle">
@@ -582,7 +546,7 @@
                   </tbody>
                 </table>
 
-                <div class="d-flex">
+                <!-- <div class="d-flex">
                   <div class="col-6">
                     <button
                       class="btn btn-border-primary btn-lg text-center w-100"
@@ -600,11 +564,17 @@
                       Ver Artículos
                     </button>
                   </div>
+                </div> -->
+                <div class="flex flex-wrap gap-3 justify-content-center">
+                  <p-button label="Cambiar" severity="secondary" (onClick)="cleanSelectedVehicle()"></p-button>
+                  <p-button label="Agregar a Flota" severity="warning"></p-button>
+                  <p-button label="Ver Filtros" (onClick)="goToProductsPage()"></p-button>
                 </div>
+                <!-- <br>
+                <div class="flex flex-wrap gap-3 justify-content-center">
+                  <p-splitButton label="Ver Filtros" (onClick)="goToProductsPage()" [model]="items"></p-splitButton>
+                </div> -->
               </div>
-              <!--<pre>
-                {{ selectedVehicle | json }}
-              </pre> -->
             </div>
           </div>
         </form>

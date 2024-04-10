@@ -14,163 +14,133 @@
   <form
   [formGroup]="vehicleForm"
   class="form-inline d-flex align-items-center justify-content-center"
->
-<div class="alert-session p-2">
-  <div *ngIf="!selectedVehicle">
-    <div style="display: flex; justify-content: center">
-      <div
-        class="btn-group"
-        btnRadioGroup
-        formControlName="type"
-        style="
-          margin: 0 5px 5px;
-          display: flex;
-          justify-content: center;
-          width: 60%;
-        "
-      >
-        <label
-          class="btn btn-primary"
-          style="border-radius: 6px 0 0 6px"
-          btnRadio="patent"
-          >Patente</label
-        >
+  >
+    <div class="alert-session p-2">
+      <div *ngIf="!selectedVehicle">
+        <div style="display: flex; justify-content: center">
+          <div
+            class="btn-group"
+            btnRadioGroup
+            formControlName="type"
+            style="
+              margin: 0 5px 5px;
+              display: flex;
+              justify-content: center;
+              width: 60%;
+            "
+          >
+            <label
+              class="btn btn-primary"
+              style="border-radius: 6px 0 0 6px"
+              btnRadio="patent"
+              >Patente</label
+            >
 
-        <label
-          class="btn btn-primary"
-          style="border-radius: 0 6px 6px 0"
-          btnRadio="vin"
-          >VIN</label
-        >
+            <label
+              class="btn btn-primary"
+              style="border-radius: 0 6px 6px 0"
+              btnRadio="vin"
+              >VIN</label
+            >
+          </div>
+        </div>
+        <br>
+        <div>
+          <!-- Select V2 dropdown editable-->
+          <div class="flex justify-content-center">
+            <p-inputGroup>
+              <p-dropdown [options]="customerVehiclesFilter" [optionLabel]="getTypeFilter()" [optionValue]="getTypeFilter()" formControlName="search" placeholder="Buscar"
+              [editable]="true" emptyMessage="No hay resultados" [showClear]="true" (onChange)="filterVehicle()">
+                <ng-template let-vehicle pTemplate="item" >
+                  <div class="flex align-items-center gap-2">
+                      <div>{{ vehicle.patent }}-{{vehicle.codeChasis}}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+              <button type="button" pButton icon="pi pi-search" [disabled]="vehicleForm.invalid" (click)="searchVehicle(vehicleForm.value)"></button>
+            </p-inputGroup>
+          </div>
+          <p *ngIf="notVehicleFound" class="text-error-form-2 text-center text-danger pt-2">
+            No se encontraron resultados.
+          </p>
+        </div>
       </div>
-    </div>
 
-    <div style="margin-bottom: 10px">
-      <div
-        style="
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        "
-      >
-        <input
-          class="patente-input"
-          type="text"
-          formControlName="search"
-          [placeholder]="
-            vehicleForm.controls['type'].value === 'patent'
-              ? 'N° Patente'
-              : 'N° VIN'
-          "
-          style="width: 100%"
-        />
-        <p *ngIf="notVehicleFound" class="text-error-form-2">
-          No se encontraron resultados.
+      <div *ngIf="selectedVehicle">
+        <p
+          class="d-flex justify-content-center"
+          style="color: #0063b9; font-size: 18px; font-weight: bold"
+        >
+          Mi Vehículo
+          <!-- <img
+            src="../../../../../assets/svg/23.svg"
+            alt="información"
+            style="
+              width: 30px;
+              height: 40px;
+              margin-left: 10px;
+              margin-top: -10px;
+            "
+          /> -->
         </p>
+
+        <table class="vehicle-table">
+          <tbody>
+            <tr>
+              <td class="font-weight-bold">PATENTE</td>
+              <td>{{ selectedVehicle.PLACA_PATENTE }}</td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold">MARCA</td>
+              <td>{{ selectedVehicle.MARCA }}</td>
+            </tr>
+            <tr>
+              <td>MODELO</td>
+              <td>{{ selectedVehicle.MODELO }}</td>
+            </tr>
+            <tr>
+              <td>TIPO</td>
+              <td>{{ selectedVehicle.IMPtipo }}</td>
+            </tr>
+            <tr>
+              <td>AÑO</td>
+              <td>{{ selectedVehicle.ANO_FABRICACION }}</td>
+            </tr>
+            <tr>
+              <td>MOTOR</td>
+              <td>{{ selectedVehicle.COD_MOTOR || '-' }}</td>
+            </tr>
+            <tr>
+              <td>CHASIS</td>
+              <td>{{ selectedVehicle.COD_CHASIS || '-' }}</td>
+            </tr>
+            <tr>
+              <td>DETALLE</td>
+              <td>{{ selectedVehicle.detalle || '-' }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="d-flex">
+          <div class="col-6">
+            <button
+              class="btn btn-border-primary btn-lg text-center w-100"
+              (click)="cleanSelectedVehicle()"
+            >
+              Cambiar
+            </button>
+          </div>
+          <div class="col-6">
+            <button
+              name="searchVehicle"
+              class="btn btn-secondary btn-lg w-100 text-center"
+              (click)="goToProductsPage()"
+              style="display: flex; align-items: center;"
+            >
+              Ver Productos
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-
-    <!-- Start::botones -->
-    <div class="d-flex">
-      <div class="col-6">
-        <button
-          class="btn btn-border-primary btn-lg text-center w-100"
-          (click)="cleanSelectedVehicle()"
-        >
-          Limpiar
-        </button>
-      </div>
-      <div class="col-6">
-        <button
-          [disabled]="vehicleForm.invalid"
-          name="searchVehicle"
-          class="btn btn-secondary btn-lg w-100 text-center"
-          (click)="searchVehicle(vehicleForm.value)"
-          [ngClass]="{ 'btn-loading': isLoading }"
-        >
-          Aplicar
-        </button>
-      </div>
-    </div>
-    <!-- End::botones -->
-  </div>
-
-  <div *ngIf="selectedVehicle">
-    <p
-      class="d-flex justify-content-center"
-      style="color: #0063b9; font-size: 18px; font-weight: bold"
-    >
-      Mi Vehículo
-      <!-- <img
-        src="../../../../../assets/svg/23.svg"
-        alt="información"
-        style="
-          width: 30px;
-          height: 40px;
-          margin-left: 10px;
-          margin-top: -10px;
-        "
-      /> -->
-    </p>
-
-    <table class="vehicle-table">
-      <tbody>
-        <tr>
-          <td class="font-weight-bold">PATENTE</td>
-          <td>{{ selectedVehicle.PLACA_PATENTE }}</td>
-        </tr>
-        <tr>
-          <td class="font-weight-bold">MARCA</td>
-          <td>{{ selectedVehicle.MARCA }}</td>
-        </tr>
-        <tr>
-          <td>MODELO</td>
-          <td>{{ selectedVehicle.MODELO }}</td>
-        </tr>
-        <tr>
-          <td>TIPO</td>
-          <td>{{ selectedVehicle.IMPtipo }}</td>
-        </tr>
-        <tr>
-          <td>AÑO</td>
-          <td>{{ selectedVehicle.ANO_FABRICACION }}</td>
-        </tr>
-        <tr>
-          <td>MOTOR</td>
-          <td>{{ selectedVehicle.COD_MOTOR || '-' }}</td>
-        </tr>
-        <tr>
-          <td>CHASIS</td>
-          <td>{{ selectedVehicle.COD_CHASIS || '-' }}</td>
-        </tr>
-        <tr>
-          <td>DETALLE</td>
-          <td>{{ selectedVehicle.detalle || '-' }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="d-flex">
-      <div class="col-6">
-        <button
-          class="btn btn-border-primary btn-lg text-center w-100"
-          (click)="cleanSelectedVehicle()"
-        >
-          Cambiar
-        </button>
-      </div>
-      <div class="col-6">
-        <button
-          name="searchVehicle"
-          class="btn btn-secondary btn-lg w-100 text-center"
-          (click)="goToProductsPage()"
-          style="display: flex; align-items: center;"
-        >
-          Ver Productos
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-</form>
+  </form>
 </div>
