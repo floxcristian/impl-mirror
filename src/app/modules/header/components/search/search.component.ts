@@ -106,12 +106,28 @@ export class SearchComponent implements OnInit, OnDestroy {
   selectedVehicle!: IVehicle | null;
   notVehicleFound!: boolean;
 
-  customerVehiclesFilter!:any[]
-  customerVehiclesOriginal!:any[]
+  customerVehiclesFilter!:IVehicle[]
+  customerVehiclesOriginal!:IVehicle[]
   isLoadingVehicles:boolean = false
   getTypeFilter(){
     return this.vehicleForm.get('type')?.value === 'patent' ? this.vehicleForm.get('type')?.value : 'codeChasis'
   }
+  items = [
+    {
+        label: 'Agregar a Flota',
+        // icon: 'pi pi-refresh',
+        // command: () => {
+        //     this.update();
+        // }
+    },
+    {
+        label: 'Cambiar',
+        // icon: 'pi pi-times',
+        command: () => {
+            this.cleanSelectedVehicle();
+        }
+    }
+];
 
   constructor(
     private router: Router,
@@ -356,12 +372,15 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   searchVehicle({ type, search }: { type: VehicleType; search: string }) {
+    this.isLoadingVehicles = true
     this.vehicleService.getByPatentOrVin({type, search, username: this.session.username || ''}).subscribe({
       next: (vehicle) => {
+        this.isLoadingVehicles = false
         this.selectedVehicle = vehicle || null;
         this.notVehicleFound = vehicle ? false : true;
       },
       error: (err) => {
+        this.isLoadingVehicles = false
         this.notVehicleFound = true;
       },
     });
@@ -376,6 +395,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       search: null,
     });
     this.selectedVehicle = null;
+    this.customerVehiclesFilter = this.customerVehiclesOriginal
   }
 
   /**
@@ -383,9 +403,9 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   goToProductsPage() {
     if(this.selectedVehicle?.PLACA_PATENTE && this.selectedVehicle?.codigoSii){
-      this.cleanSelectedVehicle()
       this.router.navigateByUrl(`inicio/productos/vehicle/${this.selectedVehicle?.PLACA_PATENTE}/${this.selectedVehicle?.codigoSii}`);
       this.searchVehicle(this.vehicleForm.value);
+      this.cleanSelectedVehicle()
       this.menuVehiculo.toggle();
     }
   }
@@ -411,12 +431,12 @@ export class SearchComponent implements OnInit, OnDestroy {
    * Filtra los vehiculos
    */
   filterVehicle(){
-    let valueSearch = this.vehicleForm.get('search')?.value.toUpperCase()
+    let valueSearch = this.vehicleForm.get('search')?.value
     if(!valueSearch || valueSearch === '') this.customerVehiclesFilter = this.customerVehiclesOriginal
     else {
       let typeFilter = this.getTypeFilter()
-      if(typeFilter === 'patent') this.customerVehiclesFilter = this.customerVehiclesOriginal.filter((vehicle:any) => vehicle.patent.toUpperCase().includes(valueSearch))
-      else this.customerVehiclesFilter = this.customerVehiclesOriginal.filter((vehicle:any) => vehicle.codeChasis.toUpperCase().includes(valueSearch))
+      if(typeFilter === 'patent') this.customerVehiclesFilter = this.customerVehiclesOriginal.filter((vehicle:any) => vehicle.patent.toUpperCase().includes(valueSearch.toUpperCase()))
+      else this.customerVehiclesFilter = this.customerVehiclesOriginal.filter((vehicle:any) => vehicle.codeChasis.toUpperCase().includes(valueSearch.toUpperCase()))
     }
   }
 }
