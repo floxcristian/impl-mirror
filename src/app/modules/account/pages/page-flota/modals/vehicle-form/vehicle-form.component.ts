@@ -5,6 +5,9 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { CustomerVehicleService } from '@core/services-v2/customer-vehicle/customer-vehicle.service';
+import { VehicleType } from '@core/services-v2/vehicle/vehicle-type.enum';
+import { VehicleService } from '@core/services-v2/vehicle/vehicle.service';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import {
@@ -13,6 +16,12 @@ import {
   DynamicDialogRef,
 } from 'primeng/dynamicdialog';
 import { InputTextModule } from 'primeng/inputtext';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  switchMap,
+} from 'rxjs/operators';
 
 @Component({
   selector: 'app-vehicle-form',
@@ -35,7 +44,8 @@ export class VehicleFormComponent implements OnInit {
   constructor(
     private readonly fb: FormBuilder,
     public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig
+    public config: DynamicDialogConfig,
+    private readonly vehicleService: VehicleService
   ) {}
 
   ngOnInit(): void {
@@ -66,18 +76,76 @@ export class VehicleFormComponent implements OnInit {
         codeSii: [null],
         patent: [null, Validators.required],
         codeChasis: [null, Validators.required],
-        typeImp: [null, Validators.required],
-        brand: [null, Validators.required],
-        model: [null, Validators.required],
-        manufactureYear: [null, Validators.required],
+        typeImp: [{ value: null, disabled: true }, Validators.required],
+        brand: [{ value: null, disabled: true }, Validators.required],
+        model: [{ value: null, disabled: true }, Validators.required],
+        manufactureYear: [
+          { value: null, disabled: true },
+          Validators.required,
+        ],
       });
     }
     this.onFormChange();
+    this.onPatentInputChange();
+    this.onCodeChasisInputChange();
   }
 
   onFormChange(): void {
     this.vehicleForm.valueChanges.subscribe({
       next: (vehicle) => (this.config.data.vehicle = vehicle),
     });
+  }
+
+  onPatentInputChange() {
+    this.vehicleForm
+      .get('patent')
+      ?.valueChanges.pipe(
+        debounceTime(200),
+        filter((value) => value?.length > 4),
+        distinctUntilChanged(),
+        switchMap((value) =>
+          this.vehicleService.getByPatentOrVin({
+            type: VehicleType.PATENT,
+            search: value,
+            username: '',
+          })
+        )
+      )
+      .subscribe({
+        next: (res) => {
+          console.log('onPatentInputChange: ', res);
+        },
+      });
+  }
+
+  onCodeChasisInputChange() {
+    this.vehicleForm
+      .get('codeChasis')
+      ?.valueChanges.pipe(
+        debounceTime(200),
+        filter((value) => value?.length > 4),
+        distinctUntilChanged(),
+        switchMap((value) =>
+          this.vehicleService.getByPatentOrVin({
+            type: VehicleType.VIN,
+            search: value,
+            username: '',
+          })
+        )
+      )
+      .subscribe({
+        next: (res) => {
+          console.log('onVINInputChange: ', res);
+          this.vehicleForm.patchValue({
+            patent: res?.PLACA_PATENTE || null,
+            typeImp: res?.TIPO_VEHICULO || null,
+            brand: res?.MARCA || null,
+            model: res?.MODELO || null,
+            manufactureYear: res?.ANO_FABRICACION
+              ? new Date(res?.ANO_FABRICACION, 1)
+              : null,
+          });
+        },
+      });
   }
 }

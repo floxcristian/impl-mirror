@@ -24,7 +24,11 @@ import { ISession } from '@core/models-v2/auth/session.interface';
 import { FlotaService } from '@core/services-v2/flota.service';
 import { Column } from './table-column.interface';
 import { CustomerVehicleService } from '@core/services-v2/customer-vehicle/customer-vehicle.service';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import {
+  ConfirmationService,
+  FilterMetadata,
+  MessageService,
+} from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { VehicleFormComponent } from './modals/vehicle-form/vehicle-form.component';
@@ -61,6 +65,8 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
   totalRows: number = 0;
   rows: number = 10;
   first: number = 0;
+  sortField: string | string[] = '';
+  sortOrder: number = 1;
   ref: DynamicDialogRef | undefined;
 
   constructor(
@@ -76,13 +82,23 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
   ) {}
 
   fetchVehicles(event: TableLazyLoadEvent) {
-    console.log('event: ', event);
-
+    console.log('fetchVehicles: ', event);
     this.first = event.first || 0;
     this.rows = event.rows || this.rows;
+    this.sortField = event.sortField || '';
+    this.sortOrder = event.sortOrder || 1;
     const sort = event.sortField
       ? `${event.sortField}|${event.sortOrder}`
       : '';
+    const filters = [];
+    for (let key in event.filters) {
+      const item = event.filters[key] as FilterMetadata;
+
+      if (item.value) {
+        filters.push(`${key}|${item.value}`);
+      }
+    }
+    console.log('filters: ', filters);
 
     this.loading = true;
     this.customerVehicleService
@@ -90,9 +106,9 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
         page: this.first / this.rows + 1,
         limit: this.rows,
         sort,
+        search: filters.join(','),
       })
       .subscribe((res: any) => {
-        console.log('getPaginatedCustomerVehicles: ', res);
         this.vehicles = res.data;
         this.totalRows = res.total;
         this.loading = false;
@@ -317,9 +333,20 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
     });
   }
 
-  deleteVehicle(id: string) {
+  /**
+   * Eliminar vehículo.
+   * @param id
+   */
+  deleteVehicle(id: string): void {
     this.customerVehicleService.delete(this.session.documentId, id).subscribe({
       next: () => {
+        this.first = 0;
+        this.fetchVehicles({
+          first: 0,
+          rows: this.rows,
+          sortField: this.sortField,
+          sortOrder: this.sortOrder,
+        });
         this.messageService.add({
           severity: 'success',
           summary: 'Vehículo eliminado',

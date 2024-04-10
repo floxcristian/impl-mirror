@@ -378,3 +378,8 @@ body {
 .surface-border {
   border-color: var(--surface-border) !important;
 }
+
+.p-column-filter-row .p-column-filter-menu-button,
+.p-column-filter-row .p-column-filter-clear-button {
+  margin-left: 0.5rem;
+}

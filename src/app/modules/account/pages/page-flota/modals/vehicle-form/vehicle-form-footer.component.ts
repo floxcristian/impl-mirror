@@ -40,12 +40,16 @@ export class VehicleFormFooter {
   }
 
   closeDialog(confirm: boolean): void {
-    const manufactureYear = this.formatYear(
-      this.config.data.vehicle.manufactureYear
-    );
     this.ref.close({
       confirm,
-      newVehicle: { ...this.config.data.vehicle, manufactureYear },
+      newVehicle: confirm
+        ? {
+            ...this.config.data.vehicle,
+            manufactureYear: this.formatYear(
+              this.config.data.vehicle.manufactureYear
+            ),
+          }
+        : null,
     });
   }
 
