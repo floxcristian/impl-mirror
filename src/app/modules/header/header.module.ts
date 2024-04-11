@@ -39,7 +39,6 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { ButtonModule } from 'primeng/button';
-import { SplitButtonModule } from 'primeng/splitbutton';
 
 @NgModule({
   declarations: [
@@ -80,7 +79,6 @@ import { SplitButtonModule } from 'primeng/splitbutton';
     InputGroupModule,
     InputGroupAddonModule,
     ButtonModule,
-    SplitButtonModule
   ],
   exports: [
     // components
