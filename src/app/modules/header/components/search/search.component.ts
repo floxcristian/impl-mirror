@@ -56,7 +56,7 @@ import { IVehicleCustomer } from '@core/services-v2/customer-vehicle/vehicle-cus
 @Component({
   selector: 'app-header-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss'],
+  styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit, OnDestroy {
   @ViewChild('menuSearch', { static: false }) listSearch!: ElementRef;
@@ -462,12 +462,15 @@ export class SearchComponent implements OnInit, OnDestroy {
         detail: this.selectedVehicle.detalle,
         codeSii: this.selectedVehicle.codigoSii
       }
+      this.isLoadingCreate = true
       this.customerVehicleService.createCustomerVehicle(this.session.documentId,createVehicle).subscribe({
         next:()=>{
-
+          this.isLoadingCreate = false
+          this.toastr.success('Vehiculo Agregado a la flota', '');
         },
         error:(err)=>{
           console.log(err)
+          this.isLoadingCreate = false
         }
       })
     }

@@ -475,10 +475,15 @@
                   <div class="flex justify-content-center">
                     <p-inputGroup>
                       <p-dropdown [options]="customerVehiclesFilter" [optionLabel]="getTypeFilter()" [optionValue]="getTypeFilter()" formControlName="search" placeholder="Buscar"
-                      [editable]="true" emptyMessage="No hay resultados" [showClear]="true" (onChange)="filterVehicle()">
+                      [editable]="true" [showClear]="true" (onChange)="filterVehicle()">
                         <ng-template let-vehicle pTemplate="item" >
                           <div class="flex align-items-center gap-2">
                               <div>{{ vehicle.patent }} - {{vehicle.codeChasis}}</div>
+                          </div>
+                        </ng-template>
+                        <ng-template pTemplate="empty">
+                          <div>
+                            adasdasdasdasdasdas
                           </div>
                         </ng-template>
                       </p-dropdown>
@@ -545,11 +550,19 @@
                     </tr>
                   </tbody>
                 </table>
+                <p-messages *ngIf="!selectedVehicle?.codigoSii" severity="info">
+                  <ng-template pTemplate>
+                    <div class="w-100 text-center">
+                      No se encontraron filtros por el momento.
+                    </div>
+                  </ng-template>
+                </p-messages>
                 <div class="flex pb-3 gap-3">
                   <p-button [ngStyle]="{'display':'contents'}"  styleClass="w-100" label="Cambiar" severity="secondary" (onClick)="cleanSelectedVehicle()"></p-button>
-                  <p-button [disabled]="existInFlota" [ngStyle]="{'display':'contents'}" styleClass="w-100" [label]=" existInFlota ? 'Existe en Flota' : 'Agregar a Flota'" severity="warning" (onClick)="addMyFlota()"></p-button>
+                  <p-button [disabled]="existInFlota" [loading]="isLoadingCreate" [ngStyle]="{'display':'contents'}" styleClass="w-100" [label]=" existInFlota ? 'Existe en Flota' : 'Agregar a Flota'" 
+                  severity="warning" (onClick)="addMyFlota()"></p-button>
                 </div>
-                <div>
+                <div *ngIf="selectedVehicle?.codigoSii">
                   <p-button styleClass="w-100" label="Ver Filtros Encontrados" (onClick)="goToProductsPage()"></p-button>
                 </div>
               </div>

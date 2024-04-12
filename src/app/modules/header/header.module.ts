@@ -39,6 +39,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { ButtonModule } from 'primeng/button';
+import { MessagesModule } from 'primeng/messages';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { ButtonModule } from 'primeng/button';
     InputGroupModule,
     InputGroupAddonModule,
     ButtonModule,
+    MessagesModule
   ],
   exports: [
     // components
