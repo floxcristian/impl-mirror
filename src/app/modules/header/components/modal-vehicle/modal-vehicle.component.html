@@ -57,7 +57,7 @@
                   </div>
                 </ng-template>
               </p-dropdown>
-              <button type="button" pButton icon="pi pi-search" [disabled]="vehicleForm.invalid" (click)="searchVehicle(vehicleForm.value)"></button>
+              <button type="button" pButton icon="pi pi-search" [loading]="isLoadingVehicles" [disabled]="vehicleForm.invalid" (click)="searchVehicle(vehicleForm.value)"></button>
             </p-inputGroup>
           </div>
           <p *ngIf="notVehicleFound" class="text-error-form-2 text-center text-danger pt-2">
@@ -120,25 +120,20 @@
             </tr>
           </tbody>
         </table>
-        <div class="d-flex">
-          <div class="col-6">
-            <button
-              class="btn btn-border-primary btn-lg text-center w-100"
-              (click)="cleanSelectedVehicle()"
-            >
-              Cambiar
-            </button>
-          </div>
-          <div class="col-6">
-            <button
-              name="searchVehicle"
-              class="btn btn-secondary btn-lg w-100 text-center"
-              (click)="goToProductsPage()"
-              style="display: flex; align-items: center;"
-            >
-              Ver Productos
-            </button>
-          </div>
+        <p-messages *ngIf="!selectedVehicle?.codigoSii" severity="info">
+          <ng-template pTemplate>
+            <div class="w-100 text-center">
+              No se encontraron filtros por el momento.
+            </div>
+          </ng-template>
+        </p-messages>
+        <div class="flex pb-3 gap-3">
+          <p-button [ngStyle]="{'display':'contents'}" styleClass="w-100" label="Cambiar" severity="secondary" (onClick)="cleanSelectedVehicle()"></p-button>
+          <p-button [disabled]="existInFlota" [loading]="isLoadingCreate" [ngStyle]="{'display':'contents'}" styleClass="w-100" [label]=" existInFlota ? 'Existe en Flota' : 'Agregar a Flota'" 
+          severity="warning" (onClick)="addMyFlota()"></p-button>
+        </div>
+        <div *ngIf="selectedVehicle?.codigoSii">
+          <p-button styleClass="w-100" label="Ver Filtros Encontrados" (onClick)="goToProductsPage()"></p-button>
         </div>
       </div>
     </div>
