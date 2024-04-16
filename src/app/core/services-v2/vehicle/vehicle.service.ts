@@ -133,7 +133,7 @@ export class VehicleService {
   }
 
   /**
-   * Obtener detalle de  filtros por vehículo.
+   * Obtener detalle de filtros por vehículo.
    * @param params
    * @returns
    */

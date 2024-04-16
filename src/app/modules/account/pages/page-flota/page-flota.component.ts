@@ -82,7 +82,6 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
   ) {}
 
   fetchVehicles(event: TableLazyLoadEvent) {
-    console.log('fetchVehicles: ', event);
     this.first = event.first || 0;
     this.rows = event.rows || this.rows;
     this.sortField = event.sortField || '';
@@ -355,7 +354,7 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
       },
       error: () => {
         this.messageService.add({
-          severity: 'danger',
+          severity: 'error',
           summary: 'Vehículo no eliminado',
           detail: 'Ha ocurrido un error al eliminar el vehículo.',
         });
@@ -384,25 +383,15 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
       },
     });
 
-    ref.onClose.subscribe(
-      ({ confirm, newVehicle }: { confirm: boolean; newVehicle: any }) => {
-        //if (!confirm) return;
-        this.messageService.add({
-          severity: 'danger',
-          summary: 'Vehículo no creado',
-          detail: 'Ha ocurrido un error al crear el vehículo.',
+    ref.onClose.subscribe((isVehicleCreated: boolean) => {
+      if (isVehicleCreated) {
+        this.fetchVehicles({
+          first: 0,
+          rows: this.rows,
+          sortField: this.sortField,
+          sortOrder: this.sortOrder,
         });
       }
-    );
+    });
   }
-
-  /*createVehicle(vehicle: any) {
-    console.log('vehicle create: ', vehicle);*/
-  /*this.customerVehicleService
-      .createCustomerVehicle(this.session.documentId, vehicle)
-      .subscribe({
-        next: (res) => {},
-        error: (err) => {},
-      });*/
-  //}
 }

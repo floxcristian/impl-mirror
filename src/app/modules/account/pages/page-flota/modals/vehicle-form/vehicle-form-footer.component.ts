@@ -19,7 +19,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
         type="button"
         label="Cancelar"
         class="p-button-text"
-        (click)="closeDialog()"
+        (click)="closeDialog(false)"
       ></button>
       <p-button
         type="button"
@@ -46,18 +46,8 @@ export class VehicleFormFooter {
     );
   }
 
-  closeDialog(/*confirm: boolean*/): void {
-    this.ref.close({
-      confirm,
-      /*newVehicle: confirm
-        ? {
-            ...this.config.data.vehicle,
-            manufactureYear: this.formatYear(
-              this.config.data.vehicle.manufactureYear
-            ),
-          }
-        : null,*/
-    });
+  closeDialog(isVehicleCreated: boolean): void {
+    this.ref.close({ isVehicleCreated });
   }
 
   private formatYear(date: Date | number): number {
@@ -72,8 +62,6 @@ export class VehicleFormFooter {
     manufactureYear,
   }: any): void {
     const selectedMotor = this.config.data.selectedMotor;
-    console.log('selectedMotor: ', this.config.data.selectedMotor);
-    //console.log('createVehicle: ', vehicle);
     this.customerVehicleService
       .createCustomerVehicle(this.config.data.documentId, {
         manufactureYear: this.formatYear(manufactureYear),
@@ -81,21 +69,23 @@ export class VehicleFormFooter {
         brand,
         model,
         patent,
-        typeVehicle: '',
-        //customer: '',
         typeImp: selectedMotor.tipo || null,
-        detail: '',
         codeSii: selectedMotor.codigoSII || null,
         codeMotor: selectedMotor.codigo || null,
       })
       .subscribe({
-        next: (res) => {
-          this.closeDialog();
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Vehículo creado',
+            detail: 'El vehículo se ha creado correctamente.',
+          });
+          this.closeDialog(true);
         },
         error: (err) => {
           console.error(err);
           this.messageService.add({
-            severity: 'danger',
+            severity: 'error',
             summary: 'Vehículo no creado',
             detail: 'Ha ocurrido un error al crear el vehículo.',
           });

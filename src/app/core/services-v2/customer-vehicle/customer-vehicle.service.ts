@@ -4,7 +4,10 @@ import { Injectable } from '@angular/core';
 // Environment
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
-import { IPaginatedVehicleCustomerResponse, IVehicleCustomer } from './vehicle-customer-response.interface';
+import {
+  IPaginatedVehicleCustomerResponse,
+  IVehicleCustomer,
+} from './vehicle-customer-response.interface';
 
 const API_CUSTOMER = `${environment.apiEcommerce}/api/v1/customer`;
 
@@ -14,8 +17,10 @@ const API_CUSTOMER = `${environment.apiEcommerce}/api/v1/customer`;
 export class CustomerVehicleService {
   constructor(private http: HttpClient) {}
 
-  getAll(documentId: string):Observable<IVehicleCustomer[]> {
-    return this.http.get<IVehicleCustomer[]>(`${API_CUSTOMER}/${documentId}/customer-vehicle`);
+  getAll(documentId: string): Observable<IVehicleCustomer[]> {
+    return this.http.get<IVehicleCustomer[]>(
+      `${API_CUSTOMER}/${documentId}/customer-vehicle`
+    );
   }
 
   getPaginatedCustomerVehicles(
@@ -26,7 +31,7 @@ export class CustomerVehicleService {
       sort?: string;
       search?: string;
     }
-  ):Observable<IPaginatedVehicleCustomerResponse> {
+  ): Observable<IPaginatedVehicleCustomerResponse> {
     return this.http.get<IPaginatedVehicleCustomerResponse>(
       `${API_CUSTOMER}/${documentId}/paginated-customer-vehicle`,
       { params: params }
@@ -39,13 +44,12 @@ export class CustomerVehicleService {
       patent: string;
       brand: string;
       model: string;
-      typeVehicle: string;
+      typeVehicle?: string;
       manufactureYear: number;
       codeMotor: string;
       codeChasis: string;
-      //customer: string;
       typeImp: string;
-      detail: string;
+      detail?: string;
       codeSii: string;
     }
   ) {
