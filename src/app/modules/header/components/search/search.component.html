@@ -464,21 +464,20 @@
                     >
                   </div>
                 </div>
-                <!-- <div class="flex justify-content-center">
-                  <p-button label="Save" icon="pi pi-check"></p-button>
-                  <p-button label="Delete" icon="pi pi-trash"></p-button>
-                  <p-button label="Cancel" icon="pi pi-times"></p-button>
-                </div> -->
-                <br>
                 <div>
                   <!-- Select V2 dropdown editable-->
                   <div class="flex justify-content-center">
                     <p-inputGroup>
                       <p-dropdown [options]="customerVehiclesFilter" [optionLabel]="getTypeFilter()" [optionValue]="getTypeFilter()" formControlName="search" placeholder="Buscar"
-                      [editable]="true" emptyMessage="No hay resultados" [showClear]="true" (onChange)="filterVehicle()">
+                      [editable]="true" [showClear]="true" (onChange)="filterVehicle()">
                         <ng-template let-vehicle pTemplate="item" >
                           <div class="flex align-items-center gap-2">
                               <div>{{ vehicle.patent }} - {{vehicle.codeChasis}}</div>
+                          </div>
+                        </ng-template>
+                        <ng-template pTemplate="empty">
+                          <div>
+                            no hay
                           </div>
                         </ng-template>
                       </p-dropdown>
@@ -496,8 +495,8 @@
                   class="d-flex justify-content-center"
                   style="color: #0063b9; font-size: 18px; font-weight: bold"
                 >
-                  Mi vehículo
-                  <img
+                  Mi Vehículo
+                  <!-- <img
                     src="../../../../../assets/svg/23.svg"
                     alt="información"
                     style="
@@ -506,7 +505,7 @@
                       margin-left: 10px;
                       margin-top: -10px;
                     "
-                  />
+                  /> -->
                 </p>
 
                 <table class="vehicle-table">
@@ -545,35 +544,21 @@
                     </tr>
                   </tbody>
                 </table>
-
-                <!-- <div class="d-flex">
-                  <div class="col-6">
-                    <button
-                      class="btn btn-border-primary btn-lg text-center w-100"
-                      (click)="cleanSelectedVehicle()"
-                    >
-                      Cambiar
-                    </button>
-                  </div>
-                  <div class="col-6">
-                    <button
-                      name="menuTienda"
-                      class="btn btn-secondary btn-lg w-100 text-center"
-                      (click)="goToProductsPage()"
-                    >
-                      Ver Artículos
-                    </button>
-                  </div>
-                </div> -->
-                <div class="flex flex-wrap gap-3 justify-content-center">
-                  <p-button label="Cambiar" severity="secondary" (onClick)="cleanSelectedVehicle()"></p-button>
-                  <p-button label="Agregar a Flota" severity="warning"></p-button>
-                  <p-button label="Ver Filtros" (onClick)="goToProductsPage()"></p-button>
+                <p-messages *ngIf="!selectedVehicle?.codigoSii" severity="info">
+                  <ng-template pTemplate>
+                    <div class="w-100 text-center">
+                      No se encontraron filtros por el momento.
+                    </div>
+                  </ng-template>
+                </p-messages>
+                <div class="flex pb-3 gap-3">
+                  <p-button [ngStyle]="{'display':'contents'}"  styleClass="w-100" label="Cambiar" severity="secondary" (onClick)="cleanSelectedVehicle()"></p-button>
+                  <p-button [disabled]="existInFlota" [loading]="isLoadingCreate" [ngStyle]="{'display':'contents'}" styleClass="w-100" [label]=" existInFlota ? 'Existe en Flota' : 'Agregar a Flota'" 
+                  severity="warning" (onClick)="addMyFlota()"></p-button>
                 </div>
-                <!-- <br>
-                <div class="flex flex-wrap gap-3 justify-content-center">
-                  <p-splitButton label="Ver Filtros" (onClick)="goToProductsPage()" [model]="items"></p-splitButton>
-                </div> -->
+                <div *ngIf="selectedVehicle?.codigoSii">
+                  <p-button styleClass="w-100" label="Ver Filtros Encontrados" (onClick)="goToProductsPage()"></p-button>
+                </div>
               </div>
             </div>
           </div>
