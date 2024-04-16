@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 // Environment
 import { environment } from '@env/environment';
-import { Observable, map, switchMap } from 'rxjs';
+import { Observable, map, of, switchMap } from 'rxjs';
 import { VehicleType } from './vehicle-type.enum';
 import { IVehicle, IVehicleResponse } from './vehicle-response.interface';
 import {
@@ -30,13 +30,18 @@ export class VehicleService {
    * Obtener información de vehículo por patente o VIN.
    * @returns
    */
-  getByPatentOrVin({type, search, username }: IGetByPatentOrVin): Observable<IVehicle> {
+  getByPatentOrVin({
+    type,
+    search,
+    username,
+  }: IGetByPatentOrVin): Observable<IVehicle | null> {
+    if (search.trim()?.length <= 4) return of(null);
     return this.http
       .get<IVehicleResponse>(`${API_VEHICLE}/vehiculofilter`, {
         params: {
           patente: type === VehicleType.PATENT ? search : '',
           vin: type === VehicleType.VIN ? search : '',
-          usuario: username
+          usuario: username,
         },
       })
       .pipe(map((res) => res.data.vehiculo));
@@ -58,6 +63,54 @@ export class VehicleService {
   //       sucursal: '' })
   //     }))
   // }
+
+  /**
+   * Obtener marcas de vehículos.
+   * @returns
+   */
+  getBrands(): Observable<string[]> {
+    return this.http
+      .get<any>(`${API_VEHICLE}/filtro/aplicacion/marcas`)
+      .pipe(map((res) => res.data));
+  }
+
+  /**
+   * Obtener modelos de vehículos según marca.
+   * @param brand marca
+   * @returns
+   */
+  getModels(brand: string): Observable<any> {
+    return this.http
+      .get<any>(`${API_VEHICLE}/filtro/aplicacion/modelos`, {
+        params: { marca: brand },
+      })
+      .pipe(map((res) => res.data));
+  }
+
+  /**
+   * Obtener motores de vehículos según marca y modelo.
+   * @param brand
+   * @param model
+   * @returns
+   */
+  getMotors(brand: string, model: string) {
+    return this.http
+      .get<any>(`${API_VEHICLE}/filtro/aplicacion/motores`, {
+        params: { marca: brand, modelo: model },
+      })
+      .pipe(
+        map((res) => {
+          const years: number[] = (res.data as any[]).reduce((acc, el) => {
+            acc.push(...el.anios);
+            return acc;
+          }, []);
+          return {
+            motors: res.data,
+            years: [...new Set(years)].sort((a, b) => a - b),
+          };
+        })
+      );
+  }
 
   /**
    * Obtener skus de filtros para un vehículo.
@@ -95,9 +148,8 @@ export class VehicleService {
     brand?: string;
     filters?: string;
     location?: string;
-    skus?:string[]
+    skus?: string[];
   }) {
-    return this.http.get(`${API_ARTICLE}/filters`, {params})
+    return this.http.get(`${API_ARTICLE}/filters`, { params });
   }
-
 }

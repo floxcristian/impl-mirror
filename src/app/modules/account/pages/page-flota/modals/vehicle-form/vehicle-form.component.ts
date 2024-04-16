@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -5,11 +6,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CustomerVehicleService } from '@core/services-v2/customer-vehicle/customer-vehicle.service';
 import { VehicleType } from '@core/services-v2/vehicle/vehicle-type.enum';
 import { VehicleService } from '@core/services-v2/vehicle/vehicle.service';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 import {
   DynamicDialogConfig,
   DynamicDialogModule,
@@ -21,75 +23,231 @@ import {
   distinctUntilChanged,
   filter,
   switchMap,
+  tap,
 } from 'rxjs/operators';
+import { Message } from 'primeng/api';
+import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-vehicle-form',
   standalone: true,
   imports: [
+    CommonModule,
     ButtonModule,
     InputTextModule,
     DynamicDialogModule,
     ReactiveFormsModule,
     CalendarModule,
+    MessagesModule,
+    MessageModule,
+    DropdownModule,
+    TableModule,
   ],
   templateUrl: './vehicle-form.component.html',
   styleUrl: './vehicle-form.component.scss',
 })
 export class VehicleFormComponent implements OnInit {
   vehicleForm!: FormGroup;
-  maxDate = new Date();
-  minDate = new Date(1997, 1);
+
+  get patentInput() {
+    return this.vehicleForm.get('patent');
+  }
+
+  get brandInput() {
+    return this.vehicleForm.get('brand');
+  }
+
+  get modelInput() {
+    return this.vehicleForm.get('model');
+  }
+
+  get manufactureYearInput() {
+    return this.vehicleForm.get('manufactureYear');
+  }
+
+  messages: Message[] = [
+    {
+      severity: 'warn',
+      summary: 'Patente no encontrada',
+      detail: 'Debe completar el formulario.',
+    },
+  ];
+
+  isSearchingVehicle!: boolean;
+  vehicleNotFound!: boolean;
+  brands: string[] = [];
+  models: string[] = [];
+  motors: any[] = [];
+  motorsOptions: any[] = [];
+  loadingBrands: boolean = true;
+  loadingModels!: boolean;
+  loadingMotors!: boolean;
+  yearsOptions: number[] = [];
 
   constructor(
     private readonly fb: FormBuilder,
-    public ref: DynamicDialogRef,
-    public config: DynamicDialogConfig,
-    private readonly vehicleService: VehicleService
+    private readonly vehicleService: VehicleService,
+    public readonly ref: DynamicDialogRef,
+    public readonly config: DynamicDialogConfig
   ) {}
 
   ngOnInit(): void {
-    console.log('vehicle: ', this.config.data.vehicle);
-    this.buildForm(this.config.data.vehicle);
+    this.buildForm();
+    this.fetchBrands();
   }
 
-  private buildForm(vehicle: any) {
-    if (vehicle) {
-      this.vehicleForm = this.fb.group({
-        _id: [vehicle._id],
-        codeMotor: [vehicle.codeMotor],
-        codeSii: [vehicle.codeSii],
-        patent: [vehicle.patent, Validators.required],
-        codeChasis: [vehicle.codeChasis, Validators.required],
-        typeImp: [vehicle.typeImp, Validators.required],
-        brand: [vehicle.brand, Validators.required],
-        model: [vehicle.model, Validators.required],
-        manufactureYear: [
-          new Date(vehicle.manufactureYear, 1),
-          Validators.required,
-        ],
+  /**
+   * Obtener marcas de vehículos.
+   */
+  private fetchBrands(): void {
+    this.vehicleService.getBrands().subscribe({
+      next: (brands) => {
+        this.brands = brands;
+        this.loadingBrands = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.loadingBrands = false;
+      },
+    });
+  }
+
+  /**
+   * Obtener modelos según marca.
+   * @param brand
+   */
+  private fetchModels(brand: string) {
+    this.loadingModels = true;
+    this.vehicleService.getModels(brand).subscribe({
+      next: (models) => {
+        this.models = models;
+        this.loadingModels = false;
+        this.modelInput?.enable();
+      },
+      error: (err) => {
+        console.error(err);
+        this.loadingModels = false;
+      },
+    });
+  }
+
+  /**
+   * Obtener motores según marca y modelo.
+   * @param brand marca
+   * @param model modelo
+   */
+  private fetchMotors(brand: string, model: string) {
+    this.loadingMotors = true;
+    this.vehicleService.getMotors(brand, model).subscribe({
+      next: (res) => {
+        this.motors = res.motors;
+        this.motorsOptions = JSON.parse(JSON.stringify(res.motors));
+        this.yearsOptions = res.years;
+        this.loadingMotors = false;
+      },
+      error: (err) => {
+        console.error(err);
+        this.loadingMotors = false;
+      },
+    });
+  }
+
+  onManufactureYearInputChange(): void {
+    this.manufactureYearInput?.valueChanges
+      .pipe(distinctUntilChanged())
+      .subscribe({
+        next: (year) => {
+          if (!year) {
+            this.motorsOptions = [];
+            this.config.data.selectedMotor = null;
+          } else {
+            this.motorsOptions = this.motors.filter((motor) =>
+              motor.anios.includes(year)
+            );
+            if (this.motorsOptions.length === 1) {
+              this.config.data.selectedMotor = this.motorsOptions[0];
+            }
+          }
+        },
       });
+  }
+
+  onBrandInputChange(): void {
+    this.brandInput?.valueChanges.pipe(distinctUntilChanged()).subscribe({
+      next: (brand) => {
+        if (brand) {
+          this.fetchModels(brand);
+        } else {
+          this.modelInput?.setValue(null);
+          this.models = [];
+          this.modelInput?.disable();
+        }
+        this.manufactureYearInput?.setValue(null);
+        this.motors = [];
+        this.motorsOptions = [];
+        this.config.data.selectedMotor = null;
+        this.manufactureYearInput?.disable();
+      },
+    });
+  }
+
+  onModelInputChange(): void {
+    this.modelInput?.valueChanges.pipe(distinctUntilChanged()).subscribe({
+      next: (model) => {
+        if (model) {
+          this.fetchMotors(this.brandInput?.value, model);
+          this.manufactureYearInput?.enable();
+        } else {
+          this.motors = [];
+          this.motorsOptions = [];
+          this.manufactureYearInput?.disable();
+        }
+        this.manufactureYearInput?.setValue(null);
+        this.config.data.selectedMotor = null;
+      },
+    });
+  }
+
+  enableBodyForm(isEnable: boolean): void {
+    if (isEnable) {
+      this.vehicleForm.get('codeChasis')?.enable();
+      this.vehicleForm.get('brand')?.enable();
     } else {
-      this.vehicleForm = this.fb.group({
-        _id: [null],
-        codeMotor: [null],
-        codeSii: [null],
-        patent: [null, Validators.required],
-        codeChasis: [null, Validators.required],
-        typeImp: [{ value: null, disabled: true }, Validators.required],
-        brand: [{ value: null, disabled: true }, Validators.required],
-        model: [{ value: null, disabled: true }, Validators.required],
-        manufactureYear: [
-          { value: null, disabled: true },
-          Validators.required,
-        ],
-      });
+      this.vehicleForm.get('codeChasis')?.disable();
+      this.vehicleForm.get('brand')?.disable();
+      this.vehicleForm.get('model')?.disable();
+      this.vehicleForm.get('manufactureYear')?.disable();
     }
+  }
+
+  cleanBodyForm(): void {
+    this.vehicleForm.patchValue({
+      codeChasis: null,
+      brand: null,
+      model: null,
+      manufactureYear: null,
+    });
+  }
+
+  private buildForm() {
+    this.vehicleForm = this.fb.group({
+      patent: [null, Validators.required],
+      codeChasis: [{ value: null, disabled: true }],
+      brand: [{ value: null, disabled: true }, Validators.required],
+      model: [{ value: null, disabled: true }, Validators.required],
+      manufactureYear: [{ value: null, disabled: true }, Validators.required],
+    });
+    console.log('vehicleForm: ', this.vehicleForm);
+    this.config.data.vehicleForm = this.vehicleForm;
     this.onFormChange();
     this.onPatentInputChange();
-    this.onCodeChasisInputChange();
+    this.onBrandInputChange();
+    this.onModelInputChange();
+    this.onManufactureYearInputChange();
   }
 
+  // FIXME:
   onFormChange(): void {
     this.vehicleForm.valueChanges.subscribe({
       next: (vehicle) => (this.config.data.vehicle = vehicle),
@@ -97,12 +255,20 @@ export class VehicleFormComponent implements OnInit {
   }
 
   onPatentInputChange() {
-    this.vehicleForm
-      .get('patent')
-      ?.valueChanges.pipe(
+    this.patentInput?.valueChanges
+      .pipe(
         debounceTime(200),
-        filter((value) => value?.length > 4),
+        filter((value) => {
+          const includeSpaces = value.includes(' ');
+          if (includeSpaces) this.patentInput?.setValue(value.trim());
+          return !includeSpaces;
+        }),
         distinctUntilChanged(),
+        tap(() => {
+          this.isSearchingVehicle = true;
+          // FIXME: emite un evento al hacer disable.
+          //this.enableBodyForm(false);
+        }),
         switchMap((value) =>
           this.vehicleService.getByPatentOrVin({
             type: VehicleType.PATENT,
@@ -112,39 +278,28 @@ export class VehicleFormComponent implements OnInit {
         )
       )
       .subscribe({
-        next: (res) => {
-          console.log('onPatentInputChange: ', res);
-        },
-      });
-  }
+        next: (vehicle) => {
+          this.isSearchingVehicle = false;
 
-  onCodeChasisInputChange() {
-    this.vehicleForm
-      .get('codeChasis')
-      ?.valueChanges.pipe(
-        debounceTime(200),
-        filter((value) => value?.length > 4),
-        distinctUntilChanged(),
-        switchMap((value) =>
-          this.vehicleService.getByPatentOrVin({
-            type: VehicleType.VIN,
-            search: value,
-            username: '',
-          })
-        )
-      )
-      .subscribe({
-        next: (res) => {
-          console.log('onVINInputChange: ', res);
           this.vehicleForm.patchValue({
-            patent: res?.PLACA_PATENTE || null,
-            typeImp: res?.TIPO_VEHICULO || null,
-            brand: res?.MARCA || null,
-            model: res?.MODELO || null,
-            manufactureYear: res?.ANO_FABRICACION
-              ? new Date(res?.ANO_FABRICACION, 1)
+            codeChasis: vehicle?.COD_CHASIS,
+            brand: vehicle?.MARCA || null,
+            model: vehicle?.MODELO || null,
+            manufactureYear: vehicle?.ANO_FABRICACION
+              ? new Date(vehicle?.ANO_FABRICACION, 1)
               : null,
           });
+          if (vehicle) {
+            this.enableBodyForm(false);
+            this.vehicleNotFound = false;
+          } else {
+            this.enableBodyForm(true);
+            this.vehicleNotFound = true;
+          }
+        },
+        error: () => {
+          this.isSearchingVehicle = false;
+          this.enableBodyForm(false);
         },
       });
   }

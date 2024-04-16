@@ -374,6 +374,7 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
       },
       appendTo: 'body',
       data: {
+        documentId: this.session.documentId,
         vehicle: action === VehicleAction.UPDATE ? vehicle : null,
         action,
       },
@@ -385,27 +386,23 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
 
     ref.onClose.subscribe(
       ({ confirm, newVehicle }: { confirm: boolean; newVehicle: any }) => {
-        if (!confirm) return;
-        if (vehicle) {
-          this.updateVehicle(newVehicle);
-        } else {
-          this.createVehicle(newVehicle);
-        }
+        //if (!confirm) return;
+        this.messageService.add({
+          severity: 'danger',
+          summary: 'Vehículo no creado',
+          detail: 'Ha ocurrido un error al crear el vehículo.',
+        });
       }
     );
   }
 
-  createVehicle(vehicle: any) {
-    console.log('vehicle create: ', vehicle);
-    /*this.customerVehicleService
+  /*createVehicle(vehicle: any) {
+    console.log('vehicle create: ', vehicle);*/
+  /*this.customerVehicleService
       .createCustomerVehicle(this.session.documentId, vehicle)
       .subscribe({
         next: (res) => {},
         error: (err) => {},
       });*/
-  }
-
-  updateVehicle(vehicle: any) {
-    console.log('vehicle update: ', vehicle);
-  }
+  //}
 }

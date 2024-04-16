@@ -1,3 +1,5 @@
+<p-toast [life]="100000"></p-toast>
+
 <div class="top-bar-categories d-flex align-orders-center">
   <div class="title d-flex align-orders-center mr-auto">
     <i _ngcontent-serverapp-c11="" class="fas fa-warehouse mr-3"></i>
@@ -237,7 +239,7 @@
           <td>{{ vehicle.manufactureYear }}</td>
           <td>
             <div style="display: flex; gap: 10px">
-              <button
+              <!--<button
                 (click)="openVehicleModal(VehicleAction.UPDATE, vehicle)"
                 pButton
                 pRipple
@@ -245,7 +247,7 @@
                 tooltipPosition="top"
                 icon="pi pi-pencil"
                 class="p-button-rounded p-button-success"
-              ></button>
+              ></button> -->
               <button
                 (click)="confirmDeleteVehicle($event, vehicle._id)"
                 pButton
@@ -261,7 +263,6 @@
       </ng-template>
     </p-table>
     <p-confirmDialog></p-confirmDialog>
-    <p-toast></p-toast>
   </p-card>
 </div>
 

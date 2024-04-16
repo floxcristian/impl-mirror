@@ -41,7 +41,7 @@ export class CustomerVehicleService {
       manufactureYear: number;
       codeMotor: string;
       codeChasis: string;
-      customer: string;
+      //customer: string;
       typeImp: string;
       detail: string;
       codeSii: string;
