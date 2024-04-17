@@ -1545,7 +1545,7 @@
             <div class="row">
               <div
                 class="col-sm-12"
-                *ngIf="cd_ver"
+                *ngIf="cd_ver && userSession.creditLine?.requiresConfirmation"
               >
                 <app-codigo-oc
                   [id]="cartSession._id"
