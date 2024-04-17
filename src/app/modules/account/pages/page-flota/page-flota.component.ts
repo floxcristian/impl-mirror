@@ -35,6 +35,7 @@ import { VehicleFormComponent } from './modals/vehicle-form/vehicle-form.compone
 import { VehicleFormFooter } from './modals/vehicle-form/vehicle-form-footer.component';
 import { VehicleFormHeader } from './modals/vehicle-form/vehicle-form-header.component';
 import { VehicleAction } from './vehicle-action.enum';
+import { error } from 'console';
 
 @Component({
   providers: [ConfirmationService, DialogService, MessageService],
@@ -107,10 +108,20 @@ export class PageFlotaComponent implements OnInit, OnDestroy {
         sort,
         search: filters.join(','),
       })
-      .subscribe((res: any) => {
-        this.vehicles = res.data;
-        this.totalRows = res.total;
-        this.loading = false;
+      .subscribe({
+        next: (res) => {
+          this.vehicles = res.data;
+          this.totalRows = res.total;
+          this.loading = false;
+        },
+        error: (err) => {
+          console.error(err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'No se pueden obtener los vehículos',
+            detail: 'Ha ocurrido un error al obtener los vehículos.',
+          });
+        },
       });
   }
 

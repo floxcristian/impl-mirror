@@ -387,3 +387,15 @@ body {
 .p-toast .p-toast-message {
   background: #ffffff !important;
 }
+
+.hidden-empty-message .p-dropdown-empty-message {
+  display: none !important;
+}
+
+.p-inputgroup .p-button {
+  border-radius: 0 6px 6px 0 !important;
+}
+
+.p-inputgroup p-dropdown .p-inputwrapper {
+  border-radius: 6px 0 0 6px !important;
+}

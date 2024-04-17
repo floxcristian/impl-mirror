@@ -62,6 +62,7 @@ export class VehicleFormFooter {
         typeImp: selectedMotor.tipo || null,
         codeSii: selectedMotor.codigoSII || null,
         codeMotor: selectedMotor.codigo || null,
+        detail: selectedMotor.detalle || null,
       })
       .subscribe({
         next: () => {

@@ -325,6 +325,7 @@ export class VehicleFormComponent implements OnInit {
               tipo: vehicle.IMPtipo,
               codigoSII: vehicle.codigoSii,
               codigo: vehicle.COD_MOTOR,
+              detail: vehicle.detalle,
             };
 
             this.enableBodyForm(false);

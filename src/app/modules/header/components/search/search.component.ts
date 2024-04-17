@@ -52,11 +52,12 @@ import { VehicleType } from '@core/services-v2/vehicle/vehicle-type.enum';
 import { IVehicle } from '@core/services-v2/vehicle/vehicle-response.interface';
 import { CustomerVehicleService } from '@core/services-v2/customer-vehicle/customer-vehicle.service';
 import { IVehicleCustomer } from '@core/services-v2/customer-vehicle/vehicle-customer-response.interface';
+import { Message } from 'primeng/api';
 
 @Component({
   selector: 'app-header-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss']
+  styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit, OnDestroy {
   @ViewChild('menuSearch', { static: false }) listSearch!: ElementRef;
@@ -92,6 +93,15 @@ export class SearchComponent implements OnInit, OnDestroy {
   isVacio = isVacio;
   sessionRef!: Subscription;
 
+  messages: Message[] = [
+    {
+      severity: 'warn',
+      //summary: 'Patente no encontrada',
+      detail:
+        'Esta funcionalidad esta disponible solo para usuario registrados.',
+    },
+  ];
+
   // News
   session!: ISession;
   selectedStore!: ISelectedStore;
@@ -102,14 +112,22 @@ export class SearchComponent implements OnInit, OnDestroy {
   selectedVehicle!: IVehicle | null;
   notVehicleFound!: boolean;
 
-  customerVehiclesFilter!:IVehicleCustomer[]
-  customerVehiclesOriginal!:IVehicleCustomer[]
-  isLoadingVehicles:boolean = false
-  existInFlota:boolean = false
-  isLoadingCreate:boolean = false
+  customerVehiclesFilter!: IVehicleCustomer[];
+  customerVehiclesOriginal!: IVehicleCustomer[];
+  isLoadingVehicles: boolean = false;
+  existInFlota: boolean = false;
+  isLoadingCreate: boolean = false;
 
-  getTypeFilter(){
-    return this.vehicleForm.get('type')?.value === 'patent' ? this.vehicleForm.get('type')?.value : 'codeChasis'
+  isClickedVehicleSearch!: boolean;
+
+  getTypeFilter() {
+    return this.vehicleForm.get('type')?.value === 'patent'
+      ? this.vehicleForm.get('type')?.value
+      : 'codeChasis';
+  }
+
+  get searchInput() {
+    return this.vehicleForm.get('search');
   }
 
   constructor(
@@ -136,7 +154,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   ) {
     this.vehicleForm = this.fb.group({
       type: ['patent', Validators.required],
-      search: [null, Validators.required],
+      search: [null],
     });
   }
 
@@ -355,125 +373,157 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   searchVehicle({ type, search }: { type: VehicleType; search: string }) {
-    this.isLoadingVehicles = true
-    this.vehicleService.getByPatentOrVin({type, search, username: this.session.username || ''}).subscribe({
-      next: (vehicle) => {
-        this.isLoadingVehicles = false
-        this.selectedVehicle = vehicle || null;
-        this.notVehicleFound = vehicle ? false : true;
-        this.existVehicleInFlota(this.selectedVehicle)
-      },
-      error: (err) => {
-        this.isLoadingVehicles = false
-        this.notVehicleFound = true;
-        this.existInFlota = false
-      },
-    });
+    console.log('session: ', this.session);
+    if (this.session.documentId === '0') {
+      this.isClickedVehicleSearch = true;
+      return;
+    }
+
+    this.isLoadingVehicles = true;
+    this.vehicleService
+      .getByPatentOrVin({
+        type,
+        search,
+        username: this.session.username || '',
+      })
+      .subscribe({
+        next: (vehicle) => {
+          this.isLoadingVehicles = false;
+          this.selectedVehicle = vehicle || null;
+          this.notVehicleFound = vehicle ? false : true;
+          this.existVehicleInFlota(this.selectedVehicle);
+        },
+        error: (err) => {
+          this.isLoadingVehicles = false;
+          this.notVehicleFound = true;
+          this.existInFlota = false;
+        },
+      });
   }
 
   /**
    * Quitar vehículo seleccionado.
    */
   cleanSelectedVehicle(): void {
-    this.existInFlota = false
+    this.existInFlota = false;
     this.vehicleForm.setValue({
       type: 'patent',
       search: null,
     });
     this.selectedVehicle = null;
-    this.customerVehiclesFilter = this.customerVehiclesOriginal
+    this.customerVehiclesFilter = this.customerVehiclesOriginal;
   }
 
   /**
    * Ir a la página de artículos para ver productos del vehículo seleccionado.
    */
   goToProductsPage() {
-    if(this.selectedVehicle?.PLACA_PATENTE && this.selectedVehicle?.codigoSii){
-      this.router.navigateByUrl(`inicio/productos/vehicle/${this.selectedVehicle?.PLACA_PATENTE}/${this.selectedVehicle?.codigoSii}`);
+    if (
+      this.selectedVehicle?.PLACA_PATENTE &&
+      this.selectedVehicle?.codigoSii
+    ) {
+      this.router.navigateByUrl(
+        `inicio/productos/vehicle/${this.selectedVehicle?.PLACA_PATENTE}/${this.selectedVehicle?.codigoSii}`
+      );
       this.searchVehicle(this.vehicleForm.value);
-      this.cleanSelectedVehicle()
+      this.cleanSelectedVehicle();
       this.menuVehiculo.toggle();
-      this.existInFlota = false
+      this.existInFlota = false;
     }
   }
 
   /**
    *  Obtiene vehiculos del cliente logueado
    */
-  getAllCustomerVehicle(){
-    if (this.session.documentId !== '0'){
+  getAllCustomerVehicle() {
+    if (this.session.documentId !== '0') {
       this.customerVehicleService.getAll(this.session.documentId).subscribe({
-        next:(vehicles) =>{
-          this.customerVehiclesOriginal = vehicles
-          this.customerVehiclesFilter = vehicles
+        next: (vehicles) => {
+          this.customerVehiclesOriginal = vehicles;
+          this.customerVehiclesFilter = vehicles;
         },
-        error:(err) =>{
-          console.log(err)
-        }
-      })
+        error: (err) => {
+          console.log(err);
+        },
+      });
     }
   }
 
   /**
    * Filtra los vehiculos
    */
-  filterVehicle(){
-    let valueSearch = this.vehicleForm.get('search')?.value
-    if(!valueSearch || valueSearch === '') this.customerVehiclesFilter = this.customerVehiclesOriginal
+  filterVehicle() {
+    let valueSearch = this.vehicleForm.get('search')?.value;
+    if (!valueSearch || valueSearch === '')
+      this.customerVehiclesFilter = this.customerVehiclesOriginal;
     else {
-      let typeFilter = this.getTypeFilter()
-      if(typeFilter === 'patent') this.customerVehiclesFilter = this.customerVehiclesOriginal.filter((vehicle:any) => vehicle.patent.toUpperCase().includes(valueSearch.toUpperCase()))
-      else this.customerVehiclesFilter = this.customerVehiclesOriginal.filter((vehicle:any) => vehicle.codeChasis.toUpperCase().includes(valueSearch.toUpperCase()))
+      let typeFilter = this.getTypeFilter();
+      if (typeFilter === 'patent')
+        this.customerVehiclesFilter = this.customerVehiclesOriginal.filter(
+          (vehicle: any) =>
+            vehicle.patent.toUpperCase().includes(valueSearch.toUpperCase())
+        );
+      else
+        this.customerVehiclesFilter = this.customerVehiclesOriginal.filter(
+          (vehicle: any) =>
+            vehicle.codeChasis
+              .toUpperCase()
+              .includes(valueSearch.toUpperCase())
+        );
     }
   }
 
   /**
    * Verifica si el vehiculo esta en la flota del cliente
    */
-  existVehicleInFlota(vehicleFind:any){
-    if(vehicleFind){
-      let typeFilter = this.getTypeFilter()
-      if(typeFilter === 'patent'){
-        let existVehicle = this.customerVehiclesOriginal.find((vehicle:any) => vehicleFind.PLACA_PATENTE === vehicle.patent)
-        if(existVehicle) this.existInFlota = true
+  existVehicleInFlota(vehicleFind: any) {
+    if (vehicleFind) {
+      let typeFilter = this.getTypeFilter();
+      if (typeFilter === 'patent') {
+        let existVehicle = this.customerVehiclesOriginal.find(
+          (vehicle: any) => vehicleFind.PLACA_PATENTE === vehicle.patent
+        );
+        if (existVehicle) this.existInFlota = true;
+      } else {
+        let existVehicle = this.customerVehiclesOriginal.find(
+          (vehicle: any) => vehicleFind.COD_CHASIS === vehicle.codeChasis
+        );
+        if (existVehicle) this.existInFlota = true;
       }
-      else {
-        let existVehicle = this.customerVehiclesOriginal.find((vehicle:any) => vehicleFind.COD_CHASIS === vehicle.codeChasis)
-        if(existVehicle) this.existInFlota = true
-      }
-    }else this.existInFlota = false
+    } else this.existInFlota = false;
   }
 
   /**
    * Agregar vehiculo a flota
    */
-  addMyFlota(){
-    if(this.selectedVehicle){
+  addMyFlota() {
+    if (this.selectedVehicle) {
       let createVehicle = {
         patent: this.selectedVehicle.PLACA_PATENTE,
         brand: this.selectedVehicle.MARCA,
         model: this.selectedVehicle.MODELO,
-        typeVehicle: this.selectedVehicle.TIPO_VEHICULO,
+        typeVehicle: this.selectedVehicle.TIPO_VEHICULO, // TODO: eliminar
         manufactureYear: this.selectedVehicle.ANO_FABRICACION,
         codeMotor: this.selectedVehicle.COD_MOTOR,
         codeChasis: this.selectedVehicle.COD_CHASIS,
-        customer: this.selectedVehicle.cliente,
+        customer: this.selectedVehicle.cliente, // TODO: eliminar
         typeImp: this.selectedVehicle.IMPtipo,
         detail: this.selectedVehicle.detalle,
-        codeSii: this.selectedVehicle.codigoSii
-      }
-      this.isLoadingCreate = true
-      this.customerVehicleService.createCustomerVehicle(this.session.documentId,createVehicle).subscribe({
-        next:()=>{
-          this.isLoadingCreate = false
-          this.toastr.success('Vehiculo Agregado a la flota', '');
-        },
-        error:(err)=>{
-          console.log(err)
-          this.isLoadingCreate = false
-        }
-      })
+        codeSii: this.selectedVehicle.codigoSii,
+      };
+      this.isLoadingCreate = true;
+      this.customerVehicleService
+        .createCustomerVehicle(this.session.documentId, createVehicle)
+        .subscribe({
+          next: () => {
+            this.isLoadingCreate = false;
+            this.toastr.success('Vehiculo Agregado a la flota', '');
+          },
+          error: (err) => {
+            console.log(err);
+            this.isLoadingCreate = false;
+          },
+        });
     }
   }
-
 }
