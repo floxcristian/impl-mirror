@@ -26,11 +26,6 @@
       <label for="patent" class="block mb-1 text-color text-base"
         >Patente *</label
       >
-      <!--
-      <span class="p-input-icon-right">
-        <i class="pi pi-spin pi-spinner"></i>
-        <input type="text" pInputText [(ngModel)]="value2" />
-    </span> -->
       <span class="w-full p-input-icon-right">
         <i class="pi pi-spin pi-spinner" *ngIf="isSearchingVehicle"></i>
         <input
@@ -82,6 +77,7 @@
       <small id="brand-help">Primero ingrese una patente.</small>
       }
     </div>
+
     <div class="w-full">
       <label for="model" class="block mb-1 text-color text-base"
         >Modelo *</label
@@ -125,6 +121,7 @@
       >
     </span>
   </div>
+
   <div *ngIf="motorsOptions.length > 1 && manufactureYearInput?.value">
     <label class="block mb-1 text-color text-base">Motor *</label>
     @if(modelInput?.value){

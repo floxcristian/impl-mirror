@@ -27,7 +27,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
         [disabled]="
           !config.data.vehicleForm?.valid || !config.data.selectedMotor
         "
-        (click)="createVehicle(config.data.vehicleForm.value)"
+        (click)="createVehicle(config.data.vehicleForm)"
       ></p-button>
     </div>
   `,
@@ -50,25 +50,15 @@ export class VehicleFormFooter {
     this.ref.close({ isVehicleCreated });
   }
 
-  private formatYear(date: Date | number): number {
-    return typeof date === 'number' ? date : date.getFullYear();
-  }
-
-  createVehicle({
-    brand,
-    codeChasis,
-    model,
-    patent,
-    manufactureYear,
-  }: any): void {
+  createVehicle(vehicleForm: any): void {
     const selectedMotor = this.config.data.selectedMotor;
     this.customerVehicleService
       .createCustomerVehicle(this.config.data.documentId, {
-        manufactureYear: this.formatYear(manufactureYear),
-        codeChasis,
-        brand,
-        model,
-        patent,
+        manufactureYear: vehicleForm.get('manufactureYear').value,
+        codeChasis: vehicleForm.get('codeChasis').value,
+        brand: vehicleForm.get('brand').value,
+        model: vehicleForm.get('model').value,
+        patent: vehicleForm.get('patent').value,
         typeImp: selectedMotor.tipo || null,
         codeSii: selectedMotor.codigoSII || null,
         codeMotor: selectedMotor.codigo || null,

@@ -28,6 +28,7 @@ import {
 import { Message } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-vehicle-form',
@@ -85,6 +86,9 @@ export class VehicleFormComponent implements OnInit {
   loadingMotors!: boolean;
   yearsOptions: number[] = [];
 
+  inputChangesSubscriptions$!: Subscription;
+  isEnabledInputChanges!: boolean;
+
   constructor(
     private readonly fb: FormBuilder,
     private readonly vehicleService: VehicleService,
@@ -93,6 +97,7 @@ export class VehicleFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.inputChangesSubscriptions$ = new Subscription();
     this.buildForm();
     this.fetchBrands();
   }
@@ -154,70 +159,77 @@ export class VehicleFormComponent implements OnInit {
   }
 
   onManufactureYearInputChange(): void {
-    this.manufactureYearInput?.valueChanges
-      .pipe(distinctUntilChanged())
-      .subscribe({
-        next: (year) => {
-          if (!year) {
-            this.motorsOptions = [];
-            this.config.data.selectedMotor = null;
-          } else {
-            this.motorsOptions = this.motors.filter((motor) =>
-              motor.anios.includes(year)
-            );
-            if (this.motorsOptions.length === 1) {
-              this.config.data.selectedMotor = this.motorsOptions[0];
+    this.inputChangesSubscriptions$.add(
+      this.manufactureYearInput?.valueChanges
+        .pipe(distinctUntilChanged())
+        .subscribe({
+          next: (year) => {
+            if (!year) {
+              this.motorsOptions = [];
+              this.config.data.selectedMotor = null;
+            } else {
+              this.motorsOptions = this.motors.filter((motor) =>
+                motor.anios.includes(year)
+              );
+              if (this.motorsOptions.length === 1) {
+                this.config.data.selectedMotor = this.motorsOptions[0];
+              }
             }
-          }
-        },
-      });
+          },
+        })
+    );
   }
 
   onBrandInputChange(): void {
-    this.brandInput?.valueChanges.pipe(distinctUntilChanged()).subscribe({
-      next: (brand) => {
-        if (brand) {
-          this.fetchModels(brand);
-        } else {
-          this.modelInput?.setValue(null);
-          this.models = [];
-          this.modelInput?.disable();
-        }
-        this.manufactureYearInput?.setValue(null);
-        this.motors = [];
-        this.motorsOptions = [];
-        this.config.data.selectedMotor = null;
-        this.manufactureYearInput?.disable();
-      },
-    });
+    this.inputChangesSubscriptions$.add(
+      this.brandInput?.valueChanges.pipe(distinctUntilChanged()).subscribe({
+        next: (brand) => {
+          console.log('onBrandInputChange: ', brand);
+          if (brand) {
+            this.fetchModels(brand);
+          } else {
+            this.modelInput?.setValue(null);
+            this.models = [];
+            this.modelInput?.disable();
+          }
+          this.manufactureYearInput?.setValue(null);
+          this.motors = [];
+          this.motorsOptions = [];
+          this.config.data.selectedMotor = null;
+          this.manufactureYearInput?.disable();
+        },
+      })
+    );
   }
 
   onModelInputChange(): void {
-    this.modelInput?.valueChanges.pipe(distinctUntilChanged()).subscribe({
-      next: (model) => {
-        if (model) {
-          this.fetchMotors(this.brandInput?.value, model);
-          this.manufactureYearInput?.enable();
-        } else {
-          this.motors = [];
-          this.motorsOptions = [];
-          this.manufactureYearInput?.disable();
-        }
-        this.manufactureYearInput?.setValue(null);
-        this.config.data.selectedMotor = null;
-      },
-    });
+    this.inputChangesSubscriptions$.add(
+      this.modelInput?.valueChanges.pipe(distinctUntilChanged()).subscribe({
+        next: (model) => {
+          if (model) {
+            this.fetchMotors(this.brandInput?.value, model);
+            this.manufactureYearInput?.enable();
+          } else {
+            this.motors = [];
+            this.motorsOptions = [];
+            this.manufactureYearInput?.disable();
+          }
+          this.manufactureYearInput?.setValue(null);
+          this.config.data.selectedMotor = null;
+        },
+      })
+    );
   }
 
   enableBodyForm(isEnable: boolean): void {
     if (isEnable) {
       this.vehicleForm.get('codeChasis')?.enable();
-      this.vehicleForm.get('brand')?.enable();
+      this.brandInput?.enable();
     } else {
       this.vehicleForm.get('codeChasis')?.disable();
-      this.vehicleForm.get('brand')?.disable();
-      this.vehicleForm.get('model')?.disable();
-      this.vehicleForm.get('manufactureYear')?.disable();
+      this.brandInput?.disable();
+      this.modelInput?.disable();
+      this.manufactureYearInput?.disable();
     }
   }
 
@@ -228,9 +240,12 @@ export class VehicleFormComponent implements OnInit {
       model: null,
       manufactureYear: null,
     });
+    this.motors = [];
+    this.motorsOptions = [];
+    this.config.data.selectedMotor = null;
   }
 
-  private buildForm() {
+  private buildForm(): void {
     this.vehicleForm = this.fb.group({
       patent: [null, Validators.required],
       codeChasis: [{ value: null, disabled: true }],
@@ -238,20 +253,22 @@ export class VehicleFormComponent implements OnInit {
       model: [{ value: null, disabled: true }, Validators.required],
       manufactureYear: [{ value: null, disabled: true }, Validators.required],
     });
-    console.log('vehicleForm: ', this.vehicleForm);
     this.config.data.vehicleForm = this.vehicleForm;
-    this.onFormChange();
     this.onPatentInputChange();
+  }
+
+  private enableInputsChange(): void {
+    if (this.isEnabledInputChanges) return;
+    this.isEnabledInputChanges = true;
+    this.inputChangesSubscriptions$ = new Subscription();
     this.onBrandInputChange();
     this.onModelInputChange();
     this.onManufactureYearInputChange();
   }
 
-  // FIXME:
-  onFormChange(): void {
-    this.vehicleForm.valueChanges.subscribe({
-      next: (vehicle) => (this.config.data.vehicle = vehicle),
-    });
+  private disableInputChanges(): void {
+    this.isEnabledInputChanges = false;
+    this.inputChangesSubscriptions$.unsubscribe();
   }
 
   onPatentInputChange() {
@@ -279,20 +296,42 @@ export class VehicleFormComponent implements OnInit {
       )
       .subscribe({
         next: (vehicle) => {
+          console.log('patent: ', vehicle);
           this.isSearchingVehicle = false;
 
-          this.vehicleForm.patchValue({
-            codeChasis: vehicle?.COD_CHASIS,
-            brand: vehicle?.MARCA || null,
-            model: vehicle?.MODELO || null,
-            manufactureYear: vehicle?.ANO_FABRICACION
-              ? new Date(vehicle?.ANO_FABRICACION, 1)
-              : null,
-          });
           if (vehicle) {
+            this.disableInputChanges();
+
+            if (vehicle.MARCA && !this.brands.includes(vehicle.MARCA)) {
+              this.brands.push(vehicle.MARCA);
+            }
+            if (vehicle.MODELO && !this.models.includes(vehicle.MODELO)) {
+              this.models = [vehicle.MODELO];
+            }
+            if (
+              vehicle.ANO_FABRICACION &&
+              !this.yearsOptions.includes(vehicle.ANO_FABRICACION)
+            ) {
+              this.yearsOptions = [vehicle.ANO_FABRICACION];
+            }
+
+            this.vehicleForm.patchValue({
+              codeChasis: vehicle?.COD_CHASIS, // VIN
+              brand: vehicle?.MARCA || null,
+              model: vehicle?.MODELO || null,
+              manufactureYear: vehicle?.ANO_FABRICACION,
+            });
+            this.config.data.selectedMotor = {
+              tipo: vehicle.IMPtipo,
+              codigoSII: vehicle.codigoSii,
+              codigo: vehicle.COD_MOTOR,
+            };
+
             this.enableBodyForm(false);
             this.vehicleNotFound = false;
           } else {
+            this.cleanBodyForm();
+            this.enableInputsChange();
             this.enableBodyForm(true);
             this.vehicleNotFound = true;
           }
