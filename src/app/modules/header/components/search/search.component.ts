@@ -60,7 +60,7 @@ import { Message } from 'primeng/api';
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit, OnDestroy {
-  @ViewChild('menuSearch', { static: false }) listSearch!: ElementRef;
+  @ViewChild('menuSearch', { static: false }) listSearch!: DropdownDirective;
   @ViewChild('menuTienda', { static: false }) menuTienda!: DropdownDirective;
   @ViewChild('menuVehiculo', { static: false })
   menuVehiculo!: DropdownDirective;
@@ -216,7 +216,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchControl.setValue('');
   }
 
-  buscar() {
+  buscar(): void {
     this.textToSearch = this.searchControl.value || '';
 
     this.gtmService.pushTag({
@@ -372,8 +372,22 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Buscar productos.
+   */
+  searchProducts(): void {
+    this.buscar();
+    this.listSearch.toggle();
+    this.blurInput();
+    this.cleanSelectedVehicle();
+  }
+
+  /**
+   * Buscar vehículo por patente.
+   * @param param0
+   * @returns
+   */
   searchVehicle({ type, search }: { type: VehicleType; search: string }) {
-    console.log('session: ', this.session);
     if (this.session.documentId === '0') {
       this.isClickedVehicleSearch = true;
       return;
@@ -406,10 +420,7 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   cleanSelectedVehicle(): void {
     this.existInFlota = false;
-    this.vehicleForm.setValue({
-      type: 'patent',
-      search: null,
-    });
+    this.vehicleForm.get('search')?.setValue(null);
     this.selectedVehicle = null;
     this.customerVehiclesFilter = this.customerVehiclesOriginal;
   }
@@ -425,10 +436,9 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.router.navigateByUrl(
         `inicio/productos/vehicle/${this.selectedVehicle?.PLACA_PATENTE}/${this.selectedVehicle?.codigoSii}`
       );
-      this.searchVehicle(this.vehicleForm.value);
+      //this.searchVehicle(this.vehicleForm.value);
       this.cleanSelectedVehicle();
       this.menuVehiculo.toggle();
-      this.existInFlota = false;
     }
   }
 

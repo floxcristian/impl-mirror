@@ -24,7 +24,7 @@ export class VehicleFormHeader {
   action: string;
 
   constructor(
-    public ref: DynamicDialogRef,
+    public readonly ref: DynamicDialogRef,
     private readonly config: DynamicDialogConfig
   ) {
     this.action = StringUtilService.capitalizeFirstLetter(

@@ -52,8 +52,6 @@ import { AddcartButtonComponent } from './components/addcart-button/addcart-butt
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 import { ScrollTopComponent } from './components/scroll-top/scroll-top.component';
 import { ModalComponent } from './components/modal/modal.component';
-import { AddFlotaModalComponent } from './components/add-flota-modal/add-flota-modal.component';
-import { UpdateFlotaModalComponent } from './components/update-flota-modal/update-flota-modal.component';
 import { InputNumberProductComponent } from './components/input-number-product/input-number-product.component';
 import { WishListModalComponent } from './components/wish-list-modal/wish-list-modal.component';
 import { EditarListaProductosComponent } from './components/editar-lista-productos/editar-lista-productos.component';
@@ -116,8 +114,6 @@ const BOOSTRAP_MODULES = [NgbPopoverModule, NgbNavModule];
     ConfirmModalComponent,
     ScrollTopComponent,
     ModalComponent,
-    AddFlotaModalComponent,
-    UpdateFlotaModalComponent,
     InputNumberProductComponent,
     WishListModalComponent,
     EditarListaProductosComponent,
@@ -139,7 +135,7 @@ const BOOSTRAP_MODULES = [NgbPopoverModule, NgbNavModule];
     BlockHeaderComponent,
     ModalScalePriceComponent,
     RelativeTimePipe,
-    TranslateStatusPipe
+    TranslateStatusPipe,
   ],
   imports: [
     CommonModule,
@@ -162,7 +158,6 @@ const BOOSTRAP_MODULES = [NgbPopoverModule, NgbNavModule];
     FiltroMagicoModule,
     InfiniteScrollModule,
     GoogleMapsModule,
-
   ],
   exports: [
     PipesModule,
@@ -212,7 +207,7 @@ const BOOSTRAP_MODULES = [NgbPopoverModule, NgbNavModule];
     FiltroMagicoModule,
     BlockHeaderComponent,
     RelativeTimePipe,
-    TranslateStatusPipe
+    TranslateStatusPipe,
   ],
   providers: [DecimalPipe, DatePipe],
 })

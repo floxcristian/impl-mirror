@@ -24,11 +24,7 @@
             {{ selectedStore.zone }}</span
           >
         </span>
-        <span
-          *ngIf="this.usuario.documentId !== '0'"
-          class="indicator__button"
-          (click)="showVehicle()"
-        >
+        <span class="indicator__button" (click)="showVehicle()">
           <img
             src="../../../../../assets/svg/09.svg"
             style="width: 30px; height: 33px; margin-right: 20px"

@@ -55,6 +55,10 @@ export class VehicleFormComponent implements OnInit {
     return this.vehicleForm.get('patent');
   }
 
+  get codeChasisInput() {
+    return this.vehicleForm.get('codeChasis');
+  }
+
   get brandInput() {
     return this.vehicleForm.get('brand');
   }
@@ -184,7 +188,6 @@ export class VehicleFormComponent implements OnInit {
     this.inputChangesSubscriptions$.add(
       this.brandInput?.valueChanges.pipe(distinctUntilChanged()).subscribe({
         next: (brand) => {
-          console.log('onBrandInputChange: ', brand);
           if (brand) {
             this.fetchModels(brand);
           } else {
@@ -221,30 +224,9 @@ export class VehicleFormComponent implements OnInit {
     );
   }
 
-  enableBodyForm(isEnable: boolean): void {
-    if (isEnable) {
-      this.vehicleForm.get('codeChasis')?.enable();
-      this.brandInput?.enable();
-    } else {
-      this.vehicleForm.get('codeChasis')?.disable();
-      this.brandInput?.disable();
-      this.modelInput?.disable();
-      this.manufactureYearInput?.disable();
-    }
-  }
-
-  cleanBodyForm(): void {
-    this.vehicleForm.patchValue({
-      codeChasis: null,
-      brand: null,
-      model: null,
-      manufactureYear: null,
-    });
-    this.motors = [];
-    this.motorsOptions = [];
-    this.config.data.selectedMotor = null;
-  }
-
+  /**
+   * Construir el formulario.
+   */
   private buildForm(): void {
     this.vehicleForm = this.fb.group({
       patent: [null, Validators.required],
@@ -255,6 +237,37 @@ export class VehicleFormComponent implements OnInit {
     });
     this.config.data.vehicleForm = this.vehicleForm;
     this.onPatentInputChange();
+  }
+
+  /**
+   * Habilitar o deshabilitar campos del formulario.
+   * @param isEnable
+   */
+  private enableBodyForm(isEnable: boolean): void {
+    if (isEnable) {
+      this.codeChasisInput?.enable();
+      this.brandInput?.enable();
+    } else {
+      this.codeChasisInput?.disable();
+      this.brandInput?.disable();
+      this.modelInput?.disable();
+      this.manufactureYearInput?.disable();
+    }
+  }
+
+  /**
+   * Limpia el formulario y las opciones seleccionadas.
+   */
+  private cleanBodyForm(): void {
+    this.vehicleForm.patchValue({
+      codeChasis: null,
+      brand: null,
+      model: null,
+      manufactureYear: null,
+    });
+    this.motors = [];
+    this.motorsOptions = [];
+    this.config.data.selectedMotor = null;
   }
 
   private enableInputsChange(): void {
@@ -296,7 +309,6 @@ export class VehicleFormComponent implements OnInit {
       )
       .subscribe({
         next: (vehicle) => {
-          console.log('patent: ', vehicle);
           this.isSearchingVehicle = false;
 
           if (vehicle) {

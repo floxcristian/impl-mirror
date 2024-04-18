@@ -16,6 +16,7 @@
     </div>
   </div>
 
+  <!-- Start::search input -->
   <div class="search__form col p-0 me-5">
     <!-- FIXME: usar reactive forms -->
     <div
@@ -26,7 +27,7 @@
       <input
         (click)="menuSearch.open()"
         (keydown)="reset()"
-        (keyup.enter)="buscar(); menuSearch.toggle(); blurInput()"
+        (keyup.enter)="searchProducts()"
         [formControl]="searchControl"
         class="search__input"
         name="search"
@@ -54,7 +55,7 @@
         name="buscar"
         class="search__button"
         type="button"
-        (click)="buscar(); menuSearch.toggle(); blurInput()"
+        (click)="searchProducts()"
         [ngStyle]="{ 'z-index': isFocusedInput ? '1001' : 'unset' }"
       >
         <img
@@ -100,7 +101,8 @@
                         menuSearch.toggle();
                         seleccionado = true;
                         blurInput();
-                        textToSearch = sugerencias[0].suggestion
+                        textToSearch = sugerencias[0].suggestion;
+                        cleanSelectedVehicle()
                       "
                       [routerLink]="[
                         '/',
@@ -126,7 +128,8 @@
                         menuSearch.toggle();
                         seleccionado = true;
                         blurInput();
-                        textToSearch = item.suggestion
+                        textToSearch = item.suggestion;
+                        cleanSelectedVehicle()
                       "
                       [routerLink]="[
                         '/',
@@ -168,7 +171,10 @@
                     <a
                       [routerLink]="item.url"
                       (click)="
-                        menuSearch.toggle(); blurInput(); seleccionado = false
+                        menuSearch.toggle();
+                        blurInput();
+                        seleccionado = false;
+                        cleanSelectedVehicle()
                       "
                     >
                       <span>{{ item.name | capitalizeFirst }}</span>
@@ -204,7 +210,10 @@
                   [routerLink]="'/inicio/productos/' + textToSearch"
                   [queryParams]="{ filter_MARCA: item.brand }"
                   (click)="
-                    menuSearch.toggle(); blurInput(); seleccionado = false
+                    menuSearch.toggle();
+                    blurInput();
+                    seleccionado = false;
+                    cleanSelectedVehicle()
                   "
                 >
                   <div class="row">
@@ -237,7 +246,10 @@
                   <a
                     [routerLink]="item.url"
                     (click)="
-                      menuSearch.toggle(); blurInput(); seleccionado = true
+                      menuSearch.toggle();
+                      blurInput();
+                      seleccionado = true;
+                      cleanSelectedVehicle()
                     "
                   >
                     <img
@@ -327,7 +339,10 @@
             <div class="item justify-content-end d-flex">
               <a
                 (click)="
-                  menuSearch.toggle(); blurInput(); seleccionado = false
+                  menuSearch.toggle();
+                  blurInput();
+                  seleccionado = false;
+                  cleanSelectedVehicle()
                 "
                 [routerLink]="['/', 'inicio', 'productos', textToSearch]"
               >
@@ -345,6 +360,8 @@
       </div>
     </div>
   </div>
+  <!-- End::search input-->
+
   <div class="overlay" *ngIf="isFocusedInput" (click)="blurInput()"></div>
 
   <div class="col-header-2">
@@ -624,7 +641,7 @@
                 <div *ngIf="selectedVehicle?.codigoSii">
                   <p-button
                     styleClass="w-100"
-                    label="Ver Filtros Encontrados"
+                    label="Ver Filtros encontrados"
                     (onClick)="goToProductsPage()"
                   ></p-button>
                 </div>

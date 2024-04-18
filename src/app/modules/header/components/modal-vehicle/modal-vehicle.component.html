@@ -12,12 +12,12 @@
 </div>
 <div class="modal-body p-1" style="min-height: auto">
   <form
-  [formGroup]="vehicleForm"
-  class="form-inline d-flex align-items-center justify-content-center"
+    [formGroup]="vehicleForm"
+    class="form-inline d-flex align-items-center justify-content-center"
   >
     <div class="alert-session p-2">
       <div *ngIf="!selectedVehicle">
-        <div style="display: flex; justify-content: center">
+        <!--<div style="display: flex; justify-content: center">
           <div
             class="btn-group"
             btnRadioGroup
@@ -44,23 +44,59 @@
             >
           </div>
         </div>
-        <br>
+        <br />-->
+        <p-messages
+          *ngIf="isClickedVehicleSearch"
+          [(value)]="messages"
+          [enableService]="false"
+          [closable]="false"
+        ></p-messages>
         <div>
+          <div style="display: flex; justify-content: center">
+            <small id="patent-help"
+              >Ingrese una patente para la búsqueda de filtros
+              compatibles.</small
+            >
+          </div>
           <!-- Select V2 dropdown editable-->
-          <div class="flex justify-content-center">
+          <div class="flex justify-content-center" style="margin-top: 0.5rem">
             <p-inputGroup>
-              <p-dropdown [options]="customerVehiclesFilter" [optionLabel]="getTypeFilter()" [optionValue]="getTypeFilter()" formControlName="search" placeholder="Buscar"
-              [editable]="true" emptyMessage="No hay resultados" [showClear]="true" (onChange)="filterVehicle()">
-                <ng-template let-vehicle pTemplate="item" >
+              <p-dropdown
+                [options]="customerVehiclesFilter"
+                styleClass="hidden-empty-message"
+                [optionLabel]="getTypeFilter()"
+                [optionValue]="getTypeFilter()"
+                formControlName="search"
+                placeholder="Buscar"
+                [editable]="true"
+                emptyMessage="No hay resultados"
+                [showClear]="true"
+                (onChange)="filterVehicle()"
+              >
+                <ng-template let-vehicle pTemplate="item">
                   <div class="flex align-items-center gap-2">
-                      <div>{{ vehicle.patent }}-{{vehicle.codeChasis}}</div>
+                    <div>{{ vehicle.patent }}-{{ vehicle.codeChasis }}</div>
                   </div>
                 </ng-template>
               </p-dropdown>
-              <button type="button" pButton icon="pi pi-search" [loading]="isLoadingVehicles" [disabled]="vehicleForm.invalid" (click)="searchVehicle(vehicleForm.value)"></button>
+              <button
+                type="button"
+                pButton
+                icon="pi pi-search"
+                [loading]="isLoadingVehicles"
+                [disabled]="
+                  vehicleForm.invalid ||
+                  isClickedVehicleSearch ||
+                  !searchInput?.value
+                "
+                (click)="searchVehicle(vehicleForm.value)"
+              ></button>
             </p-inputGroup>
           </div>
-          <p *ngIf="notVehicleFound" class="text-error-form-2 text-center text-danger pt-2">
+          <p
+            *ngIf="notVehicleFound"
+            class="text-error-form-2 text-center text-danger pt-2"
+          >
             No se encontraron resultados.
           </p>
         </div>
@@ -128,12 +164,29 @@
           </ng-template>
         </p-messages>
         <div class="flex pb-3 gap-3">
-          <p-button [ngStyle]="{'display':'contents'}" styleClass="w-100" label="Cambiar" severity="secondary" (onClick)="cleanSelectedVehicle()"></p-button>
-          <p-button [disabled]="existInFlota" [loading]="isLoadingCreate" [ngStyle]="{'display':'contents'}" styleClass="w-100" [label]=" existInFlota ? 'Existe en Flota' : 'Agregar a Flota'" 
-          severity="warning" (onClick)="addMyFlota()"></p-button>
+          <p-button
+            [ngStyle]="{ display: 'contents' }"
+            styleClass="w-100"
+            label="Cambiar"
+            severity="secondary"
+            (onClick)="cleanSelectedVehicle()"
+          ></p-button>
+          <p-button
+            [disabled]="existInFlota"
+            [loading]="isLoadingCreate"
+            [ngStyle]="{ display: 'contents' }"
+            styleClass="w-100"
+            [label]="existInFlota ? 'Existe en Flota' : 'Agregar a Flota'"
+            severity="warning"
+            (onClick)="addMyFlota()"
+          ></p-button>
         </div>
         <div *ngIf="selectedVehicle?.codigoSii">
-          <p-button styleClass="w-100" label="Ver Filtros Encontrados" (onClick)="goToProductsPage()"></p-button>
+          <p-button
+            styleClass="w-100"
+            label="Ver Filtros encontrados"
+            (onClick)="goToProductsPage()"
+          ></p-button>
         </div>
       </div>
     </div>

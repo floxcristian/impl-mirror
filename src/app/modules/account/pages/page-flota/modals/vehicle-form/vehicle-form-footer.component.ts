@@ -37,19 +37,27 @@ export class VehicleFormFooter {
 
   constructor(
     private readonly ref: DynamicDialogRef,
-    public readonly config: DynamicDialogConfig,
     private readonly customerVehicleService: CustomerVehicleService,
-    private readonly messageService: MessageService
+    private readonly messageService: MessageService,
+    public readonly config: DynamicDialogConfig
   ) {
     this.action = StringUtilService.capitalizeFirstLetter(
       this.config.data.action
     );
   }
 
+  /**
+   * Cerrar modal.
+   * @param isVehicleCreated indica si se creo un vehículo.
+   */
   closeDialog(isVehicleCreated: boolean): void {
-    this.ref.close({ isVehicleCreated });
+    this.ref.close(isVehicleCreated);
   }
 
+  /**
+   * Crear vehículo.
+   * @param vehicleForm
+   */
   createVehicle(vehicleForm: any): void {
     const selectedMotor = this.config.data.selectedMotor;
     this.customerVehicleService
