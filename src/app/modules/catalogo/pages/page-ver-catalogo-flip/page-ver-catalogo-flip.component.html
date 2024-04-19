@@ -9,7 +9,7 @@
 </div>
 <div *ngIf="dispositivo === 'smartphone'">
   <div class="container m-0 p-0">
-    <div class="mobile-header" *ngIf="getTags().length">
+    <div class="mobile-header" *ngIf="tags.length">
       <app-template-menu-catalogo
         [tags]="tags"
         [tipoDispositivo]="dispositivo"
