@@ -1,0 +1,13 @@
+{
+  "apps": [
+    {
+      "name": "b2b-dev",
+      "script": "./dist/server/main.js",
+      "node_args": ["--max_old_space_size=3122"],
+      "env": {
+        "NODE_ENV": "production",
+        "PORT": "4579"
+      }
+    }
+  ]
+}

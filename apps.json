@@ -1,0 +1,15 @@
+{
+  "apps": [
+    {
+      "name": "b2b-web",
+      "script": "./dist/server/main.js",
+      "node_args": ["--max_old_space_size=12288"],
+      "instances": 7,
+      "exec_mode": "cluster",
+      "env": {
+        "NODE_ENV": "production",
+        "PORT": "4599"
+      }
+    }
+  ]
+}
