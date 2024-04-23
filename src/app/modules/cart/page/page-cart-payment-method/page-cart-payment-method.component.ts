@@ -1144,24 +1144,25 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
         .subscribe({
           next: async (r) => {
             this.purchaseOrderId = r._id.toString();
-            await this.updateCartAndUserTurn();
+            // await this.updateCartAndUserTurn();
             await this.prepararCarroPrePago();
-            if (this.userSession.creditLine) {
-              if (!this.userSession.creditLine.requiresConfirmation) {
-                this.cd_ver = true;
-              } else if (
-                this.userSession.creditLine.requiresConfirmation &&
-                this.totalCarro >= this.userSession.creditLine.fromAmount &&
-                (this.totalCarro < this.userSession.creditLine.toAmount ||
-                  this.userSession.creditLine.toAmount == -1)
-              ) {
-                this.cd_ver = true;
-              } else {
-                await this.finishPaymentOv(r);
-              }
-            }
+            await this.finishPaymentOv(r);
+            // if (this.userSession.creditLine) {
+            //   if (!this.userSession.creditLine.requiresConfirmation) {
+            //     this.cd_ver = true;
+            //   } else if (
+            //     this.userSession.creditLine.requiresConfirmation &&
+            //     this.totalCarro >= this.userSession.creditLine.fromAmount &&
+            //     (this.totalCarro < this.userSession.creditLine.toAmount ||
+            //       this.userSession.creditLine.toAmount == -1)
+            //   ) {
+            //     this.cd_ver = true;
+            //   } else {
+            //     await this.finishPaymentOv(r);
+            //   }
+            // }
             // aqui se pone el cambio para la mensajeria
-            // this.archivo = null;
+            this.archivo = null;
             this.loadingPage = false;
           },
           error: (e) => {
@@ -1197,34 +1198,34 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
       this.cd_ver = false;
       let data: any = this.formOv.value;
       data.file = this.archivo !== undefined ? this.archivo?.archivo : null;
-      // if (this.userSession.creditLine) {
-      //   if (
-      //     this.totalCarro >= this.userSession.creditLine.fromAmount &&
-      //     (this.totalCarro < this.userSession.creditLine.toAmount ||
-      //       this.userSession.creditLine.toAmount == -1)
-      //   ) {
-      //     data.credito = true;
-      //   } else {
-      //     data.credito = false;
-      //   }
-      //   this.cd_ver = true;
-      // }
       if (this.userSession.creditLine) {
-        if (!this.userSession.creditLine.requiresConfirmation) {
-          this.cd_ver = true;
-          data.credito = true;
-        } else if (
-          this.userSession.creditLine.requiresConfirmation &&
+        if (
           this.totalCarro >= this.userSession.creditLine.fromAmount &&
           (this.totalCarro < this.userSession.creditLine.toAmount ||
             this.userSession.creditLine.toAmount == -1)
         ) {
-          this.cd_ver = true;
           data.credito = true;
         } else {
           data.credito = false;
         }
+        this.cd_ver = true;
       }
+      // if (this.userSession.creditLine) {
+      //   if (!this.userSession.creditLine.requiresConfirmation) {
+      //     this.cd_ver = true;
+      //     data.credito = true;
+      //   } else if (
+      //     this.userSession.creditLine.requiresConfirmation &&
+      //     this.totalCarro >= this.userSession.creditLine.fromAmount &&
+      //     (this.totalCarro < this.userSession.creditLine.toAmount ||
+      //       this.userSession.creditLine.toAmount == -1)
+      //   ) {
+      //     this.cd_ver = true;
+      //     data.credito = true;
+      //   } else {
+      //     data.credito = false;
+      //   }
+      // }
 
       data.file = this.archivo !== undefined ? this.archivo?.archivo : null;
       this.paymentMethodPurchaseOrderRequestService.upload(data).subscribe({

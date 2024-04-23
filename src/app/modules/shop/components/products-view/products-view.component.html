@@ -24,15 +24,17 @@
           (<strong>{{ totalRegistros }}</strong
           >) Resultados en:
           <ng-container *ngIf="!url.includes('_MARCA')">
-            <span>{{ decodedUrl(textToSearch) }}</span>
+            <span> {{ decodedUrl(textToSearch) }}</span>
           </ng-container>
-          <ng-container *ngIf="breadcrumbs.length">
-            <strong> {{ breadcrumbs[0].label || '' | titlecase }} </strong>
+          <ng-container *ngIf="breadcrumbs.length > 0">
+            <strong>
+              {{ decodedUrl(breadcrumbs[0].label || '') | titlecase }}
+            </strong>
           </ng-container>
           <ng-container *ngIf="url.includes('_MARCA')">
             <strong>
               {{
-                formatUrlParam(url.split('=')[1].split('&')[0]) | titlecase
+                decodedUrl(url.split('=')[1].split('&')[0]) | titlecase
               }}</strong
             >
           </ng-container>

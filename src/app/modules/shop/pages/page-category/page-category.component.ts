@@ -239,7 +239,7 @@ export class PageCategoryComponent implements OnInit {
         this.parametrosBusqueda.word === '' &&
         this.route.snapshot.paramMap.get('patent') &&
         this.route.snapshot.paramMap.get('SIICode')
-        ) {
+      ) {
         let category = this.route.snapshot.paramMap.get('nombre') || '';
         this.getProductsByVehicle(
           this.route.snapshot.paramMap.get('SIICode') || '',
@@ -279,10 +279,10 @@ export class PageCategoryComponent implements OnInit {
         params['metodo'] &&
         params['metodo'] === 'categoria'
       ) {
-        console.log('===================1. categoria');
+        // 02. Categoria
+        // this.textToSearch = this.decodedUrl(params['busqueda'] === 'todos' ? '' : params['busqueda']);
         this.textToSearch =
           params['busqueda'] === 'todos' ? '' : params['busqueda'];
-        console.log('textToSearch[1]: ', this.textToSearch);
 
         let category = params['nombre'];
         this.paramsCategory.firstCategory = category;
@@ -461,8 +461,8 @@ export class PageCategoryComponent implements OnInit {
     scroll = false
   ): void {
     //* dejar con string vacio para no ser pescado en el sort
-    this.siiCodeVehicle = ''
-    this.patentVehicle = ''
+    this.siiCodeVehicle = '';
+    this.patentVehicle = '';
 
     this.removableCategory = [];
     this.filtrosOculto = true;
@@ -760,10 +760,10 @@ export class PageCategoryComponent implements OnInit {
   }
 
   updateFilters(filtersObj: any): void {
-    console.log('updateFilters:', filtersObj)
+    console.log('updateFilters:', filtersObj);
     let filters = filtersObj.selected;
-    const url = this.router.url.split('?')[0];
-    console.log('url:',url)
+    // const url = this.router.url.split('?')[0];
+    const url = this.decodedUrl(this.router.url.split('?')[0]);
     filters = this.armaQueryParams(filters);
     this.router.navigate([url], { queryParams: filters });
   }
@@ -910,15 +910,15 @@ export class PageCategoryComponent implements OnInit {
    * @param sortType
    */
   setSort(sortType: string): void {
-    if(this.siiCodeVehicle !== '' && this.patentVehicle !== ''){
+    if (this.siiCodeVehicle !== '' && this.patentVehicle !== '') {
       let category = this.route.snapshot.paramMap.get('nombre') || '';
-        this.getProductsByVehicle(
-          this.route.snapshot.paramMap.get('SIICode') || '',
-          this.route.snapshot.paramMap.get('patent') || '',
-          category,
-          sortType
-        );
-    }else{
+      this.getProductsByVehicle(
+        this.route.snapshot.paramMap.get('SIICode') || '',
+        this.route.snapshot.paramMap.get('patent') || '',
+        category,
+        sortType
+      );
+    } else {
       this.parametrosBusqueda.order = sortType;
       this.cargarCatalogoProductos(
         this.parametrosBusqueda,
@@ -926,6 +926,10 @@ export class PageCategoryComponent implements OnInit {
         false
       );
     }
+  }
+
+  decodedUrl(cadena: string) {
+    return decodeURIComponent(cadena);
   }
 
   /**
@@ -937,7 +941,7 @@ export class PageCategoryComponent implements OnInit {
     SIICode: string,
     patent: string,
     category?: string,
-    order?:string
+    order?: string
   ): void {
     this.isInitialLoading = true;
     this.vehicleService.getProductsByVehicle(patent, SIICode).subscribe({
@@ -970,7 +974,7 @@ export class PageCategoryComponent implements OnInit {
           skus,
         };
         this.parametrosBusqueda.page = this.currentPage;
-        if(order) this.parametrosBusqueda.order = order
+        if (order) this.parametrosBusqueda.order = order;
         this.vehicleService
           .searchVehicleFilters(this.parametrosBusqueda)
           .subscribe({

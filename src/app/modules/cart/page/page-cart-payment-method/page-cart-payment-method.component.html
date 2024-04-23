@@ -1540,7 +1540,10 @@
           <ng-container *ngIf="innerWidth >= 450">
             <!-- Start:: -->
             <div class="row">
-              <div class="col-sm-12" *ngIf="cd_ver">
+              <div
+                class="col-sm-12"
+                *ngIf="cd_ver && userSession.creditLine?.requiresConfirmation"
+              >
                 <app-codigo-oc
                   [id]="cartSession._id"
                   [purchaseOrderId]="purchaseOrderId"
