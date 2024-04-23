@@ -248,8 +248,8 @@ export class PageCategoryComponent implements OnInit {
         params['metodo'] === 'categoria'
       ) {
         // 02. Categoria
-        this.textToSearch =
-          params['busqueda'] === 'todos' ? '' : params['busqueda'];
+        // this.textToSearch = this.decodedUrl(params['busqueda'] === 'todos' ? '' : params['busqueda']);
+        this.textToSearch = params['busqueda'] === 'todos' ? '' : params['busqueda'];
 
         let category = params['nombre'];
         this.paramsCategory.firstCategory = category;
@@ -310,8 +310,8 @@ export class PageCategoryComponent implements OnInit {
         // 03. Búsqueda
 
         if (params['busqueda']) {
-          this.textToSearch =
-            params['busqueda'] === 'todos' ? '' : params['busqueda'];
+          // this.textToSearch = this.decodedUrl(params['busqueda'] === 'todos' ? '' : params['busqueda']);
+          this.textToSearch = params['busqueda'] === 'todos' ? '' : params['busqueda'];
           let parametros = {};
           const tiendaSeleccionada =
             this.geolocationService.getSelectedStore();
@@ -731,8 +731,8 @@ export class PageCategoryComponent implements OnInit {
 
   updateFilters(filtersObj: any): void {
     let filters = filtersObj.selected;
-    const url = this.router.url.split('?')[0];
-
+    // const url = this.router.url.split('?')[0];
+    const url = this.decodedUrl(this.router.url.split('?')[0]);
     filters = this.armaQueryParams(filters);
     this.router.navigate([url], { queryParams: filters });
   }
@@ -899,5 +899,9 @@ export class PageCategoryComponent implements OnInit {
     this.parametrosBusqueda.order = event;
     let parametros: any = this.parametrosBusqueda;
     this.cargarCatalogoProductos(parametros, this.textToSearch, false);
+  }
+
+  decodedUrl(cadena: string) {
+    return decodeURIComponent(cadena);
   }
 }
