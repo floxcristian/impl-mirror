@@ -171,6 +171,6 @@ export class MenuService {
       menuItems = [MenuItem.TRACKING_ITEM_MENU()];
     }
 
-    return menuItems;
+    return menuItems.filter(Boolean) as IMenuItem[];
   }
 }

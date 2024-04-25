@@ -53,6 +53,8 @@ import { IVehicle } from '@core/services-v2/vehicle/vehicle-response.interface';
 import { CustomerVehicleService } from '@core/services-v2/customer-vehicle/customer-vehicle.service';
 import { IVehicleCustomer } from '@core/services-v2/customer-vehicle/vehicle-customer-response.interface';
 import { Message } from 'primeng/api';
+// Env
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-header-search',
@@ -66,6 +68,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   menuVehiculo!: DropdownDirective;
   @ViewChild(DropdownDirective, { static: false })
   dropdown!: DropdownDirective;
+  isSearchVehicleVisible: boolean;
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -152,6 +155,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     private readonly vehicleService: VehicleService,
     private readonly customerVehicleService: CustomerVehicleService
   ) {
+    this.isSearchVehicleVisible = environment.isSearchVehicleVisible;
     this.vehicleForm = this.fb.group({
       type: ['patent', Validators.required],
       search: [null],

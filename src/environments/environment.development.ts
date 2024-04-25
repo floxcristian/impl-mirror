@@ -37,4 +37,5 @@ export const environment = {
     code: 'SAN BRNRDO',
     city: 'SAN BERNARDO',
   },
+  isSearchVehicleVisible: false,
 };

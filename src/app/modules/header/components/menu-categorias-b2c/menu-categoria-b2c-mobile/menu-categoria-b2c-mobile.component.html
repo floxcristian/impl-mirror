@@ -24,6 +24,7 @@
             {{ selectedStore.zone }}</span
           >
         </span>
+        @if(isSearchVehicleVisible){
         <span class="indicator__button" (click)="showVehicle()">
           <img
             src="../../../../../assets/svg/09.svg"
@@ -34,6 +35,7 @@
             >Seleccionar vehículo</span
           >
         </span>
+        }
         <span
           class="indicator__button"
           (click)="validarCuenta(); menuCategorias.close()"

@@ -1,3 +1,4 @@
+import { environment } from '@env/environment';
 import { IMenuItem } from './menu-item.interface';
 
 const OVERVIEW_ITEM_MENU: IMenuItem = {
@@ -47,7 +48,7 @@ const FLOTA_ITEM_MENU: IMenuItem = {
   label: 'Mi Flota',
   url: ['/', 'mi-cuenta', 'mi-flota'],
   icon: 'fas fa-warehouse',
-}
+};
 
 export class MenuItem {
   static OVERVIEW_ITEM_MENU(): IMenuItem {
@@ -74,8 +75,9 @@ export class MenuItem {
     return MenuItem.copyMenuitem(LOGOUT_ITEM_MENU);
   }
 
-  static FLOTA_ITEM_MENU(): IMenuItem {
-    return MenuItem.copyMenuitem(FLOTA_ITEM_MENU)
+  static FLOTA_ITEM_MENU(): IMenuItem | null {
+    if (!environment.isSearchVehicleVisible) return null;
+    return MenuItem.copyMenuitem(FLOTA_ITEM_MENU);
   }
 
   private static copyMenuitem(item: IMenuItem): IMenuItem {

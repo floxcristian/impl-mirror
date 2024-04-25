@@ -29,6 +29,7 @@ import { ISession } from '@core/models-v2/auth/session.interface';
 import { SessionService } from '@core/services-v2/session/session.service';
 import { AuthStateServiceV2 } from '@core/services-v2/session/auth-state.service';
 import { ModalVehicleComponent } from '../../modal-vehicle/modal-vehicle.component';
+import { environment } from '@env/environment';
 @Component({
   selector: 'app-menu-categoria-b2c-mobile',
   templateUrl: './menu-categoria-b2c-mobile.component.html',
@@ -36,6 +37,7 @@ import { ModalVehicleComponent } from '../../modal-vehicle/modal-vehicle.compone
 })
 export class MenuCategoriaB2cMobileComponent implements OnInit {
   @ViewChild('menuTienda', { static: false }) menuTienda!: DropdownDirective;
+  isSearchVehicleVisible: boolean;
 
   private destroy$: Subject<any> = new Subject();
   private categoriaDetalle!: ICategoryDetail;
@@ -121,8 +123,9 @@ export class MenuCategoriaB2cMobileComponent implements OnInit {
     private readonly cartService: CartService,
     public readonly modalServices: NgbModal,
     private readonly sessionService: SessionService,
-    private readonly authStateService: AuthStateServiceV2,
+    private readonly authStateService: AuthStateServiceV2
   ) {
+    this.isSearchVehicleVisible = environment.isSearchVehicleVisible;
     this.selectedStore = this.geolocationService.getSelectedStore();
     this.obtieneCategorias();
   }
