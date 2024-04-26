@@ -164,10 +164,10 @@ export class PageCartShippingComponent implements OnInit {
   stores: IStore[] = [];
   config: IConfig;
   userRoleType = UserRoleType;
-  addressCustomerSelected!:(ICustomerAddress & {
+  addressCustomerSelected!: ICustomerAddress & {
     fullAddress: string;
     isDefault: boolean;
-  })
+  };
 
   constructor(
     private toast: ToastrService,
@@ -294,7 +294,12 @@ export class PageCartShippingComponent implements OnInit {
               const fullAddress = address.departmentHouse
                 ? `${startAddress} depto/casa: ${address.departmentHouse}, ${address.city}`
                 : `${startAddress} ${address.city}`;
-              if(address.id === this.selectedShippingId) this.addressCustomerSelected = { ...address, fullAddress, isDefault }
+              if (address.id === this.selectedShippingId)
+                this.addressCustomerSelected = {
+                  ...address,
+                  fullAddress,
+                  isDefault,
+                };
               return { ...address, fullAddress, isDefault };
             });
             if (this.shippingType === 'despacho') this.obtieneDespachos();
@@ -964,16 +969,18 @@ export class PageCartShippingComponent implements OnInit {
     const addresses = await firstValueFrom(
       this.customerAddressApiService.getDeliveryAddresses(documentId)
     );
-    this.addresses = [...addresses].map((x, index) => {
-      return {
-        ...x,
-        fullAddress: x.address,
-        isDefault: index === addresses.length - 1,
-      };
-    });
 
-    const address =
-      addresses.length > 0 ? addresses[addresses.length - 1] : null;
+    this.addresses = addresses
+      .sort((a, b) => Number(b.id) - Number(a.id))
+      .map((x, index) => {
+        return {
+          ...x,
+          fullAddress: x.address,
+          isDefault: index === 0,
+        };
+      });
+
+    const address = this.addresses.length ? this.addresses[0] : null;
     let destination = '';
     if (address) {
       destination = address.location;
@@ -1165,8 +1172,10 @@ export class PageCartShippingComponent implements OnInit {
       this.showDetalleProductos = false;
       this.obtieneDespachos();
       window.scrollTo({ top: 0 });
-      let address = this.addresses.find((address) => address.id == this.selectedShippingId);
-      if(address) this.addressCustomerSelected = address
+      let address = this.addresses.find(
+        (address) => address.id == this.selectedShippingId
+      );
+      if (address) this.addressCustomerSelected = address;
     }
   }
 
