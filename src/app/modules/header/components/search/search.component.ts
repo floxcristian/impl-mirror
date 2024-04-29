@@ -107,7 +107,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       severity: 'warn',
       //summary: 'Patente no encontrada',
       detail:
-        'Esta funcionalidad esta disponible solo para usuario registrados.',
+        'Función disponible solo para usuarios registrados. Inicia sesión o regístrate aquí.',
     },
   ];
 

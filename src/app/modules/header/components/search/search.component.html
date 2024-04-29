@@ -553,15 +553,15 @@
                 <div>
                   <!-- Select V2 dropdown editable-->
                   <div style="display: flex; justify-content: center">
-                    <small id="patent-help"
-                      >Ingresa o busca tu patente | Próximamente incluiremos
+                    <small id="patent-help">
+                      Ingresa o busca tu patente | Próximamente incluiremos
                       frenos</small
                     >
                   </div>
 
                   <div
                     class="flex justify-content-center"
-                    style="margin-top: 0.5rem"
+                    style="margin: 0.5rem 0"
                   >
                     <p-inputGroup>
                       <p-dropdown
@@ -605,12 +605,14 @@
                   >Ingrese una patente para la búsqueda de filtros
                   compatibles.</small
                 >-->
-                  <p
-                    *ngIf="notVehicleFound"
-                    class="text-error-form-2 text-center text-danger pt-2"
-                  >
-                    No se encontraron resultados.
-                  </p>
+                  @if(notVehicleFound){
+                  <div style="display: flex; justify-content: center">
+                    <small id="patent-help" class="p-error">
+                      Patente no encontrada. Revisa los datos
+                      ingresados.</small
+                    >
+                  </div>
+                  }
                 </div>
               </div>
 
