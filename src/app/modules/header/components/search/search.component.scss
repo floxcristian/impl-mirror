@@ -357,3 +357,75 @@ a:hover {
   align-items: center;
   justify-content: center;
 }
+
+/*****
+prime
+*******/
+.hover\:text-white:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transition-duration: 0.1s;
+}
+
+/*.hover\:bg-gray-800:hover {
+  background-color: var(--gray-800) !important;
+}*/
+
+.transition-duration-150 {
+  transition-duration: 150ms !important;
+}
+
+.transition-colors {
+  transition-property: background-color, border-color, color !important;
+}
+
+.border-round {
+  border-radius: var(--border-radius) !important;
+}
+
+.p-3 {
+  padding: 1rem !important;
+}
+
+.align-items-center {
+  align-items: center !important;
+}
+
+.lg\:justify-content-center {
+  justify-content: center !important;
+}
+
+.lg\:flex-column {
+  flex-direction: column !important;
+}
+
+.flex {
+  display: flex !important;
+}
+.p-ripple {
+  overflow: hidden;
+  position: relative;
+}
+
+.lg\:mb-2 {
+  margin-bottom: 0.5rem !important;
+}
+
+.lg\:mr-0 {
+  margin-right: 0rem !important;
+}
+
+.lg\:text-xs {
+  font-size: 0.75rem !important;
+}
+
+.lg\:block {
+  display: block !important;
+}
+
+.font-medium {
+  font-weight: 500 !important;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}

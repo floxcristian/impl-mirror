@@ -15,7 +15,6 @@ import { CustomerPreferenceService } from '@core/services-v2/customer-preference
   styleUrls: ['./account.component.scss'],
 })
 export class AccountComponent implements OnInit {
-  @Input() tipo: 'b2b' | 'b2c' = 'b2c';
   usuario!: ISession;
 
   mostrarMenu: boolean = false;

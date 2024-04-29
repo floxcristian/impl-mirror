@@ -449,18 +449,17 @@ export class SearchComponent implements OnInit, OnDestroy {
   /**
    *  Obtiene vehiculos del cliente logueado
    */
-  getAllCustomerVehicle() {
-    if (this.session.documentId !== '0') {
-      this.customerVehicleService.getAll(this.session.documentId).subscribe({
-        next: (vehicles) => {
-          this.customerVehiclesOriginal = vehicles;
-          this.customerVehiclesFilter = vehicles;
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
-    }
+  getAllCustomerVehicle(): void {
+    if (this.session.documentId === '0') return;
+    this.customerVehicleService.getAll(this.session.documentId).subscribe({
+      next: (vehicles) => {
+        this.customerVehiclesOriginal = vehicles;
+        this.customerVehiclesFilter = vehicles;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 
   /**
