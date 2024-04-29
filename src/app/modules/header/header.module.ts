@@ -40,6 +40,8 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { ButtonModule } from 'primeng/button';
 import { MessagesModule } from 'primeng/messages';
+import { BadgeModule } from 'primeng/badge';
+import { FilterPipe } from './components/search/filter.pipe';
 
 @NgModule({
   declarations: [
@@ -58,6 +60,7 @@ import { MessagesModule } from 'primeng/messages';
     MenuCategoriaB2cMobileComponent,
     Nivel2Component,
     Nivel3Component,
+    FilterPipe,
   ],
   imports: [
     // modules (angular)
@@ -80,7 +83,8 @@ import { MessagesModule } from 'primeng/messages';
     InputGroupModule,
     InputGroupAddonModule,
     ButtonModule,
-    MessagesModule
+    MessagesModule,
+    BadgeModule,
   ],
   exports: [
     // components

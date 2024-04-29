@@ -19,8 +19,13 @@ import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 // Rxjs
-import { Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
+import { Observable, Subject, Subscription, of } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  first,
+  map,
+} from 'rxjs/operators';
 import { MenuCategoriasB2cService } from '../../../../shared/services/menu-categorias-b2c.service';
 import { isVacio } from '../../../../shared/utils/utilidades';
 import { SessionService } from '@core/services-v2/session/session.service';
@@ -133,6 +138,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     return this.vehicleForm.get('search');
   }
 
+  quantity$: Observable<string> = of('');
+
   constructor(
     private router: Router,
     private modalService: BsModalService,
@@ -165,6 +172,10 @@ export class SearchComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.onChangeSearchInput();
     this.onChangeTypeInput();
+
+    this.quantity$ = this.shoppingCartService.quantity$.pipe(
+      map((quantity) => quantity.toString())
+    );
 
     this.geolocationService.stores$
       .pipe(first((stores) => stores.length > 0))

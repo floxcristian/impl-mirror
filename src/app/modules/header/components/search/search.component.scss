@@ -189,14 +189,14 @@ span.desc {
 .indicator__dropdown-tienda,
 .indicator__dropdown-chasis {
   top: 90%;
-  right: -14rem;
+  right: -14.8rem;
   position: absolute;
   width: 35.75rem;
 }
 
 .indicator__dropdown-vehiculo {
   top: 90%;
-  right: -12rem;
+  right: -15rem;
   position: absolute;
   width: 35.75rem;
 }
@@ -428,4 +428,8 @@ prime
 
 .cursor-pointer {
   cursor: pointer !important;
+}
+
+.p-overlay-badge .p-badge {
+  transform: translate(67%, -100%) !important;
 }

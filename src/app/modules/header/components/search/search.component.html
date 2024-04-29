@@ -1140,7 +1140,21 @@
             margin-bottom: 0.3rem;
           "
         >
-          <i class="fa-light fa-cart-shopping fa-2xl lg:text-lg"></i>
+          <!--<i
+            class="fa-light fa-cart-shopping fa-2xl lg:text-lg"
+            pBadge
+            [value]="shoppingCartService.quantity$ | async | filter"
+            severity="danger"
+          ></i>-->
+          <i class="fa-light fa-cart-shopping fa-2xl lg:text-lg">
+            <span *ngIf="shoppingCartService.quantity$ | async">
+              <span
+                pBadge
+                [value]="shoppingCartService.quantity$ | async | filter"
+                severity="danger"
+              ></span>
+            </span>
+          </i>
         </div>
         <div
           style="
