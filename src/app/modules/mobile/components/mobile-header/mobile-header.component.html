@@ -26,27 +26,57 @@
           />
         </a>
 
-        <div class="mobile-header__indicators p-2">
-          <div class="indicator indicator--mobile" style="margin-left: -8%">
+        <div class="mobile-header__indicators" style="justify-content: end">
+          <div
+            class="indicator indicator--mobile"
+            style="
+              margin-left: -8%;
+              width: 55px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            "
+          >
             <a
               [routerLink]="['/', 'carro-compra']"
               class="indicator__button"
-              style="flex-direction: column"
+              style="flex-direction: column; padding-bottom: 0"
             >
-              <span class="indicator__area" style="height: 32.5px !important">
-                <img
-                  src="../../../../../assets/svg/07.svg"
-                  style="width: 26px; height: 26px; margin-top: 7px"
-                  alt="carro"
-                />
-
-                <span class="indicator__value" style="margin-top: 8px">{{
-                  cart.quantity$ | async
-                }}</span>
-              </span>
-              <span class="icon-title" style="font-size: 0.5em !important">
-                Carro
-              </span>
+              <div
+                style="
+                  height: 30px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+              >
+                <i class="fa-light fa-cart-shopping fa-xl lg:text-lg">
+                  <span *ngIf="cart.quantity$ | async">
+                    <span
+                      pBadge
+                      [value]="cart.quantity$ | async | filter"
+                      severity="danger"
+                    ></span>
+                  </span>
+                </i>
+              </div>
+              <div
+                style="
+                  height: 16px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: start;
+                "
+              >
+                <span
+                  style="
+                    line-height: normal;
+                    text-align: center;
+                    font-size: 10px;
+                  "
+                  >Carro</span
+                >
+              </div>
             </a>
           </div>
 

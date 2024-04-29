@@ -23,6 +23,7 @@ import { Observable, Subject, Subscription, of } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
+  filter,
   first,
   map,
 } from 'rxjs/operators';
@@ -174,6 +175,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.onChangeTypeInput();
 
     this.quantity$ = this.shoppingCartService.quantity$.pipe(
+      filter((quantity) => quantity !== null),
       map((quantity) => quantity.toString())
     );
 

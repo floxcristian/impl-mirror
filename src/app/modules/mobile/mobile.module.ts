@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 // Libs
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { BadgeModule } from 'primeng/badge';
 // Modules
 import { SharedModule } from '../../shared/shared.module';
 import { HeaderModule } from '../header/header.module';
@@ -29,6 +30,7 @@ import { TopbarMobileComponent } from '../header/components/topbar-mobile/topbar
     HeaderModule,
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
+    BadgeModule,
   ],
   exports: [MobileHeaderComponent],
 })

@@ -98,6 +98,7 @@ import { FilterPipe } from './components/search/filter.pipe';
     DropcartComponent,
     MenuCategoriasB2cComponent,
     MenuCategoriaB2cMobileComponent,
+    FilterPipe,
   ],
   providers: [NgbActiveModal],
 })
