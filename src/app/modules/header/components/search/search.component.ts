@@ -129,6 +129,10 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   isClickedVehicleSearch!: boolean;
 
+  animateButton: boolean = true;
+  originalPlaceholder = 'ZB7603';
+  animatedPlaceholder = 'ZB7603';
+
   getTypeFilter() {
     return this.vehicleForm.get('type')?.value === 'patent'
       ? this.vehicleForm.get('type')?.value
@@ -138,8 +142,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   get searchInput() {
     return this.vehicleForm.get('search');
   }
-
-  quantity$: Observable<string> = of('');
 
   constructor(
     private router: Router,
@@ -168,16 +170,80 @@ export class SearchComponent implements OnInit, OnDestroy {
       type: ['patent', Validators.required],
       search: [null],
     });
+    setTimeout(() => {
+      this.animateButton = false;
+    }, 5000);
+
+    /*setInterval(() => {
+      this.animatedPlaceholder = '';
+    }, 1000);*/
+
+    this.efectoTipeo();
+  }
+
+  efectoTipeo() {
+    this.animatedPlaceholder = '';
+    const caracteresIniciales: string[] = ['Z', 'B', '7'];
+    let indiceCaracterActual = 0;
+    let agregandoCaracteres = true;
+
+    const agregarCaracteres = () => {
+      if (agregandoCaracteres) {
+        this.animatedPlaceholder += caracteresIniciales[indiceCaracterActual];
+        indiceCaracterActual++;
+        if (indiceCaracterActual === caracteresIniciales.length) {
+          indiceCaracterActual = 0;
+          agregandoCaracteres = false;
+          eliminarCaracteres();
+          return;
+        }
+      } else {
+        this.animatedPlaceholder = this.animatedPlaceholder.slice(0, -1);
+        if (this.animatedPlaceholder.length === 3) {
+          agregarCaracteresAleatorios();
+          return;
+        }
+      }
+      console.log(this.animatedPlaceholder);
+      setTimeout(agregarCaracteres, 1000);
+    };
+
+    const eliminarCaracteres = () => {
+      if (this.animatedPlaceholder.length > 0) {
+        this.animatedPlaceholder = this.animatedPlaceholder.slice(0, -1);
+        console.log(this.animatedPlaceholder);
+        setTimeout(eliminarCaracteres, 1000);
+      } else {
+        agregandoCaracteres = true;
+        agregarCaracteres();
+      }
+    };
+
+    const agregarCaracteresAleatorios = () => {
+      const caracteresAleatorios: string[] = ['6', '0', '3'];
+      let indiceAleatorio = 0;
+
+      const agregarCaracter = () => {
+        this.animatedPlaceholder += caracteresAleatorios[indiceAleatorio];
+        console.log('agregarCaracter: ', this.animatedPlaceholder);
+        indiceAleatorio++;
+        if (indiceAleatorio === caracteresAleatorios.length) {
+          indiceAleatorio = 0;
+          agregarCaracteres();
+          return;
+        }
+        setTimeout(agregarCaracter, 1000);
+      };
+
+      agregarCaracter();
+    };
+
+    agregarCaracteres();
   }
 
   ngOnInit(): void {
     this.onChangeSearchInput();
     this.onChangeTypeInput();
-
-    this.quantity$ = this.shoppingCartService.quantity$.pipe(
-      filter((quantity) => quantity !== null),
-      map((quantity) => quantity.toString())
-    );
 
     this.geolocationService.stores$
       .pipe(first((stores) => stores.length > 0))

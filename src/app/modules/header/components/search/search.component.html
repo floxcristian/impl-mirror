@@ -361,7 +361,7 @@
 
   <div class="overlay" *ngIf="isFocusedInput" (click)="blurInput()"></div>
 
-  <div class="col-header-2">
+  <div class="col-header-2" style="margin-top: 2px">
     <div class="nav-panel__indicators d-flex align-items-center">
       <!-- Start::item dirección envío -->
       @if(session.documentId != '0'){
@@ -469,7 +469,8 @@
             "
           >
             <i
-              class="fa-light fa-print-magnifying-glass fa-2xl lg:text-lg fa-beat"
+              class="fa-light fa-print-magnifying-glass fa-2xl lg:text-lg"
+              [ngClass]="{ 'fa-beat': animateButton }"
             ></i>
           </div>
           <div
@@ -487,7 +488,7 @@
               {{
                 selectedVehicle
                   ? selectedVehicle.MARCA + ' ' + selectedVehicle.PLACA_PATENTE
-                  : 'Buscar por patente'
+                  : 'Buscador de filtros'
               }}
             </span>
           </div>
@@ -544,18 +545,34 @@
                   >
                 </div>
               </div>-->
+                <!--
                 <p-messages
                   *ngIf="isClickedVehicleSearch"
                   [(value)]="messages"
                   [enableService]="false"
                   [closable]="false"
-                ></p-messages>
+                ></p-messages>-->
+
+                <p-messages *ngIf="isClickedVehicleSearch" severity="warn">
+                  <ng-template pTemplate>
+                    <span class="p-message-icon">
+                      <i
+                        class="pi pi-exclamation-triangle"
+                        style="font-size: 1.5rem"
+                      ></i>
+                    </span>
+                    <span class="p-message-detail"
+                      >Función disponible solo para usuarios registrados.
+                      <u>Inicia sesión o regístrate aquí.</u></span
+                    >
+                  </ng-template>
+                </p-messages>
                 <div>
                   <!-- Select V2 dropdown editable-->
                   <div style="display: flex; justify-content: center">
                     <small id="patent-help">
-                      Ingresa o busca tu patente | Próximamente incluiremos
-                      frenos</small
+                      Ingresa o busca tu patente | Próximamente más
+                      productos.</small
                     >
                   </div>
 
@@ -566,12 +583,12 @@
                     <p-inputGroup>
                       <p-dropdown
                         id="patent"
-                        styleClass="hidden-empty-message"
+                        styleClass="hidden-empty-message vehicle-search"
                         [options]="customerVehiclesFilter"
                         [optionLabel]="getTypeFilter()"
                         [optionValue]="getTypeFilter()"
                         formControlName="search"
-                        placeholder="Seleccione o ingrese patente"
+                        [placeholder]="animatedPlaceholder"
                         [editable]="true"
                         [showClear]="true"
                         (onChange)="filterVehicle()"
@@ -680,11 +697,12 @@
                     </div>
                   </ng-template>
                 </p-messages>
+
                 <div class="flex pb-3 gap-3">
                   <p-button
                     [ngStyle]="{ display: 'contents' }"
                     styleClass="w-100"
-                    label="Cambiar"
+                    label="Buscar otra patente"
                     severity="secondary"
                     (onClick)="cleanSelectedVehicle()"
                   ></p-button>
@@ -703,7 +721,7 @@
                 <div *ngIf="selectedVehicle?.codigoSii">
                   <p-button
                     styleClass="w-100"
-                    label="Ver Filtros encontrados"
+                    label="Ver filtros encontrados"
                     (onClick)="goToProductsPage()"
                   ></p-button>
                 </div>

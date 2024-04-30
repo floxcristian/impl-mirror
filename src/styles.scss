@@ -420,3 +420,12 @@ body {
 .p-overlay-badge .p-badge {
   transform: translate(67%, -29%) !important;
 }
+
+/*
+.p-placeholder::-webkit-input-placeholder {
+  color: orange;
+}*/
+
+.vehicle-search .p-placeholder::-webkit-input-placeholder {
+  color: #b4b6b9;
+}
