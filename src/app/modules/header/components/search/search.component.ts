@@ -477,7 +477,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.isClickedVehicleSearch = true;
       return;
     }
-
+    search = search.toUpperCase()
     this.isLoadingVehicles = true;
     this.vehicleService
       .getByPatentOrVin({
@@ -553,12 +553,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     else {
       let typeFilter = this.getTypeFilter();
       if (typeFilter === 'patent')
-        this.customerVehiclesFilter = this.customerVehiclesOriginal.filter(
+        this.customerVehiclesFilter = this.customerVehiclesOriginal?.filter(
           (vehicle: any) =>
             vehicle.patent.toUpperCase().includes(valueSearch.toUpperCase())
         );
       else
-        this.customerVehiclesFilter = this.customerVehiclesOriginal.filter(
+        this.customerVehiclesFilter = this.customerVehiclesOriginal?.filter(
           (vehicle: any) =>
             vehicle.codeChasis
               .toUpperCase()
