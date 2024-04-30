@@ -17,40 +17,25 @@
   >
     <div class="alert-session p-2">
       <div *ngIf="!selectedVehicle">
-        <!--<div style="display: flex; justify-content: center">
-          <div
-            class="btn-group"
-            btnRadioGroup
-            formControlName="type"
-            style="
-              margin: 0 5px 5px;
-              display: flex;
-              justify-content: center;
-              width: 60%;
-            "
-          >
-            <label
-              class="btn btn-primary"
-              style="border-radius: 6px 0 0 6px"
-              btnRadio="patent"
-              >Patente</label
-            >
+        @if(isClickedVehicleSearch){
+        <p-messages *ngIf="isClickedVehicleSearch" severity="warn">
+          <ng-template pTemplate>
+            <span class="p-message-icon">
+              <i
+                class="pi pi-exclamation-triangle"
+                style="font-size: 1.5rem"
+              ></i>
+            </span>
+            <span class="p-message-detail"
+              >Función disponible solo para usuarios registrados.
+              <!--<u (click)="openLogin()"
+                >Inicia sesión o regístrate aquí.</u
+              >-->
+            </span>
+          </ng-template>
+        </p-messages>
+        }
 
-            <label
-              class="btn btn-primary"
-              style="border-radius: 0 6px 6px 0"
-              btnRadio="vin"
-              >VIN</label
-            >
-          </div>
-        </div>
-        <br />-->
-        <p-messages
-          *ngIf="isClickedVehicleSearch"
-          [(value)]="messages"
-          [enableService]="false"
-          [closable]="false"
-        ></p-messages>
         <div>
           <div
             style="display: flex; justify-content: center; align-items: center"

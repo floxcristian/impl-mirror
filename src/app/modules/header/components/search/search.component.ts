@@ -58,7 +58,6 @@ import { VehicleType } from '@core/services-v2/vehicle/vehicle-type.enum';
 import { IVehicle } from '@core/services-v2/vehicle/vehicle-response.interface';
 import { CustomerVehicleService } from '@core/services-v2/customer-vehicle/customer-vehicle.service';
 import { IVehicleCustomer } from '@core/services-v2/customer-vehicle/vehicle-customer-response.interface';
-import { Message } from 'primeng/api';
 // Env
 import { environment } from '@env/environment';
 import { AccountComponent } from '../account/account.component';
@@ -103,15 +102,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   despachoClienteRef!: Subscription;
   isVacio = isVacio;
   sessionRef!: Subscription;
-
-  messages: Message[] = [
-    {
-      severity: 'warn',
-      //summary: 'Patente no encontrada',
-      detail:
-        'Función disponible solo para usuarios registrados. Inicia sesión o regístrate aquí.',
-    },
-  ];
 
   // News
   session!: ISession;
@@ -183,8 +173,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.animatedPlaceholder = '';
     const agregarCaracteres = () => {
       if (this.animatedPlaceholder.length < 6) {
-        this.animatedPlaceholder +=
-          this.obtenerLetraMayusculaONumeroAleatorio();
+        this.animatedPlaceholder += this.getRandomUppercaseLetterOrNumber();
       } else {
         setTimeout(eliminarCaracteres, 1000);
         return;
@@ -581,13 +570,18 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  obtenerLetraMayusculaONumeroAleatorio(): string {
-    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    const indiceAleatorio = Math.floor(Math.random() * caracteres.length);
-    return caracteres.charAt(indiceAleatorio);
-  }
   /**
-   * Cierra dropDown vehicle and open login
+   * Obtener valor aleatorio que puede ser letra mayúscula o número.
+   * @returns
+   */
+  private getRandomUppercaseLetterOrNumber(): string {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    return characters.charAt(randomIndex);
+  }
+
+  /**
+   * Cerrar dropdown búsqueda patente y abrir dropwdown login.
    */
   openLogin() {
     this.menuVehiculo.toggle();

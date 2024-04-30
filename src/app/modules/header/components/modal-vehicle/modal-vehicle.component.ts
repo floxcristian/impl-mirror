@@ -23,13 +23,6 @@ export class ModalVehicleComponent implements OnInit {
     return this.vehicleForm.get('search');
   }
 
-  messages: Message[] = [
-    {
-      severity: 'warn',
-      detail:
-        'Esta funcionalidad esta disponible solo para usuario registrados.',
-    },
-  ];
   isClickedVehicleSearch!: boolean;
 
   session!: ISession;
@@ -159,12 +152,12 @@ export class ModalVehicleComponent implements OnInit {
     else {
       let typeFilter = this.getTypeFilter();
       if (typeFilter === 'patent')
-        this.customerVehiclesFilter = this.customerVehiclesOriginal.filter(
+        this.customerVehiclesFilter = this.customerVehiclesOriginal?.filter(
           (vehicle: any) =>
             vehicle.patent.toUpperCase().includes(valueSearch.toUpperCase())
         );
       else
-        this.customerVehiclesFilter = this.customerVehiclesOriginal.filter(
+        this.customerVehiclesFilter = this.customerVehiclesOriginal?.filter(
           (vehicle: any) =>
             vehicle.codeChasis
               .toUpperCase()
@@ -225,5 +218,11 @@ export class ModalVehicleComponent implements OnInit {
           },
         });
     }
+  }
+
+  openLogin() {
+    this.activeModal.close();
+    //this.menuVehiculo.toggle();
+    //this.account.openLogin();
   }
 }
