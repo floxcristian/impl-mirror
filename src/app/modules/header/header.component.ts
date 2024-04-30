@@ -1,5 +1,11 @@
 // Angular
-import { Component, ElementRef, Renderer2, ViewChild, HostListener  } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Renderer2,
+  ViewChild,
+  HostListener,
+} from '@angular/core';
 import { Router } from '@angular/router';
 // Env
 import { environment } from '@env/environment';
@@ -15,12 +21,16 @@ import { StorageKey } from '@core/storage/storage-keys.enum';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent  {
+export class HeaderComponent {
   logoSrc = environment.logoSrc;
-  @ViewChild('sticky_header_b2c') sticky_b2c!: ElementRef
-  @ViewChild('sticky_header_b2c_nav') sticky_b2c_nav!:ElementRef
+  @ViewChild('sticky_header_b2c') sticky_b2c!: ElementRef;
+  @ViewChild('sticky_header_b2c_nav') sticky_b2c_nav!: ElementRef;
 
-  constructor(private route: Router, private localS: LocalStorageService, private renderer:Renderer2) {
+  constructor(
+    private route: Router,
+    private localS: LocalStorageService,
+    private renderer: Renderer2
+  ) {
     const buscadorB2B = this.localS.get(StorageKey.buscadorB2B);
     if (!buscadorB2B) {
       const data: BuscadorB2B = {
@@ -32,26 +42,32 @@ export class HeaderComponent  {
     }
   }
   @HostListener('window:scroll', [])
-  onWindowScroll(){
-    if (!isVacio(this.sticky_b2c) && !isVacio(this.sticky_b2c_nav)){
-      const sticky = this.sticky_b2c.nativeElement.offsetTop
+  onWindowScroll() {
+    if (!isVacio(this.sticky_b2c) && !isVacio(this.sticky_b2c_nav)) {
+      const sticky = this.sticky_b2c.nativeElement.offsetTop;
       if (window.pageYOffset > sticky) {
-        this.renderer.addClass(this.sticky_b2c.nativeElement,'sticky')
-        this.renderer.addClass(this.sticky_b2c_nav.nativeElement,'sticky_nav')
+        this.renderer.addClass(this.sticky_b2c.nativeElement, 'sticky');
+        this.renderer.addClass(
+          this.sticky_b2c_nav.nativeElement,
+          'sticky_nav'
+        );
       } else {
-        this.renderer.removeClass(this.sticky_b2c.nativeElement,'sticky')
-        this.renderer.removeClass(this.sticky_b2c_nav.nativeElement,'sticky_nav')
+        this.renderer.removeClass(this.sticky_b2c.nativeElement, 'sticky');
+        this.renderer.removeClass(
+          this.sticky_b2c_nav.nativeElement,
+          'sticky_nav'
+        );
       }
     }
-  };
+  }
 
   Hidebar() {
     let url = this.route.url;
     if (this.route.url.split('?')[0] != undefined) {
       url = '' + this.route.url.split('?')[0];
     }
-    if(url.includes("/CO-")){
-      url = '' + this.route.url.split("/CO-")[0];
+    if (url.includes('/CO-')) {
+      url = '' + this.route.url.split('/CO-')[0];
     }
 
     return ![
@@ -63,7 +79,7 @@ export class HeaderComponent  {
       '/carro-compra/downloadpdf',
       '/carro-compra/omni-gracias-por-tu-compra',
       '/carro-compra/confirmar-orden-oc',
-      '/carro-compra/comprobante-de-cotizacion'
+      '/carro-compra/comprobante-de-cotizacion',
     ].includes(url);
   }
 

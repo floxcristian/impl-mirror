@@ -4,6 +4,6 @@ export interface IBusinessLine {
 }
 
 export interface ILegalBusinessLine {
-  customerName:string;
-  businessLines:IBusinessLine[]
+  customerName: string;
+  businessLines: IBusinessLine[];
 }

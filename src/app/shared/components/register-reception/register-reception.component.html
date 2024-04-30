@@ -55,11 +55,13 @@
                       ></i>
                       {{ selectedPhoneCode }}
                     </button>
-                    <div id="dropdown-phone"
-                        *dropdownMenu
-                        class="dropdown-menu"
-                        role="menu"
-                        aria-labelledby="button-basic">
+                    <div
+                      id="dropdown-phone"
+                      *dropdownMenu
+                      class="dropdown-menu"
+                      role="menu"
+                      aria-labelledby="button-basic"
+                    >
                       <a
                         class="dropdown-item"
                         (click)="Select_fono(config.phoneCodes.mobile.code)"
@@ -122,14 +124,14 @@
                   El RUT ingresado no es válido
                 </p> -->
                 <p
-                *ngIf="
-                  formRecibe.controls['documentId'].invalid &&
-                  formRecibe.controls['documentId'].touched
-                "
-                class="text-danger float-start"
-              >
-                El {{ config.document.name }} ingresado no es válido.
-              </p>
+                  *ngIf="
+                    formRecibe.controls['documentId'].invalid &&
+                    formRecibe.controls['documentId'].touched
+                  "
+                  class="text-danger float-start"
+                >
+                  El {{ config.document.name }} ingresado no es válido.
+                </p>
               </div>
             </div>
           </div>

@@ -129,9 +129,10 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('pe',changes)
+    console.log('pe', changes);
     if (this.storeAddress && this.isMapLoaded) this.geocodePosition();
-    if(!changes['coordinates']?.firstChange && this.coordinates) this.updateMapByCoordinates(this.coordinates);
+    if (!changes['coordinates']?.firstChange && this.coordinates)
+      this.updateMapByCoordinates(this.coordinates);
   }
 
   private geocodePosition(): void {

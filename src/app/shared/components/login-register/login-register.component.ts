@@ -1,4 +1,12 @@
-import { Component, OnInit, Output, EventEmitter, Input, Inject, PLATFORM_ID } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  Input,
+  Inject,
+  PLATFORM_ID,
+} from '@angular/core';
 import { Usuario } from '../../interfaces/login';
 import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import { IEcommerceUser } from '@core/models-v2/auth/user.interface';
@@ -18,10 +26,11 @@ export class LoginRegisterComponent implements OnInit {
 
   constructor(
     private readonly gtmService: GoogleTagManagerService,
-    @Inject(PLATFORM_ID) private platformId: Object,) {}
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit() {
-    if(isPlatformBrowser(this.platformId)){
+    if (isPlatformBrowser(this.platformId)) {
       this.gtmService.pushTag({
         event: 'profile',
         pagePath: window.location.href,

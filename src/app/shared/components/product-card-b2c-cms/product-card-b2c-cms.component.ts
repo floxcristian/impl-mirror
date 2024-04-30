@@ -102,32 +102,33 @@ export class ProductCardB2cCmsComponent implements OnInit {
       });
     this.session = this.sessionService.getSession();
     this.cargaPrecio();
-    if (this.productData.priceInfo.hasScalePrice)
-      this.preciosEscalas = this.productData.priceInfo.scalePrice;
+    if (this.productData.priceInfo?.hasScalePrice)
+      this.preciosEscalas = this.productData.priceInfo?.scalePrice;
   }
 
-  generateTags(tags: MetaTag[] | undefined) {
-    if (tags) {
-      tags.forEach((tag: MetaTag) => {
-        if (tag.code === 'cyber')
-          this.cyber = typeof tag.value === 'number' ? tag.value : 0;
-        else this.cyber = 0;
-        if (tag.code === 'cyberMonday')
-          this.cyberMonday = typeof tag.value === 'number' ? tag.value : 0;
-        else this.cyberMonday = 0;
-        if (tag.code === 'official_store') {
-          this.isOfficial = 1;
-          this.imageOEM = typeof tag.value === 'string' ? tag.value : '';
-        } else this.isOfficial = 0;
-      });
-    }
+  generateTags(tags: MetaTag[] | undefined): void {
+    if (!tags?.length) return;
+
+    tags.forEach((tag) => {
+      this.cyber =
+        tag.code === 'cyber' && typeof tag.value === 'number' ? tag.value : 0;
+
+      if (tag.code === 'cyberMonday')
+        this.cyberMonday = typeof tag.value === 'number' ? tag.value : 0;
+      else this.cyberMonday = 0;
+
+      if (tag.code === 'official_store') {
+        this.isOfficial = 1;
+        this.imageOEM = typeof tag.value === 'string' ? tag.value : '';
+      } else this.isOfficial = 0;
+    });
   }
 
   cargaPrecio() {
     if (this.home) {
       if (
-        (this.productData.priceInfo.commonPrice || 0) >
-        this.productData.priceInfo.customerPrice
+        (this.productData.priceInfo?.commonPrice || 0) >
+        (this.productData.priceInfo?.customerPrice || 0)
       ) {
         this.porcentaje_descuento();
       }
@@ -136,8 +137,8 @@ export class ProductCardB2cCmsComponent implements OnInit {
 
     //calcular porcentaje de descuento
     if (
-      (this.productData.priceInfo.commonPrice || 0) >
-      this.productData.priceInfo.customerPrice
+      (this.productData.priceInfo?.commonPrice || 0) >
+      (this.productData.priceInfo?.customerPrice || 0)
     ) {
       this.porcentaje_descuento();
     }
@@ -159,7 +160,7 @@ export class ProductCardB2cCmsComponent implements OnInit {
 
     if (this.origen) {
       // Seteamos el origen de donde se hizo click a add cart.
-      const origin: IShoppingCartProductOrigin = {
+      this.productData.origin = {
         origin: this.origen[0] || '',
         subOrigin: this.origen[1] || '',
         section: this.origen[2] || '',
@@ -167,7 +168,6 @@ export class ProductCardB2cCmsComponent implements OnInit {
         sheet: false,
         cyber: this.productData.cyber || 0,
       };
-      this.productData.origin = origin;
     }
 
     this.addingToCart = true;
@@ -179,10 +179,10 @@ export class ProductCardB2cCmsComponent implements OnInit {
 
   porcentaje_descuento() {
     let descuento =
-      (this.productData.priceInfo.commonPrice || 0) -
-      this.productData.priceInfo.customerPrice;
+      (this.productData.priceInfo?.commonPrice || 0) -
+      (this.productData.priceInfo?.customerPrice || 0);
     this.porcentaje = Math.round(
-      (descuento / (this.productData.priceInfo.commonPrice || 1)) * 100
+      (descuento / (this.productData.priceInfo?.commonPrice || 1)) * 100
     );
   }
 

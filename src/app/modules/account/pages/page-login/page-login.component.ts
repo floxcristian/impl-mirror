@@ -26,7 +26,7 @@ export class PageLoginComponent {
     private readonly authStateService: AuthStateServiceV2,
     private readonly customerPreferenceStorage: CustomerPreferencesStorageService,
     private readonly wishlistStorage: WishlistStorageService,
-    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     // Cerramos la sesion del usuario
     this.sessionStorage.remove();
@@ -38,7 +38,7 @@ export class PageLoginComponent {
     this.authStateService.setSession(null);
 
     this.router.navigate(['/inicio']).then(() => {
-      if(isPlatformBrowser(this.platformId)) window.location.reload();
+      if (isPlatformBrowser(this.platformId)) window.location.reload();
     });
   }
 }

@@ -45,7 +45,7 @@ export class ProductRatingComponent {
     public router: Router,
     // Services V2
     private readonly sessionService: SessionService,
-    private readonly articleService: ArticleService,
+    private readonly articleService: ArticleService
   ) {}
 
   cargaResumen() {
@@ -93,7 +93,7 @@ export class ProductRatingComponent {
       };
       const bsModalRef: BsModalRef = this.modalService.show(
         AddCommentModalComponent,
-        { initialState, class: 'modal-comentario' },
+        { initialState, class: 'modal-comentario' }
       );
       bsModalRef.content.event.subscribe(async (res: any) => {
         if (res !== '') {

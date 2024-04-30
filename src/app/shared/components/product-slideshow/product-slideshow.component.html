@@ -29,7 +29,8 @@
           </div>
           <div
             class="products-view px-sm-3 mx-sm-3 mx-xl-5"
-            style="margin-top: 15px">
+            style="margin-top: 15px"
+          >
             <div
               class="products-view__list products-list"
               data-layout="grid-5-full"
@@ -60,8 +61,7 @@
                   <ng-template
                     carouselSlide
                     *ngFor="
-                      let item of relleno
-                        | slice : 0 : 6 - obj.articles.length
+                      let item of relleno | slice : 0 : 6 - obj.articles.length
                     "
                   >
                     <div class="d-flex w-100"></div>

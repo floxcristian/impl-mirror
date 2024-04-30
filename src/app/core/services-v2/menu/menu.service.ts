@@ -12,12 +12,17 @@ import { MenuItem } from './menu-items';
 export class MenuService {
   get(profile: IUserRole): IMenuItem[] {
     let menuItems = [];
-    if(profile === 'superadmin'){
+    if (profile === 'superadmin') {
       menuItems = [
-        { type: 'link', label: 'Órdenes de Venta', url: ['/', 'mi-cuenta', 'ordenes'], icon: 'far fa-file-alt' },
+        {
+          type: 'link',
+          label: 'Órdenes de Venta',
+          url: ['/', 'mi-cuenta', 'ordenes'],
+          icon: 'far fa-file-alt',
+        },
         MenuItem.LOGOUT_ITEM_MENU(),
-      ]
-    }else if (profile === 'supervisor') {
+      ];
+    } else if (profile === 'supervisor') {
       menuItems = [
         MenuItem.OVERVIEW_ITEM_MENU(),
         MenuItem.PROFILE_ITEM_MENU(),
@@ -27,6 +32,7 @@ export class MenuService {
           url: ['/', 'mi-cuenta', 'gestion-usuariob2b'],
           icon: 'fas fa-users',
         },
+        MenuItem.FLOTA_ITEM_MENU(),
         {
           type: 'link',
           label: 'Centros de costo',
@@ -96,6 +102,7 @@ export class MenuService {
       menuItems = [
         MenuItem.OVERVIEW_ITEM_MENU(),
         MenuItem.PROFILE_ITEM_MENU(),
+        MenuItem.FLOTA_ITEM_MENU(),
         {
           type: 'link',
           label: 'Centros de costo',
@@ -155,6 +162,7 @@ export class MenuService {
       menuItems = [
         MenuItem.OVERVIEW_ITEM_MENU(),
         MenuItem.PROFILE_ITEM_MENU(),
+        MenuItem.FLOTA_ITEM_MENU(),
         MenuItem.PURCHASE_HISTORY_ITEM_MENU(),
         MenuItem.TRACKING_ITEM_MENU(),
         MenuItem.LOGOUT_ITEM_MENU(),
@@ -163,6 +171,6 @@ export class MenuService {
       menuItems = [MenuItem.TRACKING_ITEM_MENU()];
     }
 
-    return menuItems;
+    return menuItems.filter(Boolean) as IMenuItem[];
   }
 }

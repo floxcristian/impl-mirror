@@ -26,7 +26,10 @@ export class CustomerBusinessLineApiService {
   /**
    *  Obtener giros Sii por documentId
    */
-  getLegalBusinessLines(documentId:string):Observable<ILegalBusinessLine>{
-    return this.http.get<ILegalBusinessLine>(`${API_CUSTOMER}/legal-business-lines`,{params:{documentId}})
+  getLegalBusinessLines(documentId: string): Observable<ILegalBusinessLine> {
+    return this.http.get<ILegalBusinessLine>(
+      `${API_CUSTOMER}/legal-business-lines`,
+      { params: { documentId } }
+    );
   }
 }

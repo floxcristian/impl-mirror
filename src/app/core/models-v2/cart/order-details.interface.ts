@@ -1,4 +1,7 @@
-import { IShoppingCart, IShoppingCartProduct } from './shopping-cart.interface';
+import {
+  IShoppingCart,
+  IShoppingCartProduct,
+} from './shopping-cart.interface';
 
 export interface IShoppingCartResponse {
   total: number;

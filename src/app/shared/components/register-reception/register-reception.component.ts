@@ -75,15 +75,14 @@ export class RegisterReceptionComponent {
   Select_fono(phoneCode: string): void {
     this.selectedPhoneCode = phoneCode;
 
-    if (this.selectedPhoneCode === this.config.phoneCodes.mobile.code){
+    if (this.selectedPhoneCode === this.config.phoneCodes.mobile.code) {
       this.formRecibe.controls['phone'].setValidators([
         Validators.required,
         Validators.minLength(this.config.phoneCodes.mobile.lengthRule),
         Validators.maxLength(this.config.phoneCodes.mobile.lengthRule),
       ]);
       this.maxPhone = this.config.phoneCodes.mobile.lengthRule;
-    }
-    else{
+    } else {
       this.formRecibe.controls['phone'].setValidators([
         Validators.required,
         Validators.minLength(this.config.phoneCodes.landline.lengthRule),

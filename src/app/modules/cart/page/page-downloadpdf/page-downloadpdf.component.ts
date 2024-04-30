@@ -20,18 +20,18 @@ export class PageDownloadpdfComponent implements OnInit {
   tipo: any = null;
   authBasic = 'Basic c2VydmljZXM6MC49ajNEMnNzMS53Mjkt';
   noDocument: boolean = false;
-  tipo_doc:any = null
+  tipo_doc: any = null;
   constructor(
     private http: HttpClient,
     private sanitizer: DomSanitizer,
     private activatedRoute: ActivatedRoute,
     // Services V2
     private readonly documentDownloadService: DocumentDownloadService,
-    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit() {
-    if(isPlatformBrowser(this.platformId)){
+    if (isPlatformBrowser(this.platformId)) {
       this.numero = this.activatedRoute.snapshot.queryParams['numero'];
       this.tipo = this.activatedRoute.snapshot.queryParams['tipo'];
       this.tipo_doc = this.activatedRoute.snapshot.queryParams['tipo_doc'];
@@ -60,16 +60,19 @@ export class PageDownloadpdfComponent implements OnInit {
   }
 
   downloadOcPdf() {
-    this.documentDownloadService.downloadOcPdf(this.numero).subscribe((arrayBuffer) =>{
-      let response = Buffer.from(arrayBuffer).toString('base64');
-      response = 'data:application/pdf;base64,' + response;
-      response = response + '#toolbar=1&statusbar=1&navpanes=1';
-      this.pdfBase64 = this.sanitizer.bypassSecurityTrustResourceUrl(response);
-    })
+    this.documentDownloadService
+      .downloadOcPdf(this.numero)
+      .subscribe((arrayBuffer) => {
+        let response = Buffer.from(arrayBuffer).toString('base64');
+        response = 'data:application/pdf;base64,' + response;
+        response = response + '#toolbar=1&statusbar=1&navpanes=1';
+        this.pdfBase64 =
+          this.sanitizer.bypassSecurityTrustResourceUrl(response);
+      });
   }
 
   downloadFacturaPdf() {
-    const codigo = this.generarCodigo(this.tipo_doc,this.numero)
+    const codigo = this.generarCodigo(this.tipo_doc, this.numero);
     this.documentDownloadService.downloadFacturaPdf(codigo).subscribe({
       next: (data: any) => this.procesarRespuesta(data),
       error: (err) => {

@@ -1,0 +1,187 @@
+<div class="modal-header">
+  <h5 class="modal-title d-flex align-items-center">
+    <i
+      class="fa-solid fa-truck-moving me-2"
+      style="color: #00549d; font-size: 1.5rem"
+    ></i>
+    <span style="font-size: 16px; color: #0063b9">Encuentra tus filtros</span>
+  </h5>
+  <button type="button" class="btn" (click)="activeModal.close()">
+    <i class="fas fa-times-circle" style="color: #00549d; font-size: 18px"></i>
+  </button>
+</div>
+<div class="modal-body p-1" style="min-height: auto">
+  <form
+    [formGroup]="vehicleForm"
+    class="form-inline d-flex align-items-center justify-content-center"
+  >
+    <div class="alert-session p-2">
+      <div *ngIf="!selectedVehicle">
+        @if(isClickedVehicleSearch){
+        <p-messages *ngIf="isClickedVehicleSearch" severity="warn">
+          <ng-template pTemplate>
+            <span class="p-message-icon">
+              <i
+                class="pi pi-exclamation-triangle"
+                style="font-size: 1.5rem"
+              ></i>
+            </span>
+            <span class="p-message-detail"
+              >Función disponible solo para usuarios registrados.
+              <!--<u (click)="openLogin()"
+                >Inicia sesión o regístrate aquí.</u
+              >-->
+            </span>
+          </ng-template>
+        </p-messages>
+        }
+
+        <div>
+          <div
+            style="display: flex; justify-content: center; align-items: center"
+          >
+            <small id="patent-help">
+              Ingresa o busca tu patente. Próximamente más productos.</small
+            >
+          </div>
+          <!-- Select V2 dropdown editable-->
+          <div class="flex justify-content-center" style="margin: 0.5rem 0">
+            <p-inputGroup>
+              <p-dropdown
+                [options]="customerVehiclesFilter"
+                styleClass="hidden-empty-message"
+                [optionLabel]="getTypeFilter()"
+                [optionValue]="getTypeFilter()"
+                formControlName="search"
+                placeholder="Buscar"
+                [editable]="true"
+                emptyMessage="No hay resultados"
+                [showClear]="true"
+                (onChange)="filterVehicle()"
+              >
+                <ng-template let-vehicle pTemplate="item">
+                  <div class="flex align-items-center gap-2">
+                    <div>{{ vehicle.patent }}-{{ vehicle.codeChasis }}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+              <button
+                type="button"
+                pButton
+                icon="pi pi-search"
+                [loading]="isLoadingVehicles"
+                [disabled]="
+                  vehicleForm.invalid ||
+                  isClickedVehicleSearch ||
+                  !searchInput?.value
+                "
+                (click)="searchVehicle(vehicleForm.value)"
+              ></button>
+            </p-inputGroup>
+          </div>
+          <!--<p
+            *ngIf="notVehicleFound"
+            class="text-error-form-2 text-center text-danger pt-2"
+          >
+            No se encontraron resultados.
+          </p>-->
+          @if(notVehicleFound){
+          <div style="display: flex; justify-content: center">
+            <small id="patent-help" class="p-error">
+              Patente no encontrada. Revisa los datos ingresados.</small
+            >
+          </div>
+          }
+        </div>
+      </div>
+
+      <div *ngIf="selectedVehicle">
+        <p
+          class="d-flex justify-content-center"
+          style="color: #0063b9; font-size: 18px; font-weight: bold"
+        >
+          Mi Vehículo
+          <!-- <img
+            src="../../../../../assets/svg/23.svg"
+            alt="información"
+            style="
+              width: 30px;
+              height: 40px;
+              margin-left: 10px;
+              margin-top: -10px;
+            "
+          /> -->
+        </p>
+
+        <table class="vehicle-table">
+          <tbody>
+            <tr>
+              <td class="font-weight-bold">PATENTE</td>
+              <td>{{ selectedVehicle.PLACA_PATENTE }}</td>
+            </tr>
+            <tr>
+              <td class="font-weight-bold">MARCA</td>
+              <td>{{ selectedVehicle.MARCA }}</td>
+            </tr>
+            <tr>
+              <td>MODELO</td>
+              <td>{{ selectedVehicle.MODELO }}</td>
+            </tr>
+            <tr>
+              <td>TIPO</td>
+              <td>{{ selectedVehicle.IMPtipo }}</td>
+            </tr>
+            <tr>
+              <td>AÑO</td>
+              <td>{{ selectedVehicle.ANO_FABRICACION }}</td>
+            </tr>
+            <tr>
+              <td>MOTOR</td>
+              <td>{{ selectedVehicle.COD_MOTOR || '-' }}</td>
+            </tr>
+            <tr>
+              <td>CHASIS</td>
+              <td>{{ selectedVehicle.COD_CHASIS || '-' }}</td>
+            </tr>
+            <tr>
+              <td>DETALLE</td>
+              <td>{{ selectedVehicle.detalle || '-' }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p-messages *ngIf="!selectedVehicle?.codigoSii" severity="info">
+          <ng-template pTemplate>
+            <div class="w-100 text-center">
+              No se encontraron filtros por el momento.
+            </div>
+          </ng-template>
+        </p-messages>
+        <div class="flex pb-3 gap-3">
+          <p-button
+            [ngStyle]="{ display: 'contents' }"
+            styleClass="w-100"
+            label="Buscar otra patente"
+            severity="secondary"
+            (onClick)="cleanSelectedVehicle()"
+          ></p-button>
+          <p-button
+            [disabled]="existInFlota"
+            [loading]="isLoadingCreate"
+            [ngStyle]="{ display: 'contents' }"
+            styleClass="w-100"
+            [label]="existInFlota ? 'Existe en Flota' : 'Agregar a Flota'"
+            severity="warning"
+            (onClick)="addMyFlota()"
+          ></p-button>
+        </div>
+        <div *ngIf="selectedVehicle?.codigoSii">
+          <p-button
+            styleClass="w-100"
+            label="Ver filtros encontrados"
+            (onClick)="goToProductsPage()"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

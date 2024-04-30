@@ -51,7 +51,7 @@ export class ComentariosComponent implements OnChanges {
     private toastrService: ToastrService,
     // Services V2
     private readonly sessionService: SessionService,
-    private readonly articleService: ArticleService,
+    private readonly articleService: ArticleService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -123,7 +123,7 @@ export class ComentariosComponent implements OnChanges {
       };
       const bsModalRef: BsModalRef = this.modalService.show(
         AddCommentModalComponent,
-        { initialState, class: 'modal-comentario' },
+        { initialState, class: 'modal-comentario' }
       );
       bsModalRef.content.event.subscribe(async (res: any) => {
         if (res !== '') {

@@ -1,0 +1,179 @@
+<p-messages
+  *ngIf="vehicleNotFound"
+  [(value)]="messages"
+  [enableService]="false"
+  [closable]="false"
+></p-messages>
+<!--<div class="flex justify-content-center gap-2">
+  <p-message severity="info" text="Message Content"></p-message>
+</div> -->
+
+<!--
+<pre>
+  valid: {{ vehicleForm.valid }}
+  invalid: {{ vehicleForm.invalid }}
+  status: {{vehicleForm.status}}
+  <hr>
+  pantent: {{ vehicleForm.get('patent')?.errors | json}}
+  vin: {{ vehicleForm.get('vin')?.errors | json}}
+  brand: {{ vehicleForm.get('brand')?.errors | json}}
+  model: {{ vehicleForm.get('model')?.errors | json}}
+</pre> -->
+
+<form [formGroup]="vehicleForm" class="flex flex-column gap-3 mt-3">
+  <div class="flex gap-3">
+    <div class="w-full">
+      <label for="patent" class="block mb-1 text-color text-base"
+        >Patente *</label
+      >
+      <span class="w-full p-input-icon-right">
+        <i class="pi pi-spin pi-spinner" *ngIf="isSearchingVehicle"></i>
+        <input
+          formControlName="patent"
+          type="text"
+          id="patent"
+          class="w-full"
+          pInputText
+          pKeyFilter="int"
+          spellcheck="false"
+          placeholder="Ingrese patente"
+        />
+      </span>
+    </div>
+    <div class="w-full">
+      <label for="codeChasis" class="block mb-1 text-color text-base"
+        >VIN</label
+      >
+      <span class="w-full">
+        <input
+          type="text"
+          class="w-full"
+          formControlName="codeChasis"
+          id="codeChasis"
+          pInputText
+          placeholder="Ingrese VIN"
+        />
+      </span>
+    </div>
+  </div>
+  <div class="flex gap-3">
+    <div class="w-full">
+      <label for="brand" class="block mb-1 text-color text-base"
+        >Marca *</label
+      >
+      <p-dropdown
+        [style]="{ width: '100%' }"
+        formControlName="brand"
+        [options]="brands"
+        appendTo="body"
+        placeholder="Seleccione marca"
+        [filter]="true"
+        [showClear]="true"
+        [dropdownIcon]="
+          loadingBrands ? 'pi pi-spinner pi-spin' : 'pi pi-chevron-down'
+        "
+      ></p-dropdown>
+      @if(!patentInput?.value){
+      <small id="brand-help">Primero ingrese una patente.</small>
+      }
+    </div>
+
+    <div class="w-full">
+      <label for="model" class="block mb-1 text-color text-base"
+        >Modelo *</label
+      >
+      <p-dropdown
+        [style]="{ width: '100%' }"
+        formControlName="model"
+        [options]="models"
+        appendTo="body"
+        placeholder="Seleccione modelo"
+        [filter]="true"
+        [showClear]="true"
+        [dropdownIcon]="
+          loadingModels ? 'pi pi-spinner pi-spin' : 'pi pi-chevron-down'
+        "
+      ></p-dropdown>
+      <small *ngIf="!brandInput?.value" id="model-help"
+        >Primero seleccione una marca.</small
+      >
+    </div>
+  </div>
+
+  <div class="w-full">
+    <label for="manufactureYear" class="block mb-1 text-color text-base"
+      >Año *</label
+    >
+    <span class="w-full">
+      <p-dropdown
+        [style]="{ width: '100%' }"
+        formControlName="manufactureYear"
+        [options]="yearsOptions"
+        appendTo="body"
+        placeholder="Seleccione año"
+        [showClear]="true"
+        [dropdownIcon]="
+          loadingMotors ? 'pi pi-spinner pi-spin' : 'pi pi-chevron-down'
+        "
+      ></p-dropdown>
+      <small *ngIf="!modelInput?.value" id="manufactureYear-help"
+        >Primero seleccione un modelo.</small
+      >
+    </span>
+  </div>
+
+  <div *ngIf="motorsOptions.length > 1 && manufactureYearInput?.value">
+    <label class="block mb-1 text-color text-base">Motor *</label>
+    @if(modelInput?.value){
+    <small id="model-help">Debe seleccionar un motor de la tabla.</small>
+    } @else {
+    <small id="model-help">Primero seleccione un modelo.</small>
+    }
+    <!--<pre>
+      selectedMotor: {{ config.data.selectedMotor }}
+    </pre> -->
+    <div style="margin-top: 1rem">
+      <p-table
+        [value]="motorsOptions"
+        [loading]="loadingMotors"
+        selectionMode="single"
+        [(selection)]="config.data.selectedMotor"
+        dataKey="codigo"
+        styleClass="p-datatable-gridlines p-datatable-striped"
+        [tableStyle]="{ 'min-width': '50rem' }"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <!--<th style="width: 4rem">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th> -->
+            <!-- <th></th> -->
+
+            <th>Versión</th>
+            <th>Tipo</th>
+            <th>Combustible</th>
+            <th>Años</th>
+            <th>Código</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-motor>
+          <tr [pSelectableRow]="motor">
+            <!--<td>
+              <p-tableCheckbox [value]="motor"></p-tableCheckbox>
+            </td> -->
+            <td>{{ motor.version || '-' }}</td>
+            <td>{{ motor.tipo | uppercase }}</td>
+            <td>{{ motor.combustible || '-' }}</td>
+            <td>{{ motor.aniosString }}</td>
+            <td>{{ motor.codigo }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="6">No se encontraron registros.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</form>

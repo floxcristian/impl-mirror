@@ -28,6 +28,14 @@ const routes: Routes = [
     component: PageProductComponent,
   },
   {
+    path: 'vehicle/:patent/:SIICode',
+    component: PageCategoryComponent,
+  },
+  {
+    path: 'vehicle/:patent/:SIICode/:nombre',
+    component: PageCategoryComponent,
+  },
+  {
     path: ':busqueda/:metodo/:nombre',
     component: PageCategoryComponent,
   },

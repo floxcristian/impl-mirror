@@ -6,7 +6,12 @@ import {
   OnDestroy,
   ElementRef,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 // Libs
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
@@ -14,8 +19,14 @@ import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 // Rxjs
-import { Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
+import { Observable, Subject, Subscription, of } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  first,
+  map,
+} from 'rxjs/operators';
 import { MenuCategoriasB2cService } from '../../../../shared/services/menu-categorias-b2c.service';
 import { isVacio } from '../../../../shared/utils/utilidades';
 import { SessionService } from '@core/services-v2/session/session.service';
@@ -42,6 +53,14 @@ import { DireccionDespachoComponent } from '../search-vin-b2b/components/direcci
 import { ModalStoresComponent } from '../modal-stores/modal-stores.component';
 import { RootService } from '@shared/services/root.service';
 import { CustomerAddressService } from '@core/services-v2/customer-address/customer-address.service';
+import { VehicleService } from '@core/services-v2/vehicle/vehicle.service';
+import { VehicleType } from '@core/services-v2/vehicle/vehicle-type.enum';
+import { IVehicle } from '@core/services-v2/vehicle/vehicle-response.interface';
+import { CustomerVehicleService } from '@core/services-v2/customer-vehicle/customer-vehicle.service';
+import { IVehicleCustomer } from '@core/services-v2/customer-vehicle/vehicle-customer-response.interface';
+// Env
+import { environment } from '@env/environment';
+import { AccountComponent } from '../account/account.component';
 
 @Component({
   selector: 'app-header-search',
@@ -49,10 +68,14 @@ import { CustomerAddressService } from '@core/services-v2/customer-address/custo
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit, OnDestroy {
-  @ViewChild('menuSearch', { static: false }) listSearch!: ElementRef;
+  @ViewChild('menuSearch', { static: false }) listSearch!: DropdownDirective;
   @ViewChild('menuTienda', { static: false }) menuTienda!: DropdownDirective;
+  @ViewChild('menuVehiculo', { static: false })
+  menuVehiculo!: DropdownDirective;
   @ViewChild(DropdownDirective, { static: false })
   dropdown!: DropdownDirective;
+  isSearchVehicleVisible: boolean;
+  @ViewChild(AccountComponent, { static: false }) account!: AccountComponent;
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -85,6 +108,33 @@ export class SearchComponent implements OnInit, OnDestroy {
   selectedStore!: ISelectedStore;
   areLoadedStores!: boolean;
 
+  vehicleSearchType: string = 'patente';
+  vehicleForm: FormGroup;
+  selectedVehicle!: IVehicle | null;
+  notVehicleFound!: boolean;
+
+  customerVehiclesFilter!: IVehicleCustomer[];
+  customerVehiclesOriginal!: IVehicleCustomer[];
+  isLoadingVehicles: boolean = false;
+  existInFlota: boolean = false;
+  isLoadingCreate: boolean = false;
+
+  isClickedVehicleSearch!: boolean;
+
+  animateButton: boolean = true;
+  originalPlaceholder = 'ZB7603';
+  animatedPlaceholder = 'ZB7603';
+
+  getTypeFilter() {
+    return this.vehicleForm.get('type')?.value === 'patent'
+      ? this.vehicleForm.get('type')?.value
+      : 'codeChasis';
+  }
+
+  get searchInput() {
+    return this.vehicleForm.get('search');
+  }
+
   constructor(
     private router: Router,
     private modalService: BsModalService,
@@ -92,6 +142,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     public menuCategorias: MenuCategoriasB2cService,
     private readonly gtmService: GoogleTagManagerService,
     public readonly root: RootService,
+    private readonly fb: FormBuilder,
     // Services V2
     private readonly sessionService: SessionService,
     private readonly authStateService: AuthStateServiceV2,
@@ -102,11 +153,48 @@ export class SearchComponent implements OnInit, OnDestroy {
     private readonly customerAddressService: CustomerAddressService,
     private readonly articleService: ArticleService,
     public readonly shoppingCartService: CartService,
-    public readonly modalServices: NgbModal
-  ) {}
+    public readonly modalServices: NgbModal,
+    private readonly vehicleService: VehicleService,
+    private readonly customerVehicleService: CustomerVehicleService
+  ) {
+    this.isSearchVehicleVisible = environment.isSearchVehicleVisible;
+    this.vehicleForm = this.fb.group({
+      type: ['patent', Validators.required],
+      search: [null],
+    });
+    setTimeout(() => {
+      this.animateButton = false;
+    }, 5000);
+
+    this.efectoTipeo();
+  }
+
+  efectoTipeo() {
+    this.animatedPlaceholder = '';
+    const agregarCaracteres = () => {
+      if (this.animatedPlaceholder.length < 6) {
+        this.animatedPlaceholder += this.getRandomUppercaseLetterOrNumber();
+      } else {
+        setTimeout(eliminarCaracteres, 1000);
+        return;
+      }
+      setTimeout(agregarCaracteres, 300);
+    };
+
+    const eliminarCaracteres = () => {
+      if (this.animatedPlaceholder.length) {
+        this.animatedPlaceholder = this.animatedPlaceholder.slice(0, -1);
+        setTimeout(eliminarCaracteres, 100);
+      } else {
+        agregarCaracteres();
+      }
+    };
+    agregarCaracteres();
+  }
 
   ngOnInit(): void {
     this.onChangeSearchInput();
+    this.onChangeTypeInput();
 
     this.geolocationService.stores$
       .pipe(first((stores) => stores.length > 0))
@@ -162,7 +250,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchControl.setValue('');
   }
 
-  buscar() {
+  buscar(): void {
     this.textToSearch = this.searchControl.value || '';
 
     this.gtmService.pushTag({
@@ -276,6 +364,18 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.modalServices.open(ModalStoresComponent, { size: 'md' });
   }
 
+  /**
+   * Se activa al detectar cambios en el type input.
+   */
+  onChangeTypeInput(): void {
+    this.vehicleForm.get('type')?.valueChanges.subscribe(() => {
+      this.notVehicleFound = false;
+    });
+  }
+
+  /**
+   * Se activa al detectar cambios en el search input.
+   */
   private onChangeSearchInput(): void {
     this.searchControl = new FormControl({ value: '', disabled: true });
     this.searchControl.valueChanges
@@ -304,5 +404,187 @@ export class SearchComponent implements OnInit, OnDestroy {
         }
       },
     });
+  }
+
+  /**
+   * Buscar productos.
+   */
+  searchProducts(): void {
+    this.buscar();
+    this.listSearch.toggle();
+    this.blurInput();
+    this.cleanSelectedVehicle();
+  }
+
+  /**
+   * Buscar vehículo por patente.
+   * @param param0
+   * @returns
+   */
+  searchVehicle({ type, search }: { type: VehicleType; search: string }) {
+    if (this.session.documentId === '0') {
+      this.isClickedVehicleSearch = true;
+      return;
+    }
+    search = search.toUpperCase();
+    this.isLoadingVehicles = true;
+    this.vehicleService
+      .getByPatentOrVin({
+        type,
+        search,
+        username: this.session.username || '',
+      })
+      .subscribe({
+        next: (vehicle) => {
+          this.isLoadingVehicles = false;
+          this.selectedVehicle = vehicle || null;
+          this.notVehicleFound = vehicle ? false : true;
+          this.existVehicleInFlota(this.selectedVehicle);
+        },
+        error: (err) => {
+          this.isLoadingVehicles = false;
+          this.notVehicleFound = true;
+          this.existInFlota = false;
+        },
+      });
+  }
+
+  /**
+   * Quitar vehículo seleccionado.
+   */
+  cleanSelectedVehicle(): void {
+    this.existInFlota = false;
+    this.vehicleForm.get('search')?.setValue(null);
+    this.selectedVehicle = null;
+    this.customerVehiclesFilter = this.customerVehiclesOriginal;
+  }
+
+  /**
+   * Ir a la página de artículos para ver productos del vehículo seleccionado.
+   */
+  goToProductsPage() {
+    if (
+      this.selectedVehicle?.PLACA_PATENTE &&
+      this.selectedVehicle?.codigoSii
+    ) {
+      this.router.navigateByUrl(
+        `inicio/productos/vehicle/${this.selectedVehicle?.PLACA_PATENTE}/${this.selectedVehicle?.codigoSii}`
+      );
+      //this.searchVehicle(this.vehicleForm.value);
+      this.cleanSelectedVehicle();
+      this.menuVehiculo.toggle();
+    }
+  }
+
+  /**
+   *  Obtiene vehiculos del cliente logueado
+   */
+  getAllCustomerVehicle(): void {
+    if (this.session.documentId === '0') return;
+    this.customerVehicleService.getAll(this.session.documentId).subscribe({
+      next: (vehicles) => {
+        this.customerVehiclesOriginal = vehicles;
+        this.customerVehiclesFilter = vehicles;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  /**
+   * Filtra los vehiculos
+   */
+  filterVehicle() {
+    let valueSearch = this.vehicleForm.get('search')?.value;
+    if (!valueSearch || valueSearch === '')
+      this.customerVehiclesFilter = this.customerVehiclesOriginal;
+    else {
+      let typeFilter = this.getTypeFilter();
+      if (typeFilter === 'patent')
+        this.customerVehiclesFilter = this.customerVehiclesOriginal?.filter(
+          (vehicle: any) =>
+            vehicle.patent.toUpperCase().includes(valueSearch.toUpperCase())
+        );
+      else
+        this.customerVehiclesFilter = this.customerVehiclesOriginal?.filter(
+          (vehicle: any) =>
+            vehicle.codeChasis
+              .toUpperCase()
+              .includes(valueSearch.toUpperCase())
+        );
+    }
+  }
+
+  /**
+   * Verifica si el vehiculo esta en la flota del cliente
+   */
+  existVehicleInFlota(vehicleFind: any) {
+    if (vehicleFind) {
+      let typeFilter = this.getTypeFilter();
+      if (typeFilter === 'patent') {
+        let existVehicle = this.customerVehiclesOriginal.find(
+          (vehicle: any) => vehicleFind.PLACA_PATENTE === vehicle.patent
+        );
+        if (existVehicle) this.existInFlota = true;
+      } else {
+        let existVehicle = this.customerVehiclesOriginal.find(
+          (vehicle: any) => vehicleFind.COD_CHASIS === vehicle.codeChasis
+        );
+        if (existVehicle) this.existInFlota = true;
+      }
+    } else this.existInFlota = false;
+  }
+
+  /**
+   * Agregar vehiculo a flota
+   */
+  addMyFlota() {
+    if (this.selectedVehicle) {
+      let createVehicle = {
+        patent: this.selectedVehicle.PLACA_PATENTE,
+        brand: this.selectedVehicle.MARCA,
+        model: this.selectedVehicle.MODELO,
+        typeVehicle: this.selectedVehicle.TIPO_VEHICULO, // TODO: eliminar
+        manufactureYear: this.selectedVehicle.ANO_FABRICACION,
+        codeMotor: this.selectedVehicle.COD_MOTOR,
+        codeChasis: this.selectedVehicle.COD_CHASIS,
+        customer: this.selectedVehicle.cliente, // TODO: eliminar
+        typeImp: this.selectedVehicle.IMPtipo,
+        detail: this.selectedVehicle.detalle,
+        codeSii: this.selectedVehicle.codigoSii,
+      };
+      this.isLoadingCreate = true;
+      this.customerVehicleService
+        .createCustomerVehicle(this.session.documentId, createVehicle)
+        .subscribe({
+          next: () => {
+            this.isLoadingCreate = false;
+            this.toastr.success('Vehiculo Agregado a la flota', '');
+          },
+          error: (err) => {
+            console.log(err);
+            this.isLoadingCreate = false;
+          },
+        });
+    }
+  }
+
+  /**
+   * Obtener valor aleatorio que puede ser letra mayúscula o número.
+   * @returns
+   */
+  private getRandomUppercaseLetterOrNumber(): string {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    return characters.charAt(randomIndex);
+  }
+
+  /**
+   * Cerrar dropdown búsqueda patente y abrir dropwdown login.
+   */
+  openLogin() {
+    this.menuVehiculo.toggle();
+    this.account.openLogin();
   }
 }

@@ -1,10 +1,8 @@
 // Angular
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-// Libs
-import { BsModalService } from 'ngx-bootstrap/modal';
 // Rxjs
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 // Models
 import { ISelectedStore } from '@core/services-v2/geolocation/models/geolocation.interface';
@@ -27,6 +25,11 @@ import { CmsService } from '@core/services-v2/cms.service';
 import { StorageKey } from '@core/storage/storage-keys.enum';
 import { CartService } from '@core/services-v2/cart.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ISession } from '@core/models-v2/auth/session.interface';
+import { SessionService } from '@core/services-v2/session/session.service';
+import { AuthStateServiceV2 } from '@core/services-v2/session/auth-state.service';
+import { ModalVehicleComponent } from '../../modal-vehicle/modal-vehicle.component';
+import { environment } from '@env/environment';
 @Component({
   selector: 'app-menu-categoria-b2c-mobile',
   templateUrl: './menu-categoria-b2c-mobile.component.html',
@@ -34,6 +37,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class MenuCategoriaB2cMobileComponent implements OnInit {
   @ViewChild('menuTienda', { static: false }) menuTienda!: DropdownDirective;
+  isSearchVehicleVisible: boolean;
 
   private destroy$: Subject<any> = new Subject();
   private categoriaDetalle!: ICategoryDetail;
@@ -42,6 +46,8 @@ export class MenuCategoriaB2cMobileComponent implements OnInit {
   private categoriaDetalleOficial!: ICategoryDetail;
   private arrayCategoriasOficial: NavigationLink[] = [];
   private segundoNivelOficial!: ISecondLvl;
+  usuario!: ISession;
+  usuarioRef!: Subscription;
   items: NavigationLink[] = [];
   items_oficial: NavigationLink[] = [];
   isOpen = false;
@@ -108,7 +114,6 @@ export class MenuCategoriaB2cMobileComponent implements OnInit {
 
   constructor(
     public menuCategorias: MenuCategoriasB2cService,
-    private modalService: BsModalService,
     private router: Router,
     public localS: LocalStorageService,
     private root: RootService,
@@ -116,8 +121,11 @@ export class MenuCategoriaB2cMobileComponent implements OnInit {
     private readonly geolocationService: GeolocationServiceV2,
     private readonly cmsService: CmsService,
     private readonly cartService: CartService,
-    public readonly modalServices: NgbModal
+    public readonly modalServices: NgbModal,
+    private readonly sessionService: SessionService,
+    private readonly authStateService: AuthStateServiceV2
   ) {
+    this.isSearchVehicleVisible = environment.isSearchVehicleVisible;
     this.selectedStore = this.geolocationService.getSelectedStore();
     this.obtieneCategorias();
   }
@@ -137,6 +145,11 @@ export class MenuCategoriaB2cMobileComponent implements OnInit {
           }, 700);
         }
       },
+    });
+    //Usuario
+    this.usuario = this.sessionService.getSession();
+    this.usuarioRef = this.authStateService.session$.subscribe((user) => {
+      this.usuario = user;
     });
   }
 
@@ -236,6 +249,9 @@ export class MenuCategoriaB2cMobileComponent implements OnInit {
 
   showStores(): void {
     this.modalServices.open(ModalStoresComponent, { size: 'md' });
+  }
+  showVehicle(): void {
+    this.modalServices.open(ModalVehicleComponent, { size: 'md' });
   }
 
   async validarCuenta() {

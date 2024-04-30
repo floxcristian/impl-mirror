@@ -1,55 +1,50 @@
 @if (slides && slides.length > 0) {
-  <div class="block-slideshow">
-    <owl-carousel-o
-      [options]="options"
-      appOwlPreventClick
-      [ngClass]="{ item: true }"
-    >
-      <ng-container *ngFor="let slide of slides; index as i">
-        <ng-template carouselSlide [id]="slide.imageClassic">
-          @if (i === 0) {
-            <a [href]="slide.buttonUrl">
-              <div
-                class="slide_container d-block d-sm-none"
-                style="aspect-ratio: 138/139"
-              >
-                <img
-                  [ngSrc]="slide.imageMobile"
-                  [alt]="slide.alt"
-                  fill
-                  priority
-                />
-              </div>
-              <div
-                class="slide_container d-none d-sm-block"
-                style="aspect-ratio: 10/3"
-              >
-                <img
-                  [ngSrc]="slide.imageClassic"
-                  [alt]="slide.alt"
-                  fill
-                  priority
-                />
-              </div>
-            </a>
-          } @else {
-            <a [href]="slide.buttonUrl">
-              <div
-                class="slide_container d-block d-sm-none"
-                style="aspect-ratio: 138/139"
-              >
-                <img [ngSrc]="slide.imageMobile" [alt]="slide.alt" fill />
-              </div>
-              <div
-                class="slide_container mobile d-none d-sm-block"
-                style="aspect-ratio: 10/3"
-              >
-                <img [ngSrc]="slide.imageClassic" [alt]="slide.alt" fill />
-              </div>
-            </a>
-          }
-        </ng-template>
-      </ng-container>
-    </owl-carousel-o>
-  </div>
+<div class="block-slideshow">
+  <owl-carousel-o
+    [options]="options"
+    appOwlPreventClick
+    [ngClass]="{ item: true }"
+  >
+    <ng-container *ngFor="let slide of slides; index as i">
+      <ng-template carouselSlide [id]="slide.imageClassic">
+        @if (i === 0) {
+        <a [href]="slide.buttonUrl">
+          <div
+            class="slide_container d-block d-sm-none"
+            style="aspect-ratio: 138/139"
+          >
+            <img [ngSrc]="slide.imageMobile" [alt]="slide.alt" fill priority />
+          </div>
+          <div
+            class="slide_container d-none d-sm-block"
+            style="aspect-ratio: 10/3"
+          >
+            <img
+              [ngSrc]="slide.imageClassic"
+              [alt]="slide.alt"
+              fill
+              priority
+            />
+          </div>
+        </a>
+        } @else {
+        <a [href]="slide.buttonUrl">
+          <div
+            class="slide_container d-block d-sm-none"
+            style="aspect-ratio: 138/139"
+          >
+            <img [ngSrc]="slide.imageMobile" [alt]="slide.alt" fill />
+          </div>
+          <div
+            class="slide_container mobile d-none d-sm-block"
+            style="aspect-ratio: 10/3"
+          >
+            <img [ngSrc]="slide.imageClassic" [alt]="slide.alt" fill />
+          </div>
+        </a>
+        }
+      </ng-template>
+    </ng-container>
+  </owl-carousel-o>
+</div>
 }

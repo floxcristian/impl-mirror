@@ -94,7 +94,7 @@ import { CardProductCardComponent } from './components/card-product-card/card-pr
     WidgetsModule,
     NgSelectModule,
     HeaderModule,
-    BsDropdownModule
+    BsDropdownModule,
   ],
 })
 export class ShopModule {}

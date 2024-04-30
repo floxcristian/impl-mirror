@@ -1,13 +1,13 @@
 <div
   infiniteScroll
   [infiniteScrollDistance]="2"
-  (scrolled)="onPageChange(currentPage)"
+  (scrolled)="onInfiniteScroll(currentPage)"
 >
   <app-scroll-top [fast]="true"> </app-scroll-top>
   <div class="products-view" (window:resize)="onResize($event)">
     <div
       class="col-12 col-lg-12 mt-3"
-      *ngIf="totalRegistros === 0 && !cargandoCatalogo"
+      *ngIf="!totalRegistros && !isInitialLoading"
     >
       <div class="alert alert-info text-center">
         No se encontraron productos.
@@ -16,7 +16,7 @@
     <ng-container *ngIf="innerWidth >= 1025">
       <div class="row w-100">
         <div
-          *ngIf="totalRegistros > 0"
+          *ngIf="totalRegistros"
           class="col-12 order-3 order-lg-2 text-justify"
           [class.ms-xl-2]="innerWidth >= 1550"
           style="padding-left: 0px; font-size: 18px"
@@ -27,10 +27,16 @@
             <span> {{ decodedUrl(textToSearch) }}</span>
           </ng-container>
           <ng-container *ngIf="breadcrumbs.length > 0">
-            <strong> {{decodedUrl(breadcrumbs[0].label || '') | titlecase }} </strong>
+            <strong>
+              {{ decodedUrl(breadcrumbs[0].label || '') | titlecase }}
+            </strong>
           </ng-container>
           <ng-container *ngIf="url.includes('_MARCA')">
-            <strong> {{ decodedUrl(url.split('=')[1].split('&')[0]) | titlecase }}</strong>
+            <strong>
+              {{
+                decodedUrl(url.split('=')[1].split('&')[0]) | titlecase
+              }}</strong
+            >
           </ng-container>
         </div>
       </div>
@@ -41,7 +47,7 @@
         *ngIf="totalRegistros"
       >
         <div
-          *ngIf="!cargandoCatalogo"
+          *ngIf="!isInitialLoading"
           class="col-4 col-lg w-auto d-flex justify-content-start"
           style="margin-right: 5px"
         >
@@ -58,7 +64,7 @@
           </div>
         </div>
         <div
-          *ngIf="!cargandoCatalogo"
+          *ngIf="!isInitialLoading"
           [class.col-11]="innerWidth > 991"
           [class.col-8]="innerWidth <= 991"
           class="me-2 d-flex justify-content-end"
@@ -72,8 +78,8 @@
           <div>
             <select
               class="form-control form-control-sm"
-              [(ngModel)]="tipo_orden"
-              (change)="ChangeOrdenar()"
+              [(ngModel)]="sortType"
+              (change)="changeSortType()"
               name=""
               id="view-options-sort"
             >
@@ -102,7 +108,7 @@
     >
       <div class="products-list__body w-100">
         <app-loading-element
-          *ngIf="cargandoCatalogo"
+          *ngIf="isInitialLoading"
           text="Cargando productos"
         ></app-loading-element>
 
@@ -114,15 +120,14 @@
             [paramsCategory]="paramsCategory"
             [origen]="origen"
             [product]="product"
-          >
-          </app-product-card-b2c-cms>
+          />
         </div>
       </div>
     </div>
   </div>
 
   <div
-    *ngIf="cargandoProductos"
+    *ngIf="isScrollLoading"
     class="row flex-column justify-content-center align-content-center mt-4"
   >
     <div class="text-center">

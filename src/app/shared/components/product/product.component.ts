@@ -207,7 +207,7 @@ export class ProductComponent implements OnInit, OnChanges {
     private readonly wishlistStorage: WishlistStorageService,
     private readonly wishlistService: WishlistService,
     private readonly productPriceApiService: ProductPriceApiService,
-    private readonly configService: ConfigService,
+    private readonly configService: ConfigService
   ) {
     this.config = this.configService.getConfig();
     this.carouselOptions = CarouselOptions;
@@ -294,8 +294,8 @@ export class ProductComponent implements OnInit, OnChanges {
   }
 
   private setAvailability(deliverySupply: IDeliverySupply | undefined): void {
-    if(!deliverySupply) this.isAvailable = false
-    else{
+    if (!deliverySupply) this.isAvailable = false;
+    else {
       const { pickupDate, deliveryDate } = deliverySupply;
       this.isAvailable = !pickupDate && !deliveryDate ? false : true;
     }
@@ -320,7 +320,7 @@ export class ProductComponent implements OnInit, OnChanges {
       .subscribe({
         next: (priceInfo) => {
           this.product.priceInfo = priceInfo;
-          if(priceInfo.hasScalePrice){
+          if (priceInfo.hasScalePrice) {
             const firstFromQuantity = priceInfo.scalePrice[0].fromQuantity;
             this.quantityToScalePrice =
               quantity >= firstFromQuantity ? 0 : firstFromQuantity - quantity;
@@ -334,7 +334,7 @@ export class ProductComponent implements OnInit, OnChanges {
     if (!usuario) {
       this.toast.warning(
         'Debe iniciar sesion para poder comprar',
-        'Información',
+        'Información'
       );
       return;
     }
@@ -377,7 +377,7 @@ export class ProductComponent implements OnInit, OnChanges {
     this.modalService.show(ModalScalePriceComponent, {
       class: 'modal-dialog-centered',
       initialState: {
-        scalePrices: this.dataProduct.priceInfo.scalePrice,
+        scalePrices: this.dataProduct.priceInfo?.scalePrice,
       },
     });
   }
@@ -398,7 +398,7 @@ export class ProductComponent implements OnInit, OnChanges {
           Validators.required,
           Validators.maxLength(50),
           Validators.pattern(
-            /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.([a-zA-Z]{2,4})+$/,
+            /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.([a-zA-Z]{2,4})+$/
           ),
         ],
       ],
@@ -406,13 +406,13 @@ export class ProductComponent implements OnInit, OnChanges {
     });
     if (this.session.userRole != 'temp') {
       this.formProductRequest.controls['customerName'].setValue(
-        this.session.firstName + ' ' + this.session.lastName,
+        this.session.firstName + ' ' + this.session.lastName
       );
       this.formProductRequest.controls['customerEmail'].setValue(
-        this.session.email,
+        this.session.email
       );
       this.formProductRequest.controls['customerPhone'].setValue(
-        this.session.phone,
+        this.session.phone
       );
     }
   }
@@ -429,7 +429,7 @@ export class ProductComponent implements OnInit, OnChanges {
     this.inventoryService.requestForStock(valor_formulario).subscribe({
       next: () => {
         this.toast.success(
-          'Mensaje enviado con éxito. Te contactaremos a la brevedad',
+          'Mensaje enviado con éxito. Te contactaremos a la brevedad'
         );
       },
       error: (err) => {
@@ -448,7 +448,7 @@ export class ProductComponent implements OnInit, OnChanges {
       this.product?.name
     } de SKU: ${this.product!.sku}. Para que me atienda un ejecutivo.`;
     window.open(
-      `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${message}`,
+      `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${message}`
     );
   }
 
@@ -518,7 +518,7 @@ export class ProductComponent implements OnInit, OnChanges {
     if (!wishlists.length) return;
     wishlists.forEach((wishlist) => {
       const isProductOnList = wishlist.articles.find(
-        (product) => product.sku === this.product.sku,
+        (product) => product.sku === this.product.sku
       );
       this.isProductOnList = isProductOnList ? true : false;
       if (isProductOnList) {
@@ -585,7 +585,7 @@ export class ProductComponent implements OnInit, OnChanges {
                   next: () => {
                     this.refreshProductWishlistsIds();
                     this.toast.success(
-                      `Se agregó a la lista ${defaultWishlist?.name}.`,
+                      `Se agregó a la lista ${defaultWishlist?.name}.`
                     );
                     this.cd.markForCheck();
                     this.defaultWishlist = defaultWishlist || null;

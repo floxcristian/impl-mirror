@@ -50,7 +50,17 @@ import { CardDashboardComponent } from '../../shared/components/card-dashboard/c
 import { OrderDetailsComponent } from '../../shared/components/order-details/order-details.component';
 import { CardDashboardNoChartComponent } from '../../shared/components/card-dashboard-no-chart/card-dashboard-no-chart.component';
 import { PageOvsListComponent } from './pages/page-ovs-list/page-ovs-list.component';
-
+import { PageFlotaComponent } from './pages/page-flota/page-flota.component';
+// Primeng
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { TooltipModule as PrimeTooltip } from 'primeng/tooltip';
+import { CardModule } from 'primeng/card';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { ToastModule } from 'primeng/toast';
+import { VehicleFormComponent } from './pages/page-flota/modals/vehicle-form/vehicle-form.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +99,8 @@ import { PageOvsListComponent } from './pages/page-ovs-list/page-ovs-list.compon
     ModaluserComponent,
     PageComprasComponent,
     FiltroCategoriasComponent,
-    PageOvsListComponent
+    PageOvsListComponent,
+    PageFlotaComponent,
   ],
   imports: [
     CommonModule,
@@ -101,6 +112,15 @@ import { PageOvsListComponent } from './pages/page-ovs-list/page-ovs-list.compon
     FormsModule,
     ReactiveFormsModule,
     PaginationModule,
+    TableModule,
+    ButtonModule,
+    InputTextModule,
+    PrimeTooltip,
+    CardModule,
+    ConfirmDialogModule,
+    DynamicDialogModule,
+    ToastModule,
+    VehicleFormComponent,
   ],
   providers: [PaginationConfig],
 })

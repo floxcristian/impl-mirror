@@ -32,7 +32,7 @@
               </thead>
               <tbody *ngIf="orders?.length != 0">
                 <tr *ngFor="let item of orders">
-                  <td>{{ item.updatedAt | date : "dd-MM-yyyy HH:mm" }}</td>
+                  <td>{{ item.updatedAt | date : 'dd-MM-yyyy HH:mm' }}</td>
                   <td>
                     <span
                       class="badge"

@@ -3,8 +3,47 @@
   appDropdown="indicator--opened"
   #menuUser="appDropdown"
 >
+  <a
+    pRipple
+    style="padding: 4px 6px !important; width: 85px; height: 80px"
+    class="flex flex-row lg:flex-column align-items-center cursor-pointer p-3 lg:justify-content-center hover:bg-gray-800 border-round hover:text-white transition-duration-150 transition-colors indicator__button"
+    (click)="$event.preventDefault(); cerrarBienvenida(); menuUser.toggle()"
+  >
+    <div
+      style="
+        height: 38px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 0.3rem;
+      "
+    >
+      <i class="fa-light fa-user fa-2xl lg:text-lg"></i>
+    </div>
+    <div
+      style="
+        height: 28px;
+        display: flex;
+        justify-content: center;
+        align-items: start;
+      "
+    >
+      <span
+        class="font-medium inline text-base lg:text-xs lg:block"
+        style="line-height: normal; text-align: center"
+      >
+        @if(usuario.login_temp == false){
+
+        {{ usuario.firstName | capitalizeFirst : true }}
+        {{ usuario.lastName | capitalizeFirst : true }}
+
+        } @else { Mi Cuenta }
+      </span>
+    </div>
+  </a>
+
   <!-- Start::botón usuario B2C -->
-  <span
+  <!--<span
     *ngIf="tipo === 'b2c'"
     class="indicator__button flex-column"
     style="cursor: pointer"
@@ -24,35 +63,10 @@
     } @else {
     <span class="icon-title mt-1"> Mi Cuenta </span>
     }
-  </span>
+  </span> -->
   <!-- End::botón usuario B2C -->
 
-  <!-- Start::botón usuario B2B -->
-  <span
-    *ngIf="tipo === 'b2b'"
-    class="indicator__button"
-    style="cursor: pointer"
-    (click)="$event.preventDefault(); cerrarBienvenida(); menuUser.toggle()"
-  >
-    <span class="indicator__area">
-      <i class="far fa-user-circle"></i>
-    </span>
-    @if(usuario.login_temp == false){
-    <span class="icon-title mt-1" style="font-size: 0.95rem">
-      Hola!
-      <strong>{{ usuario.firstName | capitalizeFirst : true }}</strong></span
-    >
-    } @else {
-    <span class="icon-title mt-1"> Ingresar </span>
-    }
-  </span>
-  <!-- End::botón usuario B2B -->
-
-  <div
-    class="indicator__dropdown"
-    style="right: 1rem"
-    [ngStyle]="{ top: tipo === 'b2b' ? '70px' : '100%' }"
-  >
+  <div class="indicator__dropdown" style="right: 1rem; top: 100%">
     <ng-container *ngIf="mostrarMenu && !mostrarBienvenida">
       <app-header-menu layout="topbar" [items]="linkMiCuenta">
       </app-header-menu>

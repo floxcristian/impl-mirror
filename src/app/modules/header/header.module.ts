@@ -26,11 +26,22 @@ import { MobileSearchComponent } from './components/mobile-search/mobile-search.
 import { ModalStoresComponent } from './components/modal-stores/modal-stores.component';
 import { SearchComponent } from './components/search/search.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 //B2B
 import { DireccionDespachoComponent } from './components/search-vin-b2b/components/direccion-despacho/direccion-despacho.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalVehicleComponent } from './components/modal-vehicle/modal-vehicle.component';
+//PRIMENG
+import { DropdownModule } from 'primeng/dropdown';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { ButtonModule } from 'primeng/button';
+import { MessagesModule } from 'primeng/messages';
+import { BadgeModule } from 'primeng/badge';
+import { FilterPipe } from './components/search/filter.pipe';
 
 @NgModule({
   declarations: [
@@ -41,6 +52,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
     SearchComponent,
     TopbarComponent,
     ModalStoresComponent,
+    ModalVehicleComponent,
     AccountComponent,
     MobileSearchComponent,
     DireccionDespachoComponent,
@@ -48,6 +60,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
     MenuCategoriaB2cMobileComponent,
     Nivel2Component,
     Nivel3Component,
+    FilterPipe,
   ],
   imports: [
     // modules (angular)
@@ -60,22 +73,32 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
     WidgetsModule,
     NgSelectModule,
     DataTablesModule,
+    ButtonsModule.forRoot(),
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ReactiveFormsModule,
     ModalModule,
+    DropdownModule,
+    AutoCompleteModule,
+    InputGroupModule,
+    InputGroupAddonModule,
+    ButtonModule,
+    MessagesModule,
+    BadgeModule,
   ],
   exports: [
     // components
     HeaderComponent,
     MenuComponent,
     ModalStoresComponent,
+    ModalVehicleComponent,
     MobileSearchComponent,
     TopbarComponent,
     SearchComponent,
     DropcartComponent,
     MenuCategoriasB2cComponent,
     MenuCategoriaB2cMobileComponent,
+    FilterPipe,
   ],
   providers: [NgbActiveModal],
 })

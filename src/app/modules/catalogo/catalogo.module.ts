@@ -22,7 +22,6 @@ import { PageVerNewsletterComponent } from './pages/page-ver-newsletter/page-ver
 // Components
 import { TemplatePortadaComponent } from './components/template-portada/template-portada.component';
 import { TemplateProductosVerticalComponent } from './components/template-productos-vertical/template-productos-vertical.component';
-import { IconSvgComponent } from './components/icon-svg/icon-svg.component';
 import { HeaderCatalogoComponent } from './components/header-catalogo/header-catalogo.component';
 import { FooterCatalogoComponent } from './components/footer-catalogo/footer-catalogo.component';
 import { ProductoVerticalComponent } from './components/producto-vertical/producto-vertical.component';
@@ -36,7 +35,6 @@ import { LayoutModule } from '@angular/cdk/layout';
     PageVerCatalogoComponent,
     TemplatePortadaComponent,
     TemplateProductosVerticalComponent,
-    IconSvgComponent,
     HeaderCatalogoComponent,
     FooterCatalogoComponent,
     ProductoVerticalComponent,
@@ -56,7 +54,7 @@ import { LayoutModule } from '@angular/cdk/layout';
     SharedModule,
     HeaderModule,
     MobileModule,
-    LayoutModule
+    LayoutModule,
   ],
 })
 export class CatalogoModule {}

@@ -25,8 +25,8 @@ export class DocumentDownloadService {
     return this.http.get(url);
   }
 
-  downloadOcPdf(shoppingCartId:string){
-    const url = `${API_PAYMENT_DOWNLOAD}/purchase-order/download/${shoppingCartId}`
+  downloadOcPdf(shoppingCartId: string) {
+    const url = `${API_PAYMENT_DOWNLOAD}/purchase-order/download/${shoppingCartId}`;
     return this.http.get(url, { responseType: 'arraybuffer' });
   }
 }

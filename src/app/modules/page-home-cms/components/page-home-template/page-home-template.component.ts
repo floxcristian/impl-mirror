@@ -42,7 +42,7 @@ export class PageHomeTemplateComponent
 
   lastLoadKey: string = '';
   subscription: Subscription = new Subscription();
-  isMobile:boolean = false
+  isMobile: boolean = false;
 
   constructor(
     // Services V2
@@ -58,11 +58,13 @@ export class PageHomeTemplateComponent
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     afterNextRender(() => {
-      if(isPlatformBrowser(platformId)){
+      if (isPlatformBrowser(platformId)) {
         const userAgent = window.navigator.userAgent;
-        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-        if(!this.isMobile)
-          this.chatService.loadChatScript();
+        this.isMobile =
+          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            userAgent
+          );
+        if (!this.isMobile) this.chatService.loadChatScript();
       }
     });
   }

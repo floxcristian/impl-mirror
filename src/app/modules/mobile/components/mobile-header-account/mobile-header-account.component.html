@@ -1,22 +1,48 @@
 <div
-  class="indicator indicator--trigger--click"
+  class="indicator indicator--mobile indicator--trigger--click"
   appDropdown="indicator--opened"
   #menuUser="appDropdown"
+  style="
+    width: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  "
 >
-  <span
-    class="indicator__button flex-column"
+  <div
+    class="indicator__button"
+    style="flex-direction: column; padding-bottom: 0"
     (click)="$event.preventDefault(); cerrarBienvenida(); menuUser.toggle()"
-    style="padding-top: 10px !important"
   >
-    <span class="indicator__area fa p-0">
-      <img
-        src="../../../../../assets/svg/08.svg"
-        style="width: 23px; height: 28px"
-      />
-    </span>
+    <div
+      style="
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <i class="fa-light fa-user fa-xl lg:text-lg"> </i>
+    </div>
+
+    <div
+      style="
+        height: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: start;
+      "
+    >
+      <span style="line-height: normal; text-align: center; font-size: 10px">
+        @if(usuario == null || usuario.login_temp == true){ Ingresar } @else{
+        {{ usuario.firstName | capitalizeFirst : true }}
+        }
+      </span>
+    </div>
+    <!--
     <span
       class="icon-title"
-      *ngIf="this.usuario == null || this.usuario.login_temp == true"
+      *ngIf="usuario == null || usuario.login_temp == true"
       style="font-size: 0.5rem !important"
     >
       Ingresar
@@ -27,9 +53,10 @@
       style="font-size: 0.5rem !important"
     >
       {{ usuario.firstName | capitalizeFirst : true }}
-    </span>
-  </span>
+    </span>-->
+  </div>
 
+  <!-- Start::dropdown -->
   <div class="indicator__dropdown" style="max-height: auto; overflow-y: auto">
     <ng-container *ngIf="mostrarMenu && !mostrarBienvenida">
       <app-header-menu layout="topbar" [items]="linkMiCuenta">

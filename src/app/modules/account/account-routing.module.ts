@@ -20,6 +20,7 @@ import { PageCentrosCostoComponent } from './pages/page-centros-costo/page-centr
 import { PageGestionUsuarioComponent } from './pages/page-gestion-usuario/page-gestion-usuario.component';
 import { PageComprasComponent } from './pages/page-compras/page-compras.component';
 import { PageOvsListComponent } from './pages/page-ovs-list/page-ovs-list.component';
+import { PageFlotaComponent } from './pages/page-flota/page-flota.component';
 
 const routes: Routes = [
   {
@@ -98,8 +99,12 @@ const routes: Routes = [
       },
       {
         path: 'ordenes',
-        component: PageOvsListComponent
+        component: PageOvsListComponent,
       },
+      {
+        path: 'mi-flota',
+        component:PageFlotaComponent
+      }
     ],
   },
   {

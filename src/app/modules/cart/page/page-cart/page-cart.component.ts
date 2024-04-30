@@ -151,7 +151,7 @@ export class PageCartComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.shoppingCartService.dropCartActive$.next(false);
     });
-    if(isPlatformBrowser(this.platformId)){
+    if (isPlatformBrowser(this.platformId)) {
       _this.shoppingCartService.calc(true);
       if (!['supervisor', 'buyer'].includes(this.user?.userRole || '')) {
         this.gtmService.pushTag({

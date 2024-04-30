@@ -43,8 +43,7 @@ export class ModaluserComponent implements OnInit, OnDestroy {
     // Services V2
     private readonly sessionService: SessionService,
     private readonly subAccountService: SubAccountService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.formUser();
@@ -72,7 +71,7 @@ export class ModaluserComponent implements OnInit, OnDestroy {
   formUser() {
     this.formUsuario = this.fb.group({
       active: [true],
-      username: [{value:'',disabled:true}, Validators.required],
+      username: [{ value: '', disabled: true }, Validators.required],
       email: [
         '',
         [
@@ -82,7 +81,7 @@ export class ModaluserComponent implements OnInit, OnDestroy {
         ],
       ],
       password: ['', Validators.required],
-      phone: ['', [Validators.required,Validators.maxLength(12)]],
+      phone: ['', [Validators.required, Validators.maxLength(12)]],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       userRole: UserRoleType.BUYER,
@@ -106,7 +105,7 @@ export class ModaluserComponent implements OnInit, OnDestroy {
     this.modalRef = this.modalService.show(this.modalCrearUsuario, {
       backdrop: 'static',
       keyboard: false,
-      class: 'modal-lg'
+      class: 'modal-lg',
     });
   }
 
@@ -114,7 +113,7 @@ export class ModaluserComponent implements OnInit, OnDestroy {
     this.modalRef = this.modalService.show(this.modalUsuario, {
       backdrop: 'static',
       keyboard: false,
-      class: 'modal-lg'
+      class: 'modal-lg',
     });
   }
 
@@ -122,7 +121,7 @@ export class ModaluserComponent implements OnInit, OnDestroy {
     this.modalRef = this.modalService.show(this.modalEliminarUsuario, {
       backdrop: 'static',
       keyboard: false,
-      class: 'modal-lg'
+      class: 'modal-lg',
     });
   }
 
@@ -131,8 +130,8 @@ export class ModaluserComponent implements OnInit, OnDestroy {
   }
 
   async onSubmit() {
-    this.formUsuario.get('username')?.enable()
-    let data:any = this.formUsuario.value
+    this.formUsuario.get('username')?.enable();
+    let data: any = this.formUsuario.value;
     data.company = this.user_raiz.company;
     data.documentId = this.users.documentId
       ? this.users.documentId
@@ -148,7 +147,7 @@ export class ModaluserComponent implements OnInit, OnDestroy {
           next: () => {
             this.modalRef.hide();
             this.userService.LoadData();
-            this.formUsuario.get('username')?.disable()
+            this.formUsuario.get('username')?.disable();
           },
           error: () => {
             this.toastr.error(
@@ -167,12 +166,10 @@ export class ModaluserComponent implements OnInit, OnDestroy {
           next: () => {
             this.modalRef.hide();
             this.userService.LoadData();
-            this.formUsuario.get('username')?.disable()
+            this.formUsuario.get('username')?.disable();
           },
           error: () => {
-            this.toastr.error(
-              'No se pudo crear el usuario ' + data.username
-            );
+            this.toastr.error('No se pudo crear el usuario ' + data.username);
             this.modalRef.hide();
             this.userService.LoadData();
           },
