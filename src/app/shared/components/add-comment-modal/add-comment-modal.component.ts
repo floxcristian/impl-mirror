@@ -88,7 +88,8 @@ export class AddCommentModalComponent implements OnInit {
     return (
       !isVacio(this.valoracion) &&
       !isVacio(this.nombre) &&
-      !isVacio(this.correo)
+      !isVacio(this.correo) &&
+      !isVacio(this.titulo)
     );
   }
 }
