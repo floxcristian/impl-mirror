@@ -174,70 +174,30 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.animateButton = false;
     }, 5000);
 
-    /*setInterval(() => {
-      this.animatedPlaceholder = '';
-    }, 1000);*/
-
     this.efectoTipeo();
   }
 
   efectoTipeo() {
     this.animatedPlaceholder = '';
-    const caracteresIniciales: string[] = ['Z', 'B', '7'];
-    let indiceCaracterActual = 0;
-    let agregandoCaracteres = true;
-
     const agregarCaracteres = () => {
-      if (agregandoCaracteres) {
-        this.animatedPlaceholder += caracteresIniciales[indiceCaracterActual];
-        indiceCaracterActual++;
-        if (indiceCaracterActual === caracteresIniciales.length) {
-          indiceCaracterActual = 0;
-          agregandoCaracteres = false;
-          eliminarCaracteres();
-          return;
-        }
+      if (this.animatedPlaceholder.length < 6) {
+        this.animatedPlaceholder +=
+          this.obtenerLetraMayusculaONumeroAleatorio();
       } else {
-        this.animatedPlaceholder = this.animatedPlaceholder.slice(0, -1);
-        if (this.animatedPlaceholder.length === 3) {
-          agregarCaracteresAleatorios();
-          return;
-        }
+        setTimeout(eliminarCaracteres, 1000);
+        return;
       }
-      console.log(this.animatedPlaceholder);
-      setTimeout(agregarCaracteres, 1000);
+      setTimeout(agregarCaracteres, 300);
     };
 
     const eliminarCaracteres = () => {
-      if (this.animatedPlaceholder.length > 0) {
+      if (this.animatedPlaceholder.length) {
         this.animatedPlaceholder = this.animatedPlaceholder.slice(0, -1);
-        console.log(this.animatedPlaceholder);
-        setTimeout(eliminarCaracteres, 1000);
+        setTimeout(eliminarCaracteres, 100);
       } else {
-        agregandoCaracteres = true;
         agregarCaracteres();
       }
     };
-
-    const agregarCaracteresAleatorios = () => {
-      const caracteresAleatorios: string[] = ['6', '0', '3'];
-      let indiceAleatorio = 0;
-
-      const agregarCaracter = () => {
-        this.animatedPlaceholder += caracteresAleatorios[indiceAleatorio];
-        console.log('agregarCaracter: ', this.animatedPlaceholder);
-        indiceAleatorio++;
-        if (indiceAleatorio === caracteresAleatorios.length) {
-          indiceAleatorio = 0;
-          agregarCaracteres();
-          return;
-        }
-        setTimeout(agregarCaracter, 1000);
-      };
-
-      agregarCaracter();
-    };
-
     agregarCaracteres();
   }
 
@@ -617,5 +577,11 @@ export class SearchComponent implements OnInit, OnDestroy {
           },
         });
     }
+  }
+
+  obtenerLetraMayusculaONumeroAleatorio(): string {
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const indiceAleatorio = Math.floor(Math.random() * caracteres.length);
+    return caracteres.charAt(indiceAleatorio);
   }
 }

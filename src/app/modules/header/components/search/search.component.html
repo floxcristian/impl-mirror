@@ -361,7 +361,7 @@
 
   <div class="overlay" *ngIf="isFocusedInput" (click)="blurInput()"></div>
 
-  <div class="col-header-2" style="margin-top: 2px">
+  <div class="col-header-2" style="margin-top: 3px">
     <div class="nav-panel__indicators d-flex align-items-center">
       <!-- Start::item dirección envío -->
       @if(session.documentId != '0'){
@@ -618,10 +618,7 @@
                       ></button>
                     </p-inputGroup>
                   </div>
-                  <!--<small id="patent-help"
-                  >Ingrese una patente para la búsqueda de filtros
-                  compatibles.</small
-                >-->
+
                   @if(notVehicleFound){
                   <div style="display: flex; justify-content: center">
                     <small id="patent-help" class="p-error">

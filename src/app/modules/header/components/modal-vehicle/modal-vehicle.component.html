@@ -4,7 +4,7 @@
       class="fa-solid fa-truck-moving me-2"
       style="color: #00549d; font-size: 1.5rem"
     ></i>
-    <span style="font-size: 16px; color: #0063b9">Buscar Vehículo</span>
+    <span style="font-size: 16px; color: #0063b9">Encuentra tus filtros</span>
   </h5>
   <button type="button" class="btn" (click)="activeModal.close()">
     <i class="fas fa-times-circle" style="color: #00549d; font-size: 18px"></i>
@@ -52,14 +52,15 @@
           [closable]="false"
         ></p-messages>
         <div>
-          <div style="display: flex; justify-content: center">
-            <small id="patent-help"
-              >Ingrese una patente para la búsqueda de filtros
-              compatibles.</small
+          <div
+            style="display: flex; justify-content: center; align-items: center"
+          >
+            <small id="patent-help">
+              Ingresa o busca tu patente. Próximamente más productos.</small
             >
           </div>
           <!-- Select V2 dropdown editable-->
-          <div class="flex justify-content-center" style="margin-top: 0.5rem">
+          <div class="flex justify-content-center" style="margin: 0.5rem 0">
             <p-inputGroup>
               <p-dropdown
                 [options]="customerVehiclesFilter"
@@ -93,12 +94,19 @@
               ></button>
             </p-inputGroup>
           </div>
-          <p
+          <!--<p
             *ngIf="notVehicleFound"
             class="text-error-form-2 text-center text-danger pt-2"
           >
             No se encontraron resultados.
-          </p>
+          </p>-->
+          @if(notVehicleFound){
+          <div style="display: flex; justify-content: center">
+            <small id="patent-help" class="p-error">
+              Patente no encontrada. Revisa los datos ingresados.</small
+            >
+          </div>
+          }
         </div>
       </div>
 
@@ -167,7 +175,7 @@
           <p-button
             [ngStyle]="{ display: 'contents' }"
             styleClass="w-100"
-            label="Cambiar"
+            label="Buscar otra patente"
             severity="secondary"
             (onClick)="cleanSelectedVehicle()"
           ></p-button>
@@ -184,7 +192,7 @@
         <div *ngIf="selectedVehicle?.codigoSii">
           <p-button
             styleClass="w-100"
-            label="Ver Filtros encontrados"
+            label="Ver filtros encontrados"
             (onClick)="goToProductsPage()"
           ></p-button>
         </div>
