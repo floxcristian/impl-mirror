@@ -166,9 +166,10 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.animateButton = false;
     }, 5000);
 
-    this.efectoTipeo();
+    //this.efectoTipeo();
   }
 
+  /*
   efectoTipeo() {
     this.animatedPlaceholder = '';
     const agregarCaracteres = () => {
@@ -190,7 +191,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       }
     };
     agregarCaracteres();
-  }
+  }*/
 
   ngOnInit(): void {
     this.onChangeSearchInput();
