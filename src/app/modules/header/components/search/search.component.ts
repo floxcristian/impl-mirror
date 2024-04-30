@@ -162,11 +162,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       type: ['patent', Validators.required],
       search: [null],
     });
-    setTimeout(() => {
-      this.animateButton = false;
-    }, 5000);
-
-    //this.efectoTipeo();
   }
 
   /*
@@ -194,6 +189,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   }*/
 
   ngOnInit(): void {
+    /*setTimeout(() => {
+      this.animateButton = false;
+    }, 5000);*/
+
+    //this.efectoTipeo();
     this.onChangeSearchInput();
     this.onChangeTypeInput();
 
