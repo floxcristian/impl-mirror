@@ -1,5 +1,5 @@
 // Angular
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 // Models
 import { ISession } from '@core/models-v2/auth/session.interface';
 // Services
@@ -8,6 +8,7 @@ import { SessionService } from '@core/services-v2/session/session.service';
 import { AuthStateServiceV2 } from '@core/services-v2/session/auth-state.service';
 import { MenuService } from '@core/services-v2/menu/menu.service';
 import { CustomerPreferenceService } from '@core/services-v2/customer-preference/customer-preference.service';
+import { DropdownDirective } from '@shared/directives/dropdown.directive';
 
 @Component({
   selector: 'app-account',
@@ -15,6 +16,9 @@ import { CustomerPreferenceService } from '@core/services-v2/customer-preference
   styleUrls: ['./account.component.scss'],
 })
 export class AccountComponent implements OnInit {
+
+
+  @ViewChild('menuUser', { static: false }) menuUser!: DropdownDirective;
   usuario!: ISession;
 
   mostrarMenu: boolean = false;
@@ -88,5 +92,9 @@ export class AccountComponent implements OnInit {
     this.customerPreferenceService.getCustomerPreferences().subscribe({
       next: (preferences) => {},
     });
+  }
+
+  openLogin(){
+    this.menuUser.toggle()
   }
 }

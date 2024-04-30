@@ -61,6 +61,7 @@ import { IVehicleCustomer } from '@core/services-v2/customer-vehicle/vehicle-cus
 import { Message } from 'primeng/api';
 // Env
 import { environment } from '@env/environment';
+import { AccountComponent } from '../account/account.component';
 
 @Component({
   selector: 'app-header-search',
@@ -75,6 +76,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   @ViewChild(DropdownDirective, { static: false })
   dropdown!: DropdownDirective;
   isSearchVehicleVisible: boolean;
+  @ViewChild(AccountComponent,{static:false}) account!: AccountComponent;
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -617,5 +619,12 @@ export class SearchComponent implements OnInit, OnDestroy {
           },
         });
     }
+  }
+  /**
+   * Cierra dropDown vehicle and open login
+   */
+  openLogin(){
+    this.menuVehiculo.toggle()
+    this.account.openLogin()
   }
 }
