@@ -61,6 +61,7 @@ import { IVehicleCustomer } from '@core/services-v2/customer-vehicle/vehicle-cus
 import { Message } from 'primeng/api';
 // Env
 import { environment } from '@env/environment';
+import { AccountComponent } from '../account/account.component';
 
 @Component({
   selector: 'app-header-search',
@@ -75,6 +76,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   @ViewChild(DropdownDirective, { static: false })
   dropdown!: DropdownDirective;
   isSearchVehicleVisible: boolean;
+  @ViewChild(AccountComponent, { static: false }) account!: AccountComponent;
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -435,7 +437,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.isClickedVehicleSearch = true;
       return;
     }
-
+    search = search.toUpperCase();
     this.isLoadingVehicles = true;
     this.vehicleService
       .getByPatentOrVin({
@@ -511,12 +513,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     else {
       let typeFilter = this.getTypeFilter();
       if (typeFilter === 'patent')
-        this.customerVehiclesFilter = this.customerVehiclesOriginal.filter(
+        this.customerVehiclesFilter = this.customerVehiclesOriginal?.filter(
           (vehicle: any) =>
             vehicle.patent.toUpperCase().includes(valueSearch.toUpperCase())
         );
       else
-        this.customerVehiclesFilter = this.customerVehiclesOriginal.filter(
+        this.customerVehiclesFilter = this.customerVehiclesOriginal?.filter(
           (vehicle: any) =>
             vehicle.codeChasis
               .toUpperCase()
@@ -583,5 +585,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     const indiceAleatorio = Math.floor(Math.random() * caracteres.length);
     return caracteres.charAt(indiceAleatorio);
+  }
+  /**
+   * Cierra dropDown vehicle and open login
+   */
+  openLogin() {
+    this.menuVehiculo.toggle();
+    this.account.openLogin();
   }
 }
