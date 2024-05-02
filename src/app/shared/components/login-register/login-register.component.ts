@@ -12,6 +12,7 @@ import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import { IEcommerceUser } from '@core/models-v2/auth/user.interface';
 import { IGuest } from '@core/models-v2/storage/guest.interface';
 import { isPlatformBrowser } from '@angular/common';
+declare let dataLayer: any;
 
 @Component({
   selector: 'app-login-register',
@@ -31,9 +32,13 @@ export class LoginRegisterComponent implements OnInit {
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
-      this.gtmService.pushTag({
+      // this.gtmService.pushTag({
+      //   event: 'profile',
+      //   pagePath: window.location.href,
+      // });
+      dataLayer.push({
         event: 'profile',
-        pagePath: window.location.href,
+        pagePath: window.location.href
       });
     }
   }

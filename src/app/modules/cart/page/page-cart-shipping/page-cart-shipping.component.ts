@@ -73,6 +73,7 @@ import { ConfigService } from '@core/config/config.service';
 import { IConfig } from '@core/config/config.interface';
 import { CallBackCartLoaded } from '@core/models-v2/cart/callback-cart-loaded.type';
 import { UserRoleType } from '@core/enums/user-role-type.enum';
+declare let dataLayer: any;
 
 export let browserRefresh = false;
 @Component({
@@ -257,9 +258,13 @@ export class PageCartShippingComponent implements OnInit {
         this.userSession.userRole !== UserRoleType.SUPERVISOR &&
         this.userSession.userRole !== UserRoleType.BUYER
       ) {
-        this.gtmService.pushTag({
+        // this.gtmService.pushTag({
+        //   event: 'shipping',
+        //   pagePath: window.location.href,
+        // });
+        dataLayer.push({
           event: 'shipping',
-          pagePath: window.location.href,
+          pagePath: window.location.href
         });
       }
     }

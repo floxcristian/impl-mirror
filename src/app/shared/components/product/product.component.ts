@@ -71,6 +71,7 @@ import { ModalScalePriceComponent } from '../modal-scale-price/modal-scale-price
 import { ConfigService } from '@core/config/config.service';
 import { IReviewsResponse } from '@core/models-v2/article/review-response.interface';
 import { environment } from '@env/environment';
+declare let dataLayer: any;
 
 @Component({
   selector: 'app-product',
@@ -247,9 +248,13 @@ export class ProductComponent implements OnInit, OnChanges {
         .subscribe();
 
       if (!this.sessionService.isB2B()) {
-        this.gtmService.pushTag({
+        // this.gtmService.pushTag({
+        //   event: 'productView',
+        //   pagePath: window.location.href,
+        // });
+        dataLayer.push({
           event: 'productView',
-          pagePath: window.location.href,
+          pagePath: window.location.href
         });
       }
     }

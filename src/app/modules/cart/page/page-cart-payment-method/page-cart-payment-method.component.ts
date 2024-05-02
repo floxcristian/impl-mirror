@@ -89,6 +89,8 @@ import { ConfigService } from '@core/config/config.service';
 import { IConfig } from '@core/config/config.interface';
 import { DocumentValidator } from '@core/validators/document-form.validator';
 
+declare let dataLayer: any;
+
 // declare const $: any;
 export interface Archivo {
   archivo: File;
@@ -412,9 +414,13 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
       this.userSession?.userRole !== UserRoleType.SUPERVISOR &&
       this.userSession?.userRole !== UserRoleType.BUYER
     ) {
-      this.gtmService.pushTag({
+      // this.gtmService.pushTag({
+      //   event: 'payment',
+      //   pagePath: window.location.href,
+      // });
+      dataLayer.push({
         event: 'payment',
-        pagePath: window.location.href,
+        pagePath: window.location.href
       });
     }
     if (!this.userSession?.businessLine && !this.guest) {

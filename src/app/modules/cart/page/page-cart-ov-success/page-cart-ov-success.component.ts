@@ -25,6 +25,7 @@ import { PaymentMethodService } from '@core/services-v2/payment-method.service';
 import { ConfigService } from '@core/config/config.service';
 import { IConfig } from '@core/config/config.interface';
 declare let fbq: any;
+declare let dataLayer: any;
 
 @Component({
   selector: 'app-page-cart-ov-success',
@@ -183,9 +184,13 @@ export class PageCartOvSuccessComponent implements OnInit, OnDestroy {
               index = index + 1;
 
               if (!tempcarro.tags || !tempcarro.tags.gtag) {
-                this.gtmService.pushTag({
+                // this.gtmService.pushTag({
+                //   event: 'transaction',
+                //   ecommerce: item,
+                // });
+                dataLayer.push({
                   event: 'transaction',
-                  ecommerce: item,
+                  ecommerce: item
                 });
 
                 const id = tempcarro._id!.toString();

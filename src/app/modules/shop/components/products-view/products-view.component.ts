@@ -13,6 +13,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { GoogleTagManagerService } from 'angular-google-tag-manager';
 // Models
 import { Link } from '../../../../shared/interfaces/link';
+declare let dataLayer: any;
 
 @Component({
   selector: 'app-products-view',
@@ -83,10 +84,14 @@ export class ProductsViewComponent {
 
   ngOnInit(): void {
     if (!this.isB2B) {
-      this.gtmService.pushTag({
+      // this.gtmService.pushTag({
+      //   event: 'categorie_view',
+      //   pagePath: this.url,
+      // });
+      dataLayer.push({
         event: 'categorie_view',
-        pagePath: this.url,
-      });
+        pagePath: this.url
+    });
     }
   }
 

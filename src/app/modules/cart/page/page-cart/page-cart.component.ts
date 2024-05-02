@@ -34,6 +34,7 @@ import { IArticle } from '@core/models-v2/cms/special-reponse.interface';
 import { GuestStorageService } from '@core/storage/guest-storage.service';
 import { ConfigService } from '@core/config/config.service';
 import { IConfig } from '@core/config/config.interface';
+declare let dataLayer: any;
 
 interface Item {
   ProductCart: IShoppingCartProduct;
@@ -154,9 +155,13 @@ export class PageCartComponent implements OnInit, OnDestroy {
     if (isPlatformBrowser(this.platformId)) {
       _this.shoppingCartService.calc(true);
       if (!['supervisor', 'buyer'].includes(this.user?.userRole || '')) {
-        this.gtmService.pushTag({
+        // this.gtmService.pushTag({
+        //   event: 'cart',
+        //   pagePath: window.location.href,
+        // });
+        dataLayer.push({
           event: 'cart',
-          pagePath: window.location.href,
+          pagePath: window.location.href
         });
       }
     }

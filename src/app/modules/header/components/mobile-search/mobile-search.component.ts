@@ -29,6 +29,7 @@ import { AuthStateServiceV2 } from '@core/services-v2/session/auth-state.service
 import { ISession } from '@core/models-v2/auth/session.interface';
 import { ISelectedStore } from '@core/services-v2/geolocation/models/geolocation.interface';
 import { CartService } from '@core/services-v2/cart.service';
+declare let dataLayer: any;
 
 @Component({
   selector: 'app-mobile-search',
@@ -137,10 +138,14 @@ export class MobileSearchComponent implements OnInit {
   buscar() {
     this.textToSearch = this.searchControl.value || '';
 
-    this.gtmService.pushTag({
+    // this.gtmService.pushTag({
+    //   event: 'search',
+    //   busqueda: this.textToSearch,
+    // });
+    dataLayer.push({
       event: 'search',
-      busqueda: this.textToSearch,
-    });
+      busqueda: this.textToSearch
+  });
 
     if (this.textToSearch.trim() === '') {
       this.toastr.info('Debe ingresar un texto para buscar', 'Información');

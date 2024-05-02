@@ -31,6 +31,7 @@ import { SessionService } from '@core/services-v2/session/session.service';
 import { CartService } from '@core/services-v2/cart.service';
 import { CartV2Service } from '@core/services-v2/cart/cart.service';
 import { MetaTag } from '@core/models-v2/article/article-response.interface';
+declare let dataLayer: any;
 
 @Component({
   selector: 'app-product-card-b2c-cms',
@@ -157,6 +158,10 @@ export class ProductCardB2cCmsComponent implements OnInit {
     if (this.addingToCart) {
       return;
     }
+    dataLayer.push({
+      event: 'addtoCart',
+      pagePath: window.location.href
+    });
 
     if (this.origen) {
       // Seteamos el origen de donde se hizo click a add cart.

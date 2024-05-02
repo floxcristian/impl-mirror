@@ -58,6 +58,7 @@ import { VehicleType } from '@core/services-v2/vehicle/vehicle-type.enum';
 import { IVehicle } from '@core/services-v2/vehicle/vehicle-response.interface';
 import { CustomerVehicleService } from '@core/services-v2/customer-vehicle/customer-vehicle.service';
 import { IVehicleCustomer } from '@core/services-v2/customer-vehicle/vehicle-customer-response.interface';
+declare let dataLayer: any;
 // Env
 import { environment } from '@env/environment';
 import { AccountComponent } from '../account/account.component';
@@ -253,10 +254,13 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   buscar(): void {
     this.textToSearch = this.searchControl.value || '';
-
-    this.gtmService.pushTag({
+    // this.gtmService.pushTag({
+    //   event: 'search',
+    //   busqueda: this.textToSearch,
+    // });
+    dataLayer.push({
       event: 'search',
-      busqueda: this.textToSearch,
+      busqueda: this.textToSearch
     });
 
     if (this.textToSearch.trim() === '') {
