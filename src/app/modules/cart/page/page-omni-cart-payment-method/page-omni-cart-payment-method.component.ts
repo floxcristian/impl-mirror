@@ -67,7 +67,7 @@ export class PageOmniCartPaymentMethodComponent implements OnInit {
       // if (query.site_id === 'MLC' && query.external_reference) this.manejarAlertaMercadoPagoSiEsNecesario(query);
     });
 
-    this.loadCart = false;
+    // this.loadCart = false;
   }
 
   async loadData() {
@@ -81,6 +81,7 @@ export class PageOmniCartPaymentMethodComponent implements OnInit {
         this.productCart = this.cartSession.products;
         this.setDireccion(this.cartSession);
         await this.cartService.loadOmni(this.id);
+        this.loadCart = false;
       } else {
         this.loadCart = false;
         this.linkNoValido = true;
