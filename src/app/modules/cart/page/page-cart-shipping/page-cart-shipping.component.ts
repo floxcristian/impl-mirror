@@ -136,6 +136,7 @@ export class PageCartShippingComponent implements OnInit {
   cardShippingActive = 0;
   grupoShippingActive: number | null = 0;
   selectedShippingId: any;
+  selectedShippingIdLast: any;
   selectedStoreItem = {};
   addresses: (ICustomerAddress & {
     fullAddress: string;
@@ -528,7 +529,7 @@ export class PageCartShippingComponent implements OnInit {
         this.cart.removeTotalShipping();
         this.cart.removeTotalDiscount();
       }
-
+      this.shippingDaysStore = [];
       try {
         const response: GetLogisticPromiseResponse = await lastValueFrom(
           this.cart.logisticPromise(data)
@@ -575,6 +576,7 @@ export class PageCartShippingComponent implements OnInit {
         this.ver_fechas();
       } catch (e) {
         console.log(e);
+        this.loadingShippingStore = false;
         this.shippingDaysStore = [];
       }
       //});
@@ -870,7 +872,9 @@ export class PageCartShippingComponent implements OnInit {
       // } else {
       //   this.recibeType = 'yo';
       // }
-      this.setDefaultAddress();
+      if(this.selectedShippingIdLast) this.selectedShippingId = this.selectedShippingIdLast
+      else this.setDefaultAddress();
+
       if (this.selectedShippingId) {
         this.obtieneDespachos();
       }
