@@ -1,10 +1,16 @@
 import { Usuario } from './../../../../shared/interfaces/login';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { LocalStorageService } from 'src/app/core/modules/local-storage/local-storage.service';
 import { SessionStorageService } from '@core/storage/session-storage.service';
 import { ISession } from '@core/models-v2/auth/session.interface';
 import { AuthStateServiceV2 } from '@core/services-v2/session/auth-state.service';
 import { MenuService } from '@core/services-v2/menu/menu.service';
+import { DropdownDirective } from '@shared/directives/dropdown.directive';
 
 @Component({
   selector: 'app-mobile-header-account',
@@ -12,6 +18,7 @@ import { MenuService } from '@core/services-v2/menu/menu.service';
   styleUrls: ['./mobile-header-account.component.scss'],
 })
 export class MobileHeaderAccountComponent implements OnInit {
+  @ViewChild('menuUser', { static: false }) menuUser!: DropdownDirective;
   usuario!: ISession | null;
   mostrarMenu = false;
   mostrarBienvenida = false;
@@ -37,7 +44,6 @@ export class MobileHeaderAccountComponent implements OnInit {
   constructor(
     public localS: LocalStorageService,
     private cd: ChangeDetectorRef,
-    // Services V2
     private readonly sessionStorage: SessionStorageService,
     private readonly authStateService: AuthStateServiceV2,
     private readonly menuService: MenuService
@@ -56,6 +62,10 @@ export class MobileHeaderAccountComponent implements OnInit {
     if (this.usuario) {
       this.linkMiCuenta = this.menuService.get(this.usuario.userRole);
     }
+
+    this.menuService.$openLoginDropdown.subscribe(() => {
+      this.menuUser.toggle();
+    });
     this.cd.detectChanges();
   }
 
@@ -63,7 +73,7 @@ export class MobileHeaderAccountComponent implements OnInit {
     this.mostrarMenu = value;
   }
 
-  cerrarBienvenida() {
+  cerrarBienvenida(): void {
     this.mostrarBienvenida = false;
   }
 }

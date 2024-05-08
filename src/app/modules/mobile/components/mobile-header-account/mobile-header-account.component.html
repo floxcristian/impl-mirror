@@ -9,6 +9,7 @@
     justify-content: center;
   "
 >
+  <!-- Start::botón iniciar sesión -->
   <div
     class="indicator__button"
     style="flex-direction: column; padding-bottom: 0"
@@ -39,22 +40,8 @@
         }
       </span>
     </div>
-    <!--
-    <span
-      class="icon-title"
-      *ngIf="usuario == null || usuario.login_temp == true"
-      style="font-size: 0.5rem !important"
-    >
-      Ingresar
-    </span>
-    <span
-      class="icon-title"
-      *ngIf="this.usuario != null && this.usuario.login_temp == false"
-      style="font-size: 0.5rem !important"
-    >
-      {{ usuario.firstName | capitalizeFirst : true }}
-    </span>-->
   </div>
+  <!-- End::botón iniciar sesión -->
 
   <!-- Start::dropdown -->
   <div class="indicator__dropdown" style="max-height: auto; overflow-y: auto">

@@ -5,11 +5,19 @@ import { IUserRole } from '@core/services-v2/auth/models/login-response.interfac
 import { IMenuItem } from './menu-item.interface';
 // Constants
 import { MenuItem } from './menu-items';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MenuService {
+  $openLoginDropdown: Subject<void> = new Subject<void>();
+
+  /**
+   * Obtener elementos del menú.
+   * @param profile perfil de usuario.
+   * @returns
+   */
   get(profile: IUserRole): IMenuItem[] {
     let menuItems = [];
     if (profile === 'superadmin') {
@@ -172,5 +180,12 @@ export class MenuService {
     }
 
     return menuItems.filter(Boolean) as IMenuItem[];
+  }
+
+  /**
+   * Emitir evento para abrir el dropdown del login.
+   */
+  openLoginDropdown(): void {
+    this.$openLoginDropdown.next();
   }
 }

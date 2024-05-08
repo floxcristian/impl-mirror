@@ -1,4 +1,4 @@
-<app-topbar-mobile></app-topbar-mobile>
+<app-topbar-mobile />
 <div class="mobile-header sticky" *ngIf="Hidebar()">
   <div
     class="mobile-header__panel"
@@ -17,6 +17,7 @@
             style="font-size: 17px"
           ></i>
         </button>
+        <!-- Start::logo implementos -->
         <a class="mobile-header__logo me-auto" [routerLink]="['/', 'inicio']">
           <img
             height="35"
@@ -25,8 +26,10 @@
             class="lazyload"
           />
         </a>
+        <!-- End::logo implementos -->
 
         <div class="mobile-header__indicators" style="justify-content: end">
+          <!-- Start::carro de compras -->
           <div
             class="indicator indicator--mobile"
             style="
@@ -79,9 +82,10 @@
               </div>
             </a>
           </div>
+          <!-- End::carro de compras -->
 
           <!-- Ingreso cuenta usuario -->
-          <app-mobile-header-account></app-mobile-header-account>
+          <app-mobile-header-account />
         </div>
       </div>
     </div>

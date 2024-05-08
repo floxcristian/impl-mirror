@@ -11,7 +11,6 @@ import { MenuCategoriasB2cService } from '@shared/services/menu-categorias-b2c.s
 import { CustomerVehicleService } from '@core/services-v2/customer-vehicle/customer-vehicle.service';
 import { IVehicleCustomer } from '@core/services-v2/customer-vehicle/vehicle-customer-response.interface';
 import { ToastrService } from 'ngx-toastr';
-import { Message } from 'primeng/api';
 
 @Component({
   selector: 'app-modal-vehicle',
@@ -221,7 +220,7 @@ export class ModalVehicleComponent implements OnInit {
   }
 
   openLogin() {
-    this.activeModal.close();
+    this.activeModal.close(true);
     //this.menuVehiculo.toggle();
     //this.account.openLogin();
   }

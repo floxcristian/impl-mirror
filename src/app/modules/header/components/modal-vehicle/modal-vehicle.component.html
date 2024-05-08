@@ -28,9 +28,7 @@
             </span>
             <span class="p-message-detail"
               >Función disponible solo para usuarios registrados.
-              <!--<u (click)="openLogin()"
-                >Inicia sesión o regístrate aquí.</u
-              >-->
+              <u (click)="openLogin()">Inicia sesión o regístrate aquí.</u>
             </span>
           </ng-template>
         </p-messages>
@@ -49,11 +47,11 @@
             <p-inputGroup>
               <p-dropdown
                 [options]="customerVehiclesFilter"
-                styleClass="hidden-empty-message"
+                styleClass="hidden-empty-message vehicle-search"
                 [optionLabel]="getTypeFilter()"
                 [optionValue]="getTypeFilter()"
                 formControlName="search"
-                placeholder="Buscar"
+                placeholder="ZB7603"
                 [editable]="true"
                 emptyMessage="No hay resultados"
                 [showClear]="true"
