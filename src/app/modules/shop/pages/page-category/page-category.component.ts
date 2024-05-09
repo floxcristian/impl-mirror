@@ -494,11 +494,8 @@ export class PageCategoryComponent implements OnInit {
 
     this.articleService.search(parametros).subscribe({
       next: (res) => {
-        console.log('filter query:',this.filterQuery)
-        console.log(this.router.url)
         if(res.categories.length === 1 && !this.router.url.includes('/categoria/') ){
           let rutas = this.router.url.split('?')
-          console.log('rutas:',rutas)
           let filters = this.armaQueryParams(this.filterQuery);
           this.router.navigate([rutas[0],'categoria',res.categories[0].slug],{queryParams:filters})
         }
