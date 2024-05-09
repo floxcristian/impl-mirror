@@ -1,5 +1,5 @@
 // Angular
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { PLATFORM_ID, Inject } from '@angular/core';
 import { Title } from '@angular/platform-browser';
@@ -51,13 +51,14 @@ import { ConfigService } from '@core/config/config.service';
 import { IConfig } from '@core/config/config.interface';
 
 import { VehicleService } from '@core/services-v2/vehicle/vehicle.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-grid',
   templateUrl: './page-category.component.html',
   styleUrls: ['./page-category.component.scss'],
 })
-export class PageCategoryComponent implements OnInit {
+export class PageCategoryComponent implements OnInit, OnDestroy  {
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
   session: ISession;
   preferences!: ICustomerPreference;
@@ -98,6 +99,9 @@ export class PageCategoryComponent implements OnInit {
   // filter vehicle
   patentVehicle: string = '';
   siiCodeVehicle: string = '';
+
+  routeSubscription!:Subscription
+  routeSubscriptionQuery!:Subscription
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -145,7 +149,9 @@ export class PageCategoryComponent implements OnInit {
    * Cuando un usuario inicia o cierra sesión.
    */
   private onSessionChange(): void {
-    this.authStateService.session$.subscribe((session) => {
+    this.authStateService.session$
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe((session) => {
       this.filters = [];
       this.session = session;
       this.parametrosBusqueda.documentId = session.documentId;
@@ -176,7 +182,9 @@ export class PageCategoryComponent implements OnInit {
    * Cuando cambia la tienda seleccionada.
    */
   private onSelectedStoreChange(): void {
-    this.geolocationService.selectedStore$.subscribe(({ code }) => {
+    this.geolocationService.selectedStore$
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe(({ code }) => {
       if (!this.route.snapshot.paramMap.get('patent')) {
         this.filters = [];
         this.parametrosBusqueda.branchCode = code || '';
@@ -193,7 +201,7 @@ export class PageCategoryComponent implements OnInit {
     /****************************************************
      * QUERY PARAMS
      ****************************************************/
-    this.route.queryParams.subscribe((query) => {
+    this.routeSubscriptionQuery = this.route.queryParams.subscribe((query) => {
       this.filters = [];
       this.origen = getOriginUrl(this.route.snapshot);
 
@@ -268,7 +276,7 @@ export class PageCategoryComponent implements OnInit {
     /****************************************************
      * ROUTE PARAMS
      ****************************************************/
-    this.route.params.subscribe((params) => {
+    this.routeSubscription = this.route.params.subscribe((params) => {
       this.filters = [];
 
       // 1. Categoría
@@ -441,6 +449,11 @@ export class PageCategoryComponent implements OnInit {
     this.onSessionChange();
     this.onSelectedStoreChange();
     this.onCustomerAddressChange();
+  }
+
+  ngOnDestroy(): void {
+    if (this.routeSubscription) this.routeSubscription.unsubscribe();
+    if(this.routeSubscriptionQuery)this.routeSubscriptionQuery.unsubscribe();
   }
 
   /**
