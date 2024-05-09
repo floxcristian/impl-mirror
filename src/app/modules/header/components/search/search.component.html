@@ -94,6 +94,7 @@
                 <div class="products-list-search" *ngIf="sugerencias.length">
                   <div class="item">
                     <a
+                      *ngIf="categorias.length > 1"
                       (click)="
                         menuSearch.toggle();
                         seleccionado = true;
@@ -112,6 +113,29 @@
                         >Quizás esta buscando
                         {{ sugerencias[0].suggestion }}</b
                       >...
+                    </a>
+                    <a
+                      *ngIf="categorias.length === 1"
+                      (click)="
+                        menuSearch.toggle();
+                        seleccionado = true;
+                        blurInput();
+                        textToSearch = sugerencias[0].suggestion;
+                        cleanSelectedVehicle()
+                      "
+                      [routerLink]="[
+                        '/',
+                        'inicio',
+                        'productos',
+                        sugerencias[0].suggestion,
+                        'categoria',
+                        categorias[0].slug
+                      ]"
+                    >
+                      <b class="text-uppercase" style="color: #094cac"
+                        >Quizás esta buscando
+                        {{ sugerencias[0].suggestion }}</b
+                      >....
                     </a>
                   </div>
                 </div>
@@ -335,6 +359,7 @@
           <div class="col-12 products-list-search ps-5 p-2">
             <div class="item justify-content-end d-flex">
               <a
+              *ngIf="categorias.length > 1"
                 (click)="
                   menuSearch.toggle();
                   blurInput();
@@ -342,6 +367,24 @@
                   cleanSelectedVehicle()
                 "
                 [routerLink]="['/', 'inicio', 'productos', textToSearch]"
+              >
+                <i
+                  class="fas fa-search fa-fw"
+                  style="color: #0063b9; margin-right: 5px"
+                ></i>
+                <span style="text-decoration: underline; font-size: 1rem"
+                  >Ver todos los resultados</span
+                >
+              </a>
+              <a
+                *ngIf="categorias.length === 1"
+                (click)="
+                  menuSearch.toggle();
+                  blurInput();
+                  seleccionado = false;
+                  cleanSelectedVehicle()
+                "
+                [routerLink]="categorias[0].url"
               >
                 <i
                   class="fas fa-search fa-fw"
