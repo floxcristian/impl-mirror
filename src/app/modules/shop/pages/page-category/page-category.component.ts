@@ -194,7 +194,6 @@ export class PageCategoryComponent implements OnInit {
      * QUERY PARAMS
      ****************************************************/
     this.route.queryParams.subscribe((query) => {
-      console.log('query pe:', query);
       this.filters = [];
       this.origen = getOriginUrl(this.route.snapshot);
 
@@ -270,7 +269,6 @@ export class PageCategoryComponent implements OnInit {
      * ROUTE PARAMS
      ****************************************************/
     this.route.params.subscribe((params) => {
-      console.log('route params: ', params);
       this.filters = [];
 
       // 1. Categoría
@@ -343,10 +341,8 @@ export class PageCategoryComponent implements OnInit {
 
       // 2. Búsqueda
       else if (params['busqueda']) {
-        console.log('===================2. busqueda');
         this.textToSearch =
           params['busqueda'] === 'todos' ? '' : params['busqueda'];
-        console.log('textToSearch[2]: ', this.textToSearch);
         let parametros = {};
         const { code: branchCode } =
           this.geolocationService.getSelectedStore();
@@ -433,8 +429,6 @@ export class PageCategoryComponent implements OnInit {
           category = params['thirdCategory'];
           this.paramsCategory.thirdCategory = params['thirdCategory'];
         }
-        console.log('===================3. vehiculo');
-        console.log('parametrosBusqueda: ', this.parametrosBusqueda);
 
         this.getProductsByVehicle(
           params['SIICode'],
@@ -490,7 +484,6 @@ export class PageCategoryComponent implements OnInit {
         : '';
     }
 
-    console.log('scroll: ', scroll);
     if (!scroll) {
       this.parametrosBusqueda.page = 1;
       this.currentPage = 1;
@@ -501,8 +494,8 @@ export class PageCategoryComponent implements OnInit {
 
     this.articleService.search(parametros).subscribe({
       next: (res) => {
-        console.log('articleService.search: ', res);
-        this.SetProductos(res, scroll);
+        if(res.categories.length === 1 && !this.router.url.includes('/categoria/') ) this.router.navigate([this.router.url,'categoria',res.categories[0].slug])
+        else this.SetProductos(res, scroll);
       },
       error: (err) => {
         console.log(err);
@@ -760,7 +753,6 @@ export class PageCategoryComponent implements OnInit {
   }
 
   updateFilters(filtersObj: any): void {
-    console.log('updateFilters:', filtersObj);
     let filters = filtersObj.selected;
     // const url = this.router.url.split('?')[0];
     const url = this.decodedUrl(this.router.url.split('?')[0]);
