@@ -85,6 +85,7 @@ export class PageOmniCartPaymentMethodComponent implements OnInit {
       if (this.shoppingCart.status === ShoppingCartStatusType.OPEN) {
         this.shippingType = this.shoppingCart.shipment?.deliveryMode ?? '';
         this.productCart = this.shoppingCart.products;
+        console.log('products: ', this.shoppingCart.products);
         this.setDireccion(this.shoppingCart);
         await this.cartService.loadOmni(shoppingCartId);
         this.isLoadingCart = false;

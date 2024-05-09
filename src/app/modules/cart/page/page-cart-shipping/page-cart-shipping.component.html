@@ -1048,8 +1048,8 @@
             <app-detalle-carro-productos
               *ngIf="!loadingResumen"
               [shippingType]="shippingType"
-              [productCart]="productCart"
-            ></app-detalle-carro-productos>
+              [shoppingCartProducts]="productCart"
+            />
 
             <ng-container *ngIf="innerWidth >= 450">
               <div class="d-flex">
@@ -1185,9 +1185,8 @@
             </app-loading-element>
             <app-detalle-carro-productos
               [shippingType]="shippingType"
-              [productCart]="productCart"
-            >
-            </app-detalle-carro-productos>
+              [shoppingCartProducts]="productCart"
+            />
 
             <ng-container *ngIf="innerWidth >= 450">
               <div class="d-flex">
@@ -1281,9 +1280,8 @@
         <app-detalle-carro-productos
           [shippingType]="shippingType"
           [seePrices]="false"
-          [productCart]="productCart"
-        >
-        </app-detalle-carro-productos>
+          [shoppingCartProducts]="productCart"
+        />
       </div>
     </div>
   </div>
@@ -1330,13 +1328,12 @@
           <app-detalle-carro-productos
             [shippingType]="shippingType"
             [seeProducts]="false"
-            [productCart]="productCart"
-          >
-          </app-detalle-carro-productos>
+            [shoppingCartProducts]="productCart"
+          />
         </div>
         <!-- <div class="card-body" *ngIf="!showDetalleProductos">
                     <app-loading-element *ngIf="loadingResumen && innerWidth > 700" text="Actualizando total"></app-loading-element>
-                    <app-detalle-carro-productos [shippingType] = 'shippingType' [seeProducts]="false" [show]="false" [productCart]="productCart"></app-detalle-carro-productos>
+                    <app-detalle-carro-productos [shippingType] = 'shippingType' [seeProducts]="false" [show]="false" [productCart]="productCart"/>
                 </div> -->
         <div *ngIf="!showDetalleProductos" class="card-body text-justify">
           <div class="dropcart__totals text-justify">

@@ -143,7 +143,8 @@
                 <app-detalle-carro-productos
                   *ngIf="!isLoadingCart"
                   [shippingType]="shippingType"
-                  [productCart]="productCart"
+                  [shoppingCartProducts]="productCart"
+                  [isOmni]="true"
                 />
               </div>
             </div>
