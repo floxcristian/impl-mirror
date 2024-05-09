@@ -12,10 +12,11 @@ import {
   IShoppingCartProduct,
 } from '@core/models-v2/cart/shopping-cart.interface';
 import { IStore } from '@core/services-v2/geolocation/models/store.interface';
+import { IPaymentMethod } from '@core/models-v2/payment-method/payment-method.interface';
+import { ShoppingCartStatusType } from '@core/enums/shopping-cart-status.enum';
 // Services
 import { PaymentMethodOmniService } from '@core/services-v2/payment-method-omni.service';
 import { CartService } from '@core/services-v2/cart.service';
-import { ShoppingCartStatusType } from '@core/enums/shopping-cart-status.enum';
 
 @Component({
   selector: 'app-page-omni-cart-payment-method',
@@ -25,34 +26,41 @@ import { ShoppingCartStatusType } from '@core/enums/shopping-cart-status.enum';
 export class PageOmniCartPaymentMethodComponent implements OnInit {
   @ViewChild('bankmodal', { static: false }) content: any;
 
-  id: string = '';
-  cartSession!: IShoppingCart;
+  shoppingCartId: string | undefined;
+  shoppingCart!: IShoppingCart;
+
   shippingType: string = '';
   productCart: IShoppingCartProduct[] = [];
-  loadCart = false;
-  linkNoValido = false;
+  isLoadingCart!: boolean;
+  isInvalidPaymentLink!: boolean;
   direccion: ICustomerAddress | IStore | undefined = undefined;
-  pago: any = null;
+  selectedPaymentMethod: IPaymentMethod | undefined;
   transBankToken: any = null;
   alertCart: any;
   alertCartShow = false;
   rejectedCode!: number;
 
   totalCarro: any = '0';
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private modalService: BsModalService,
-    // Services V2
     private readonly cartService: CartService,
     private readonly paymentMethodOmniService: PaymentMethodOmniService
-  ) {}
+  ) {
+    this.isLoadingCart = true;
+    this.isInvalidPaymentLink = false;
+  }
 
-  async ngOnInit(): Promise<void> {
-    this.loadCart = true;
+  ngOnInit(): void {
     this.route.queryParams.subscribe(async (params) => {
-      this.id = params['cart_id'] || params['shoppingCartId'];
-      await this.loadData();
+      this.shoppingCartId = params['cart_id'] || params['shoppingCartId'];
+      if (this.shoppingCartId) {
+        await this.loadData(this.shoppingCartId);
+      } else {
+        this.isInvalidPaymentLink = true;
+      }
     });
 
     this.cartService.total$.subscribe((r) => (this.totalCarro = r));
@@ -66,34 +74,57 @@ export class PageOmniCartPaymentMethodComponent implements OnInit {
       }
       // if (query.site_id === 'MLC' && query.external_reference) this.manejarAlertaMercadoPagoSiEsNecesario(query);
     });
-
-    // this.loadCart = false;
   }
 
-  async loadData() {
+  async loadData(shoppingCartId: string) {
     try {
       const resp = await firstValueFrom(
-        this.cartService.getOmniShoppingCart(this.id)
+        this.cartService.getOmniShoppingCart(shoppingCartId)
       );
-      this.cartSession = resp.shoppingCart;
-      if (this.cartSession.status === ShoppingCartStatusType.OPEN) {
-        this.shippingType = this.cartSession.shipment?.deliveryMode ?? '';
-        this.productCart = this.cartSession.products;
-        this.setDireccion(this.cartSession);
-        await this.cartService.loadOmni(this.id);
-        this.loadCart = false;
+      this.shoppingCart = resp.shoppingCart;
+      if (this.shoppingCart.status === ShoppingCartStatusType.OPEN) {
+        this.shippingType = this.shoppingCart.shipment?.deliveryMode ?? '';
+        this.productCart = this.shoppingCart.products;
+        this.setDireccion(this.shoppingCart);
+        await this.cartService.loadOmni(shoppingCartId);
+        this.isLoadingCart = false;
+        this.isInvalidPaymentLink = false;
       } else {
-        this.loadCart = false;
-        this.linkNoValido = true;
+        this.isLoadingCart = false;
+        this.isInvalidPaymentLink = true;
       }
     } catch (e) {
       console.error(e);
-      this.loadCart = false;
-      this.linkNoValido = true;
+      this.isLoadingCart = false;
+      this.isInvalidPaymentLink = true;
     }
   }
 
-  setDireccion(shoppingCart: IShoppingCart) {
+  /*fetchShoppinCart(shoppingCartId: string): void {
+    this.cartService.getOmniShoppingCart(shoppingCartId).subscribe({
+      next: (res) => {
+        this.shoppingCart = res.shoppingCart;
+        if (this.shoppingCart.status === ShoppingCartStatusType.OPEN) {
+          this.shippingType = this.shoppingCart.shipment?.deliveryMode ?? '';
+          this.productCart = this.shoppingCart.products; 
+          this.setDireccion(this.shoppingCart);
+          // TODO: refactorizar este método.
+          await this.cartService.loadOmni(this.shoppingCartId);
+          this.isLoadingCart = false;
+        } else {
+          this.isLoadingCart = false;
+          this.linkNoValido = true;
+        }
+      },
+      error: (err) => {
+        console.log(err);
+        this.isLoadingCart = false;
+        this.linkNoValido = true;
+      },
+    });
+  }*/
+
+  setDireccion(shoppingCart: IShoppingCart): void {
     const shipment = shoppingCart.shipment;
     this.direccion = {
       address: shipment?.address ?? '',
@@ -115,46 +146,45 @@ export class PageOmniCartPaymentMethodComponent implements OnInit {
   }
 
   /**
-   * Activa el botón de pago.
-   * @param event
+   * Seleccionar método de pago.
+   * @param paymentMethod
    */
-  Activepayment(event: any): void {
-    this.pago = event;
+  selectPaymentMethod(paymentMethod: IPaymentMethod): void {
+    this.selectedPaymentMethod = paymentMethod;
   }
 
-  payment(): void {
-    if (this.pago.code == 'mercadopago') this.PaymentMercadoPago();
-    if (this.pago.code == 'webPay') this.PaymentWebpay();
-    if (this.pago.code == 'khipu') {
-      this.openModal();
+  /**
+   * Redirigir a la pasarela de pago.
+   */
+  goToPaymentGateway(shoppingCartId: string): void {
+    if (this.selectedPaymentMethod?.code == 'mercadopago') {
+      this.paymentMethodOmniService.redirectToMercadoPagoTransaction({
+        shoppingCartId,
+      });
+    } else if (this.selectedPaymentMethod?.code == 'webPay') {
+      this.paymentMethodOmniService.redirectToWebpayTransaction({
+        shoppingCartId,
+      });
+    } else if (this.selectedPaymentMethod?.code == 'khipu') {
+      this.modalService.show(this.content, {
+        backdrop: 'static',
+        keyboard: false,
+      });
     }
   }
 
-  //funciones para los pagos
-  private async PaymentMercadoPago() {
-    this.paymentMethodOmniService.redirectToMercadoPagoTransaction({
-      shoppingCartId: this.cartSession._id!.toString(),
-    });
-  }
-
-  private async PaymentWebpay() {
-    this.paymentMethodOmniService.redirectToWebpayTransaction({
-      shoppingCartId: this.cartSession._id!.toString(),
-    });
-  }
-
   //proceso khipu
-  private async paymentKhipu(banco: any) {
+  private paymentKhipu(banco: any): void {
     this.paymentMethodOmniService.redirectToKhipuTransaction({
-      shoppingCartId: this.cartSession._id!.toString(),
+      shoppingCartId: this.shoppingCart._id!.toString(),
       bankId: banco ? banco.bankId : '',
       bankName: banco ? banco.name : '',
-      payerName: this.cartSession.notification?.email ?? undefined,
-      payerEmail: this.cartSession.notification?.email ?? undefined,
+      payerName: this.shoppingCart.notification?.email ?? undefined,
+      payerEmail: this.shoppingCart.notification?.email ?? undefined,
     });
   }
 
-  private async showRejectedMsg(query: any) {
+  private showRejectedMsg(query: any): void {
     this.alertCartShow = false;
 
     if (query.status === 'rejected') {
@@ -173,17 +203,7 @@ export class PageOmniCartPaymentMethodComponent implements OnInit {
     this.alertCart = null;
     this.rejectedCode = 0;
     this.router.navigate(['/', 'carro-compra', 'omni-forma-de-pago'], {
-      queryParams: { cart_id: this.id },
-    });
-  }
-
-  /**
-   * Abrir modal de pago para Khipu.
-   */
-  private openModal(): void {
-    this.modalService.show(this.content, {
-      backdrop: 'static',
-      keyboard: false,
+      queryParams: { cart_id: this.shoppingCartId },
     });
   }
 }
