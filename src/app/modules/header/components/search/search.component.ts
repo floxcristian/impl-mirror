@@ -268,7 +268,9 @@ export class SearchComponent implements OnInit, OnDestroy {
       return;
     }
     let search: string = this.textToSearch.replace('/', '%2F');
-    this.router.navigateByUrl('inicio/productos/' + search);
+    console.log('categorias', this.categorias.length)
+    if(this.categorias.length === 1) this.router.navigateByUrl('inicio/productos/' + search + '/categoria/' + this.categorias[0].slug);
+    else this.router.navigateByUrl('inicio/productos/' + search);
     this.mostrarContenido = true;
     this.mostrarCargando = true;
     this.mostrarResultados = false;
