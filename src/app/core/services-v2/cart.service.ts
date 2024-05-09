@@ -76,8 +76,6 @@ export class CartService {
   private sessionStorage = inject(SessionStorageService);
   private shoppingCartStorage = inject(ShoppingCartStorageService);
   private shoppingCartOmniStorage = inject(ShoppingCartOmniStorageService);
-  private guestStorage = inject(GuestStorageService);
-  private receiveStorage = inject(ReceiveStorageService);
   private purchaseOrderLoadedStorage = inject(
     PurshaseOrderLoadedStorageService
   );
@@ -94,7 +92,7 @@ export class CartService {
     totals: [],
     total: 0,
   };
-  private CartData!: IShoppingCart;
+  private shoppingCart!: IShoppingCart;
   private cartTempData!: IShoppingCart;
   shipping!: ICartTotal | null;
   discount: ICartTotal | null = null;
@@ -124,7 +122,7 @@ export class CartService {
   /* dropdown */
   public dropCartActive$: BehaviorSubject<boolean> = new BehaviorSubject(true);
   public cartDataSubject$: BehaviorSubject<IShoppingCart> =
-    new BehaviorSubject(this.CartData);
+    new BehaviorSubject(this.shoppingCart);
 
   readonly items$: Observable<IShoppingCartProduct[] | undefined> =
     this.itemsSubject$.asObservable();
@@ -181,7 +179,7 @@ export class CartService {
           ],
         })
       );
-      this.CartData = response;
+      this.shoppingCart = response;
 
       const productoCart: IShoppingCartProduct = {
         name: product.name,
@@ -192,7 +190,7 @@ export class CartService {
       };
 
       this.onAddingSubject$.next(productoCart);
-      this.data.products = this.CartData.products;
+      this.data.products = this.shoppingCart.products;
       /* se limpia OV cargada */
       this.purchaseOrderLoadedStorage.remove();
       this.save();
@@ -256,13 +254,13 @@ export class CartService {
     if (!usuario.hasOwnProperty('username')) usuario.username = usuario.email;
     if (!usuario.hasOwnProperty('documentId')) usuario.documentId = '0';
 
-    this.CartData = response;
+    this.shoppingCart = response;
     this.cartTempData = response;
-    this.cartDataSubject$.next(this.CartData);
-    this.data.products = this.CartData.products;
+    this.cartDataSubject$.next(this.shoppingCart);
+    this.data.products = this.shoppingCart.products;
 
     // obtenemos el despacho desde el carro
-    const shipment = this.CartData.shipment;
+    const shipment = this.shoppingCart.shipment;
     if (shipment) {
       let nombre = '';
       const isPickup =
@@ -394,7 +392,6 @@ export class CartService {
 
     const cartSession = this.shoppingCartStorage.get();
     if (!cartSession) {
-      // return;
       throw new Error('No se ha encontrado el carro');
     }
     let productoCarro;
@@ -429,9 +426,9 @@ export class CartService {
 
     return this.http.post<IShoppingCart>(`${API_CART}/article`, data).pipe(
       map((r) => {
-        this.CartData = r;
+        this.shoppingCart = r;
 
-        this.data.products = this.CartData.products;
+        this.data.products = this.shoppingCart.products;
         /* se limpia OV cargada */
         this.purchaseOrderLoadedStorage.remove();
         this.save();
@@ -456,10 +453,10 @@ export class CartService {
       )
       .pipe(
         map((r) => {
-          this.CartData = r.shoppingCart;
+          this.shoppingCart = r.shoppingCart;
 
-          this.data.products = this.CartData.products;
-          this.recalculateShoppingCart(this.CartData);
+          this.data.products = this.shoppingCart.products;
+          this.recalculateShoppingCart(this.shoppingCart);
           /* se limpia OV cargada */
           this.save();
           this.calc();
@@ -479,7 +476,7 @@ export class CartService {
   }
 
   private save(): void {
-    this.shoppingCartStorage.set(this.CartData);
+    this.shoppingCartStorage.set(this.shoppingCart);
   }
 
   updateShipping(indexGroup: number, indexTripDate: number) {
@@ -575,7 +572,7 @@ export class CartService {
   }
 
   updateCart(items: IShoppingCartProduct[]) {
-    this.CartData.products = items;
+    this.shoppingCart.products = items;
     this.calc();
     this.save();
   }
@@ -596,17 +593,17 @@ export class CartService {
 
     return this.http.post<IShoppingCart>(`${API_CART}/article`, data).pipe(
       map((r) => {
-        this.CartData.shipment = r.shipment;
+        this.shoppingCart.shipment = r.shipment;
 
         let nombre = '';
         if (
-          this.CartData.shipment?.serviceType == 'TIENDA' ||
-          this.CartData.shipment?.deliveryMode === DeliveryType.PICKUP
+          this.shoppingCart.shipment?.serviceType == 'TIENDA' ||
+          this.shoppingCart.shipment?.deliveryMode === DeliveryType.PICKUP
         ) {
           nombre =
             `Retiro en tienda ` +
             this.datePipe.transform(
-              this.CartData.shipment?.requestedDate,
+              this.shoppingCart.shipment?.requestedDate,
               'EEEE dd MMM'
             );
           this.updateShippingType('retiro');
@@ -614,14 +611,14 @@ export class CartService {
           nombre =
             `Despacho ` +
             this.datePipe.transform(
-              this.CartData.shipment?.requestedDate,
+              this.shoppingCart.shipment?.requestedDate,
               'EEEE dd MMM'
             );
           this.updateShippingType('despacho');
         }
 
         this.shipping = {
-          price: this.CartData.shipment?.price,
+          price: this.shoppingCart.shipment?.price,
           title: nombre,
           type: 'shipping',
         };
@@ -702,9 +699,9 @@ export class CartService {
 
     this.http.delete<IShoppingCart>(`${API_CART}/article`, options).subscribe({
       next: (r: IShoppingCart) => {
-        this.CartData = r;
+        this.shoppingCart = r;
 
-        this.data.products = this.CartData.products;
+        this.data.products = this.shoppingCart.products;
         /* se limpia OV cargada */
         this.purchaseOrderLoadedStorage.remove();
         this.save();
@@ -728,12 +725,12 @@ export class CartService {
       map((r: any) => {
         if (!r.error) {
           if (r.data == null) {
-            this.CartData.products = [];
+            this.shoppingCart.products = [];
           } else {
-            this.CartData = r.data;
+            this.shoppingCart = r.data;
           }
 
-          this.data.products = this.CartData.products;
+          this.data.products = this.shoppingCart.products;
           /* se limpia OV cargada */
           this.purchaseOrderLoadedStorage.remove();
           this.save();
@@ -830,31 +827,37 @@ export class CartService {
   /*********************************
    * Inicio métodos OMNI
    *********************************/
+  /**
+   * Obtener carro de compras de omnichannel según id.
+   * @param shoppingCartId
+   * @returns
+   */
   getOmniShoppingCart(
     shoppingCartId: string
   ): Observable<IShoppingCartDetail> {
-    const url = `${API_CART}/${shoppingCartId}/omni`;
-    return this.http.get<IShoppingCartDetail>(url);
+    return this.http.get<IShoppingCartDetail>(
+      `${API_CART}/${shoppingCartId}/omni`
+    );
   }
 
-  async loadOmni(id: string) {
+  async loadOmni(shoppingCartId: string) {
     this.isLoadingCart = false;
 
     if (this.isLoadingCart) return;
 
     this.isLoadingCart = true;
 
-    const r = await firstValueFrom(this.getOmniShoppingCart(id));
+    const r = await firstValueFrom(this.getOmniShoppingCart(shoppingCartId));
     this.isLoadingCart = false;
 
-    this.CartData = r.shoppingCart;
+    this.shoppingCart = r.shoppingCart;
     this.cartTempData = r.shoppingCart;
-    this.cartDataSubject$.next(this.CartData);
+    this.cartDataSubject$.next(this.shoppingCart);
     if (r.shoppingCart.products && r.shoppingCart.products.length) {
-      this.data.products = this.CartData.products;
+      this.data.products = this.shoppingCart.products;
 
       // obtenemos el despacho desde el carro
-      const shipment = this.CartData.shipment;
+      const shipment = this.shoppingCart.shipment;
       if (shipment) {
         let nombre = '';
         const isPickup =
@@ -971,7 +974,7 @@ export class CartService {
   }
 
   private saveOmni(): void {
-    this.shoppingCartOmniStorage.set(this.CartData);
+    this.shoppingCartOmniStorage.set(this.shoppingCart);
   }
 
   getOrderDetails(params: {
@@ -995,8 +998,12 @@ export class CartService {
     });
   }
 
-  updateStatusShoppingCart(id: string, status: string, observation: string) {
-    return this.http.put(`${API_CART}/${id}/status/${status}`, {
+  updateStatusShoppingCart(
+    shoppingCartId: string,
+    status: string,
+    observation: string
+  ) {
+    return this.http.put(`${API_CART}/${shoppingCartId}/status/${status}`, {
       observation,
     });
   }

@@ -1,6 +1,6 @@
 <div class="container" style="margin-top: 20px">
   <div class="col-sm-12">
-    <div class="cargandoCent text-center" *ngIf="loadCart">
+    <div class="cargandoCent text-center" *ngIf="isLoadingCart">
       <i class="fak fa-implementos fa-bounce"></i>
       <div
         class="fa-beat-fade"
@@ -12,7 +12,7 @@
     <div
       class="alert alert-danger mt-5 w-50 mx-auto"
       role="alert"
-      *ngIf="!loadCart && linkNoValido"
+      *ngIf="!isLoadingCart && isInvalidPaymentLink"
     >
       <div class="text-center">
         Link de pago no válido o ya se encuentra pagado.
@@ -25,16 +25,16 @@
         Ir al home
       </a>
     </div>
-    <div class="row" *ngIf="!loadCart && !linkNoValido">
+    <div class="row" *ngIf="!isLoadingCart && !isInvalidPaymentLink">
       <div class="col-sm-5" style="margin-bottom: 10px">
         <div class="row">
           <div class="col-sm-12" style="margin-bottom: 10px">
             <div class="card">
               <div class="card-body">
                 <app-resumen-retiro
-                  *ngIf="!loadCart"
+                  *ngIf="!isLoadingCart"
                   [direccion]="direccion"
-                  [despacho]="cartSession.shipment"
+                  [despacho]="shoppingCart.shipment"
                   [shippingType]="shippingType"
                 >
                 </app-resumen-retiro>
@@ -126,11 +126,9 @@
                 </ng-container>
                 <ng-container *ngIf="!alertCartShow">
                   <app-lista-pago
-                    (payment)="Activepayment($event)"
-                    *ngIf="!loadCart"
-                    [omni]="true"
-                  >
-                  </app-lista-pago>
+                    (selectPaymentMethod)="selectPaymentMethod($event)"
+                    *ngIf="!isLoadingCart"
+                  />
                 </ng-container>
               </div>
             </div>
@@ -143,10 +141,11 @@
             <div class="card">
               <div class="card-body">
                 <app-detalle-carro-productos
-                  *ngIf="!loadCart"
+                  *ngIf="!isLoadingCart"
                   [shippingType]="shippingType"
-                  [productCart]="productCart"
-                ></app-detalle-carro-productos>
+                  [shoppingCartProducts]="productCart"
+                  [isOmni]="true"
+                />
               </div>
             </div>
           </div>
@@ -155,9 +154,8 @@
               <div class="card-body">
                 <div class="d-flex justify-content-center">
                   <button
-                    name="paymentKhipu"
-                    [disabled]="!pago"
-                    (click)="payment()"
+                    [disabled]="!selectedPaymentMethod"
+                    (click)="goToPaymentGateway(shoppingCart._id || '')"
                     class="btn btn-lg btn-secondary w-100 text-center"
                   >
                     Pagar

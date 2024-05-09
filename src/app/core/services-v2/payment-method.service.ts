@@ -68,8 +68,7 @@ export class PaymentMethodService {
   }
 
   getKhipuBanks(): Observable<IKhipuBank[]> {
-    const url = `${API_PAYMENT}/khipu/banks`;
-    return this.http.get<IKhipuBank[]>(url);
+    return this.http.get<IKhipuBank[]>(`${API_PAYMENT}/khipu/banks`);
   }
 
   close(sentencia: any): void {

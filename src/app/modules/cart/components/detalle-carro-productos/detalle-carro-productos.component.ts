@@ -1,101 +1,118 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { ProductCart } from '../../../../shared/interfaces/cart-item';
+// Angular
+import { Component, OnInit, Input, DestroyRef, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { CartService } from '@core/services-v2/cart.service';
+// Rxjs
+import { Observable } from 'rxjs';
+// Models
 import { IShoppingCartProduct } from '@core/models-v2/cart/shopping-cart.interface';
+// Services
+import { CartService } from '@core/services-v2/cart.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-detalle-carro-productos',
   templateUrl: './detalle-carro-productos.component.html',
   styleUrls: ['./detalle-carro-productos.component.scss'],
 })
-export class DetalleCarroProductosComponent implements OnInit, OnDestroy {
+export class DetalleCarroProductosComponent implements OnInit {
+  private readonly destroyRef: DestroyRef = inject(DestroyRef);
+  // FIXME: al parecer no se usa.
   @Input() show = true;
-  @Input() productCart!: IShoppingCartProduct[];
+  @Input() isOmni: boolean = false;
+  @Input() shoppingCartProducts!: IShoppingCartProduct[];
   @Input() seeProducts = true;
   @Input() seePrices = true;
-  fullProducts: IShoppingCartProduct[] = [];
-  products: IShoppingCartProduct[] = [];
-  shippingNotSupported: IShoppingCartProduct[] = [];
-  itemSubscription!: Subscription;
-  shippingTypeSubs!: Subscription;
-  shippinGroup: any = {};
+  @Input() shippingType: string | undefined = 'retiro';
 
-  @Input() shippingType: any = 'retiro';
-  shippingTypeTitle = '';
-  totals: any = [];
+  productsAvailable: IShoppingCartProduct[] = [];
+  productsUnavailable: IShoppingCartProduct[] = [];
+  shippingTypeTitle: string;
 
-  constructor(public cart: CartService, public router: Router) {}
-
-  ngOnInit() {
-    if (this.shippingType == 'retiro' || this.shippingType == 'TIENDA') {
-      this.shippingTypeTitle = 'Retiro en Tienda';
-    } else if (this.shippingType == 'despacho' || this.shippingType == 'STD') {
-      this.shippingTypeTitle = 'Despacho a domicilio';
-    } else this.shippingTypeTitle = 'Despacho a domicilio';
-
-    this.cart.totals$.subscribe();
-
-    this.shippingTypeSubs = this.cart.shippingType$.subscribe((resp) => {
-      this.shippingType = resp;
-
-      if (this.shippingType == 'retiro' || this.shippingType == 'TIENDA') {
-        this.shippingTypeTitle = 'Retiro en Tienda';
-      } else if (
-        this.shippingType == 'despacho' ||
-        this.shippingType == 'STD'
-      ) {
-        this.shippingTypeTitle = 'Despacho a domicilio';
-      } else this.shippingTypeTitle = 'Despacho a domicilio';
-    });
-
-    this.itemSubscription = (
-      this.cart.items$ as Observable<IShoppingCartProduct[]>
-    ).subscribe((products: IShoppingCartProduct[]) => {
-      this.fullProducts = products;
-      if (products.length > 0) {
-        this.validateItemCart(products);
-      }
-    });
+  constructor(
+    public readonly cartService: CartService,
+    public readonly router: Router
+  ) {
+    this.shippingTypeTitle = '';
   }
 
-  ngOnDestroy() {
-    this.itemSubscription.unsubscribe();
-  }
-
-  resetVariables() {
-    this.products = [];
-    this.shippingNotSupported = [];
-  }
-
-  validateItemCart(products: IShoppingCartProduct[]) {
-    this.resetVariables();
-
-    if (products.length === 0) {
-      return;
+  private getShippingTypeTitle(shippingType: string): string {
+    if (['retiro', 'TIENDA'].includes(shippingType)) {
+      return 'Retiro en Tienda';
+    } else if (['despacho', 'STD'].includes(shippingType)) {
+      return 'Despacho a domicilio';
+    } else {
+      return 'Despacho a domicilio';
     }
+  }
+
+  ngOnInit(): void {
+    this.shippingTypeTitle = this.getShippingTypeTitle(
+      this.shippingType || ''
+    );
+
+    this.onShippingTypeChange();
+    if (this.isOmni) {
+      this.validateProductAvailability(this.shoppingCartProducts);
+    } else {
+      this.onShoppingCartProductsChange();
+    }
+  }
+
+  /**
+   * Al detectar un cambio en el tipo de envío, se establece el shippingType y el título del tipo de envío.
+   */
+  private onShippingTypeChange(): void {
+    this.cartService.shippingType$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((shippingType) => {
+        this.shippingType = shippingType;
+        this.shippingTypeTitle = this.getShippingTypeTitle(
+          this.shippingType || ''
+        );
+      });
+  }
+
+  /**
+   * Al detectar un cambio en los productos del carro, se valida si los productos...
+   */
+  private onShoppingCartProductsChange(): void {
+    (this.cartService.items$ as Observable<IShoppingCartProduct[]>)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((products: IShoppingCartProduct[]) => {
+        console.log('products on observable', products);
+        if (products.length) {
+          this.validateProductAvailability(products);
+        }
+      });
+  }
+
+  /**
+   * Validar la disponibilidad de los productos.
+   * @param products
+   * @returns
+   */
+  validateProductAvailability(products: IShoppingCartProduct[]): void {
+    this.productsAvailable = [];
+    this.productsUnavailable = [];
+
+    if (!products.length) return;
 
     products.map((item) => {
-      if (this.shippingType === 'retiro' || this.shippingType === 'TIENDA') {
+      if (['retiro', 'TIENDA'].includes(this.shippingType || '')) {
         if (!item.pickupConflict) {
-          this.products.push(item);
+          this.productsAvailable.push(item);
         } else {
-          this.shippingNotSupported.push(item);
+          this.productsUnavailable.push(item);
         }
       } else {
         if (!item.deliveryConflict) {
-          this.products.push(item);
+          this.productsAvailable.push(item);
         } else {
-          this.shippingNotSupported.push(item);
+          this.productsUnavailable.push(item);
         }
       }
     });
 
-    this.cart.emitValidateProducts(this.products);
-  }
-
-  changeRetiro(event: any) {
-    this.validateItemCart(this.fullProducts);
+    this.cartService.emitValidateProducts(this.productsAvailable);
   }
 }
