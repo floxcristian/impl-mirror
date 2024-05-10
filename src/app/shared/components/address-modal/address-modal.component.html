@@ -18,13 +18,13 @@
   <div class="row mb-3">
     <div class="col-12">
       <app-map
-        (clearAdress)="clearAddress()"
-        [storeAddress]="tienda?.direccion || '' "
-        [storeZone]="tienda?.zona || '' "
+        (clearAddress)="clearAddress()"
+        [storeAddress]="tienda?.direccion || ''"
+        [storeZone]="tienda?.zona || ''"
         [autocompletado]="autocompletado"
-        (setDireccion)="set_direccion($event)"
-        (geolocalizacion)="geolocalizacion($event)"
-      ></app-map>
+        (changeAddress)="set_direccion($event)"
+        (changeCoordinates)="geolocalizacion($event)"
+      />
     </div>
   </div>
   <form (ngSubmit)="agregarDireccion()" [formGroup]="formDireccion">

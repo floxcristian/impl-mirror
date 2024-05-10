@@ -417,18 +417,17 @@
             <div class="col-12">
               <app-map
                 [autocompletado]="autocompletado"
-                (clearAdress)="cleanAddress()"
+                (clearAddress)="cleanAddress()"
                 [storeAddress]="selectedAddress?.address || ''"
                 [storeZone]="selectedAddress?.zone || ''"
-                (setDireccion)="setAddressFromMap($event)"
-                (geolocalizacion)="setMapPosition($event)"
-                [titulo]="
+                (changeAddress)="setAddressFromMap($event)"
+                (changeCoordinates)="setMapPosition($event)"
+                [title]="
                   isPerson
                     ? 'Ingrese Dirección de Despacho'
                     : 'Ingrese Dirección de Facturación'
                 "
-              >
-              </app-map>
+              />
             </div>
           </div>
           <div class="mb-3">

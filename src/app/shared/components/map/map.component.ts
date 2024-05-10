@@ -16,7 +16,8 @@ import { GoogleMap, MapGeocoder } from '@angular/google-maps';
 import { environment } from '@env/environment';
 // Services
 import { ScriptService } from '@core/utils-v2/script/script.service';
-import { IMapPosition } from './map-store.interface';
+import { ConfigService } from '@core/config/config.service';
+import { ToastrService } from 'ngx-toastr';
 
 export interface DireccionMap {
   direccion: string;
@@ -31,34 +32,39 @@ export interface DireccionMap {
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit, OnChanges {
-  @Input() titulo!: string;
+  @Input() title!: string;
   @Input() storeAddress!: string;
   @Input() storeZone!: string;
   @Input() autocompletado!: boolean;
   @Input() infoWindowContent!: string;
   @Input() coordinates!: google.maps.LatLngLiteral;
+  @Output() changeCoordinates = new EventEmitter<google.maps.LatLngLiteral>();
+  @Output() clearAddress = new EventEmitter<void>();
+  @Output() changeAddress = new EventEmitter<any>();
   @ViewChild('search', { static: true }) searchElementRef!: ElementRef;
+  @ViewChild(GoogleMap, { static: false }) map!: GoogleMap;
 
   showSearchBar: boolean = true;
   markerPositions: google.maps.LatLngLiteral[] = [];
-  options!: google.maps.MapOptions;
-  markerOptions: google.maps.MarkerOptions = { draggable: false };
+  mapOptions!: google.maps.MapOptions;
+  markerOptions: google.maps.MarkerOptions;
   center: google.maps.LatLngLiteral = { lat: 0, lng: 0 };
   zoom = 15;
 
-  @Output() geolocalizacion = new EventEmitter<IMapPosition>();
-  @Output() public clearAdress = new EventEmitter<any>();
-  @Output() public setDireccion = new EventEmitter<any>();
-  @ViewChild(GoogleMap, { static: false }) map!: GoogleMap;
-
   autocomplete!: google.maps.places.Autocomplete;
   isMapLoaded!: boolean;
+  defaultCoordinates: google.maps.LatLngLiteral;
 
   constructor(
     private ngZone: NgZone,
     private readonly geocoder: MapGeocoder,
-    private readonly scriptService: ScriptService
-  ) {}
+    private readonly scriptService: ScriptService,
+    private readonly configService: ConfigService,
+    private readonly toast: ToastrService
+  ) {
+    this.markerOptions = { draggable: false };
+    this.defaultCoordinates = this.configService.getConfig().mapCoordinates;
+  }
 
   ngOnInit(): void {
     this.scriptService.loadScript(environment.gmapScript).then(() => {
@@ -68,60 +74,61 @@ export class MapComponent implements OnInit, OnChanges {
         this.showSearchBar = true;
         this.updateMapByCoordinates(this.coordinates);
       } else {
-        this.geocodePosition();
+        this.getGeocodePosition(this.storeAddress, this.storeZone);
       }
     });
   }
 
   private buildMap(): void {
     if (this.autocompletado) {
-      this.options = {
+      this.mapOptions = {
         disableDefaultUI: true,
         mapTypeId: google.maps.MapTypeId.HYBRID,
       };
-      this.markerOptions.draggable = true;
       this.showSearchBar = false;
       this.zoom = 3;
-      this.center.lat = -36.79975467819392;
-      this.center.lng = -71.49897587245773;
-      this.map?.panTo(this.center);
-      this.markerPositions = [];
-      this.markerPositions.push({
-        lat: -36.79975467819392,
-        lng: -71.49897587245773,
-      });
+      this.updateMapByCoordinates(this.defaultCoordinates);
 
-      const country = environment.country;
       this.autocomplete = new google.maps.places.Autocomplete(
         this.searchElementRef.nativeElement,
         {
           types: ['address'],
-          componentRestrictions: { country: country },
+          componentRestrictions: { country: environment.country },
         }
       );
       this.autocomplete.setFields(['address_component', 'geometry']);
+      // FIXME: al presionar enter, se debe seleccionar la primera opción que muestra el autocompletado.
       this.autocomplete.addListener('place_changed', () => {
         this.ngZone.run(() => {
-          const place: google.maps.places.PlaceResult =
-            this.autocomplete.getPlace();
-          if (!place.geometry) return;
-          this.setDireccion.emit([
+          const place = this.autocomplete.getPlace();
+          /*console.log('autocomplete: ', this.autocomplete);
+          const autocompleteOptions = this.autocomplete.getBounds();
+          console.log('autocompleteOptions: ', autocompleteOptions);
+          console.log('place: ', place);
+          // TODO: validar si se obtiene la dirección correctamente.
+          // TODO: getPlacePredictions
+          const placePredictions = this.autocomplete.getFields();
+          console.log('placePredictions: ', placePredictions);*/
+
+          if (!place.geometry || !place.address_components) {
+            // this.toast.error('Debe seleccionar una dirección válida.');
+
+            return;
+          }
+          this.changeAddress.emit([
             place.address_components,
             place.geometry.location,
           ]);
-          let center = {
+          this.zoom = 17;
+          const center = {
             lat: place.geometry.location?.lat() || 0,
             lng: place.geometry.location?.lng() || 0,
           };
-          this.zoom = 17;
-          this.center = center;
-          this.map.panTo(center);
-          this.markerPositions = [];
-          this.markerPositions.push(center);
+          this.updateMapByCoordinates(center);
         });
       });
     } else {
-      this.options = {
+      this.mapOptions = {
         disableDefaultUI: false,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
       };
@@ -129,86 +136,55 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.storeAddress && this.isMapLoaded) this.geocodePosition();
-    if (!changes['coordinates']?.firstChange && this.coordinates)
+    if (this.storeAddress && this.isMapLoaded) {
+      this.getGeocodePosition(this.storeAddress, this.storeZone);
+    }
+    if (!changes['coordinates']?.firstChange && this.coordinates) {
       this.updateMapByCoordinates(this.coordinates);
+    }
   }
 
-  private geocodePosition(): void {
+  /**
+   * Obtener coordenadas según el servicio de geocodificación de Google Maps.
+   */
+  private getGeocodePosition(storeAddress: string, storeZone: string): void {
     this.geocoder
       .geocode({
-        address: `${this.storeAddress} ${this.storeZone}`,
+        address: `${storeAddress} ${storeZone}`,
       })
       .subscribe(({ status, results }) => {
         this.searchElementRef.nativeElement.value = this.storeAddress;
         if (status === google.maps.GeocoderStatus.OK) {
           const { location } = results[0].geometry;
-          const center: google.maps.LatLngLiteral = {
-            lat: location.lat(),
-            lng: location.lng(),
-          };
-          this.center = center;
-          this.map.panTo(center);
-          this.markerPositions = [center];
-          this.geolocalizacion.emit({
-            lat: location.lat(),
-            lng: location.lng(),
-          });
+          const coordinates = location.toJSON();
+          this.updateMapByCoordinates(coordinates);
+          this.changeCoordinates.emit(coordinates);
         } else {
+          // TODO: catch error.
           this.markerPositions = [];
-          this.geolocalizacion.emit({ lat: 0, lng: 0 });
+          this.changeCoordinates.emit({ lat: 0, lng: 0 });
         }
       });
   }
 
-  markerDragEnd({ latLng }: google.maps.MapMouseEvent): void {
-    if (this.autocompletado) {
-      this.zoom = 17;
-      let center: google.maps.LatLngLiteral = {
-        lat: latLng?.lat() || 0,
-        lng: latLng?.lng() || 0,
-      };
-      this.center = center;
-      this.map.panTo(center);
-      this.getAddress();
-    }
-  }
-
-  getAddress(): void {
-    this.geocoder.geocode({ location: this.center }).subscribe((location) => {
-      if (location.status === 'OK') {
-        if (location.results[0]) {
-          this.setDireccion.emit([
-            location.results[0].address_components,
-            { lat: this.center.lat, lng: this.center.lng },
-          ]);
-          this.zoom = 17;
-          this.searchElementRef.nativeElement.value =
-            location.results[0].formatted_address;
-        } else {
-          window.alert('No se han encontrado resultados.');
-        }
-      } else {
-        console.log('Geocoder error: ' + status);
-      }
-    });
-  }
-
-  clearSearch(): void {
+  /**
+   * Limpia el input de búsqueda y emite un evento para limpiar el formulario de dirección.
+   */
+  clearSearchInput(): void {
     this.searchElementRef.nativeElement.value = '';
-    this.clearAdress.emit();
+    this.clearAddress.emit();
   }
 
   /**
-   * Actualiza el mapa centrando en las coordenadas especificadas y coloca un marcador en esa ubicación.
-   * @param coordinates Objeto google.maps.LatLngLiteral que contiene las propiedades 'lat' y 'lng' para latitud y longitud.
-   * @return void No retorna ningún valor.
+   * Actualiza el centrando del mapa en las coordenadas específicadas y coloca un marcador en esa ubicación.
+   * @param coordinates Objeto `google.maps.LatLngLiteral` que contiene las propiedades `lat` y `lng` para latitud y longitud.
+   * @return No retorna ningún valor.
    */
-  updateMapByCoordinates(coordinates: google.maps.LatLngLiteral): void {
-    const { lat, lng } = coordinates;
-    const newCenter: google.maps.LatLngLiteral = { lat, lng };
-    this.center = newCenter;
-    this.map?.panTo(newCenter);
-    this.markerPositions = [newCenter];
+  private updateMapByCoordinates(
+    coordinates: google.maps.LatLngLiteral
+  ): void {
+    this.center = coordinates;
+    this.map?.panTo(coordinates);
+    this.markerPositions = [coordinates];
   }
 }

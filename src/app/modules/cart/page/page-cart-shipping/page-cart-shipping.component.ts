@@ -265,7 +265,7 @@ export class PageCartShippingComponent implements OnInit {
         // });
         dataLayer.push({
           event: 'shipping',
-          pagePath: window.location.href
+          pagePath: window.location.href,
         });
       }
     }
@@ -872,7 +872,8 @@ export class PageCartShippingComponent implements OnInit {
       // } else {
       //   this.recibeType = 'yo';
       // }
-      if(this.selectedShippingIdLast) this.selectedShippingId = this.selectedShippingIdLast
+      if (this.selectedShippingIdLast)
+        this.selectedShippingId = this.selectedShippingIdLast;
       else this.setDefaultAddress();
 
       if (this.selectedShippingId) {

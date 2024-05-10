@@ -156,7 +156,6 @@ export class ProductCardB2cCmsComponent implements OnInit {
 
   addToCart(): void {
     if (this.addingToCart) return;
-
     dataLayer.push({
       event: 'addtoCart',
       pagePath: window.location.href,

@@ -1,41 +1,53 @@
-<div  style="margin-top: 10px;margin-bottom: 10px;padding-left: 10px;padding-right: 10px;">
-<div class="row">
+<div
+  style="
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+  "
+>
+  <div class="row">
     <div class="col-6">
-    <select class="form-select" [(ngModel)]="idRegion" (change)="seleccionarRegion()">
-        <option *ngIf="expressRegion.length==0"  [ngValue]="null"
-        > Cargando Regiones ... </option>
-        <option  
-        *ngFor="let item of expressRegion" value="{{item.regionId}}"><strong>{{item.regionName | uppercase}}</strong></option>
-       
-        
+      <select
+        class="form-select"
+        [(ngModel)]="idRegion"
+        (change)="seleccionarRegion()"
+      >
+        <option *ngIf="expressRegion.length == 0" [ngValue]="null">
+          Cargando Regiones ...
+        </option>
+        <option *ngFor="let item of expressRegion" value="{{ item.regionId }}">
+          <strong>{{ item.regionName | uppercase }}</strong>
+        </option>
       </select>
-
     </div>
 
     <div class="col-6">
-        <select class="form-select" [(ngModel)]="contryName" (change)="mostrarSucursal()">
-            <option *ngIf="comuna.length==0" [ngValue]="null" 
-            > Cargando Comuna ...  </option>
-            <option  
-            *ngFor="let item of comuna" value="{{item.countyName}}"><strong>{{item.countyName | uppercase}}</strong></option>
-           
-            
-          </select>
-          
-        </div>
-</div>
-<hr/>
+      <select
+        class="form-select"
+        [(ngModel)]="contryName"
+        (change)="mostrarSucursal()"
+      >
+        <option *ngIf="comuna.length == 0" [ngValue]="null">
+          Cargando Comuna ...
+        </option>
+        <option *ngFor="let item of comuna" value="{{ item.countyName }}">
+          <strong>{{ item.countyName | uppercase }}</strong>
+        </option>
+      </select>
+    </div>
+  </div>
+  <hr />
 
-<div *ngIf="load" class="row">
-    <app-loading-element
-    *ngIf="load"
-    text="Buscando"
-    ></app-loading-element>
-</div>
+  <div *ngIf="load" class="row">
+    <app-loading-element *ngIf="load" text="Buscando" />
+  </div>
 
-
-    <div class="col-12">
-    <app-map-chilexpress *ngIf="!load && sucursales.length>0" [sucursales]="sucursales" (fechasShipping)="getChilexpress($event)"></app-map-chilexpress>
-</div>
-
+  <div class="col-12">
+    <app-map-chilexpress
+      *ngIf="!load && sucursales.length > 0"
+      [sucursales]="sucursales"
+      (fechasShipping)="getChilexpress($event)"
+    />
+  </div>
 </div>

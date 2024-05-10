@@ -19,13 +19,13 @@
     <div class="col-12 mb-3">
       <app-map
         *ngIf="address"
-        (clearAdress)="clearAddress()"
+        (clearAddress)="clearAddress()"
         [storeAddress]="address.direccion"
         [storeZone]="address.zona"
         [autocompletado]="autocompletado"
-        (setDireccion)="set_direccion($event)"
-        (geolocalizacion)="geolocalizacion($event)"
-      ></app-map>
+        (changeAddress)="set_direccion($event)"
+        (changeCoordinates)="geolocalizacion($event)"
+      />
     </div>
   </div>
   <form [formGroup]="formDireccion">

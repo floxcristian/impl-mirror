@@ -7,8 +7,9 @@ export interface IConfig {
   phoneCodes: IPhoneCodes;
   storesPage: IStoresPage;
   salesDebtPage: ISalesDebtPage;
-  company: ICompany;
   sampleFiles: ISampleFiles;
+  company: ICompany;
+  mapCoordinates: google.maps.LatLngLiteral;
 }
 
 export interface ISampleFiles {

@@ -390,14 +390,14 @@
                 >
                   <div class="col-12" style="padding: 0 !important">
                     <app-map
-                      titulo="DIRECCIÓN"
-                      (clearAdress)="clearAddress()"
+                      title="DIRECCIÓN"
+                      (clearAddress)="clearAddress()"
                       [storeAddress]="tienda?.direccion || ''"
                       [storeZone]="tienda?.zona || ''"
                       [autocompletado]="autocompletado"
-                      (setDireccion)="setAddress($event)"
-                      (geolocalizacion)="geolocalizacion($event)"
-                    ></app-map>
+                      (changeAddress)="setAddress($event)"
+                      (changeCoordinates)="geolocalizacion($event)"
+                    />
                   </div>
                   <form [formGroup]="formDireccion">
                     <div
@@ -2261,14 +2261,14 @@
                 >
                   <div>
                     <app-map
-                      titulo="DIRECCIÓN"
-                      (clearAdress)="clearAddress()"
+                      title="DIRECCIÓN"
+                      (clearAddress)="clearAddress()"
                       [storeAddress]="tienda?.direccion || ''"
                       [storeZone]="tienda?.zona || ''"
                       [autocompletado]="autocompletado"
-                      (setDireccion)="setAddress($event)"
-                      (geolocalizacion)="geolocalizacion($event)"
-                    ></app-map>
+                      (changeAddress)="setAddress($event)"
+                      (changeCoordinates)="geolocalizacion($event)"
+                    />
                   </div>
                   <form [formGroup]="formDireccion">
                     <div class="row g-3" style="margin-top: 1rem">

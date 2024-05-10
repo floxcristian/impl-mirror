@@ -51,5 +51,9 @@
     "facebook": "https://www.facebook.com/IMPLEMENTOSREPUESTOS",
     "linkedin": "https://www.linkedin.com/company/epysa-implementos/about",
     "youtube": "https://www.youtube.com/channel/UCgfuvkNmM3L89vLcRCLpAjw"
+  },
+  "mapCoordinates": {
+    "lat": -36.79975467819392,
+    "lng": -71.49897587245773
   }
 }

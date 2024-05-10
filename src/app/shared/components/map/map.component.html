@@ -1,20 +1,19 @@
 <div class="mb-3" [hidden]="showSearchBar" style="color: #0063b9">
-  <label>{{ titulo || 'Ingrese Dirección' }}</label>
+  <label>{{ title || 'Ingrese dirección' }}</label>
   <div class="input-group">
     <input
       type="text"
       class="form-control"
-      (keydown.enter)="$event.preventDefault()"
       placeholder="Nombre Dirección"
       autocorrect="off"
       autocapitalize="off"
-      spellcheck="off"
+      spellcheck="false"
       type="text"
       #search
     />
     <button
       class="btn bg-transparent"
-      (click)="clearSearch()"
+      (click)="clearSearchInput()"
       style="margin-left: -40px; z-index: 100"
     >
       <i class="fa fa-times" style="font-size: 13px !important"></i>
@@ -22,17 +21,13 @@
   </div>
 </div>
 <div class="me-1 ms-1">
-  <google-map
-    *ngIf="isMapLoaded"
-    [center]="center"
-    [zoom]="zoom"
-    [options]="options"
-  >
+  @if(isMapLoaded){
+  <google-map [center]="center" [zoom]="zoom" [options]="mapOptions">
     <map-marker
       *ngFor="let markerPosition of markerPositions"
-      (mapDragend)="markerDragEnd($event)"
       [options]="markerOptions"
       [position]="markerPosition"
-    ></map-marker>
+    />
   </google-map>
+  }
 </div>

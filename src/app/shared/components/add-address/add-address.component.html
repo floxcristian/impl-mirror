@@ -14,19 +14,22 @@
     <div class="row">
       <div class="col-12 col-lg-12 mb-2">
         <app-map
-          (clearAdress)="clearAddress()"
+          (clearAddress)="clearAddress()"
           [storeAddress]="tienda?.direccion || ''"
           [storeZone]="tienda?.direccion || ''"
           [autocompletado]="autocompletado"
-          (setDireccion)="set_direccion($event)"
-          (geolocalizacion)="geolocalizacion($event)"
-        ></app-map>
+          (changeAddress)="setAddress($event)"
+          (changeCoordinates)="setCoordinates($event)"
+        />
       </div>
+      <!--<pre>
+        {{ addressForm.value | json }}
+      </pre> -->
       <div class="col-12 col-lg-12">
         <form
           (ngSubmit)="agregarDireccion()"
           id="form"
-          [formGroup]="formDireccion"
+          [formGroup]="addressForm"
         >
           <div class="row" style="color: #0063b9">
             <div class="mb-3 col-md-8">
@@ -43,7 +46,7 @@
               <label for="inputPassword4">Número</label>
               <input
                 [class.is-invalid]="
-                  formDireccion.controls['numero'].hasError('completar')
+                  addressForm.controls['numero'].hasError('completar')
                 "
                 type="number"
                 class="form-control"
@@ -127,7 +130,7 @@
             name="agregarDireccion"
             class="btn btn-secondary ms-1"
             (click)="emitirDireccion()"
-            [disabled]="!formDireccion.valid && !tienda"
+            [disabled]="!addressForm.valid && !tienda"
           >
             Agregar
           </button>

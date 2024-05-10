@@ -1,11 +1,6 @@
 // Angular
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormControl,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 // Libs
 import { ToastrService } from 'ngx-toastr';
 // Services
@@ -29,7 +24,7 @@ export class AddAddressComponent implements OnInit {
 
   cities!: ICity[];
   localidades!: any[];
-  formDireccion: FormGroup;
+  addressForm!: FormGroup;
   // tienda: any;
   tienda: DireccionMap | null;
   coleccionComuna!: any[];
@@ -39,27 +34,11 @@ export class AddAddressComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private toastr: ToastrService,
-    // Services V2
     private readonly sessionService: SessionService,
     private readonly geolocationApiService: GeolocationApiService,
     private readonly customerAddressService: CustomerAddressApiService
   ) {
-    this.formDireccion = this.fb.group({
-      calle: new FormControl(null, {
-        validators: [Validators.required],
-      }),
-      depto: new FormControl(null),
-      numero: new FormControl(null, {
-        validators: [Validators.required],
-      }),
-      comuna: new FormControl(null, {
-        validators: [Validators.required],
-      }),
-      localizacion: new FormControl(null),
-      latitud: new FormControl(null),
-      longitud: new FormControl(null),
-      referencia: new FormControl(null),
-    });
+    this.buildForm();
     // this.tienda = {
     //   direccion: '',
     //   zona: '',
@@ -67,11 +46,28 @@ export class AddAddressComponent implements OnInit {
     this.tienda = null;
   }
 
-  ngOnInit() {
+  /**
+   * Construir formulario para dirección.
+   */
+  private buildForm(): void {
+    this.addressForm = this.fb.group({
+      calle: [null, Validators.required],
+      depto: [null],
+      numero: [null, Validators.required],
+      comuna: [null, Validators.required],
+      localizacion: [null],
+      latitud: [null],
+      longitud: [null],
+      referencia: [null],
+    });
+  }
+
+  ngOnInit(): void {
     this.getCities();
   }
 
-  set_direccion(data: any[]) {
+  setAddress(data: any[]) {
+    console.log('data: ', data);
     //this.clearAddress();
 
     /* if(this.getAddressData(data[0], 'street_number')){ */
@@ -79,31 +75,31 @@ export class AddAddressComponent implements OnInit {
 
     const existe = this.cities.filter((item) => item.city == buscar);
 
-    if (existe.length != 0) {
-      this.formDireccion.controls['comuna'].setValue(
+    if (existe.length) {
+      this.addressForm.controls['comuna'].setValue(
         this.getCityId(this.getAddressData(data[0], 'locality'))
       );
     } else {
-      this.formDireccion.controls['comuna'].setValue(
+      this.addressForm.controls['comuna'].setValue(
         this.getCityId(
           this.getAddressData(data[0], 'administrative_area_level_3')
         )
       );
     }
-    this.formDireccion.controls['calle'].setValue(
+    this.addressForm.controls['calle'].setValue(
       this.getAddressData(data[0], 'route')
     );
     this.getAddressData(data[0], 'street_number')
-      ? this.formDireccion.controls['numero'].setValue(
+      ? this.addressForm.controls['numero'].setValue(
           this.getAddressData(data[0], 'street_number')
         )
-      : this.formDireccion.controls['numero'].setErrors({ completar: true });
+      : this.addressForm.controls['numero'].setErrors({ completar: true });
 
-    this.formDireccion.controls['latitud'].setValue(data[1].lat);
-    this.formDireccion.controls['longitud'].setValue(data[1].lng);
+    this.addressForm.controls['latitud'].setValue(data[1].lat);
+    this.addressForm.controls['longitud'].setValue(data[1].lng);
 
     this.obtenerLocalidades({
-      id: this.formDireccion.controls['comuna'].value,
+      id: this.addressForm.controls['comuna'].value,
     });
     if (!this.invitado) {
       this.cargarDireccion();
@@ -172,7 +168,7 @@ export class AddAddressComponent implements OnInit {
       );
 
       if (result && result.location) {
-        this.formDireccion.controls['localizacion'].setValue(result.location);
+        this.addressForm.controls['localizacion'].setValue(result.location);
       }
     }
     // nombre = nombre.split('@')[0];
@@ -184,7 +180,7 @@ export class AddAddressComponent implements OnInit {
     //     (data) => this.quitarAcentos(data.localidad) === nombre
     //   );
     //   if (result && result.localidad) {
-    //     this.formDireccion.controls['localizacion'].setValue(result.localidad);
+    //     this.addressForm.controls['localizacion'].setValue(result.localidad);
     //   }
     // }
   }
@@ -233,9 +229,9 @@ export class AddAddressComponent implements OnInit {
       latitud,
       longitud,
       referencia,
-    } = this.formDireccion.value;
+    } = this.addressForm.value;
     const comunaArr = comuna.split('@');
-    const usuario = this.sessionService.getSession(); //: Usuario = this.root.getDataSesionUsuario();
+    const usuario = this.sessionService.getSession();
 
     const direccion = {
       documentId: usuario.documentId,
@@ -268,10 +264,10 @@ export class AddAddressComponent implements OnInit {
 
   cargarDireccion() {
     this.tienda = null;
-    if (!this.formDireccion.valid) {
+    if (!this.addressForm.valid) {
       return;
     }
-    const { calle, numero, comuna, localizacion } = this.formDireccion.value;
+    const { calle, numero, comuna, localizacion } = this.addressForm.value;
     const comunaArr = comuna.split('@');
 
     this.tienda = {
@@ -305,16 +301,22 @@ export class AddAddressComponent implements OnInit {
     //   comuna.localidades.map((localidad: any) => localidades.push(localidad))
     // );
     this.localidades = localidades;
-    // this.findComunaLocalizacion(this.formDireccion.controls['comuna'].value);
+    // this.findComunaLocalizacion(this.addressForm.controls['comuna'].value);
   }
 
-  geolocalizacion(event: any) {
-    this.formDireccion.controls['latitud'].setValue(event.lat);
-    this.formDireccion.controls['longitud'].setValue(event.lng);
+  /**
+   * Establecer coordenadas en el formulario.
+   * @param coordinates
+   */
+  setCoordinates({ lat, lng }: google.maps.LatLngLiteral): void {
+    this.addressForm.patchValue({
+      latitud: lat,
+      longitud: lng,
+    });
   }
 
   clearAddress() {
-    this.formDireccion.setValue({
+    this.addressForm.setValue({
       calle: '',
       depto: '',
       numero: '',
@@ -331,7 +333,7 @@ export class AddAddressComponent implements OnInit {
   }
 
   cargarDireccionInvitado() {
-    const dataSave = { ...this.formDireccion.value };
+    const dataSave = { ...this.addressForm.value };
     const arr = dataSave.comuna.split('@');
 
     const direccion = {
