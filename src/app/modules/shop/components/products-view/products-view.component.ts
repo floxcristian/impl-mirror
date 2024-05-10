@@ -91,7 +91,7 @@ export class ProductsViewComponent {
       dataLayer.push({
         event: 'categorie_view',
         pagePath: this.url
-    });
+      });
     }
   }
 

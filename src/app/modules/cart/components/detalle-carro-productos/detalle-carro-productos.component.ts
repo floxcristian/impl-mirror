@@ -79,7 +79,6 @@ export class DetalleCarroProductosComponent implements OnInit {
     (this.cartService.items$ as Observable<IShoppingCartProduct[]>)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((products: IShoppingCartProduct[]) => {
-        console.log('products on observable', products);
         if (products.length) {
           this.validateProductAvailability(products);
         }
