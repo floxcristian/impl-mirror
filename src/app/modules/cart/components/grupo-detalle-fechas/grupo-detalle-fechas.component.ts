@@ -67,7 +67,8 @@ export class GrupoDetalleFechasComponent implements OnInit {
       let dayIndex = 0;
 
       while (dayIndex < this.DIAS_SEMANA) {
-        const date = new Date(this.fletes[dayIndex].fecha);
+        if(this.fletes[dayIndex]){
+          const date = new Date(this.fletes[dayIndex].fecha);
 
         // Se modifica el mes de la fecha del flete (0-11)
         // Pasa al siguiente mes (en la fecha actual) si ve que el día (1-31) del primer flete queda mayor a la fecha actual.
@@ -86,6 +87,7 @@ export class GrupoDetalleFechasComponent implements OnInit {
           dayIndex = dayIndex + 1;
         }
         // Pasa al día siguiente (1-31).
+        }else dayIndex = dayIndex + 1;
       }
 
       if (fechasSemana.length) {
