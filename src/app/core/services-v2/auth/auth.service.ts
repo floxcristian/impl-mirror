@@ -112,12 +112,10 @@ export class AuthApiService {
    */
   updatePassword({
     documentId,
-    username,
     currentPassword,
     newPassword,
   }: IUpdatePasswordRequest) {
     return this.http.put(`${API_AUTH}/${documentId}/password`, {
-      username,
       newPassword,
       actualPassword: currentPassword,
     });

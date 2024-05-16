@@ -55,6 +55,10 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     }
 
+    if (request.url.includes('api/v1/auth/refresh')) {
+      return next.handle(newReq);
+    }
+
     return next.handle(newReq).pipe(
       catchError((error) => {
         if (error.status === 401 && tokens) {

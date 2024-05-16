@@ -167,7 +167,6 @@ export class CartService {
     try {
       response = await lastValueFrom(
         this.http.post<IShoppingCart>(`${API_CART}/article`, {
-          documentId,
           branch: storeCode,
           user: username || email,
           products: [
@@ -222,7 +221,7 @@ export class CartService {
     const callBackCartLoaded = params?.callBackCartLoaded;
     this.http
       .get<IShoppingCart>(
-        `${API_CART}?user=${usuario.username}&branch=${sucursal}&documentId=${usuario.documentId}`
+        `${API_CART}?user=${usuario.username}&branch=${sucursal}`
       )
       .subscribe({
         next: async (response: IShoppingCart) => {
@@ -419,7 +418,6 @@ export class CartService {
 
     const data = {
       user: usuario.username,
-      documentId: usuario.documentId,
       branch: sucursal,
       products: productos,
     };
@@ -586,7 +584,6 @@ export class CartService {
     if (!usuario.hasOwnProperty('username')) usuario.username = usuario.email;
     const data = {
       user: usuario.username,
-      documentId: usuario.documentId,
       branch: sucursal,
       products,
     };
@@ -692,7 +689,6 @@ export class CartService {
       body: {
         sku: item.sku,
         user: carro.user,
-        documentId: carro.customer?.documentId,
         branch: carro.branchCode,
       },
     };
@@ -748,11 +744,7 @@ export class CartService {
     return this.http.put<IShoppingCart>(`${API_CART}/transfer`, data);
   }
 
-  getPriceArticle(params: {
-    sku: string;
-    branch: string;
-    documentId: string;
-  }) {
+  getPriceArticle(params: { sku: string; branch: string }) {
     return this.http.get(API_CART, {
       params,
     });
@@ -1030,7 +1022,6 @@ export class CartService {
     const formData: FormData = new FormData();
     formData.append('username', data.username);
     formData.append('branch', data.branch);
-    formData.append('documentId', data.documentId);
     formData.append('action', data.action);
     if (data.file) {
       formData.append('file', data.file);

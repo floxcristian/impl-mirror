@@ -39,7 +39,7 @@ export class PaymentMethodOmniService {
     let qs = `shoppingCartId=${shoppingCartId}&redirect=1`;
     qs += `&successUrl=${this.successUrl}&rejectUrl=${this.rejectUrl}`;
     qs += '&nocache=' + new Date().getTime();
-    const url = `${API_PAYMENT}/webpay/create-transaction?${qs}`;
+    const url = `${API_PAYMENT}/webpay/create-transaction-omni?${qs}`;
     window.location.href = url;
   }
 
