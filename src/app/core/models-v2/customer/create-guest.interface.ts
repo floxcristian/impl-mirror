@@ -1,3 +1,5 @@
+import { ICustomerAddress } from './customer.interface';
+
 export interface ICreateGuest {
   email: string;
   documentId: string;
@@ -19,4 +21,8 @@ export interface ICreateGuestAddress {
   reference: string;
   latitude: number;
   longitude: number;
+}
+
+export interface ICreateGuestResponse {
+  addresses: ICustomerAddress[];
 }
