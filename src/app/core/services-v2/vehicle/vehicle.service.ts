@@ -15,6 +15,8 @@ import { IGetByPatentOrVin } from './get-by-patent-request.interface';
 const API_VEHICLE = `${environment.apiEcommerce}/api/catalogo`;
 // const API_ARTICLE = `http://localhost:3400/api/v1/article`; //`${environment.apiEcommerce}/api/v1/article`;
 const API_ARTICLE = `${environment.apiEcommerce}/api/v1/article`;
+const API_CUSTOMER = `${environment.apiEcommerce}/api/v1/customer`
+
 
 @Injectable({
   providedIn: 'root',
@@ -151,5 +153,16 @@ export class VehicleService {
     skus?: string[];
   }) {
     return this.http.get(`${API_ARTICLE}/filters`, { params });
+  }
+
+  registerSearchVehicle(
+    documentId:string,
+    params:{
+      patent:string,
+      manufactureYear?:number,
+      brand?:string,
+      codeSii?:string
+    }){
+    return this.http.post(`${API_CUSTOMER}/${documentId}/register-search-vehicle`,params)
   }
 }
