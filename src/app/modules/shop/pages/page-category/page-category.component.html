@@ -107,15 +107,20 @@
     <div class="block">
       <p-card [style]="{ width: '100%' }">
         <ng-template pTemplate="header">
-            <div class="flex gap-2 p-3" style="background-color: #F4F4F4;">
-              <div>Buscar por tamaño de neumático</div>
+            <div class="flex gap-2 p-3" style="background-color: #F4F4F4;justify-content: space-between;">
+              <div class="flex ">
+                <h5 style="align-self: center; font-size: 15px;">Buscar por tamaño de neumático</h5>
+              </div>
               <div class="flex flex-wrap">
-                ¿Cómo encontrar el tamaño de tu neumático?
-                <p-button [pTooltip]="tooltipContent" tooltipPosition="bottom" icon="pi pi-bell" size="small" [rounded]="true" severity="warning" />
+                <h5 style="align-self: center; font-size: 15px;">
+                  ¿Cómo encontrar el tamaño de tu neumático?
+                  <i class="pi pi-info-circle" [pTooltip]="tooltipContent" tooltipPosition="bottom" style="color: blue;font-size: 1rem"></i>
+                </h5>
+                <p-button [pTooltip]="tooltipContent" tooltipPosition="bottom" icon="pi pi-info-circle" size="small" [rounded]="true" severity="warning" />
                 <ng-template #tooltipContent>
                   <div style="width: 150px;">
-                      <img style="max-width: 100%;" src="https://cdn11.bigcommerce.com/s-mb6ezqbwve/content/img/tirechain_selector/selector_tooltip.jpg" alt="">
-                    </div>
+                    <img style="max-width: 100%;" src="https://cdn11.bigcommerce.com/s-mb6ezqbwve/content/img/tirechain_selector/selector_tooltip.jpg" alt="">
+                  </div>
                 </ng-template>
               </div>
             </div>
