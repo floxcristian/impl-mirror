@@ -103,6 +103,12 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
   routeSubscription!:Subscription
   routeSubscriptionQuery!:Subscription
 
+  size1 = [10,20,21,22,23,24,25]
+  size2 = [8,10,13,15,18,24]
+  size3 = [10,16,18,25]
+
+  seeFilterSnow:boolean = false
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private route: ActivatedRoute,
