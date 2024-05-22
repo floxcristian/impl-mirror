@@ -84,6 +84,7 @@ export class ModalVehicleComponent implements OnInit {
       this.isClickedVehicleSearch = true;
       return;
     }
+    search = search.toUpperCase();
     this.isLoadingVehicles = true;
     this.vehicleService
       .getByPatentOrVin({
@@ -97,6 +98,7 @@ export class ModalVehicleComponent implements OnInit {
           this.selectedVehicle = vehicle || null;
           this.notVehicleFound = vehicle ? false : true;
           this.existVehicleInFlota(this.selectedVehicle);
+          this.registerSearchVehicle(search,vehicle)
         },
         error: (err) => {
           this.isLoadingVehicles = false;
@@ -223,5 +225,21 @@ export class ModalVehicleComponent implements OnInit {
     this.activeModal.close(true);
     //this.menuVehiculo.toggle();
     //this.account.openLogin();
+  }
+
+  /**
+   * Registrar busqueda de vehicle
+   */
+  registerSearchVehicle(search:string,vehicle:IVehicle | null){
+    let vehicleParams:any = {}
+    if(vehicle){
+      vehicleParams.patent = vehicle?.PLACA_PATENTE,
+      vehicleParams.manufactureYear = vehicle?.ANO_FABRICACION,
+      vehicleParams.brand = vehicle?.MARCA,
+      vehicleParams.codeSii = vehicle?.codigoSii
+    }else{
+      vehicleParams.patent = search
+    }
+    this.vehicleService.registerSearchVehicle(this.session.documentId,vehicleParams).subscribe()
   }
 }
