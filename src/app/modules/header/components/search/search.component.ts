@@ -125,6 +125,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   animateButton: boolean = true;
   originalPlaceholder = 'ZB7603';
   animatedPlaceholder = 'ZB7603';
+  
+  categorias_search: ICategorySearch[] = [];
 
   getTypeFilter() {
     return this.vehicleForm.get('type')?.value === 'patent'
@@ -268,12 +270,17 @@ export class SearchComponent implements OnInit, OnDestroy {
       return;
     }
     let search: string = this.textToSearch.replace('/', '%2F');
-    if(this.categorias.length === 1) this.router.navigateByUrl('inicio/productos/' + search + '/categoria/' + this.categorias[0].slug);
-    else this.router.navigateByUrl('inicio/productos/' + search);
+    if(this.categorias_search.length === 1){
+      this.router.navigateByUrl('inicio/productos/' + search + '/categoria/' + this.categorias_search[0].slug);
+      this.categorias_search = []
+    }
+    else {
+      this.categorias_search = []
+      this.router.navigateByUrl('inicio/productos/' + search);
+    }
     this.mostrarContenido = true;
     this.mostrarCargando = true;
     this.mostrarResultados = false;
-    this.categorias = []
 
     setTimeout(() => {
       this.dropdown.close();
@@ -285,6 +292,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.mostrarCargando = true;
     this.linkBusquedaProductos = this.textToSearch;
     if (this.textToSearch.length > 3) {
+      this.categorias_search = []
       this.articleService
         .search({
           word: this.textToSearch,
@@ -299,6 +307,7 @@ export class SearchComponent implements OnInit, OnDestroy {
             }
             this.mostrarCargando = false;
             this.categorias = res.categories;
+            this.categorias_search = res.categories;
             this.marcas = res.brands;
             this.productosEncontrados = res.articles;
             this.sugerencias = res.suggestions;
