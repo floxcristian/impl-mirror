@@ -1,5 +1,5 @@
 // Angular
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
 // Services
 import { LocalStorageService } from 'src/app/core/modules/local-storage/local-storage.service';
@@ -10,13 +10,14 @@ import { CustomerPreferencesStorageService } from '@core/storage/customer-prefer
 import { WishlistStorageService } from '@core/storage/wishlist-storage.service';
 import { StorageKey } from '@core/storage/storage-keys.enum';
 import { isPlatformBrowser } from '@angular/common';
+import { AuthApiService } from '@core/services-v2/auth/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './page-login.component.html',
   styleUrls: ['./page-login.component.scss'],
 })
-export class PageLoginComponent {
+export class PageLoginComponent implements OnInit {
   constructor(
     private router: Router,
     private localS: LocalStorageService,
@@ -26,9 +27,34 @@ export class PageLoginComponent {
     private readonly authStateService: AuthStateServiceV2,
     private readonly customerPreferenceStorage: CustomerPreferencesStorageService,
     private readonly wishlistStorage: WishlistStorageService,
+    private readonly authService: AuthApiService,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-    // Cerramos la sesion del usuario
+  ) {}
+
+  async ngOnInit(): Promise<void> {
+    await this.logout();
+  }
+
+  async logout() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.authService.logout().subscribe({
+        next: () => {
+          console.log('LOGOUT');
+          this.clearSession();
+        },
+        error: (e) => {
+          console.log(e);
+          this.clearSession();
+        },
+      });
+    } else {
+      this.clearSession();
+    }
+
+    this.irAInicio();
+  }
+
+  clearSession() {
     this.sessionStorage.remove();
     this.sessionTokenStorage.remove();
     this.customerPreferenceStorage.remove();
@@ -36,7 +62,9 @@ export class PageLoginComponent {
     this.localS.remove(StorageKey.buscadorB2B);
     this.wishlistStorage.remove();
     this.authStateService.setSession(null);
+  }
 
+  irAInicio() {
     this.router.navigate(['/inicio']).then(() => {
       if (isPlatformBrowser(this.platformId)) window.location.reload();
     });

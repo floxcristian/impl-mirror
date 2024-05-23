@@ -43,7 +43,8 @@
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/datatables.net/js/jquery.dataTables.min.js"
-            ]
+            ],
+            "allowedCommonJsDependencies": ["moment", "buffer", "page-flip"]
           },
           "configurations": {
             "production": {

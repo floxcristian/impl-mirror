@@ -4,9 +4,10 @@ import { Injectable } from '@angular/core';
 import { IConfirmedPayment } from '@core/models-v2/payment-method/confirmed-payment.interface';
 import { IKhipuBank } from '@core/models-v2/payment-method/khipu-bank.interface';
 import { IPaymentMethod } from '@core/models-v2/payment-method/payment-method.interface';
+import { IPaymentTransaction } from '@core/models-v2/payment-method/payment-transaction.interface';
 // Environment
 import { environment } from '@env/environment';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, firstValueFrom } from 'rxjs';
 
 const API_PAYMENT = `${environment.apiEcommerce}/api/v1/payment`;
 const API_GATEWAY = `${environment.apiEcommerce}`;
@@ -30,23 +31,37 @@ export class PaymentMethodService {
     });
   }
 
-  redirectToWebpayTransaction(params: { shoppingCartId: string }) {
+  async redirectToWebpayTransaction(params: { shoppingCartId: string }) {
     const { shoppingCartId } = params;
-    let qs = `shoppingCartId=${shoppingCartId}&redirect=1`;
+    let qs = `shoppingCartId=${shoppingCartId}&redirect=0`;
     qs += '&nocache=' + new Date().getTime();
     const url = `${API_PAYMENT}/webpay/create-transaction?${qs}`;
-    window.location.href = url;
+    try {
+      const result = await firstValueFrom(
+        this.http.get<IPaymentTransaction>(url)
+      );
+      window.location.href = result.redirectUrl;
+    } catch (e) {
+      console.error(e);
+    }
   }
 
-  redirectToMercadoPagoTransaction(params: { shoppingCartId: string }) {
+  async redirectToMercadoPagoTransaction(params: { shoppingCartId: string }) {
     const { shoppingCartId } = params;
-    let qs = `shoppingCartId=${shoppingCartId}&redirect=1`;
+    let qs = `shoppingCartId=${shoppingCartId}&redirect=0`;
     qs += '&nocache=' + new Date().getTime();
     const url = `${API_PAYMENT}/mercadopago/create-transaction?${qs}`;
-    window.location.href = url;
+    try {
+      const result = await firstValueFrom(
+        this.http.get<IPaymentTransaction>(url)
+      );
+      window.location.href = result.redirectUrl;
+    } catch (e) {
+      console.error(e);
+    }
   }
 
-  redirectToKhipuTransaction(params: {
+  async redirectToKhipuTransaction(params: {
     shoppingCartId: string;
     bankName?: string;
     bankId?: string;
@@ -54,10 +69,17 @@ export class PaymentMethodService {
     payerEmail?: string;
   }) {
     const { shoppingCartId, bankName, bankId, payerName, payerEmail } = params;
-    let qs = `shoppingCartId=${shoppingCartId}&bankId=${bankId}&bankName=${bankName}&payerName=${payerName}&payerEmail=${payerEmail}&redirect=1`;
+    let qs = `shoppingCartId=${shoppingCartId}&bankId=${bankId}&bankName=${bankName}&payerName=${payerName}&payerEmail=${payerEmail}&redirect=0`;
     qs += '&nocache=' + new Date().getTime();
     const url = `${API_PAYMENT}/khipu/create-transaction?${qs}`;
-    window.location.href = url;
+    try {
+      const result = await firstValueFrom(
+        this.http.get<IPaymentTransaction>(url)
+      );
+      window.location.href = result.redirectUrl;
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   verifyPayment(url: string): Observable<IConfirmedPayment> {

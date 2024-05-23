@@ -974,11 +974,11 @@ export class PageCartShippingComponent implements OnInit {
       },
     };
 
-    await firstValueFrom(this.customerService.createGuest(createGuestRequest));
-
-    const addresses = await firstValueFrom(
-      this.customerAddressApiService.getDeliveryAddresses(documentId)
+    const result = await firstValueFrom(
+      this.customerService.createGuest(createGuestRequest)
     );
+
+    const addresses = result.addresses;
 
     this.addresses = addresses
       .sort((a, b) => Number(b.id) - Number(a.id))

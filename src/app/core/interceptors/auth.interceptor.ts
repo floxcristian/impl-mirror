@@ -14,6 +14,7 @@ import { environment } from '@env/environment';
 // Services
 import { SessionTokenStorageService } from '@core/storage/session-token-storage.service';
 import { AuthApiService } from '@core/services-v2/auth/auth.service';
+import { SessionStorageService } from '@core/storage/session-storage.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -23,7 +24,8 @@ export class AuthInterceptor implements HttpInterceptor {
     @Inject(PLATFORM_ID) private plataformaId: any,
     // Services V2
     private readonly authApiService: AuthApiService,
-    private readonly sessionTokenStorage: SessionTokenStorageService
+    private readonly sessionTokenStorage: SessionTokenStorageService,
+    private readonly sessionStorageService: SessionStorageService
   ) {}
 
   intercept(
@@ -32,11 +34,14 @@ export class AuthInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     let newReq = request.clone();
 
+    const session = this.sessionStorageService.get();
     const tokens = this.sessionTokenStorage.get();
     if (tokens && request.url.includes('api/v')) {
       const accessToken = tokens.accessToken;
       newReq = request.clone({
-        headers: request.headers.set('Authorization', 'Bearer ' + accessToken),
+        headers: request.headers
+          .set('Authorization', 'Bearer ' + accessToken)
+          .set('X-Ecommerce-User', session?.email || ''),
       });
     } else {
       if (isPlatformBrowser(this.plataformaId)) {
@@ -48,11 +53,14 @@ export class AuthInterceptor implements HttpInterceptor {
       }
 
       newReq = request.clone({
-        headers: request.headers.set(
-          'Authorization',
-          'Basic ' + this.authdata
-        ),
+        headers: request.headers
+          .set('Authorization', 'Basic ' + this.authdata)
+          .set('X-Ecommerce-User', session?.email || ''),
       });
+    }
+
+    if (request.url.includes('api/v1/auth/refresh')) {
+      return next.handle(newReq);
     }
 
     return next.handle(newReq).pipe(
