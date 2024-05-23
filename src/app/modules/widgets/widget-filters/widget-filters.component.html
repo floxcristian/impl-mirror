@@ -55,6 +55,7 @@
         [ngClass]="{ 'filter--opened': !filter?.collapsed }"
         appCollapseItem="filter--opened"
         #collapse="appCollapseItem"
+        *ngIf="!['CADENA ANCHO','CADENA PERFIL','CADENA ARO'].includes(filter.name)"
       >
         <button
           name="collapse"
