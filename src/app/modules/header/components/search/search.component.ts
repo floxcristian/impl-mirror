@@ -273,6 +273,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.mostrarContenido = true;
     this.mostrarCargando = true;
     this.mostrarResultados = false;
+    this.categorias = []
 
     setTimeout(() => {
       this.dropdown.close();
