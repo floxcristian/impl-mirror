@@ -133,46 +133,48 @@
               </div>
             </div>
           </div> -->
-          <div>
+          <div *ngIf="filters_chain">
             <div class="mb-4">
-              <!-- <p-dropdown
-              styleClass="w-full"
-              [options]="size1"
-              placeholder="size 1" /> -->
-              <p-floatLabel>
-                <p-dropdown
-                    styleClass="w-full"
-                    [options]="size1"
-                    inputId="float-label" />
-                <label for="float-label">Size 1</label>
-              </p-floatLabel>
+              <div class="mb-4">
+                <p-floatLabel>
+                  <p-dropdown
+                      styleClass="w-full"
+                      [options]="filters_chain[0]?.options?.items"
+                      optionLabel="label"
+                      inputId="float-label" />
+                  <label for="float-label">{{filters_chain[0]?.name}}</label>
+                </p-floatLabel>
+              </div>
+              <div class="mb-4" *ngIf="filter_ancho">
+                <p-floatLabel>
+                  <p-dropdown
+                      styleClass="w-full"
+                      [options]="filters_chain[1]?.options?.items"
+                      optionLabel="label"
+                      inputId="float-label" />
+                  <label for="float-label">{{filters_chain[1]?.name}}</label>
+                </p-floatLabel>
+              </div>
+              <div class="mb-4" *ngIf="filter_perfil">
+                <p-floatLabel>
+                  <p-dropdown
+                      styleClass="w-full"
+                      [options]="filters_chain[2]?.options?.items"
+                      optionLabel="label"
+                      inputId="float-label" />
+                  <label for="float-label">{{filters_chain[2]?.name}}</label>
+                </p-floatLabel>
+              </div>
             </div>
-            <div class="mb-4">
-              <!-- <p-dropdown
-              styleClass="w-full"
-              [options]="size2"
-              placeholder="size 2" /> -->
-              <p-floatLabel>
-                <p-dropdown
-                    styleClass="w-full"
-                    [options]="size2"
-                    inputId="float-label" />
-                <label for="float-label">Size 2</label>
-              </p-floatLabel>
-            </div>
-            <div class="mb-4">
-              <!-- <p-dropdown
-              styleClass="w-full"
-              [options]="size3"
-              placeholder="size 3" /> -->
+            <!-- <div class="mb-4">
               <p-floatLabel>
                 <p-dropdown
                     styleClass="w-full"
                     [options]="size3"
                     inputId="float-label" />
-                <label for="float-label">Size 3</label>
+                <label for="float-label">Cadena aro</label>
               </p-floatLabel>
-            </div>
+            </div> -->
             <div class="flex mt-2">
                 <p-button label="Buscar" class="w-full" styleClass="w-full" />
             </div>

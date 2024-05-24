@@ -107,7 +107,13 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
   size2 = [8,10,13,15,18,24]
   size3 = [10,16,18,25]
 
+  // Variables for filter chain
   seeFilterSnow:boolean = false
+  filters_chain: any[] = [];
+  chain_attributes = ['CADENA ANCHO','CADENA PERFIL','CADENA ARO']
+  filter_ancho:boolean = false
+  filter_perfil:boolean = false
+  filter_aro:boolean = false
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -561,6 +567,7 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
     }
     this.formatoPaginacion(r);
     this.filters = [];
+    this.filters_chain = []
     this.formatCategories(r.categoriesTree, r.levelFilter);
     this.formatFilters(r.filters);
     this.agregarMatrizProducto(r.articles);
@@ -749,6 +756,7 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
         });
       });
       this.filters.push(filtro);
+      if(this.chain_attributes.includes(r.name)) this.filters_chain.push(filtro)
     });
   }
 
@@ -777,6 +785,9 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
 
   updateFilters(filtersObj: any): void {
     let filters = filtersObj.selected;
+    if(filters['filter_CADENA ANCHO']) this.filter_ancho = true
+    if(filters['filter_CADENA PERFIL']) this.filter_perfil = true
+    if(filters['filter_CADENA ARO']) this.filter_aro = true
     // const url = this.router.url.split('?')[0];
     const url = this.decodedUrl(this.router.url.split('?')[0]);
     filters = this.armaQueryParams(filters);
@@ -1109,5 +1120,11 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
       });
     });
     this.filters.push(filtros);
+  }
+
+  //* Logica para el filtrador de cadenas   'CADENA ANCHO - CADENA PERFIL - CADENA ARO'
+
+  selectFilterChain(filter_chain:any){
+
   }
 }
