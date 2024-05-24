@@ -31,6 +31,7 @@ import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
+import { FloatLabelModule } from "primeng/floatlabel"
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { TooltipModule } from 'primeng/tooltip';
     CardModule,
     DropdownModule,
     ButtonModule,
-    TooltipModule
+    TooltipModule,
+    FloatLabelModule
   ],
 })
 export class ShopModule {}
