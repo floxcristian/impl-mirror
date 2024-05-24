@@ -15,6 +15,7 @@ import { environment } from '@env/environment';
 import { SessionTokenStorageService } from '@core/storage/session-token-storage.service';
 import { AuthApiService } from '@core/services-v2/auth/auth.service';
 import { SessionStorageService } from '@core/storage/session-storage.service';
+import { LogoutService } from '@core/services-v2/auth/logout.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -25,7 +26,8 @@ export class AuthInterceptor implements HttpInterceptor {
     // Services V2
     private readonly authApiService: AuthApiService,
     private readonly sessionTokenStorage: SessionTokenStorageService,
-    private readonly sessionStorageService: SessionStorageService
+    private readonly sessionStorageService: SessionStorageService,
+    private readonly logoutService: LogoutService
   ) {}
 
   intercept(
@@ -60,7 +62,17 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     if (request.url.includes('api/v1/auth/refresh')) {
-      return next.handle(newReq);
+      return next.handle(newReq).pipe(
+        catchError((error) => {
+          if (error.status === 401 && tokens) {
+            this.logoutService.clearSession();
+            this.logoutService.irAInicio();
+          } else {
+            return throwError(() => new Error(error));
+          }
+          return throwError(() => new Error(error));
+        })
+      );
     }
 
     return next.handle(newReq).pipe(
