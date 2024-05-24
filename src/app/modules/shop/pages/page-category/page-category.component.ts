@@ -114,6 +114,9 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
   filter_ancho:boolean = false
   filter_perfil:boolean = false
   filter_aro:boolean = false
+  value_filter_ancho = null
+  value_filter_perfil = null
+  value_filter_aro = null
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
