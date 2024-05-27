@@ -37,7 +37,7 @@ export class PaymentMethodOmniService {
 
   async redirectToWebpayTransaction(params: { shoppingCartId: string }) {
     const { shoppingCartId } = params;
-    let qs = `shoppingCartId=${shoppingCartId}&redirect=1`;
+    let qs = `shoppingCartId=${shoppingCartId}&redirect=0`;
     qs += `&successUrl=${this.successUrl}&rejectUrl=${this.rejectUrl}`;
     qs += '&nocache=' + new Date().getTime();
     const url = `${API_PAYMENT}/webpay/create-transaction-omni?${qs}`;
@@ -53,7 +53,7 @@ export class PaymentMethodOmniService {
 
   async redirectToMercadoPagoTransaction(params: { shoppingCartId: string }) {
     const { shoppingCartId } = params;
-    let qs = `shoppingCartId=${shoppingCartId}&redirect=1`;
+    let qs = `shoppingCartId=${shoppingCartId}&redirect=0`;
     qs += `&successUrl=${this.successUrl}&rejectUrl=${this.rejectUrl}`;
     qs += '&nocache=' + new Date().getTime();
     const url = `${API_PAYMENT}/mercadopago/create-transaction?${qs}`;
@@ -75,7 +75,7 @@ export class PaymentMethodOmniService {
     payerEmail?: string;
   }) {
     const { shoppingCartId, bankName, bankId, payerName, payerEmail } = params;
-    let qs = `shoppingCartId=${shoppingCartId}&bankId=${bankId}&bankName=${bankName}&payerName=${payerName}&payerEmail=${payerEmail}&redirect=1`;
+    let qs = `shoppingCartId=${shoppingCartId}&bankId=${bankId}&bankName=${bankName}&payerName=${payerName}&payerEmail=${payerEmail}&redirect=0`;
     qs += `&successUrl=${this.successUrl}&rejectUrl=${this.rejectUrl}`;
     qs += '&nocache=' + new Date().getTime();
     const url = `${API_PAYMENT}/khipu/create-transaction?${qs}`;
