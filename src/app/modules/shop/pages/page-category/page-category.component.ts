@@ -106,17 +106,21 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
   // Variables for filter chain
   seeFilterSnow:boolean = false
   filters_chain: any[] = [];
-  chain_attributes = ['CADENA ANCHO','CADENA PERFIL','CADENA ARO']
   filter_ancho:boolean = false
   filter_perfil:boolean = false
   filter_aro:boolean = false
-  value_filter_ancho = null
-  value_filter_perfil = null
-  value_filter_aro = null
+
+  select_ancho = null
+  select_perfil = null
+  select_aro = null
 
   filtro_chain=[]
 
+  ancho_attribute = 'CADENA ANCHO'
+  values_anchos:string[] = []
   aplicacion_cadenas:string[] = []
+  values_perfiles:any[] = []
+  values_aros:string[] = []
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -759,7 +763,7 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
         });
       });
       this.filters.push(filtro);
-      if(this.chain_attributes.includes(r.name)) this.filters_chain.push(filtro)
+      if(r.name === this.ancho_attribute) this.values_anchos = filtro.options.items.map(x => x.label)
       if(['APLICACION CADENA'].includes(r.name)) this.aplicacion_cadenas = filtro.options.items.map(x => x.label)
     });
   }
@@ -789,6 +793,7 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
 
   updateFilters(filtersObj: any): void {
     let filters = filtersObj.selected;
+    console.log('objetos filtros:',filtersObj)
     // const url = this.router.url.split('?')[0];
     const url = this.decodedUrl(this.router.url.split('?')[0]);
     filters = this.armaQueryParams(filters);
@@ -1125,11 +1130,9 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
 
   //* Logica para el filtrador de cadenas   'CADENA ANCHO - CADENA PERFIL - CADENA ARO'
 
-  generateFilter(ancho:string){
-    console.log('aplicacion cadenas',this.aplicacion_cadenas)
-    let valor_electo = '285'
+  selectAncho(event:any){
+    let valor_electo = event.value
     let anchos = []
-    console.log('length selecto', valor_electo.length)
     for(let cadena of this.aplicacion_cadenas){
       let x = cadena.substring(0, valor_electo.length)
       if(x === valor_electo){
@@ -1149,7 +1152,6 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
 
     for(let ancho of anchos){
       for(let perfil_aux of ancho.perfiles_aux){
-        console.log(perfil_aux)
         let o = perfil_aux.substring(0,1)
         if(o === '/'){
           let o2 = perfil_aux.substring(1,perfil_aux.length)
@@ -1181,7 +1183,30 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
         }
       }
     }
-    console.log('anchos:', anchos)
-    console.log('length selecto', anchos.length)
+    this.values_perfiles = anchos[0].perfiles
   }
+
+  selectPerfil(event:any){
+    let select_value = event.value
+    let index = this.values_perfiles.findIndex(x => x.perfil === select_value)
+    if(index != -1){
+      this.values_aros = this.values_perfiles[index].aros
+    }
+  }
+
+  filterChain(){
+    let filterObj:any = {}
+    if(this.select_perfil === 'SIN PERFIL'){
+      console.log('sin perfil')
+      let filter_aplicacion_cadena = `${this.select_ancho}R${this.select_aro}`
+      filterObj.selected = { 'filter_APLICACION CADENA' : filter_aplicacion_cadena }
+      this.updateFilters(filterObj)
+    }else{
+      console.log('con perfil')
+      let filter_aplicacion_cadena = `${this.select_ancho}/${this.select_perfil}R${this.select_aro}`
+      filterObj.selected = { 'filter_APLICACION CADENA' : filter_aplicacion_cadena }
+      this.updateFilters(filterObj)
+    }
+  }
+
 }

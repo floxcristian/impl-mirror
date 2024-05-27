@@ -133,36 +133,43 @@
               </div>
             </div>
           </div> -->
-          <div *ngIf="filters_chain">
+          <div>
             <div class="mb-4">
               <div class="mb-4">
                 <p-floatLabel>
                   <p-dropdown
                       styleClass="w-full"
-                      [options]="filters_chain[0]?.options?.items"
-                      optionLabel="label"
-                      inputId="float-label" />
-                  <label for="float-label">{{filters_chain[0]?.name}}</label>
+                      [options]="values_anchos"
+                      [(ngModel)]="select_ancho"
+                      inputId="float-label"
+                      (onChange)="selectAncho($event)"
+                  />
+                  <label for="float-label">Ancho cadena</label>
                 </p-floatLabel>
               </div>
-              <div class="mb-4" *ngIf="filter_ancho">
+              <div class="mb-4">
                 <p-floatLabel>
                   <p-dropdown
                       styleClass="w-full"
-                      [options]="filters_chain[1]?.options?.items"
-                      optionLabel="label"
-                      inputId="float-label" />
-                  <label for="float-label">{{filters_chain[1]?.name}}</label>
+                      [options]="values_perfiles"
+                      [(ngModel)]="select_perfil"
+                      optionLabel="perfil"
+                      optionValue="perfil"
+                      inputId="float-label"
+                      (onChange)="selectPerfil($event)"
+                  />
+                  <label for="float-label">Cadena perfil</label>
                 </p-floatLabel>
               </div>
-              <div class="mb-4" *ngIf="filter_perfil">
+              <div class="mb-4">
                 <p-floatLabel>
                   <p-dropdown
                       styleClass="w-full"
-                      [options]="filters_chain[2]?.options?.items"
-                      optionLabel="label"
-                      inputId="float-label" />
-                  <label for="float-label">{{filters_chain[2]?.name}}</label>
+                      [options]="values_aros"
+                      [(ngModel)]="select_aro"
+                      inputId="float-label"
+                  />
+                  <label for="float-label">Cadena aro</label>
                 </p-floatLabel>
               </div>
             </div>
@@ -176,7 +183,7 @@
               </p-floatLabel>
             </div> -->
             <div class="flex mt-2">
-                <p-button label="Buscar" class="w-full" styleClass="w-full" />
+                <p-button label="Buscar" class="w-full" styleClass="w-full"(onClick)="filterChain()"/>
             </div>
           </div>
         </ng-template>
