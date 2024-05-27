@@ -103,10 +103,6 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
   routeSubscription!:Subscription
   routeSubscriptionQuery!:Subscription
 
-  size1 = [10,20,21,22,23,24,25]
-  size2 = [8,10,13,15,18,24]
-  size3 = [10,16,18,25]
-
   // Variables for filter chain
   seeFilterSnow:boolean = false
   filters_chain: any[] = [];
@@ -117,6 +113,10 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
   value_filter_ancho = null
   value_filter_perfil = null
   value_filter_aro = null
+
+  filtro_chain=[]
+
+  aplicacion_cadenas:string[] = []
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -760,6 +760,7 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
       });
       this.filters.push(filtro);
       if(this.chain_attributes.includes(r.name)) this.filters_chain.push(filtro)
+      if(['APLICACION CADENA'].includes(r.name)) this.aplicacion_cadenas = filtro.options.items.map(x => x.label)
     });
   }
 
@@ -788,9 +789,6 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
 
   updateFilters(filtersObj: any): void {
     let filters = filtersObj.selected;
-    if(filters['filter_CADENA ANCHO']) this.filter_ancho = true
-    if(filters['filter_CADENA PERFIL']) this.filter_perfil = true
-    if(filters['filter_CADENA ARO']) this.filter_aro = true
     // const url = this.router.url.split('?')[0];
     const url = this.decodedUrl(this.router.url.split('?')[0]);
     filters = this.armaQueryParams(filters);
@@ -1127,7 +1125,63 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
 
   //* Logica para el filtrador de cadenas   'CADENA ANCHO - CADENA PERFIL - CADENA ARO'
 
-  selectFilterChain(filter_chain:any){
+  generateFilter(ancho:string){
+    console.log('aplicacion cadenas',this.aplicacion_cadenas)
+    let valor_electo = '285'
+    let anchos = []
+    console.log('length selecto', valor_electo.length)
+    for(let cadena of this.aplicacion_cadenas){
+      let x = cadena.substring(0, valor_electo.length)
+      if(x === valor_electo){
+        let existe = anchos.findIndex(y => y.ancho === valor_electo)
+        let resto = cadena.substring(valor_electo.length,cadena.length)
+        if(existe === -1){
+          let p:any = {
+            ancho:valor_electo,
+            perfiles_aux:[],
+            perfiles:[]
+          }
+          p.perfiles_aux.push(resto)
+          anchos.push(p)
+        }else anchos[existe].perfiles_aux.push(resto)
+      }
+    }
 
+    for(let ancho of anchos){
+      for(let perfil_aux of ancho.perfiles_aux){
+        console.log(perfil_aux)
+        let o = perfil_aux.substring(0,1)
+        if(o === '/'){
+          let o2 = perfil_aux.substring(1,perfil_aux.length)
+          let o2_split = o2.split('R')
+          let existe = ancho.perfiles.findIndex((y:any) => y.perfil === o2_split[0])
+          if(existe === -1){
+            let pe:any = {
+              perfil:o2_split[0],
+              aros:[]
+            }
+            pe.aros.push(o2_split[1])
+            ancho.perfiles.push(pe)
+          }else{
+            ancho.perfiles[existe].aros.push(o2_split[1])
+          }
+        }else {
+          let k = perfil_aux.split('R')
+          let existe = ancho.perfiles.findIndex((y:any) => y.perfil === 'SIN PERFIL')
+          if(existe === -1){
+            let pee:any = {
+              perfil:'SIN PERFIL',
+              aros:[]
+            }
+            pee.aros.push(k[1])
+            ancho.perfiles.push(pee)
+          }else{
+            ancho.perfiles[existe].aros.push(k[1])
+          }
+        }
+      }
+    }
+    console.log('anchos:', anchos)
+    console.log('length selecto', anchos.length)
   }
 }
