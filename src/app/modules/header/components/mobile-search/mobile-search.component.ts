@@ -145,7 +145,7 @@ export class MobileSearchComponent implements OnInit {
     dataLayer.push({
       event: 'search',
       busqueda: this.textToSearch
-  });
+    });
 
     if (this.textToSearch.trim() === '') {
       this.toastr.info('Debe ingresar un texto para buscar', 'Información');

@@ -6,7 +6,10 @@ import { environment } from '@env/environment';
 // Rxjs
 import { Observable } from 'rxjs';
 // Models
-import { ICreateGuest } from '@core/models-v2/customer/create-guest.interface';
+import {
+  ICreateGuest,
+  ICreateGuestResponse,
+} from '@core/models-v2/customer/create-guest.interface';
 import { ICustomerBlocked } from '@core/models-v2/customer/customer-blocked.interface';
 import { IUsersDetail } from '@core/models-v2/customer/users-detail.interface';
 import {
@@ -57,9 +60,9 @@ export class CustomerService {
     );
   }
 
-  createGuest(params: ICreateGuest) {
+  createGuest(params: ICreateGuest): Observable<ICreateGuestResponse> {
     const url = `${API_CUSTOMER}/new-guest`;
-    return this.http.post(url, params);
+    return this.http.post<ICreateGuestResponse>(url, params);
   }
 
   getCustomerPriceList(
