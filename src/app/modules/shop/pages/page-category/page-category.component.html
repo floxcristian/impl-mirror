@@ -103,8 +103,8 @@
   <ng-container [ngTemplateOutlet]="sidebar"></ng-container>
 
   <div class="shop-layout__content container">
-    <!-- buscador nuevo -->
-    <div class="block">
+    <!-- FILTRO CADENA PARA NIEVE -->
+    <div *ngIf="viewFilterChain" class="block">
       <p-card [style]="{ width: '100%' }">
         <ng-template pTemplate="header">
             <div class="flex gap-2 p-3" style="background-color: #0063B9;justify-content:center;">
@@ -112,9 +112,15 @@
             </div>
         </ng-template>
         <ng-template pTemplate="content">
-          <div class="flex flex-wrap mb-2" style="justify-content:center;">
+          <div class="flex" style="justify-content: end;">
+            <h5 style="text-decoration: underline; font-size: 14px; cursor: pointer;" (click)="cleanFilterChain()">
+              Limpiar filtro
+              <i class="pi pi-trash"></i>
+            </h5>
+          </div>
+          <div class="flex flex-wrap mb-4" style="justify-content:center;">
             <h5 style="align-self: center; font-size: 18px;">
-              ¿Cuantas medidas tengo?
+              ¿Cómo encuentro mi medida?
               <i class="pi pi-info-circle" [pTooltip]="tooltipContent" tooltipPosition="bottom" style="color: blue;font-size: 1rem"></i>
             </h5>
             <ng-template #tooltipContent>
@@ -123,18 +129,8 @@
               </div>
             </ng-template>
           </div>
-          <!-- <div class="flex justify-content-center">
-            <div class="flex gap-5 w-50">
-              <div class="flex w-50">
-                <p-button label="2 medias" class="w-full" styleClass="w-full" />
-              </div>
-              <div class="flex w-50">
-                <p-button label="3 medidas" class="w-full" styleClass="w-full" />
-              </div>
-            </div>
-          </div> -->
-          <div>
-            <div class="mb-4">
+          <div class="flex" style="justify-content: center;">
+            <div class="w-50 mb-2">
               <div class="mb-4">
                 <p-floatLabel>
                   <p-dropdown
@@ -142,12 +138,12 @@
                       [options]="values_anchos"
                       [(ngModel)]="select_ancho"
                       inputId="float-label"
-                      (onChange)="selectAncho($event)"
+                      (onChange)="selectAncho($event.value)"
                   />
                   <label for="float-label">Ancho cadena</label>
                 </p-floatLabel>
               </div>
-              <div class="mb-4">
+              <div *ngIf="select_ancho" class="mb-4">
                 <p-floatLabel>
                   <p-dropdown
                       styleClass="w-full"
@@ -156,39 +152,35 @@
                       optionLabel="perfil"
                       optionValue="perfil"
                       inputId="float-label"
-                      (onChange)="selectPerfil($event)"
+                      emptyMessage="No hay medidas de perfil asociados"
+                      (onChange)="selectPerfil($event.value)"
                   />
                   <label for="float-label">Cadena perfil</label>
                 </p-floatLabel>
               </div>
-              <div class="mb-4">
+              <div *ngIf="select_perfil" class="mb-4">
                 <p-floatLabel>
                   <p-dropdown
                       styleClass="w-full"
                       [options]="values_aros"
                       [(ngModel)]="select_aro"
+                      emptyMessage="No hay medidas de aro asociados"
                       inputId="float-label"
                   />
                   <label for="float-label">Cadena aro</label>
                 </p-floatLabel>
               </div>
             </div>
-            <!-- <div class="mb-4">
-              <p-floatLabel>
-                <p-dropdown
-                    styleClass="w-full"
-                    [options]="size3"
-                    inputId="float-label" />
-                <label for="float-label">Cadena aro</label>
-              </p-floatLabel>
-            </div> -->
-            <div class="flex mt-2">
-                <p-button label="Buscar" class="w-full" styleClass="w-full"(onClick)="filterChain()"/>
+          </div>
+          <div class="flex" style="justify-content: center;">
+            <div class="w-50 mt-2">
+              <p-button [disabled]="!select_ancho || !select_perfil || !select_aro" label="Buscar" class="w-full" styleClass="w-full"(onClick)="filterChain()"/>
             </div>
           </div>
         </ng-template>
       </p-card>
     </div>
+    <!-- FIN FILTRO CADENA PARA NIEVE -->
     <div class="block">
       <app-products-view
         *ngIf="origen"
