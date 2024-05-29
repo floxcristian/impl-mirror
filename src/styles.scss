@@ -429,3 +429,12 @@ body {
 .vehicle-search .p-placeholder::-webkit-input-placeholder {
   color: #b4b6b9;
 }
+
+.custom-chain.p-tooltip .p-tooltip-text {
+  width: 350px;
+}
+
+.custom-chain.p-tooltip{
+  max-width: 100%;
+  width:max-content;
+}

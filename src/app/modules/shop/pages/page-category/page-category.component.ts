@@ -115,6 +115,7 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
   aplicacion_cadenas:string[] = []
   values_perfiles:any[] = []
   values_aros:string[] = []
+  isActiveFilterAplicacionCadena:boolean = false
 
   //ancho
   anchos = [
@@ -770,7 +771,10 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
       // if(['APLICACION CADENA'].includes(r.name) && !this.filterQuery['filter_APLICACION CADENA']) this.aplicacion_cadenas = filtro.options.items.map(x => x.label)
       if(r.name === this.ancho_attribute) this.values_anchos = filtro.options.items.map(x => x.label)
       if(['APLICACION CADENA'].includes(r.name)) this.aplicacion_cadenas = filtro.options.items.map(x => x.label)
-      if(this.filterQuery['filter_APLICACION CADENA']) this.completeFilterChain()
+      if(this.filterQuery['filter_APLICACION CADENA'] && this.viewFilterChain) {
+        this.completeFilterChain()
+        this.isActiveFilterAplicacionCadena = true
+      }else this.isActiveFilterAplicacionCadena = false
     });
   }
 

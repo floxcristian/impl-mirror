@@ -118,14 +118,15 @@
               <i class="pi pi-trash"></i>
             </h5>
           </div>
-          <div class="flex flex-wrap mb-4" style="justify-content:center;">
+          <div class="flex flex-wrap mb-4 custom-chain" style="justify-content:center;">
             <h5 style="align-self: center; font-size: 18px;">
               ¿Cómo encuentro mi medida?
-              <i class="pi pi-info-circle" [pTooltip]="tooltipContent" tooltipPosition="bottom" style="color: blue;font-size: 1rem"></i>
+              <i class="pi pi-info-circle" [pTooltip]="tooltipContent" [autoHide]="false" tooltipStyleClass="custom-chain" tooltipPosition="bottom"
+              style="color: blue;font-size: 1rem"></i>
             </h5>
             <ng-template #tooltipContent>
-              <div style="width: 150px;">
-                <img style="max-width: 100%;" src="https://cdn11.bigcommerce.com/s-mb6ezqbwve/content/img/tirechain_selector/selector_tooltip.jpg" alt="">
+              <div>
+                <img style="max-width: 100%; height: auto;" src="https://cdn11.bigcommerce.com/s-mb6ezqbwve/content/img/tirechain_selector/selector_tooltip.jpg" alt="">
               </div>
             </ng-template>
           </div>
@@ -133,9 +134,16 @@
             <div class="w-50 mb-2">
               <div class="mb-4">
                 <p-floatLabel>
-                  <p-dropdown
+                  <!-- <p-dropdown
                       styleClass="w-full"
                       [options]="values_anchos"
+                      [(ngModel)]="select_ancho"
+                      inputId="float-label"
+                      (onChange)="selectAncho($event.value)"
+                  /> -->
+                  <p-dropdown
+                      styleClass="w-full"
+                      [options]="anchos"
                       [(ngModel)]="select_ancho"
                       inputId="float-label"
                       (onChange)="selectAncho($event.value)"
@@ -174,7 +182,8 @@
           </div>
           <div class="flex" style="justify-content: center;">
             <div class="w-50 mt-2">
-              <p-button [disabled]="!select_ancho || !select_perfil || !select_aro" label="Buscar" class="w-full" styleClass="w-full"(onClick)="filterChain()"/>
+              <p-button [disabled]="!select_ancho || !select_perfil || !select_aro || isActiveFilterAplicacionCadena" label="Buscar"
+              class="w-full" styleClass="w-full"(onClick)="filterChain()"/>
             </div>
           </div>
         </ng-template>
