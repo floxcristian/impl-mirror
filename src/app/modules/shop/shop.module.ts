@@ -26,6 +26,16 @@ import { ModalDeliveryComponent } from './components/despacho/components/modal-d
 import { ModalPickupComponent } from './components/despacho/components/modal-pickup/modal-pickup.component';
 import { ModalPickupTodayComponent } from './components/despacho/components/modal-pickup-today/modal-pickup-today.component';
 import { GoogleMapsModule } from '@angular/google-maps';
+//PRIMENG
+import { CardModule } from 'primeng/card';
+import { DropdownModule } from 'primeng/dropdown';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
+import { FloatLabelModule } from "primeng/floatlabel"
+import { DialogModule } from 'primeng/dialog';
+import { ImageModule } from 'primeng/image';
+
+
 @NgModule({
   declarations: [
     PageCategoryComponent,
@@ -51,6 +61,13 @@ import { GoogleMapsModule } from '@angular/google-maps';
     NgSelectModule,
     HeaderModule,
     GoogleMapsModule,
+    CardModule,
+    DropdownModule,
+    ButtonModule,
+    TooltipModule,
+    FloatLabelModule,
+    DialogModule,
+    ImageModule
   ],
 })
 export class ShopModule {}

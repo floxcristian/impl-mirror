@@ -1,5 +1,5 @@
 <div
-  class="page-header {{ class }} ps-5"
+  class="page-header {{ class }}"
   [ngClass]="{
     'px-lg-4': !class,
     'ps-C': header == 'Contacto'
@@ -8,7 +8,6 @@
   <div
     class="page-header__container px-sm-4 d-flex align-items-center row mb-3"
     [ngClass]="HideOnFicha() ? '' : 'titleBusqueda'"
-    [ngStyle]="{ 'margin-top': innerWidth < 530 ? '25px' : '0px' }"
   >
     <div *ngIf="header || headerSubtitle" class="page-header__title me-auto">
       <h1 class="float-start">{{ header }}</h1>

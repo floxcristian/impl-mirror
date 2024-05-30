@@ -45,6 +45,7 @@ export class WidgetFiltersComponent {
   isPlatformBrowser = isPlatformBrowser(this.platformId);
   isCollapsed = false;
   id: string;
+  filterIgnored:string[] = ['CADENA ANCHO','CADENA PERFIL','CADENA ARO','APLICACION CADENA']
 
   constructor(@Inject(PLATFORM_ID) private platformId: any) {
     this.id = uuidv4();
