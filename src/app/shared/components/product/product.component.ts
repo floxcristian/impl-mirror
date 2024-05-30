@@ -71,6 +71,7 @@ import { ModalScalePriceComponent } from '../modal-scale-price/modal-scale-price
 import { ConfigService } from '@core/config/config.service';
 import { IReviewsResponse } from '@core/models-v2/article/review-response.interface';
 import { environment } from '@env/environment';
+import { GtmService } from '@core/utils-v2/gtm/gtm.service';
 declare let dataLayer: any;
 
 @Component({
@@ -85,7 +86,6 @@ export class ProductComponent implements OnInit, OnChanges {
   featuredCarousel!: CarouselComponent;
   @ViewChildren('imageElement', { read: ElementRef })
   imageElements!: QueryList<ElementRef>;
-
   @ViewChild('carouselThumbs') carouselThumbs!: ElementRef;
 
   @Input() stock!: boolean;
@@ -99,6 +99,7 @@ export class ProductComponent implements OnInit, OnChanges {
     this.quantity.setValue(1);
 
     this.dataProduct = value;
+    console.log('dataProduct', this.dataProduct);
     this.images = GalleryUtils.formatImageSlider(value);
     this.generateTags(this.product.metaTags);
   }
@@ -198,6 +199,7 @@ export class ProductComponent implements OnInit, OnChanges {
     private cd: ChangeDetectorRef,
     private fb: FormBuilder,
     private readonly gtmService: GoogleTagManagerService,
+    private readonly _gtmService: GtmService,
     private renderer: Renderer2,
     // Services V2
     private cart: CartService,
@@ -252,10 +254,11 @@ export class ProductComponent implements OnInit, OnChanges {
         //   event: 'productView',
         //   pagePath: window.location.href,
         // });
-        dataLayer.push({
+        this._gtmService.viewItem(dataLayer, this.dataProduct);
+        /*dataLayer.push({
           event: 'productView',
-          pagePath: window.location.href
-        });
+          pagePath: window.location.href,
+        });*/
       }
     }
 
@@ -335,6 +338,7 @@ export class ProductComponent implements OnInit, OnChanges {
   }
 
   addToCart(): void {
+    this._gtmService.addToCart(dataLayer, this.dataProduct);
     const usuario = this.sessionService.getSession();
     if (!usuario) {
       this.toast.warning(

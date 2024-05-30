@@ -22,6 +22,8 @@ import {
 } from '@core/models-v2/cart/shopping-cart.interface';
 import { AuthStateServiceV2 } from '@core/services-v2/session/auth-state.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { GtmService } from '@core/utils-v2/gtm/gtm.service';
+declare let dataLayer: any;
 
 interface Item {
   ProductCart: IShoppingCartProduct;
@@ -51,7 +53,7 @@ export class DropcartComponent implements OnInit {
   constructor(
     public root: RootService,
     private toast: ToastrService,
-    // Services V2
+    private readonly gtmService: GtmService,
     private readonly sessionService: SessionService,
     private readonly geolocationService: GeolocationServiceV2,
     public readonly shoppingCartService: CartService,
@@ -98,8 +100,10 @@ export class DropcartComponent implements OnInit {
       .subscribe((session) => (this.session = session));
   }
 
-  remove(item: IShoppingCartProduct): void {
-    this.shoppingCartService.remove(item);
+  remove(product: IShoppingCartProduct): void {
+    console.log('remove: ', product);
+    this.shoppingCartService.remove(product);
+    this.gtmRemoveFromCart(product);
   }
 
   async updateCart(cantidad: any, item: Item) {
@@ -152,4 +156,8 @@ export class DropcartComponent implements OnInit {
   //     this.shoppingCartService.saveCart(productos).subscribe((r) => {});
   //   }, 700);
   // }
+
+  gtmRemoveFromCart(product: IShoppingCartProduct) {
+    this.gtmService.removeFromCart(dataLayer, product);
+  }
 }

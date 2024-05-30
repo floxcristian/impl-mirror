@@ -12,8 +12,11 @@ import { DatePipe, isPlatformBrowser } from '@angular/common';
 // Libs
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
+import { GoogleTagManagerService } from 'angular-google-tag-manager';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 // Rxjs
 import { Subject, firstValueFrom, lastValueFrom } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 // Models
 import { CartTotal } from '../../../../shared/interfaces/cart-item';
 import { ICustomerAddress } from '@core/models-v2/customer/customer.interface';
@@ -24,13 +27,12 @@ import {
 import { Banner } from '../../../../shared/interfaces/banner';
 // Components
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
-// Constants
-import { ShippingType } from '../../../../core/enums';
 import { ModalConfirmDatesComponent } from './components/modal-confirm-dates/modal-confirm-dates.component';
-import { map, takeUntil } from 'rxjs/operators';
+// Constants
+
+// Services
+import { ShippingType } from '../../../../core/enums';
 import { LocalStorageService } from '@core/modules/local-storage/local-storage.service';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import { ClientsService } from '@shared/services/clients.service';
 import {
   DataModal,
@@ -120,7 +122,7 @@ export class PageCartShippingComponent implements OnInit {
   shippingSelected: ShippingService | undefined | null = null;
 
   userSession!: ISession;
-  cartSession!: IShoppingCart; //CartData;
+  cartSession!: IShoppingCart;
   recidDireccion = 0;
   showMap: boolean = false;
 
@@ -252,13 +254,10 @@ export class PageCartShippingComponent implements OnInit {
       .subscribe((items) => {
         this.items = items;
       });
-    //marcaje google tag
+
     if (isPlatformBrowser(this.platformId)) {
       this.onSelect(null, 'retiro');
-      if (
-        this.userSession.userRole !== UserRoleType.SUPERVISOR &&
-        this.userSession.userRole !== UserRoleType.BUYER
-      ) {
+      if (!this.sessionService.isB2B()) {
         // this.gtmService.pushTag({
         //   event: 'shipping',
         //   pagePath: window.location.href,
@@ -671,6 +670,7 @@ export class PageCartShippingComponent implements OnInit {
       this.usuarioInv = this.guestStorage.get()!;
     }
 
+    console.log('this.shippingDays2: ', this.shippingDays[pos]);
     this.grupoShippingActive = this.shippingDays[pos].grupo ?? null;
     this.productosSeleccionado = this.shippingDays[pos].productodespacho;
 
@@ -703,6 +703,9 @@ export class PageCartShippingComponent implements OnInit {
   seleccionaRetiro(item: ShippingService, pos: number) {
     this.obj_fecha[pos] = item;
     this.cardShippingActiveStore = item.index;
+    console.log('pos: ', pos);
+    console.log('this.shippingDaysStore1: ', this.shippingDaysStore);
+    // FIXME: shippingDaysStore queda vacio.
     this.grupoShippingActive = this.shippingDaysStore[pos].grupo ?? null;
     this.shippingSelected = (this.shippingDaysStore[pos].fechas || []).find(
       (item) => item.index === this.cardShippingActiveStore

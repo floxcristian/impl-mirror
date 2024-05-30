@@ -31,6 +31,7 @@ import { SessionService } from '@core/services-v2/session/session.service';
 import { CartService } from '@core/services-v2/cart.service';
 import { CartV2Service } from '@core/services-v2/cart/cart.service';
 import { MetaTag } from '@core/models-v2/article/article-response.interface';
+import { GtmService } from '@core/utils-v2/gtm/gtm.service';
 declare let dataLayer: any;
 
 @Component({
@@ -90,7 +91,8 @@ export class ProductCardB2cCmsComponent implements OnInit {
     public sanitizer: DomSanitizer,
     // Services V2
     private readonly sessionService: SessionService,
-    public readonly cartService: CartV2Service
+    public readonly cartService: CartV2Service,
+    private readonly _gtmService: GtmService
   ) {
     if (this.route.url.includes('/especial/')) this.home = true;
   }
@@ -156,10 +158,11 @@ export class ProductCardB2cCmsComponent implements OnInit {
 
   addToCart(): void {
     if (this.addingToCart) return;
-    dataLayer.push({
+    this._gtmService.addToCart(dataLayer, this.productData as IArticle);
+    /*dataLayer.push({
       event: 'addtoCart',
       pagePath: window.location.href,
-    });
+    });*/
 
     if (this.origen) {
       // Seteamos el origen de donde se hizo click a add cart.

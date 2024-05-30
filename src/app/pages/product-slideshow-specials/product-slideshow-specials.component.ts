@@ -49,7 +49,7 @@ export class ProductSlideshowSpecialsComponent implements OnInit {
   producto_espacial: IArticle[] = [];
   @Input() nombre: string | undefined = undefined;
   user!: ISession;
-  isB2B!: boolean;
+  documentId!: string;
   cantItem: number = 4;
   innerWidth: number;
   ruta!: any[];
@@ -82,10 +82,6 @@ export class ProductSlideshowSpecialsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.user = this.sessionService.getSession();
-    const role = this.user.userRole;
-    this.isB2B = role === 'supervisor' || role === 'buyer';
-
     let url: string = this.router.url;
     this.ruta = url.split('/');
     this.preferenciaCliente = this.customerPreferenceStorage.get();
@@ -183,7 +179,6 @@ export class ProductSlideshowSpecialsComponent implements OnInit {
   }
 
   async cargaEspecialesArticulos(idSeccion: string, scroll = false) {
-    let documentId = this.user.documentId;
     const tiendaSeleccionada = this.geolocationService.getSelectedStore();
     const sucursal = tiendaSeleccionada.code;
     var especials = this.router.url.split('/').pop() || '';
@@ -206,6 +201,7 @@ export class ProductSlideshowSpecialsComponent implements OnInit {
       this.cargandoProductos2 = true;
     }
 
+    const { documentId } = this.sessionService.getSession();
     this.cmsService
       .getSpecialArticles(
         idSeccion,
