@@ -32,6 +32,9 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { FloatLabelModule } from "primeng/floatlabel"
+import { DialogModule } from 'primeng/dialog';
+import { ImageModule } from 'primeng/image';
+
 
 @NgModule({
   declarations: [
@@ -62,7 +65,9 @@ import { FloatLabelModule } from "primeng/floatlabel"
     DropdownModule,
     ButtonModule,
     TooltipModule,
-    FloatLabelModule
+    FloatLabelModule,
+    DialogModule,
+    ImageModule
   ],
 })
 export class ShopModule {}

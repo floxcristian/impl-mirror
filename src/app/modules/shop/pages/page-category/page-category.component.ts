@@ -116,11 +116,12 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
   values_perfiles:any[] = []
   values_aros:string[] = []
   isActiveFilterAplicacionCadena:boolean = false
+  viewImage:boolean = false
 
   //ancho
   anchos = [
     '10','11','11.2','12','12.5','13','14','155','165',
-    '17.5','175','185','19.5','195','20','205','215','225',
+    '17.5','175','185','19.5','195','20','20.5','205','215','225',
     '23.5','235','240','245','250','255','265','275','28','285','29','295',
     '3','30','300','305','31','315','32','33','335','365','6.5','7','7.5','8','8.2',
     '8.25','8.5','8.75','9.5'
@@ -769,7 +770,10 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
       this.filters.push(filtro);
       // if(r.name === this.ancho_attribute && !this.filterQuery['filter_APLICACION CADENA']) this.values_anchos = filtro.options.items.map(x => x.label)
       // if(['APLICACION CADENA'].includes(r.name) && !this.filterQuery['filter_APLICACION CADENA']) this.aplicacion_cadenas = filtro.options.items.map(x => x.label)
-      if(r.name === this.ancho_attribute) this.values_anchos = filtro.options.items.map(x => x.label)
+      if(r.name === this.ancho_attribute){
+        this.values_anchos = filtro.options.items.map(x => x.label)
+        this.orderAnchos()
+      }
       if(['APLICACION CADENA'].includes(r.name)) this.aplicacion_cadenas = filtro.options.items.map(x => x.label)
       if(this.filterQuery['filter_APLICACION CADENA'] && this.viewFilterChain) {
         this.completeFilterChain()
@@ -1139,6 +1143,13 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
 
   //* Logica para el filtrador de cadenas 'CADENA ANCHO - CADENA PERFIL - CADENA ARO - APLICACION CADENA'
 
+  orderAnchos(){
+    // let anchos_number = this.values_anchos.map(x => Number(x))
+    let anchos_number = this.anchos.map(x => Number(x))
+    // this.values_anchos = anchos_number.sort((a,b)=> a - b).map(x => x.toString())
+    this.anchos = anchos_number.sort((a,b)=> a - b).map(x => x.toString())
+  }
+
   selectAncho(value:string){
     this.select_perfil = null
     this.select_aro = null
@@ -1249,6 +1260,10 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
       this.selectPerfil(this.select_perfil)
       this.select_aro = perfil_aro[1]
     }
+  }
+
+  viewImageChain(){
+    this.viewImage = true
   }
 
 }
