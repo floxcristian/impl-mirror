@@ -107,13 +107,13 @@
     <div *ngIf="viewFilterChain" class="block mb-3">
       <p-card [style]="{ width: '100%' }" styleClass="card-chain">
         <ng-template pTemplate="header">
-            <div class="flex gap-2 p-3" style="background-color: #0063B9;justify-content:center;">
-                <h5 style="align-self: center; color: white;">Busca tu cadena de nieve</h5>
+            <div class="flex p-3" style="background-color: #0063B9;justify-content:center;">
+                <h5 style="align-self: center; color: white; margin: 0px;">Busca tu cadena de nieve</h5>
             </div>
         </ng-template>
         <ng-template pTemplate="content">
           <div class="flex flex-wrap mb-4 custom-chain" style="justify-content:center;">
-            <h5 class="d-none d-sm-block" style="align-self: center; font-size: 18px;">
+            <h5 class="d-none d-sm-block" style="align-self: center; font-size: 18px; margin-top: -5px;">
               ¿Cómo encuentro mi medida?
               <i class="pi pi-info-circle" [pTooltip]="tooltipContent" [autoHide]="false" tooltipStyleClass="custom-chain" tooltipPosition="bottom"
               style="color: blue;font-size: 1rem; cursor: pointer;"></i>
@@ -124,12 +124,12 @@
             </h5>
             <ng-template #tooltipContent>
               <div>
-                <img style="max-width: 100%; height: auto;" src="https://cdn11.bigcommerce.com/s-mb6ezqbwve/content/img/tirechain_selector/selector_tooltip.jpg" alt="">
+                <img style="max-width: 100%; height: auto;" src="../../../../../assets/images/medida_neumatico.webp" alt="">
               </div>
             </ng-template>
-            <p-dialog header="Medida" [modal]="true" [(visible)]="viewImage" [style]="{ width: '28rem' }">
+            <p-dialog header="Dimensiones del neumático" [modal]="true" [(visible)]="viewImage" [style]="{ width: '28rem' }">
               <p-image
-                src="https://cdn11.bigcommerce.com/s-mb6ezqbwve/content/img/tirechain_selector/selector_tooltip.jpg"
+                src="../../../../../assets/images/medida_neumatico.webp"
                 alt="Image"
                 width="100%" />
           </p-dialog>
