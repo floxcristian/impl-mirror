@@ -119,12 +119,13 @@ export class CustomerApiService {
       ..._params
     } = params;
 
-    const formatDocumentId = this.formatDocumentId(documentId);
+    // const formatDocumentId = this.formatDocumentId(documentId);
     return this.http.post<void>(`${API_CUSTOMER}/new-b2b`, {
       ..._params,
       password,
       documentType,
-      documentId: formatDocumentId,
+      // documentId: formatDocumentId,
+      documentId,
       firstName,
       lastName,
       address: {
