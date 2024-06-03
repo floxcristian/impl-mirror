@@ -1,55 +1,53 @@
 <div class="modal-header">
-  <h5 class="modal-title pull-left">
-    <font color="#0063b9"> Precios Escalas </font>
-  </h5>
-  <button type="button" class="btn" (click)="modalRef.hide()">
-    <i class="fas fa-times-circle" style="color: #00549d; font-size: 18px"></i>
-  </button>
-</div>
-<div class="modal-body" style="min-height: 140px">
-  <div
+    <div
     class="w-100 d-flex justify-content-center"
-    style="margin-bottom: -20px"
   >
     <img
       src="../../../../assets/images/llevaMasPagaMenos/200x50_rectangular.jpg"
-      style="z-index: 3"
     />
   </div>
-  <div class="card text-white bg-implementos mb-3">
-    <div class="card-body">
-      <table class="mt-2">
-        <thead>
-          <tr style="background-color: #00549d !important">
-            <td class="text-center">Volumen</td>
-            <td class="text-center">Precio</td>
-          </tr>
-        </thead>
+  <button type="button" class="btn" (click)="modalRef.hide()">
+    <i class="fas fa-times" style="font-size: 18px;color: gray"></i>
+  </button>
+</div>
+<div class="modal-body" style="min-height: 140px">
+  <div class="card-body p-1">
+    <table>
+      <thead>
+        <tr style="background-color: #00549d !important">
+          <td class="text-center" style="font-weight: bold; padding: 7px 10.5px;">Volumen</td>
+          <td class="text-center"  style="font-weight: bold;padding: 7px 10.5px;">Precio</td>
+        </tr>
+      </thead>
 
-        <tbody class="table_paga" *ngIf="scalePrices.length">
-          <ng-container *ngFor="let precio of scalePrices; let i = index">
-            <tr
-              style="color: #00549d"
-              [ngStyle]="{
-                'background-color': (i + 1) % 2 !== 0 ? '#ffff' : '#efefef'
-              }"
+      <tbody class="table_paga" *ngIf="scalePrices.length">
+        <ng-container *ngFor="let precio of scalePrices; let i = index">
+          <tr
+            [ngStyle]="{
+              'background-color': (i + 1) % 2 !== 1 ? '#ffff' : '#efefef'
+            }"
+          >
+            <td *ngIf="precio.toQuantity != 999" style="width: 50%;">
+              DE {{ precio.fromQuantity }} A {{ precio.toQuantity }} UN.
+            </td>
+            <td *ngIf="precio.toQuantity === 999" style="width: 50%;">
+              {{ precio.fromQuantity }} O MAS UN.
+            </td>
+            <td
+              class="text-center"
+              style="width: 50%;"
             >
-              <td style="width: 50%; border-right: solid 2px; color: #00549d">
-                {{ precio.fromQuantity }} a {{ precio.toQuantity }} und.
-              </td>
-              <td
-                class="text-center"
-                style="width: 50%; border-left: solid 2px; color: #00549d"
-              >
-                {{
-                  (session.preferences.iva ? precio.price : precio.netPrice)
-                    | currencyFormat
-                }}
-              </td>
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
-    </div>
+              {{
+                (session.preferences.iva ? precio.price : precio.netPrice)
+                  | currencyFormat
+              }}
+              <span class="badge-pill">{{
+                (session.preferences.iva ? 'c/iva' : 's/iva')
+              }}</span>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
   </div>
 </div>
