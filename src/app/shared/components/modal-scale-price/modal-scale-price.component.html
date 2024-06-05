@@ -28,7 +28,7 @@
             }"
           >
             <td *ngIf="precio.toQuantity != 999" style="width: 50%;">
-              DE {{ precio.fromQuantity }} A {{ precio.toQuantity }} UN.
+              DE {{ precio.fromQuantity }} A {{ precio.toQuantity - 1 }} UN.
             </td>
             <td *ngIf="precio.toQuantity === 999" style="width: 50%;">
               {{ precio.fromQuantity }} O MAS UN.

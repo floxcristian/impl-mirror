@@ -602,17 +602,27 @@
           *ngFor="let productPrice of preciosEscalas; let i = index"
         >
           <tr
+            style="color: #00549d"
             [ngStyle]="{
               'background-color': (i + 1) % 2 !== 0 ? '#efefef' : '#fff'
             }"
           >
-            <td>
-              <strong
-                >{{ productPrice.fromQuantity }} -
-                {{ productPrice.toQuantity }} ud.</strong
-              >
+          <td
+            style="width: 50%; border-right: solid 2px; color: #00549d"
+            *ngIf="productPrice.toQuantity !== 999"
+            >
+              {{ productPrice.fromQuantity }} a {{ productPrice.toQuantity - 1}} und.
             </td>
-            <td style="color: #0063b9">
+            <td
+              style="width: 50%; border-right: solid 2px; color: #00549d"
+              *ngIf="productPrice.toQuantity === 999"
+            >
+              {{ productPrice.fromQuantity }} y más und.
+            </td>
+            <td
+              class="text-center"
+              style="width: 50%; border-left: solid 2px; color: #00549d"
+            >
               {{
                 (session.preferences.iva
                   ? productPrice.price
