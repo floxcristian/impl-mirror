@@ -103,6 +103,107 @@
   <ng-container [ngTemplateOutlet]="sidebar"></ng-container>
 
   <div class="shop-layout__content container">
+    <!-- FILTRO CADENA PARA NIEVE -->
+    <div *ngIf="viewFilterChain" class="block mb-3">
+      <p-card [style]="{ width: '100%' }" styleClass="card-chain">
+        <ng-template pTemplate="header">
+            <div class="flex gap-2 p-3" style="background-color: #0063B9;justify-content:center;">
+                <h5 style="align-self: center; color: white;">Busca tu cadena de nieve</h5>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <div class="flex flex-wrap mb-4 custom-chain" style="justify-content:center;">
+            <h5 class="d-none d-sm-block" style="align-self: center; font-size: 18px;">
+              ¿Cómo encuentro mi medida?
+              <i class="pi pi-info-circle" [pTooltip]="tooltipContent" [autoHide]="false" tooltipStyleClass="custom-chain" tooltipPosition="bottom"
+              style="color: blue;font-size: 1rem; cursor: pointer;"></i>
+            </h5>
+            <h5 class="d-block d-sm-none" style="align-self: center; font-size: 18px;cursor: pointer;" (click)="viewImageChain()">
+              ¿Cómo encuentro mi medida?
+              <i class="pi pi-info-circle" style="color: blue;font-size: 1rem;"></i>
+            </h5>
+            <ng-template #tooltipContent>
+              <div>
+                <img style="max-width: 100%; height: auto;" src="https://cdn11.bigcommerce.com/s-mb6ezqbwve/content/img/tirechain_selector/selector_tooltip.jpg" alt="">
+              </div>
+            </ng-template>
+            <p-dialog header="Medida" [modal]="true" [(visible)]="viewImage" [style]="{ width: '28rem' }">
+              <p-image
+                src="https://cdn11.bigcommerce.com/s-mb6ezqbwve/content/img/tirechain_selector/selector_tooltip.jpg"
+                alt="Image"
+                width="100%" />
+          </p-dialog>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="col-12 col-md-6 p-0">
+              <div class="mb-4">
+                <p-floatLabel>
+                  <!-- <p-dropdown
+                      styleClass="w-full"
+                      [options]="values_anchos"
+                      [(ngModel)]="select_ancho"
+                      inputId="float-label"
+                      (onChange)="selectAncho($event.value)"
+                  /> -->
+                  <p-dropdown
+                      styleClass="w-full"
+                      [options]="anchos"
+                      [(ngModel)]="select_ancho"
+                      inputId="float-label"
+                      emptyMessage="No hay medidas de ancho disponibles"
+                      [disabled]="isActiveFilterAplicacionCadena"
+                      (onChange)="selectAncho($event.value)"
+                  />
+                  <label for="float-label">Ancho cadena</label>
+                </p-floatLabel>
+              </div>
+              <div *ngIf="select_ancho" class="mb-4">
+                <p-floatLabel>
+                  <p-dropdown
+                      styleClass="w-full"
+                      [options]="values_perfiles"
+                      [(ngModel)]="select_perfil"
+                      optionLabel="perfil"
+                      optionValue="perfil"
+                      inputId="float-label"
+                      emptyMessage="No hay medidas de perfil asociados"
+                      [disabled]="isActiveFilterAplicacionCadena"
+                      (onChange)="selectPerfil($event.value)"
+                  />
+                  <label for="float-label">Cadena perfil</label>
+                </p-floatLabel>
+              </div>
+              <div *ngIf="select_perfil" class="mb-4">
+                <p-floatLabel>
+                  <p-dropdown
+                      styleClass="w-full"
+                      [options]="values_aros"
+                      [(ngModel)]="select_aro"
+                      emptyMessage="No hay medidas de aro asociados"
+                      [disabled]="isActiveFilterAplicacionCadena"
+                      inputId="float-label"
+                  />
+                  <label for="float-label">Cadena aro</label>
+                </p-floatLabel>
+              </div>
+            </div>
+          </div>
+          <div class="flex" style="justify-content: center;">
+            <div class="w-50 mt-2">
+              <p-button [disabled]="!select_ancho || !select_perfil || !select_aro || isActiveFilterAplicacionCadena" label="Buscar"
+              class="w-full" styleClass="w-full"(onClick)="filterChain()"/>
+            </div>
+          </div>
+          <div class="flex" style="justify-content: end; padding-top: 18px;">
+            <h5 style="text-decoration: underline; font-size: 14px; cursor: pointer;" (click)="cleanFilterChain()">
+              Limpiar filtro
+              <i class="pi pi-trash"></i>
+            </h5>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+    <!-- FIN FILTRO CADENA PARA NIEVE -->
     <div class="block">
       <app-products-view
         *ngIf="origen"
