@@ -177,7 +177,8 @@ export class PageCartOvSuccessComponent implements OnInit, OnDestroy {
     this.numeroCarro = this.cartData.cartNumber!.toString();
 
     if (!this.cartData.tags?.gtag) {
-      this.cartTagService.getGTagData(cartId).subscribe({
+      this._gtmService.purchase(dataLayer, this.cartData);
+      /*this.cartTagService.getGTagData(cartId).subscribe({
         next: async (response) => {
           console.log('cartTags: ', response);
           let index = 0;
@@ -194,7 +195,7 @@ export class PageCartOvSuccessComponent implements OnInit, OnDestroy {
                 /*dataLayer.push({
         event: 'transaction',
         ecommerce: item,
-      });*/
+      });
                 this._gtmService.purchase(dataLayer, item);
 
                 const id = tempcarro._id!.toString();
@@ -213,7 +214,7 @@ export class PageCartOvSuccessComponent implements OnInit, OnDestroy {
         error: (e) => {
           console.error(e);
         },
-      });
+      });*/
     }
 
     this.addFacebookPixel();

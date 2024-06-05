@@ -338,7 +338,6 @@ export class ProductComponent implements OnInit, OnChanges {
   }
 
   addToCart(): void {
-    this._gtmService.addToCart(dataLayer, this.dataProduct);
     const usuario = this.sessionService.getSession();
     if (!usuario) {
       this.toast.warning(
@@ -368,6 +367,13 @@ export class ProductComponent implements OnInit, OnChanges {
 
       this.cart.add(this.product, this.quantity.value).finally(() => {
         this.addingToCart = false;
+        setTimeout(() => {
+          this._gtmService.addToCart(
+            dataLayer,
+            this.product,
+            this.quantity.value
+          );
+        }, 500);
       });
     }
   }

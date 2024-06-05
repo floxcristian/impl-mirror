@@ -26,9 +26,10 @@ export class CartTagService {
    * @param cartId
    * @returns
    */
-  getGTagData(cartId: string): Observable<IGtagDataResponse> {
+  /*getGTagData(cartId: string): Observable<IGtagDataResponse> {
+    //const API_CART = 'http://localhost:3200/api/v1/shopping-cart';
     return this.http.get<IGtagDataResponse>(`${API_CART}/${cartId}/gtag-data`);
-  }
+  }*/
 
   markGtag(params: { shoppingCartId: string }): Observable<ITagMarkResponse> {
     const { shoppingCartId } = params;
