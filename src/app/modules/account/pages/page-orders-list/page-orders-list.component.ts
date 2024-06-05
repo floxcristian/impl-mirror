@@ -70,7 +70,7 @@ export class PageOrdersListComponent implements OnInit {
           this.loadingData = false;
           callback({
             recordsTotal: resp.total,
-            recordsFiltered: resp.limit,
+            recordsFiltered: resp.total,
             data: [],
           });
         });
