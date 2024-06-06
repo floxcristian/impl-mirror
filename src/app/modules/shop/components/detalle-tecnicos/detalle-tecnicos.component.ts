@@ -8,8 +8,13 @@ import { IArticleResponse, IAttribute } from '@core/models-v2/article/article-re
   styleUrls: ['./detalle-tecnicos.component.scss'],
 })
 export class DetalleTecnicosComponent implements OnInit {
-  @Input() producto!: IArticleResponse | undefined;
+  @Input() set producto(value: IArticleResponse | undefined){
+    this.product = value
+    this.attributes = this.product?.attributes
+    this.orderAttributes()
+  }
 
+  product!:IArticleResponse | undefined
   w100!: boolean;
   innerWidth!: number;
   videoWidth = 0;
@@ -22,8 +27,6 @@ export class DetalleTecnicosComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.attributes = this.producto?.attributes
-    this.orderAttributes()
   }
 
   getIdVideo(url: string) {
