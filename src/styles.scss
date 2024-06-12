@@ -191,6 +191,33 @@ agm-map {
   src: url('./assets/fonts/AvenirLTStd-Book.otf');
 }
 
+@font-face {
+  font-family: CatalogTitles;
+  font-weight: normal;
+  src: url('./assets/fonts/catalog-tiles-ico.woff');
+}
+
+.icono {
+  font-family: 'MiIconos';
+  font-style: normal;
+  font-weight: normal;
+  // speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icono-home:before {
+  content: '\e907';
+}
+
+.icono-user:before {
+  content: '\e901';
+}
+
 .map-container {
   width: 100% !important;
 }
@@ -434,15 +461,15 @@ body {
   width: 350px;
 }
 
-.custom-chain.p-tooltip{
+.custom-chain.p-tooltip {
   max-width: 100%;
-  width:max-content;
+  width: max-content;
 }
 
-.card-chain .p-card-content{
-  padding:0px;
+.card-chain .p-card-content {
+  padding: 0px;
 }
 
-.p-dialog .p-dialog-content{
+.p-dialog .p-dialog-content {
   padding: 0.8rem;
 }

@@ -34,12 +34,29 @@ export interface ISection {
   p: number;
 }
 
+export interface Product {
+  id?: string;
+  code?: string;
+  name?: string;
+  description?: string;
+  price?: number;
+  quantity?: number;
+  inventoryStatus?: string;
+  category?: string;
+  image?: string;
+  rating?: number;
+}
+
 @Component({
   selector: 'app-product-slideshow-specials',
   templateUrl: './product-slideshow-specials.component.html',
   styleUrls: ['./product-slideshow-specials.component.scss'],
 })
 export class ProductSlideshowSpecialsComponent implements OnInit {
+  products!: Product[];
+
+  responsiveOptions: any[] | undefined;
+
   @Input() layout: Layout = 'grid';
   @Input() grid: 'grid-3-sidebar' | 'grid-4-full' | 'grid-4-full' =
     'grid-3-sidebar';
@@ -61,6 +78,8 @@ export class ProductSlideshowSpecialsComponent implements OnInit {
   currentIdSeccion!: string;
   cargandoProductos: boolean = false;
   cargandoProductos2: boolean = false;
+  prepainv: string = 'prepainv';
+  numVisible: number = 7;
 
   constructor(
     public toast: ToastrService,
@@ -79,6 +98,39 @@ export class ProductSlideshowSpecialsComponent implements OnInit {
     this.innerWidth = isPlatformBrowser(this.platformId)
       ? window.innerWidth
       : 900;
+
+    this.responsiveOptions = [
+      {
+        breakpoint: '3840px',
+        numVisible: 7,
+        numScroll: 7,
+      },
+      {
+        breakpoint: '1800px',
+        numVisible: 7,
+        numScroll: 7,
+      },
+      {
+        breakpoint: '1399px',
+        numVisible: 5,
+        numScroll: 5,
+      },
+      {
+        breakpoint: '991px',
+        numVisible: 3,
+        numScroll: 3,
+      },
+      {
+        breakpoint: '767px',
+        numVisible: 2,
+        numScroll: 2,
+      },
+    ];
+    this.updateNumVisible();
+  }
+
+  onCarrouselPage(event: any) {
+    console.log('onCarrouselPage', event);
   }
 
   async ngOnInit() {
@@ -126,11 +178,42 @@ export class ProductSlideshowSpecialsComponent implements OnInit {
       ? window.innerWidth
       : 900;
 
+    this.updateNumVisible();
+
     if (this.innerWidth < 427) {
       this.cantItem = 4;
     } else if (this.innerWidth > 426) {
       this.cantItem = 10;
     }
+  }
+
+  breakpoints: { [key: string]: number } = {
+    '3840px': 7,
+    '1800px': 7,
+    '1399px': 5,
+    '991px': 3,
+    '767px': 2,
+  };
+
+  updateNumVisible() {
+    const width = window.innerWidth;
+    if (width <= 766) {
+      this.numVisible = this.breakpoints['767px'];
+    } else if (width <= 990) {
+      this.numVisible = this.breakpoints['991px'];
+    } else if (width <= 1398) {
+      this.numVisible = this.breakpoints['1399px'];
+    } else if (width <= 1799) {
+      this.numVisible = this.breakpoints['1800px'];
+    } else if (width <= 3840) {
+      this.numVisible = this.breakpoints['3840px'];
+    } else {
+      this.numVisible = 7; // Valor por defecto para pantallas grandes
+    }
+  }
+
+  get showIndicators(): boolean {
+    return this.secciones.length > this.numVisible;
   }
 
   getUrl(id: any) {

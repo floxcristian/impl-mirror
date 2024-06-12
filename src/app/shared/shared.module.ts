@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 // Libs
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { CarouselModule as PrimeCarouselModule } from 'primeng/carousel';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TabsModule } from 'ngx-bootstrap/tabs';
@@ -145,6 +146,7 @@ const BOOSTRAP_MODULES = [NgbPopoverModule, NgbNavModule];
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    PrimeCarouselModule,
     ...BOOSTRAP_MODULES,
     CarouselModule,
     ModalModule.forRoot(),

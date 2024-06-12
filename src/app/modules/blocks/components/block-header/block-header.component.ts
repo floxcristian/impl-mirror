@@ -8,6 +8,7 @@ import { BlockHeaderGroup } from '../../../../shared/interfaces/block-header-gro
   styleUrls: ['./block-header.component.scss'],
 })
 export class BlockHeaderComponent {
+  @Input() isCategory: boolean = false;
   @Input() header!: string;
   @Input() subTitle = 'false';
   @Input() colorText!: string;
