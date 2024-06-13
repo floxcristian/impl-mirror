@@ -3,7 +3,7 @@ export const environment = {
   country: 'cl',
   IVA: 0.19,
   // APIs
-  apiCustomer: 'https://b2b-api.implementos.cl/api/cliente/',
+  apiCustomer: 'https://dev-api.implementos.cl/api/cliente/',
   // Images Urls
   urlFotoOmnichannel:
     'http://replicacion.implementos.cl/siteomnichannel/fotos/',
@@ -12,18 +12,18 @@ export const environment = {
   logoSrc: 'assets/images/logos/logo_header.svg',
   logoSrcFooter: 'assets/images/logos/logo_header2.PNG',
   // Base
-  canonical: 'https://www.implementos.cl',
+  canonical: 'https://dev.devimplementos.cl',
 
   urlPagosImplementos: 'https://pagos.implementos.cl/',
   // Carro de compras
-  urlNotificaciones: 'https://b2b-api.implementos.cl/api/notificaciones',
+  urlNotificaciones: 'https://dev-api.implementos.cl/api/notificaciones',
   // No Env.
   urlPaymentOmniCanceled:
-    'https://www.implementos.cl/carro-compra/omni-forma-de-pago',
+    'https://dev.devimplementos.cl/carro-compra/omni-forma-de-pago',
   urlPaymentOmniVoucher:
-    'https://www.implementos.cl/carro-compra/omni-gracias-por-tu-compra/',
+    'https://dev.devimplementos.cl/carro-compra/omni-gracias-por-tu-compra/',
   // Nuevo Ecommerce
-  apiEcommerce: 'https://b2b-api.implementos.cl/ecommerce',
+  apiEcommerce: 'https://dev-api.implementos.cl/ecommerce',
   basicAuthUser: 'services',
   basicAuthPass: '0.=j3D2ss1.w29-',
   imageUrl: 'https://images.implementos.cl',
