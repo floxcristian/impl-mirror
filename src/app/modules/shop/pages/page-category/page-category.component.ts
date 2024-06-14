@@ -52,6 +52,7 @@ import { IConfig } from '@core/config/config.interface';
 
 import { VehicleService } from '@core/services-v2/vehicle/vehicle.service';
 import { Subscription } from 'rxjs';
+import { CustomerService } from '@core/services-v2/customer.service';
 
 @Component({
   selector: 'app-grid',
@@ -144,6 +145,7 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
     private readonly customerPreferenceStorage: CustomerPreferencesStorageService,
     private readonly customerPreferenceService: CustomerPreferenceService,
     private readonly customerAddressService: CustomerAddressService,
+    private readonly customerService:CustomerService,
     private readonly configService: ConfigService,
     private readonly vehicleService: VehicleService
   ) {
@@ -1221,6 +1223,8 @@ export class PageCategoryComponent implements OnInit, OnDestroy  {
 
   filterChain(){
     let filterObj:any = {}
+    let params = {tireWidth:this.select_ancho, tireProfile:this.select_perfil, tireHoop:this.select_aro}
+    this.customerService.registerSearchChainFilter(this.session.documentId,params).subscribe()
     if(this.select_perfil === 'SIN PERFIL'){
       let filter_aplicacion_cadena = `${this.select_ancho}R${this.select_aro}`
       filterObj.selected = { 'filter_APLICACION CADENA' : filter_aplicacion_cadena }

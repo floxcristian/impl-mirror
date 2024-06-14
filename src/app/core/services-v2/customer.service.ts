@@ -82,4 +82,15 @@ export class CustomerService {
       { params }
     );
   }
+
+  //Register use chain filter
+  registerSearchChainFilter(
+    documentId:string,
+    params:{
+      tireWidth:string,
+      tireProfile:string,
+      tireHoop:string,
+    }){
+    return this.http.post(`${API_CUSTOMER}/${documentId}/register-search-chain-filter`,params)
+  }
 }
