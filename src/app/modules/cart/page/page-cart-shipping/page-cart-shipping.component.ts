@@ -33,7 +33,6 @@ import { ModalConfirmDatesComponent } from './components/modal-confirm-dates/mod
 // Services
 import { ShippingType } from '../../../../core/enums';
 import { LocalStorageService } from '@core/modules/local-storage/local-storage.service';
-import { ClientsService } from '@shared/services/clients.service';
 import {
   DataModal,
   ModalComponent,
@@ -76,6 +75,7 @@ import { IConfig } from '@core/config/config.interface';
 import { CallBackCartLoaded } from '@core/models-v2/cart/callback-cart-loaded.type';
 import { UserRoleType } from '@core/enums/user-role-type.enum';
 import { DateUtils } from './date-utils.service';
+import { GtmService } from '@core/utils-v2/gtm/gtm.service';
 declare let dataLayer: any;
 
 export let browserRefresh = false;
@@ -133,7 +133,7 @@ export class PageCartShippingComponent implements OnInit {
   tempShippingIdStore: any;
   shippingDaysStore: ShippingDateItem[] = [];
   TiendasCargadas: boolean = false;
-  loadingShippingStore = false;
+  loadingShippingStore: boolean = false;
   fecha = new Date();
   // despacho
   cardShippingActive = 0;
@@ -174,17 +174,15 @@ export class PageCartShippingComponent implements OnInit {
     isDefault: boolean;
   };
 
+  hasSendGtmEvent: boolean = false;
+
   constructor(
     private toast: ToastrService,
     private datePipe: DatePipe,
     private router: Router,
     private localS: LocalStorageService,
     private modalService: BsModalService,
-
     private cd: ChangeDetectorRef,
-    private readonly gtmService: GoogleTagManagerService,
-    private clientsService: ClientsService,
-    // Services V2
     private readonly sessionService: SessionService,
     private readonly authStateService: AuthStateServiceV2,
     public readonly cart: CartService,
@@ -197,6 +195,7 @@ export class PageCartShippingComponent implements OnInit {
     private readonly customerService: CustomerService,
     private readonly customerAddressApiService: CustomerAddressApiService,
     public readonly configService: ConfigService,
+    private readonly _gmtService: GtmService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.config = this.configService.getConfig();
@@ -206,19 +205,19 @@ export class PageCartShippingComponent implements OnInit {
       : 900;
 
     this.tienda_actual = this.geolocationStorage.get();
+    this.userSession = this.sessionService.getSession();
+    this.invitado = this.guestStorage.get() as IGuest;
+    this.cartSession = this.shoppingCartStorage.get()!;
+    this.direccionConfigurada = this.customerPreferencesStorage.get();
   }
 
   async ngOnInit() {
-    this.cartSession = this.shoppingCartStorage.get()!;
+    console.log('this.cartSession: ', this.cartSession);
+    this.isLogin = this.sessionService.isLoggedIn();
 
-    this.invitado = this.guestStorage.get() as IGuest;
-    this.tienda_actual = this.geolocationStorage.get();
-    this.userSession = this.sessionService.getSession();
-    this.addNotificationContact();
+    this.setNotificationContact();
     this.obtieneDireccionesCliente();
     this.obtieneTiendas();
-    this.direccionConfigurada = this.customerPreferencesStorage.get();
-    this.isLogin = this.sessionService.isLoggedIn();
 
     if (!this.HideResumen()) {
       this.recibeType = 'yo';
@@ -244,30 +243,26 @@ export class PageCartShippingComponent implements OnInit {
       .pipe(
         takeUntil(this.destroy$),
         map((ProductCarts) =>
-          (ProductCarts || []).map((item) => {
-            return {
-              ProductCart: item,
-              quantity: item.quantity,
-            };
-          })
+          (ProductCarts || []).map((item) => ({
+            ProductCart: item,
+            quantity: item.quantity,
+          }))
         )
       )
       .subscribe((items) => {
+        console.log('itemsx: ', this.items);
         this.items = items;
       });
 
     if (isPlatformBrowser(this.platformId)) {
       this.onSelect(null, 'retiro');
-      if (!this.sessionService.isB2B()) {
-        // this.gtmService.pushTag({
-        //   event: 'shipping',
-        //   pagePath: window.location.href,
-        // });
-        dataLayer.push({
-          event: 'shipping',
-          pagePath: window.location.href,
-        });
-      }
+      this._gmtService.beginCheckout(dataLayer, this.cartSession);
+      // if (!this.sessionService.isB2B()) {
+      // this.gtmService.pushTag({
+      //   event: 'shipping',
+      //   pagePath: window.location.href,
+      // });
+      //}
     }
   }
 
@@ -323,9 +318,9 @@ export class PageCartShippingComponent implements OnInit {
   }
 
   /**
-   * Obtiene contacto notificaciones.
+   * Establecer contacto para notificaciones del carro.
    */
-  async addNotificationContact() {
+  setNotificationContact(): void {
     let data: AddNotificacionContactRequest = {};
 
     this.userSession = this.sessionService.getSession();
@@ -340,9 +335,7 @@ export class PageCartShippingComponent implements OnInit {
       data.name = this.getFullName(this.invitado);
     }
     if (data.name) {
-      await this.cart
-        .setNotificationContact(this.cartSession._id!.toString(), data)
-        .toPromise();
+      this.cart.setNotificationContact(this.cartSession._id!.toString(), data);
     }
   }
 
@@ -482,7 +475,7 @@ export class PageCartShippingComponent implements OnInit {
 
     this.tienda = resultado;
 
-    this.cambiarTienda(this.tienda, async (_: IShoppingCart) => {
+    this.setSelectedStore(this.tienda, async (_: IShoppingCart) => {
       this.localS.set(StorageKey.tiendaRetiro, resultado);
 
       let disponible = resultado;
@@ -761,7 +754,7 @@ export class PageCartShippingComponent implements OnInit {
     this.authStateService.session$.subscribe(() => {
       this.isLogin = this.sessionService.isLoggedIn();
       this.obtieneDireccionesCliente();
-      this.addNotificationContact();
+      this.setNotificationContact();
     });
   }
 
@@ -847,11 +840,6 @@ export class PageCartShippingComponent implements OnInit {
     } else if (formaEntrega === 'despacho' && this.isLogin) {
       this.selectedShippingId = null;
       this.retiroFlag = false;
-      // if (this.HideResumen()) {
-      //   this.recibeType = 'yo';
-      // } else {
-      //   this.recibeType = 'yo';
-      // }
       if (this.selectedShippingIdLast)
         this.selectedShippingId = this.selectedShippingIdLast;
       else this.setDefaultAddress();
@@ -884,8 +872,7 @@ export class PageCartShippingComponent implements OnInit {
     this.usuarioInvitado = true;
     invitado.tipoEnvio = '';
     this.guestStorage.set(invitado);
-
-    this.addNotificationContact();
+    this.setNotificationContact();
     window.scrollTo({ top: 0 });
   }
 
@@ -1170,7 +1157,7 @@ export class PageCartShippingComponent implements OnInit {
     this.shippingSelected = null;
     if (this.selectedShippingIdStore == null) {
       this.selectedShippingIdStore = this.tempShippingIdStore;
-      this.loadingShippingStore = true;
+      //this.loadingShippingStore = true;
       this.obtieneTiendas();
     }
 
@@ -1193,7 +1180,7 @@ export class PageCartShippingComponent implements OnInit {
     this.selectedShippingId = String(Math.max(...addressIds));
   }
 
-  cambiarTienda(
+  private setSelectedStore(
     newStore: IStore,
     callBackCartLoaded: CallBackCartLoaded
   ): void {
@@ -1295,7 +1282,7 @@ export class PageCartShippingComponent implements OnInit {
     });
   }
 
-  ver_fechas() {
+  private ver_fechas() {
     if (this.shippingDaysStore.length) {
       let menor = this.shippingDaysStore[0].fechas?.[0].fecha;
       let menor_fecha: any = new Date(menor);

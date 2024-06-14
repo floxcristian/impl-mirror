@@ -7,12 +7,9 @@ export class DateUtils {
    * @return
    */
   static isSaturday(value: string): boolean {
-    let isSabado = false;
-    let dia =
-      value && value.length > 0
-        ? moment(value).locale('es').format('dddd')
-        : null;
-    isSabado = dia && dia === 'sábado' ? true : false;
-    return isSabado;
+    const dia = value?.length
+      ? moment(value).locale('es').format('dddd')
+      : null;
+    return dia === 'sábado';
   }
 }

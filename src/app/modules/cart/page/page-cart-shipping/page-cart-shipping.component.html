@@ -134,43 +134,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="container ms-4" *ngIf="innerWidth < 450">
-      <div
-        class="cart-address-container ms-3 col-12 col-lg-12 pt-3 pb-2 ps-2"
-        style="color: #0063b9; margin-bottom: 10px"
-        [ngStyle]="{ width: innerWidth > 450 ? '96%' : '92%' }"
-      >
-        <div class="row" *ngIf="usuarioInvitado || isLogin">
-          <div
-            class="col-2 d-flex justify-content-center"
-            tyle=" color: #0063b9"
-          >
-            <i
-              class="fa-solid fa-cart-shopping"
-              style="font-size: 21px !important; color: #0063b9"
-            ></i>
-          </div>
-          <div class="col-10">
-            <p
-              style="font-weight: bold; margin-bottom: 5px"
-              [ngStyle]="{ 'font-size': innerWidth < 450 ? '16px' : '18px' }"
-            >
-              Carro de compra
-            </p>
-            <ng-container *ngIf="items.length > 1">
-              <font style="font-weight: normal"
-                >({{ ' ' + items.length + ' PRODUCTOS' + ' ' }})</font
-              >
-            </ng-container>
-            <ng-container *ngIf="items.length == 1">
-              <font style="font-weight: normal"
-                >({{ ' ' + items.length + ' PRODUCTO' + ' ' }})</font
-              >
-            </ng-container>
-          </div>
-        </div>
-      </div>
-    </div> -->
     <div
       class="col-lg-7 col-xl-8 col-xs-12"
       *ngIf="!select_grupos && (usuarioInvitado || isLogin)"
@@ -260,16 +223,19 @@
                   </div>
                 </div>
 
+                <pre>
+                  loadingShippingStore: {{ loadingShippingStore }}
+                  stores.length: {{ stores.length }}
+                  TiendasCargadas: {{ TiendasCargadas }}
+                </pre>
                 <app-loading-element
                   *ngIf="
                     loadingShippingStore ||
                     (!stores.length && !TiendasCargadas)
                   "
-                  text="Cargando fechas"
-                >
-                </app-loading-element>
-
-                <div *ngIf="shippingDaysStore.length == 0" class="no-shipping">
+                  text="Cargando fechas2"
+                />
+                <div *ngIf="!shippingDaysStore.length" class="no-shipping">
                   <div class="col-12 col-lg-12">
                     <div
                       class="alert border border-warning"
@@ -346,10 +312,7 @@
                   </ng-container>
                 </div>
 
-                <div
-                  class="row ms-2 mt-4"
-                  *ngIf="shippingDaysStore.length > 0"
-                >
+                <div class="row ms-2 mt-4" *ngIf="shippingDaysStore.length">
                   <div class="mb-3 col-12" style="color: #0063b9">
                     <label>Seleccione quien retira el pedido</label>
                     <div class="clearfix"></div>
@@ -510,8 +473,7 @@
                   <app-loading-element
                     *ngIf="loadingShippingAll"
                     text="Cargando direcciones"
-                  >
-                  </app-loading-element>
+                  />
 
                   <!-- Tarjeta de direcciones del usuario -->
                   <div
@@ -698,10 +660,9 @@
                         (loadingShipping && direccion && usuarioInvitado)
                       "
                       text="Cargando fechas"
-                    >
-                    </app-loading-element>
+                    />
 
-                    <div *ngIf="shippingDays.length == 0" class="no-shipping">
+                    <div *ngIf="!shippingDays.length" class="no-shipping">
                       <p
                         class="subtitle"
                         *ngIf="selectedShippingId == null && isLogin"
@@ -764,10 +725,7 @@
                       "
                     >
                       <!-- Segmento correspondiente al formulario asociado a la persona que recibe el producto-->
-                      <div
-                        class="row ms-2 mt-4"
-                        *ngIf="shippingDays.length > 0"
-                      >
+                      <div class="row ms-2 mt-4" *ngIf="shippingDays.length">
                         <!-- Formulario de  dias para despacho -->
 
                         <div class="row col-12">
@@ -1043,8 +1001,8 @@
             <app-loading-element
               *ngIf="loadingResumen && innerWidth > 700"
               text="Actualizando total"
-            >
-            </app-loading-element>
+            />
+
             <app-detalle-carro-productos
               *ngIf="!loadingResumen"
               [shippingType]="shippingType"
@@ -1145,8 +1103,7 @@
             <app-loading-element
               *ngIf="loadingCotizacion"
               text="Generando cotización..."
-            >
-            </app-loading-element>
+            />
           </div>
         </div>
       </div>
@@ -1181,8 +1138,8 @@
             <app-loading-element
               *ngIf="loadingResumen && innerWidth > 700"
               text="Actualizando total"
-            >
-            </app-loading-element>
+            />
+
             <app-detalle-carro-productos
               [shippingType]="shippingType"
               [shoppingCartProducts]="productCart"
@@ -1276,7 +1233,7 @@
         <app-loading-element
           *ngIf="loadingResumen && innerWidth > 700"
           text="Actualizando total"
-        ></app-loading-element>
+        />
         <app-detalle-carro-productos
           [shippingType]="shippingType"
           [seePrices]="false"
@@ -1323,8 +1280,8 @@
           <app-loading-element
             *ngIf="loadingResumen && innerWidth > 700"
             text="Actualizando total"
-          >
-          </app-loading-element>
+          />
+
           <app-detalle-carro-productos
             [shippingType]="shippingType"
             [seeProducts]="false"
@@ -1332,7 +1289,7 @@
           />
         </div>
         <!-- <div class="card-body" *ngIf="!showDetalleProductos">
-                    <app-loading-element *ngIf="loadingResumen && innerWidth > 700" text="Actualizando total"></app-loading-element>
+                    <app-loading-element *ngIf="loadingResumen && innerWidth > 700" text="Actualizando total"/>
                     <app-detalle-carro-productos [shippingType] = 'shippingType' [seeProducts]="false" [show]="false" [productCart]="productCart"/>
                 </div> -->
         <div *ngIf="!showDetalleProductos" class="card-body text-justify">

@@ -55,5 +55,8 @@
   "mapCoordinates": {
     "lat": -36.79975467819392,
     "lng": -71.49897587245773
+  },
+  "googleTagManager": {
+    "currency": "CLP"
   }
 }

@@ -54,7 +54,7 @@ export class ConfigService {
   }
 
   /**
-   * Formatea un número dejando solo números y quitando otros elementos como espacios o signos.
+   * Formatear un número telefónico dejando solo números y quitando otros elementos como espacios o signos.
    * @param phone
    * @returns
    */
