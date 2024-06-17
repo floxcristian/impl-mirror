@@ -641,8 +641,14 @@ export class CartService {
     );
   }
 
-  setNotificationContact(id: string, data: AddNotificacionContactRequest) {
-    return this.http.put(`${API_CART}/notification-contact/${id}`, data);
+  setNotificationContact(
+    cartId: string,
+    contact: AddNotificacionContactRequest
+  ) {
+    return this.http.put(
+      `${API_CART}/notification-contact/${cartId}`,
+      contact
+    );
   }
 
   /**
@@ -812,10 +818,7 @@ export class CartService {
     return this.http.put<IThanksForYourPurchase>(url, undefined);
   }
 
-  generateQuotation(params: {
-    shoppingCartId: string;
-  }): Observable<IShoppingCartDetail> {
-    const { shoppingCartId } = params;
+  generateQuotation(shoppingCartId: string): Observable<IShoppingCartDetail> {
     const url = `${API_CART}/${shoppingCartId}/generate-quotation`;
     return this.http.post<IShoppingCartDetail>(url, undefined);
   }

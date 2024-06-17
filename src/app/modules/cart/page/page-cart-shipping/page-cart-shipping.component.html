@@ -148,7 +148,7 @@
               <!-- Start::tab retiro en tienda -->
               <tab
                 [disabled]="loadingShipping"
-                (selectTab)="onSelect($event, 'retiro')"
+                (selectTab)="onSelectShippingType($event, 'retiro')"
               >
                 <ng-template tabHeading>
                   <i
@@ -171,7 +171,7 @@
                     class="form-control-select form-control-lg"
                     [(ngModel)]="selectedShippingIdStore"
                     placeholder="Seleccione una tienda"
-                    [disabled]="loadingShippingStore"
+                    [disabled]="isLoadingPickupDates"
                     #select
                     (change)="getPickup(); select.blur()"
                   >
@@ -224,13 +224,13 @@
                 </div>
 
                 <pre>
-                  loadingShippingStore: {{ loadingShippingStore }}
+                  isLoadingPickupDates: {{ isLoadingPickupDates }}
                   stores.length: {{ stores.length }}
                   TiendasCargadas: {{ wereLoadedStores }}
                 </pre>
                 <app-loading-element
                   *ngIf="
-                    loadingShippingStore ||
+                    isLoadingPickupDates ||
                     (!stores.length && !wereLoadedStores)
                   "
                   text="Cargando fechas2"
@@ -456,8 +456,8 @@
 
               <!-- Start::tab despacho a domicilio -->
               <tab
-                [disabled]="loadingShippingStore"
-                (selectTab)="onSelect($event, 'despacho')"
+                [disabled]="isLoadingPickupDates"
+                (selectTab)="onSelectShippingType($event, 'despacho')"
               >
                 <div [hidden]="showNewAddress">
                   <ng-template tabHeading>
@@ -544,7 +544,7 @@
                             </button>
                             <button
                               type="button"
-                              (click)="changeAddress(direccion.id)"
+                              (click)="selectDeliveryAddress(direccion.id)"
                               style="text-decoration: none; color: #0063b9"
                               class="btn btn-link"
                             >
@@ -595,14 +595,13 @@
                   <!-- END tarjeta de direcciones del usuario -->
 
                   <!-- Tarjeta de direcciones del invitado -->
-
                   <app-add-address
                     [invitado]="true"
-                    *ngIf="usuarioInvitado && !direccion"
+                    *ngIf="usuarioInvitado && !showAddress"
                     (respuestaInvitado)="direccionVisita($event)"
                   ></app-add-address>
 
-                  <div *ngIf="usuarioInvitado && direccion">
+                  <div *ngIf="usuarioInvitado && showAddress">
                     <div class="row ms-2 mt-3">
                       <div class="col-12 col-lg-6">
                         <p class="subtitle my-0 pt-0">Dirección de despacho</p>
@@ -657,7 +656,7 @@
                     <app-loading-element
                       *ngIf="
                         (loadingShipping && !usuarioInvitado) ||
-                        (loadingShipping && direccion && usuarioInvitado)
+                        (loadingShipping && showAddress && usuarioInvitado)
                       "
                       text="Cargando fechas"
                     />
@@ -692,7 +691,7 @@
                         </div>
                       </div>
                       <div
-                        *ngIf="!isLoggedIn && direccion"
+                        *ngIf="!isLoggedIn && showAddress"
                         class="col-12 col-lg-12"
                       >
                         <div
@@ -717,11 +716,11 @@
                       </div>
                     </div>
 
-                    <!-- Segmento correspondiente a la seleccion de dias de despacho. tanto para invitados como logeados. -->
+                    <!-- Días de despacho. tanto para invitados como logeados. -->
                     <div
                       *ngIf="
                         (isLoggedIn && selectedShippingId) ||
-                        (usuarioInvitado && direccion)
+                        (usuarioInvitado && showAddress)
                       "
                     >
                       <!-- Segmento correspondiente al formulario asociado a la persona que recibe el producto-->
@@ -1086,7 +1085,7 @@
                   type="button"
                   name="finishQuotation"
                   class="btn btn-outline-primary me-3"
-                  (click)="finishQuotation()"
+                  (click)="generateQuotation()"
                 >
                   Confirmar
                 </button>
