@@ -294,6 +294,7 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     this.userSession = this.sessionService.getSession();
     this.isB2B = this.sessionService.isB2B();
+
     if (this.isB2B || this.userSession.businessLine) {
       this.documentOptions.push({ id: InvoiceType.INVOICE, name: 'FACTURA' });
     }
@@ -1122,6 +1123,11 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
    * Continuar pago con XXX.
    */
   async paymentOv() {
+    this._gtmService.addPaymentInfo({
+      dataLayer,
+      shoppingCart: this.cartSession,
+      paymentType: '',
+    });
     try {
       if (await this.validarStockActual()) return;
 

@@ -5,8 +5,6 @@
 
 // Angular
 import { Injectable, inject } from '@angular/core';
-// Environment
-import { environment } from '@env/environment';
 // Services
 import { CartTagService } from '@core/services-v2/cart-tag.service';
 import { GtmUtils } from './gtm-utils.service';
@@ -18,8 +16,8 @@ import {
   IShoppingCartProduct,
 } from '@core/models-v2/cart/shopping-cart.interface';
 import { IProductCart } from 'src/app/modules/cart/page/page-cart/product-cart.interface';
-import { IProductGtm } from './product-gtm.interface';
 import { GtmEvent } from './gtm-events.enum';
+import { event } from 'jquery';
 
 @Injectable({
   providedIn: 'root',
@@ -130,14 +128,13 @@ export class GtmService {
   beginCheckout(dataLayer: any, shoppingCart: IShoppingCart) {
     if (!shoppingCart._id) return;
 
-    const { products, total, tax, shipping } =
-      GtmUtils.formatGtmCart(shoppingCart);
+    const { products, total } = GtmUtils.formatGtmCart(shoppingCart);
     dataLayer.push({
       event: GtmEvent.BEGIN_CHECKOUT,
       ecommerce: {
         currency: this.currency,
-        value: 0,
-        items: [],
+        value: total,
+        items: products,
       },
     });
   }
@@ -193,6 +190,52 @@ export class GtmService {
         currency: this.currency,
         value: product.quantity * product.price,
         items: [gtmProduct],
+      },
+    });
+  }
+
+  /**
+   * Este evento significa que un usuario envió su información de envío en un proceso de confirmación de la compra de comercio electrónico
+   */
+  addShippingInfo(dataLayer: any, shoppingCart: IShoppingCart): void {
+    if (!shoppingCart._id) return;
+
+    const { products, total } = GtmUtils.formatGtmCart(shoppingCart);
+    dataLayer.push({
+      event: GtmEvent.ADD_SHIPPING_INFO,
+      ecommerce: {
+        currency: this.currency,
+        value: total,
+        shipping_tier: 'Ground', // FIXME: siempre será `Ground`?
+        items: products,
+      },
+    });
+  }
+
+  /**
+   * Este evento significa que un usuario envió su información de pago en un proceso de confirmación de la compra de comercio electrónico.
+   * @param dataLayer
+   * @param shoppingCart
+   * @returns
+   */
+  addPaymentInfo({
+    dataLayer,
+    shoppingCart,
+  }: {
+    dataLayer: any;
+    shoppingCart: IShoppingCart;
+    paymentType: string;
+  }): void {
+    if (!shoppingCart._id) return;
+
+    const { products, total } = GtmUtils.formatGtmCart(shoppingCart);
+    dataLayer.push({
+      event: GtmEvent.ADD_SHIPPING_INFO,
+      ecommerce: {
+        currency: this.currency,
+        value: total,
+        payment_type: 'Credit Card', // Debit Card , Bank Transfer, Credit line
+        items: products,
       },
     });
   }

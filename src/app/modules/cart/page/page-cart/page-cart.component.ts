@@ -165,18 +165,17 @@ export class PageCartComponent implements OnInit, OnDestroy {
   }
 
   gtmViewCart() {
-    if (isPlatformBrowser(this.platformId) && !this.sessionService.isB2B()) {
-      // this.gtmService.pushTag({
-      //   event: 'cart',
-      //   pagePath: window.location.href,
-      // });}
-      /*dataLayer.push({
+    if (!isPlatformBrowser(this.platformId)) return;
+    // this.gtmService.pushTag({
+    //   event: 'cart',
+    //   pagePath: window.location.href,
+    // });}
+    /*dataLayer.push({
         event: 'cart',
         pagePath: window.location.href,
       });*/
-      this._gtmService.viewCart(dataLayer, this.items);
-      this.sendedToGtm = true;
-    }
+    this._gtmService.viewCart(dataLayer, this.items);
+    this.sendedToGtm = true;
   }
 
   ngOnDestroy(): void {

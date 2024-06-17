@@ -249,17 +249,17 @@ export class ProductComponent implements OnInit, OnChanges {
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe();
 
-      if (!this.sessionService.isB2B()) {
-        // this.gtmService.pushTag({
-        //   event: 'productView',
-        //   pagePath: window.location.href,
-        // });
-        this._gtmService.viewItem(dataLayer, this.dataProduct);
-        /*dataLayer.push({
+      //if (!this.sessionService.isB2B()) {
+      // this.gtmService.pushTag({
+      //   event: 'productView',
+      //   pagePath: window.location.href,
+      // });
+      this._gtmService.viewItem(dataLayer, this.dataProduct);
+      /*dataLayer.push({
           event: 'productView',
           pagePath: window.location.href,
         });*/
-      }
+      //}
     }
 
     // Observable cuyo fin es saber cuando se presiona el boton agregar al carro utilizado para los dispositivos moviles.

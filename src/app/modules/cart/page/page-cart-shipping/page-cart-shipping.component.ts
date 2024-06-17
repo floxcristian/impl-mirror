@@ -705,7 +705,8 @@ export class PageCartShippingComponent implements OnInit {
     }
   }*/
 
-  next() {
+  goToShippingPage(): void {
+    this._gmtService.addShippingInfo(dataLayer, this.cartSession);
     this.saveShipping(-1, -1, true);
   }
 
