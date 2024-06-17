@@ -6,8 +6,8 @@
 
   <div class="row">
     <!-- formulario inicio sesión -->
-    <div class="col-12 col-lg-7 col-xl-8" *ngIf="!isLogin">
-      <div class="card" *ngIf="!usuarioInvitado && !isLogin">
+    <div class="col-12 col-lg-7 col-xl-8" *ngIf="!isLoggedIn">
+      <div class="card" *ngIf="!usuarioInvitado && !isLoggedIn">
         <div class="card-body">
           <app-login-register
             [innerWidth]="innerWidth"
@@ -21,7 +21,7 @@
     <div
       class="col-12"
       *ngIf="
-        (usuarioInvitado || isLogin) &&
+        (usuarioInvitado || isLoggedIn) &&
         shippingSelected &&
         HideResumen() &&
         select_grupos &&
@@ -113,7 +113,7 @@
     <div
       class="col-12"
       *ngIf="
-        (usuarioInvitado || isLogin) &&
+        (usuarioInvitado || isLoggedIn) &&
         shippingSelected &&
         HideResumen() &&
         select_grupos &&
@@ -136,7 +136,7 @@
     </div>
     <div
       class="col-lg-7 col-xl-8 col-xs-12"
-      *ngIf="!select_grupos && (usuarioInvitado || isLogin)"
+      *ngIf="!select_grupos && (usuarioInvitado || isLoggedIn)"
     >
       <div class="card h-100">
         <div class="card-header" style="color: #0063b9; margin-left: 17px">
@@ -173,7 +173,7 @@
                     placeholder="Seleccione una tienda"
                     [disabled]="loadingShippingStore"
                     #select
-                    (change)="obtieneRetiro(); select.blur()"
+                    (change)="getPickup(); select.blur()"
                   >
                     <ng-template
                       ng-option-tmp
@@ -216,7 +216,7 @@
                           class="col-sm-6"
                           style="font-weight: bold; font-size: 15px"
                         >
-                          {{ retiro | uppercase }}
+                          {{ pickupDescription | uppercase }}
                         </div>
                       </div>
                     </div>
@@ -226,12 +226,12 @@
                 <pre>
                   loadingShippingStore: {{ loadingShippingStore }}
                   stores.length: {{ stores.length }}
-                  TiendasCargadas: {{ TiendasCargadas }}
+                  TiendasCargadas: {{ wereLoadedStores }}
                 </pre>
                 <app-loading-element
                   *ngIf="
                     loadingShippingStore ||
-                    (!stores.length && !TiendasCargadas)
+                    (!stores.length && !wereLoadedStores)
                   "
                   text="Cargando fechas2"
                 />
@@ -241,7 +241,7 @@
                       class="alert border border-warning"
                       style="width: 99%; color: #0063b9"
                     >
-                      <h3 *ngIf="isLogin">
+                      <h3 *ngIf="isLoggedIn">
                         Producto no disponible! . . .
                         <i class="fas fa-store-alt"></i
                         ><i
@@ -371,7 +371,7 @@
                       </div>
                       <div
                         class="col-sm p-0"
-                        (mousedown)="toggleMap()"
+                        (mousedown)="showMap = !showMap"
                         style="cursor: pointer"
                       >
                         <i
@@ -478,7 +478,7 @@
                   <!-- Tarjeta de direcciones del usuario -->
                   <div
                     class="row mt-3"
-                    *ngIf="isLogin"
+                    *ngIf="isLoggedIn"
                     style="margin-left: 0px; margin-right: 0px"
                   >
                     <!-- Listado de direcciones de un usuario logeado -->
@@ -535,7 +535,7 @@
                               tooltip="Eliminar dirección"
                               placement="top"
                               container="body"
-                              (click)="deleteAddress(direccion)"
+                              (click)="deleteDeliveryAddress(direccion)"
                             >
                               <i
                                 class="fas fa-trash-alt text-danger fa-fw"
@@ -665,17 +665,17 @@
                     <div *ngIf="!shippingDays.length" class="no-shipping">
                       <p
                         class="subtitle"
-                        *ngIf="selectedShippingId == null && isLogin"
+                        *ngIf="selectedShippingId == null && isLoggedIn"
                       >
                         Seleccione una dirección para proponer días de despacho
                       </p>
 
-                      <div *ngIf="isLogin" class="col-12 col-lg-12">
+                      <div *ngIf="isLoggedIn" class="col-12 col-lg-12">
                         <div
                           class="alert border border-warning"
                           style="width: 99%; color: #0063b9"
                         >
-                          <h2 *ngIf="isLogin">
+                          <h2 *ngIf="isLoggedIn">
                             Oops! . . .
                             <i class="fas fa-shipping-fast mt-2"></i
                             ><i
@@ -692,14 +692,14 @@
                         </div>
                       </div>
                       <div
-                        *ngIf="!isLogin && direccion"
+                        *ngIf="!isLoggedIn && direccion"
                         class="col-12 col-lg-12"
                       >
                         <div
                           class="alert border border-warning"
                           style="width: 99%"
                         >
-                          <h2 *ngIf="isLogin">
+                          <h2 *ngIf="isLoggedIn">
                             Oops! . . .
                             <i class="fas fa-shipping-fast mt-2"></i
                             ><i
@@ -720,7 +720,7 @@
                     <!-- Segmento correspondiente a la seleccion de dias de despacho. tanto para invitados como logeados. -->
                     <div
                       *ngIf="
-                        (isLogin && selectedShippingId) ||
+                        (isLoggedIn && selectedShippingId) ||
                         (usuarioInvitado && direccion)
                       "
                     >
@@ -1198,7 +1198,7 @@
   </div>
 </div>
 
-<ng-container *ngIf="(usuarioInvitado || isLogin) && innerWidth < 450">
+<ng-container *ngIf="(usuarioInvitado || isLoggedIn) && innerWidth < 450">
   <div
     *ngIf="!shippingSelected"
     [ngStyle]="{
@@ -1222,7 +1222,7 @@
   >
     <div class="card" [ngClass]="valshowDetalleProductos() ? 'h-100' : ''">
       <div class="card-header" style="margin-bottom: 1px !important">
-        <div (click)="setShowDetalleProductos(!showDetalleProductos)">
+        <div (click)="showDetalleProductos = !showDetalleProductos">
           <div class="ms-1 text-justify" style="color: #0063b9">
             <strong> Resumen de tu compra ({{ items.length }})</strong>
           </div>

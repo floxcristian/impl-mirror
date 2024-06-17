@@ -11,7 +11,7 @@ export class CartShippingUtils {
   static getPickupDescription(
     shippingDates: ShippingDateItem[],
     currentDate: string
-  ) {
+  ): string {
     if (!shippingDates.length) return '';
     let menor = shippingDates[0].fechas?.[0].fecha;
     let menor_fecha: any = new Date(menor);
@@ -30,8 +30,10 @@ export class CartShippingUtils {
     else if (moment(menor).weekday() == 3) return 'Retira el día miercoles';
     else if (moment(menor).weekday() == 4) return 'Retira el día jueves';
     else if (moment(menor).weekday() == 5) return 'Retira el día viernes';
-    else if (moment(menor).weekday() == 6) return 'Retira el día  sabado';
-    else if (moment(menor).weekday() == 7) return 'Retira el día  domingo';
+    else if (moment(menor).weekday() == 6) return 'Retira el día sábado';
+    else if (moment(menor).weekday() == 7) return 'Retira el día domingo';
     else return '';
   }
+
+  static getFullAddress() {}
 }

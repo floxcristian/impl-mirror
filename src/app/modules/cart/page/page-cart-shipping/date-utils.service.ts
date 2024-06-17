@@ -2,7 +2,7 @@ import * as moment from 'moment';
 
 export class DateUtils {
   /**
-   * @desc Verificar si la fecha es un dia sábado.
+   * Verificar si la fecha es un dia sábado.
    * @params fecha en string
    * @return
    */

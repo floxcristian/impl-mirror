@@ -12,7 +12,6 @@ import { DatePipe, isPlatformBrowser } from '@angular/common';
 // Libs
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
-import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 // Rxjs
 import { Subject, firstValueFrom, lastValueFrom } from 'rxjs';
@@ -76,6 +75,7 @@ import { CallBackCartLoaded } from '@core/models-v2/cart/callback-cart-loaded.ty
 import { UserRoleType } from '@core/enums/user-role-type.enum';
 import { DateUtils } from './date-utils.service';
 import { GtmService } from '@core/utils-v2/gtm/gtm.service';
+import { CartShippingUtils } from './cart-shipping-utils';
 declare let dataLayer: any;
 
 export let browserRefresh = false;
@@ -105,7 +105,7 @@ export class PageCartShippingComponent implements OnInit {
   showDetalleProductos: boolean = false;
   showresumen: boolean = false;
   tienda!: IStore;
-  retiro = '';
+  pickupDescription: string = '';
   conflictoEntrega: boolean = false;
   //variables para el despachos
   shippingType: string = '';
@@ -132,7 +132,7 @@ export class PageCartShippingComponent implements OnInit {
   selectedShippingIdStore: any;
   tempShippingIdStore: any;
   shippingDaysStore: ShippingDateItem[] = [];
-  TiendasCargadas: boolean = false;
+  wereLoadedStores: boolean = false;
   loadingShippingStore: boolean = false;
   fecha = new Date();
   // despacho
@@ -153,7 +153,7 @@ export class PageCartShippingComponent implements OnInit {
   tituloRecibe: string = 'Persona que recibe';
   loadingShippingAll = false;
   showAllAddress: boolean = false;
-  isLogin!: boolean;
+  isLoggedIn!: boolean;
   loadingResumen = false;
 
   // productos validados
@@ -213,11 +213,11 @@ export class PageCartShippingComponent implements OnInit {
 
   async ngOnInit() {
     console.log('this.cartSession: ', this.cartSession);
-    this.isLogin = this.sessionService.isLoggedIn();
+    this.isLoggedIn = this.sessionService.isLoggedIn();
 
     this.setNotificationContact();
     this.obtieneDireccionesCliente();
-    this.obtieneTiendas();
+    this.loadStores();
 
     if (!this.HideResumen()) {
       this.recibeType = 'yo';
@@ -282,10 +282,10 @@ export class PageCartShippingComponent implements OnInit {
             this.loadingShippingAll = false;
             if (!isDelete) {
               // Obtener última dirección (id más alto).
-              const addressIds = addresses.map((address) =>
+              const addressesIds = addresses.map((address) =>
                 Number(address.id)
               );
-              this.selectedShippingId = String(Math.max(...addressIds));
+              this.selectedShippingId = String(Math.max(...addressesIds));
             }
 
             this.addresses = addresses.map((address) => {
@@ -303,7 +303,7 @@ export class PageCartShippingComponent implements OnInit {
                 };
               return { ...address, fullAddress, isDefault };
             });
-            if (this.shippingType === 'despacho') this.obtieneDespachos();
+            if (this.shippingType === 'despacho') this.getDeliveries();
 
             this.showNewAddress = false;
           },
@@ -320,7 +320,7 @@ export class PageCartShippingComponent implements OnInit {
   /**
    * Establecer contacto para notificaciones del carro.
    */
-  setNotificationContact(): void {
+  private setNotificationContact(): void {
     let data: AddNotificacionContactRequest = {};
 
     this.userSession = this.sessionService.getSession();
@@ -340,9 +340,9 @@ export class PageCartShippingComponent implements OnInit {
   }
 
   /**
-   * Obtiene despachos a domicilio.
+   * Obtener despachos a domicilio.
    */
-  async obtieneDespachos(removeShipping = true) {
+  async getDeliveries(removeShipping = true): Promise<void> {
     this.fechas = [];
 
     const usuario = this.sessionService.getSession();
@@ -427,39 +427,43 @@ export class PageCartShippingComponent implements OnInit {
       this.loadingResumen = false;
     }
 
-    this.ver_fechas();
+    this.pickupDescription = CartShippingUtils.getPickupDescription(
+      this.shippingDaysStore,
+      this.fecha_actual
+    );
   }
 
-  obtieneTiendas(): void {
+  /**
+   * Cargar tiendas y establecer la tienda seleccionada.
+   */
+  loadStores(): void {
+    this.wereLoadedStores = false;
     this.geolocationService.stores$.subscribe({
       next: (stores) => {
         this.stores = stores;
-        this.TiendasCargadas = true;
-
-        // Poner tienda seleccionada al comienzo de la lista.
         const selectedStore = this.geolocationService.getSelectedStore();
-        const tiendaActual = this.stores.find((store) => {
-          return store.code === selectedStore.code;
-        });
+        const selectedStoreDetail = this.stores.find(
+          (store) => store.code === selectedStore.code
+        );
 
-        if (tiendaActual) {
-          const tiendas = this.stores.filter(
-            (store) => store.id != tiendaActual.id
-          );
-          tiendas.unshift(tiendaActual);
-          this.stores = tiendas;
-          this.selectedShippingIdStore = tiendaActual.id;
-          this.tempShippingIdStore = this.selectedShippingIdStore;
-          this.obtieneRetiro(false);
-        }
+        if (!selectedStoreDetail) return;
+
+        const filteredStores = this.stores.filter(
+          (store) => store.id != selectedStoreDetail.id
+        );
+        this.stores = [selectedStoreDetail, ...filteredStores];
+        this.selectedShippingIdStore = selectedStoreDetail.id;
+        this.tempShippingIdStore = this.selectedShippingIdStore;
+        this.wereLoadedStores = true;
+        this.getPickup(false);
       },
     });
   }
 
   /**
-   * Obtiene retiro en tienda.
+   * Obtener retiro en tienda.
    */
-  async obtieneRetiro(removeShipping = true) {
+  async getPickup(removeShipping = true) {
     this.loadingShippingStore = true;
 
     this.fechas = [];
@@ -513,7 +517,8 @@ export class PageCartShippingComponent implements OnInit {
               let isSaturday = DateUtils.isSaturday(
                 item.requestedDate.toString()
               );
-              const obj = {
+
+              dia_despacho.push({
                 index: i++,
                 id: group.id,
                 diasdemora: item.businessDays,
@@ -525,9 +530,7 @@ export class PageCartShippingComponent implements OnInit {
                 tipoenvio: 'TIENDA',
                 tipopedido: 'VEN- RPTDA',
                 isSabado: isSaturday,
-              };
-
-              dia_despacho.push(obj);
+              });
             });
 
             this.shippingDaysStore.push({
@@ -541,7 +544,10 @@ export class PageCartShippingComponent implements OnInit {
           this.loadingResumen = false;
         }
         this.loadingShippingStore = false;
-        this.ver_fechas();
+        this.pickupDescription = CartShippingUtils.getPickupDescription(
+          this.shippingDaysStore,
+          this.fecha_actual
+        );
       } catch (e) {
         console.log(e);
         this.loadingShippingStore = false;
@@ -552,81 +558,18 @@ export class PageCartShippingComponent implements OnInit {
   }
 
   /**
-   * Obtiene el nombre del usuario.
+   * Obtener el nombre del usuario.
    */
   private getFullName(guest: IGuest | ISession): string {
     const { firstName, lastName } = guest;
     return `${firstName} ${lastName}`;
   }
 
-  /**
-   * TODO: juntar con seleccionar despacho.
-   */
-  //  seleccionaDespachoInvitado(item: ShippingService, pos): void {
-  // // invitado solamente <<<<<<<<<<<<<<<
-
-  //   let invitado: any = this.localS.get('invitado');
-  //   invitado.tipoEnvio = 'DES';
-  //   this.localS.remove('invitado');
-  //   this.localS.set('invitado', invitado);
-  //   this.usuarioInv = this.localS.get('invitado');
-  //   // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-  //   this.recibeYoname = this.getFullName(invitado);
-
-  //   this.cardShippingActive = item.index;
-  //   this.grupoShippingActive = this.shippingDays[pos].grupo;
-  //   this.shippingSelected = this.shippingDays[pos].fechas.find(item => item.index === this.cardShippingActive);
-  //   this.productosSeleccionado = this.shippingDays[pos].productodespacho;
-  //   this.recidDireccion = 0;
-  //   const nombre = `Despacho ` + this.datePipe.transform(this.shippingSelected.fecha, 'EEEE dd MMM');
-
-  //   const envio: CartTotal = {
-  //     price: this.shippingSelected.precio,
-  //     title: nombre,
-  //     type: 'shipping'
-  //   };
-
-  //   this.cart.addTotalShipping(envio);
-
-  //   // guardamos el despacho y vericamos si tiene descuento o no
-  //   this.saveShipping();
-  // }
-
-  /**
-   *
-   */
-  // seleccionaDespachoOriginal(item: ShippingService, pos: number): void {
-  //   this.obj_fecha[pos] = item; // no esta
-  //   this.recibeYoname = this.getFullName(this.userSession);
-
-  //   this.cardShippingActive = item.index;
-  //   this.grupoShippingActive = this.shippingDays[pos].grupo;
-  //   this.shippingSelected = this.shippingDays[pos].fechas.find(item => item.index === this.cardShippingActive);
-  //   this.productosSeleccionado = this.shippingDays[pos].productodespacho;
-  //   this.recidDireccion = this.selectedShippingId;
-  //   const nombre = `Despacho ` + this.datePipe.transform(this.shippingSelected.fecha, 'EEEE dd MMM');
-  //   const envio: CartTotal = {
-  //     price: this.shippingSelected.precio,
-  //     title: nombre,
-  //     type: 'shipping'
-  //   };
-
-  //   this.cart.addTotalShipping(envio);
-  //   // guardamos el despacho y vericamos si tiene descuento o no
-  //   this.saveShipping();
-
-  //   // TODO:
-  //   this.fechas[pos] = this.shippingSelected.fecha;
-  //   this.localS.set('fechas', this.fechas);
-  //   this.localS.remove('tiendaRetiro');
-  // }
-
   /* funcion de prueba*/
   seleccionaDespacho(item: ShippingService, pos: number) {
     let invitado: any = null;
 
-    if (this.isLogin) {
+    if (this.isLoggedIn) {
       this.recibeYoname = this.getFullName(this.userSession);
       this.recidDireccion = this.selectedShippingId;
       this.obj_fecha[pos] = item;
@@ -652,12 +595,11 @@ export class PageCartShippingComponent implements OnInit {
       `Despacho ` +
       this.datePipe.transform(this.shippingSelected?.fecha, 'EEEE dd MMM');
 
-    const envio: CartTotal = {
+    this.cart.addTotalShipping({
       price: this.shippingSelected?.precio,
       title: nombre,
       type: 'shipping',
-    };
-    this.cart.addTotalShipping(envio);
+    });
 
     // guardamos el despacho y vericamos si tiene descuento o no
     this.saveShipping(pos, item.index);
@@ -745,9 +687,8 @@ export class PageCartShippingComponent implements OnInit {
       this.getDireccionName(this.shippingSelected?.tipoenvio || '');
     } else {
       this.loadingResumen = false;
-      if (redirect) {
+      if (redirect)
         this.router.navigate(['/', 'carro-compra', 'forma-de-pago']);
-      }
     }
   }
 
@@ -756,7 +697,7 @@ export class PageCartShippingComponent implements OnInit {
    */
   private onLoginChange(): void {
     this.authStateService.session$.subscribe(() => {
-      this.isLogin = this.sessionService.isLoggedIn();
+      this.isLoggedIn = this.sessionService.isLoggedIn();
       this.obtieneDireccionesCliente();
       this.setNotificationContact();
     });
@@ -839,9 +780,9 @@ export class PageCartShippingComponent implements OnInit {
         this.shippingDaysStore = [];
         this.loadingResumen = false;
       } else if (this.selectedShippingIdStore) {
-        this.obtieneRetiro(false);
+        this.getPickup(false);
       }
-    } else if (formaEntrega === 'despacho' && this.isLogin) {
+    } else if (formaEntrega === 'despacho' && this.isLoggedIn) {
       this.selectedShippingId = null;
       this.retiroFlag = false;
       if (this.selectedShippingIdLast)
@@ -849,7 +790,7 @@ export class PageCartShippingComponent implements OnInit {
       else this.setDefaultAddress();
 
       if (this.selectedShippingId) {
-        this.obtieneDespachos();
+        this.getDeliveries();
       }
     } else {
       this.retiroFlag = false;
@@ -862,7 +803,7 @@ export class PageCartShippingComponent implements OnInit {
       this.guestStorage.set(invitado);
       this.usuarioInv = this.guestStorage.get()!;
 
-      this.obtieneDespachos();
+      this.getDeliveries();
     }
     //poner RC a cliente
     this.shippingDays = [];
@@ -1043,13 +984,6 @@ export class PageCartShippingComponent implements OnInit {
     this.shippingDays = [];
   }
 
-  /**
-   * Mostrar u ocultar mapa.
-   */
-  toggleMap(): void {
-    this.showMap = !this.showMap;
-  }
-
   // Ocultar el resumen de la compra cuando se esta seleccionando direccion de envio.
   HideResumen() {
     if (this.innerWidth <= 800) {
@@ -1090,7 +1024,7 @@ export class PageCartShippingComponent implements OnInit {
     if (tipo != 'TIENDA') {
       this.tituloDespacho = 'Dirección de despacho';
       this.tituloRecibe = 'Persona que recibe';
-      if (this.isLogin) {
+      if (this.isLoggedIn) {
         direccion = this.addresses.find(
           (direccion) => direccion.id === this.selectedShippingId
         );
@@ -1131,10 +1065,6 @@ export class PageCartShippingComponent implements OnInit {
     this.direccionName = direccion || '';
   }
 
-  setShowDetalleProductos(value: any) {
-    this.showDetalleProductos = value;
-  }
-
   // Metodo que permite controlar cuando se muestran todas las direcciones de un usuario logeado.
   viewAllAddress() {
     this.showAllAddress = true;
@@ -1143,11 +1073,11 @@ export class PageCartShippingComponent implements OnInit {
   }
 
   changeAddress(recid: any) {
-    if (recid.length > 0) {
+    if (recid.length) {
       this.selectedShippingId = recid;
       this.showAllAddress = false;
       this.showDetalleProductos = false;
-      this.obtieneDespachos();
+      this.getDeliveries();
       window.scrollTo({ top: 0 });
       let address = this.addresses.find(
         (address) => address.id == this.selectedShippingId
@@ -1162,26 +1092,17 @@ export class PageCartShippingComponent implements OnInit {
     if (this.selectedShippingIdStore == null) {
       this.selectedShippingIdStore = this.tempShippingIdStore;
       //this.loadingShippingStore = true;
-      this.obtieneTiendas();
+      this.loadStores();
     }
 
-    if (this.isLogin) {
+    if (this.isLoggedIn) {
       this.setDefaultAddress();
-      this.obtieneDespachos();
+      this.getDeliveries();
     } else {
       this.direccion = false; // null;
     }
     this.showDetalleProductos = false;
     this.onSelect(null, 'retiro');
-  }
-
-  /***
-   * Establecer dirección de despacho por defecto, siendo seleccionada la que tenga el id más alto (última añadida).
-   */
-  setDefaultAddress(): void {
-    if (this.selectedShippingId) return;
-    const addressIds = this.addresses.map((address) => Number(address.id));
-    this.selectedShippingId = String(Math.max(...addressIds));
   }
 
   private setSelectedStore(
@@ -1203,11 +1124,12 @@ export class PageCartShippingComponent implements OnInit {
    */
   setSeleccionarEnvio(item: any, i: any) {
     if (this.shippingType == 'despacho') {
-      if (this.isLogin || this.usuarioInvitado)
+      if (this.isLoggedIn || this.usuarioInvitado)
         this.seleccionaDespacho(item, i);
       //else if (this.usuarioInvitado) this.seleccionaDespachoInvitado(item, i);
     } else {
-      if (this.isLogin || this.usuarioInvitado) this.seleccionaRetiro(item, i);
+      if (this.isLoggedIn || this.usuarioInvitado)
+        this.seleccionaRetiro(item, i);
       //else if () this.seleccionaRetiro(item, i);
     }
   }
@@ -1281,41 +1203,9 @@ export class PageCartShippingComponent implements OnInit {
       this.shippingDaysStore = [];
       this.shippingDays = [];
 
-      this.obtieneDespachos();
-      this.obtieneTiendas();
+      this.getDeliveries();
+      this.loadStores();
     });
-  }
-
-  private ver_fechas() {
-    if (this.shippingDaysStore.length) {
-      let menor = this.shippingDaysStore[0].fechas?.[0].fecha;
-      let menor_fecha: any = new Date(menor);
-      this.shippingDaysStore.map((item) => {
-        let fecha_comparar: any = new Date(item.fechas?.[0].fecha);
-        if (menor_fecha.getTime() >= fecha_comparar.getTime()) {
-          menor = item.fechas?.[0].fecha;
-          menor_fecha = new Date(menor);
-        }
-      });
-
-      if (moment(menor).startOf('day').toISOString() === this.fecha_actual) {
-        this.retiro = 'Retira Hoy';
-      } else {
-        if (moment(menor).weekday() == 1) this.retiro = 'Retira el día lunes';
-        else if (moment(menor).weekday() == 2)
-          this.retiro = 'Retira el día martes';
-        else if (moment(menor).weekday() == 3)
-          this.retiro = 'Retira el día miercoles';
-        else if (moment(menor).weekday() == 4)
-          this.retiro = 'Retira el día jueves';
-        else if (moment(menor).weekday() == 5)
-          this.retiro = 'Retira el día viernes';
-        else if (moment(menor).weekday() == 6)
-          this.retiro = 'Retira el día  sabado';
-        else if (moment(menor).weekday() == 7)
-          this.retiro = 'Retira el día  domingo';
-      }
-    }
   }
 
   finishQuotation() {
@@ -1345,13 +1235,25 @@ export class PageCartShippingComponent implements OnInit {
       });
   }
 
-  // Eliminar dirección
-  deleteAddress(direccion: any) {
+  /***
+   * Establecer dirección de despacho por defecto, siendo seleccionada la que tenga el id más alto (última añadida).
+   */
+  setDefaultAddress(): void {
+    if (this.selectedShippingId) return;
+    const addressIds = this.addresses.map((address) => Number(address.id));
+    this.selectedShippingId = String(Math.max(...addressIds));
+  }
+
+  /**
+   * Eliminar dirección de despacho a domicilio.
+   * @param address
+   */
+  deleteDeliveryAddress(address: any) {
     const initialState: DataModal = {
       titulo: 'Confirmación',
       mensaje: `¿Esta seguro que desea <strong>eliminar</strong> esta direccion?<br><br>
-                  Calle: <strong>${direccion.street}</strong><br>
-                  Número: <strong>${direccion.number}</strong>`,
+                  Calle: <strong>${address.street}</strong><br>
+                  Número: <strong>${address.number}</strong>`,
       tipoIcon: TipoIcon.QUESTION,
       tipoModal: TipoModal.QUESTION,
     };
@@ -1359,20 +1261,16 @@ export class PageCartShippingComponent implements OnInit {
       initialState,
       ignoreBackdropClick: true,
     });
-    bsModalRef.content.event.subscribe(async (res: any) => {
+    bsModalRef.content.event.subscribe((res: any) => {
       if (res) {
-        const documentId = this.userSession.documentId;
-        const addressId = direccion.id;
         this.customerAddressApiService
-          .deleteAddress(documentId, addressId)
+          .deleteAddress(this.userSession.documentId, address.id)
           .subscribe({
-            next: (_) => {
+            next: () => {
               this.toast.success('Dirección eliminada exitosamente.');
               this.respuesta(true, true);
-              if (
-                this.direccionConfigurada.deliveryAddress?.id === direccion.id
-              )
-                this.cambioDireccionPreferenciaCliente(direccion.id);
+              if (this.direccionConfigurada.deliveryAddress?.id === address.id)
+                this.updatePreferredDeliveryAddress(address.id);
             },
             error: (err: IError) => {
               this.toast.error(err.message);
@@ -1383,14 +1281,14 @@ export class PageCartShippingComponent implements OnInit {
   }
 
   /**
-   * Se activa si se elimina la dirección preferencia del cliente.
+   * Actualizar la dirección de despacho a domicilio preferida del cliente si se elimina la dirección actual preferida.
    * @param recid
    */
-  cambioDireccionPreferenciaCliente(addressId: string) {
+  updatePreferredDeliveryAddress(addressId: string): void {
     const preferences = this.customerPreferencesStorage.get();
-    let nueva_preferencia =
+    let preferredDeliveryAddressId =
       this.addresses.find((address) => address.id !== addressId) || null;
-    preferences.deliveryAddress = nueva_preferencia;
+    preferences.deliveryAddress = preferredDeliveryAddressId;
     this.customerPreferencesStorage.set(preferences);
   }
 }
