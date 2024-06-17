@@ -1034,7 +1034,7 @@
                       !productsValidate.length ||
                       recibeOtra
                     "
-                    (click)="goToShippingPage()"
+                    (click)="goToPaymentPage()"
                     class="btn btn-lg btn-secondary w-100 text-center"
                   >
                     Ir a pagar <i class="fas fa-chevron-right"></i>
@@ -1047,7 +1047,7 @@
                       userSession.userRole == 'buyer'
                     "
                     [disabled]="shippingSelected == null"
-                    (click)="goToShippingPage()"
+                    (click)="goToPaymentPage()"
                     class="btn btn-lg btn-secondary w-100 text-center"
                   >
                     Siguiente <i class="fas fa-chevron-right"></i>
@@ -1170,7 +1170,7 @@
                       !productsValidate.length ||
                       recibeOtra
                     "
-                    (click)="goToShippingPage()"
+                    (click)="goToPaymentPage()"
                     class="btn btn-lg btn-secondary w-100 text-center"
                   >
                     Ir a pagar <i class="fas fa-chevron-right"></i>
@@ -1183,7 +1183,7 @@
                       userSession.userRole == 'buyer'
                     "
                     [disabled]="shippingSelected == null"
-                    (click)="goToShippingPage()"
+                    (click)="goToPaymentPage()"
                     class="btn btn-lg btn-secondary w-100 text-center"
                   >
                     Siguiente <i class="fas fa-chevron-right"></i>
@@ -1325,7 +1325,7 @@
                 recibeOtra ||
                 !select_grupos
               "
-              (click)="goToShippingPage()"
+              (click)="goToPaymentPage()"
               class="btn btn-lg btn-secondary w-100 text-center"
             >
               Ir a pagar <i class="fas fa-chevron-right"></i>
@@ -1338,7 +1338,7 @@
                 userSession.userRole == 'buyer'
               "
               [disabled]="shippingSelected == null"
-              (click)="goToShippingPage()"
+              (click)="goToPaymentPage()"
               class="btn btn-lg btn-secondary w-100 text-center"
             >
               Siguiente <i class="fas fa-chevron-right"></i>

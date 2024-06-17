@@ -103,7 +103,7 @@ export class DropcartComponent implements OnInit {
   remove(product: IShoppingCartProduct): void {
     console.log('remove: ', product);
     this.shoppingCartService.remove(product);
-    this.gtmRemoveFromCart(product);
+    this.gtmService.removeFromCart(dataLayer, product);
   }
 
   async updateCart(cantidad: any, item: Item) {
@@ -156,8 +156,4 @@ export class DropcartComponent implements OnInit {
   //     this.shoppingCartService.saveCart(productos).subscribe((r) => {});
   //   }, 700);
   // }
-
-  gtmRemoveFromCart(product: IShoppingCartProduct) {
-    this.gtmService.removeFromCart(dataLayer, product);
-  }
 }

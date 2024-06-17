@@ -705,7 +705,10 @@ export class PageCartShippingComponent implements OnInit {
     }
   }*/
 
-  goToShippingPage(): void {
+  /**
+   * Ir a la página de selección de pago.
+   */
+  goToPaymentPage(): void {
     this._gmtService.addShippingInfo(dataLayer, this.cartSession);
     this.saveShipping(-1, -1, true);
   }
