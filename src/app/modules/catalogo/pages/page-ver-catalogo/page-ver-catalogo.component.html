@@ -37,7 +37,7 @@
     [objeto]="objeto"
     [innerWidth]="innerWidth"
     class="col-md-10 p-0"
-  ></app-template-portada>
+  />
   <app-template-productos-vertical
     *ngIf="objeto.id == 'productosVertical'"
     [objeto]="objeto"
@@ -46,9 +46,7 @@
     class="{{ objeto.class }} p-0"
     [class.px-0]="innerWidth < 427"
     [innerWidth]="innerWidth"
-  >
-  </app-template-productos-vertical>
-
+  />
 
   <ng-container *ngIf="innerWidth > 767">
     <div class="col-md-1 text-center" style="padding-top: 20rem">

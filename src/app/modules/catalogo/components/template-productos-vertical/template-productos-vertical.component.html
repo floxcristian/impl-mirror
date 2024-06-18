@@ -1,58 +1,103 @@
 <ng-container *ngIf="innerWidth > 426">
-    <div class="card" *ngIf="objeto" style="height: 57rem; padding: 0px !important">
-        <div class="card-header" style="padding: 0px 0.98rem 0px 0.98rem !important">
-            <div class="row" style="background: linear-gradient(180deg, rgba(0, 147, 121, 1) 90%, rgba(0, 99, 185, 1) 90%)">
-                <div class="col-12 p-0" style="text-align: center">
-                    <img [src]="objeto.header" class="img-fluid" />
-                </div>
-            </div>
+  <div
+    class="card"
+    *ngIf="objeto"
+    style="height: 57rem; padding: 0px !important"
+  >
+    <div
+      class="card-header"
+      style="padding: 0px 0.98rem 0px 0.98rem !important"
+    >
+      <div
+        class="row"
+        style="
+          background: linear-gradient(
+            180deg,
+            rgba(0, 147, 121, 1) 90%,
+            rgba(0, 99, 185, 1) 90%
+          );
+        "
+      >
+        <div class="col-12 p-0" style="text-align: center">
+          <img [src]="objeto.header" class="img-fluid" />
         </div>
-        <div class="row align-self-center text-center" style="width: 100%; justify-content: left">
-            <h3 style="z-index: 1; padding: 1rem 0rem 0rem 2rem; font-family: din-bold">
-                {{ objeto.editableTitle }}
-            </h3>
-        </div>
-        <div class="card-body img-background" [style]="ght" [id]="ght" style="padding-top: 2rem !important">
-            <div class="row" style="padding: 0px 30px 0px 30px !important">
-                <ng-container *ngFor="let producto of objeto.products">
-                    <div class="col-md-3" *ngIf="producto.type === 'producto'">
-                        <app-producto-vertical [tipoCatalogo]="tipoCatalogo" [producto]="producto" [innerWidth]="innerWidth" (agregarCarro)="addToCart($event)">
-                        </app-producto-vertical>
-                    </div>
-                    <div class="col-md-6 text-center" *ngIf="producto.type === 'banner'">
-                        <img [src]="producto.url" alt="" class="img-banner" />
-                    </div>
-                </ng-container>
-            </div>
-        </div>
-
-        <div class="card-footer py-0 px-3 bg-primary" style="border-radius: 0px 0px 0px 0px !important; background-color: #005dba !important">
-            <div class="row" style="text-align: center">
-                <div class="col-12 p-0"><img [src]="objeto.footer" class="img-fluid" /></div>
-            </div>
-        </div>
+      </div>
     </div>
+    <div
+      class="row align-self-center text-center"
+      style="width: 100%; justify-content: left"
+    >
+      <h3
+        style="z-index: 1; padding: 1rem 0rem 0rem 2rem; font-family: din-bold"
+      >
+        {{ objeto.editableTitle }}
+      </h3>
+    </div>
+    <div
+      class="card-body img-background"
+      [style]="ght"
+      [id]="ght"
+      style="padding-top: 2rem !important"
+    >
+      <div class="row" style="padding: 0px 30px 0px 30px !important">
+        <ng-container *ngFor="let producto of objeto.products">
+          <div class="col-md-3" *ngIf="producto.type === 'producto'">
+            <app-producto-vertical
+              [tipoCatalogo]="tipoCatalogo"
+              [producto]="producto"
+              [innerWidth]="innerWidth"
+              (agregarCarro)="addToCart($event)"
+            />
+          </div>
+          <div class="col-md-6 text-center" *ngIf="producto.type === 'banner'">
+            <img [src]="producto.url" alt="" class="img-banner" />
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <div
+      class="card-footer py-0 px-3 bg-primary"
+      style="
+        border-radius: 0px 0px 0px 0px !important;
+        background-color: #005dba !important;
+      "
+    >
+      <div class="row" style="text-align: center">
+        <div class="col-12 p-0">
+          <img [src]="objeto.footer" class="img-fluid" />
+        </div>
+      </div>
+    </div>
+  </div>
 </ng-container>
 
 <ng-container *ngIf="innerWidth < 427">
-    <div class="card" *ngIf="objeto">
-        <div class="row align-self-center text-center">
-            <h3 style="z-index: 1; color: Black; font-family: din-bold">
-                {{ objeto.editableTitle }}
-            </h3>
-        </div>
-        <div class="card-body img-background" [style]="ght">
-            <div class="row">
-                <ng-container *ngFor="let producto of objeto.products">
-                    <div class="col-6" style="padding: 5px" *ngIf="producto.type === 'producto'">
-                        <app-producto-vertical [producto]="producto" [innerWidth]="innerWidth" (agregarCarro)="addToCart($event)">
-                        </app-producto-vertical>
-                    </div>
-                    <div class="col-12text-center" *ngIf="producto.type === 'banner'">
-                        <img [src]="producto.url" alt="" class="img-banner" />
-                    </div>
-                </ng-container>
-            </div>
-        </div>
+  <div class="card" *ngIf="objeto">
+    <div class="row align-self-center text-center">
+      <h3 style="z-index: 1; color: Black; font-family: din-bold">
+        {{ objeto.editableTitle }}
+      </h3>
     </div>
+    <div class="card-body img-background" [style]="ght">
+      <div class="row">
+        <ng-container *ngFor="let producto of objeto.products">
+          <div
+            class="col-6"
+            style="padding: 5px"
+            *ngIf="producto.type === 'producto'"
+          >
+            <app-producto-vertical
+              [producto]="producto"
+              [innerWidth]="innerWidth"
+              (agregarCarro)="addToCart($event)"
+            />
+          </div>
+          <div class="col-12text-center" *ngIf="producto.type === 'banner'">
+            <img [src]="producto.url" alt="" class="img-banner" />
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
 </ng-container>
