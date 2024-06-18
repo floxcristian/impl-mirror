@@ -706,9 +706,10 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
       },
     });
   }
-
-  //  Sube documento y genera la solicitud
-  purchaseRequestAll() {
+  /**
+   * Sube documento y genera la solicitud de compra.
+   */
+  purchaseRequestAll(): void {
     this.loadingPage = true;
     const data = this.formOv.value;
     data.file = this.archivo !== undefined ? this.archivo?.archivo : null;
@@ -1041,6 +1042,13 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
     try {
       if (this.btnWebpayPost) return;
 
+      this._gtmService.addPaymentInfo({
+        dataLayer,
+        shoppingCart: this.cartSession,
+        paymentType: 'Unknown',
+        methodType: 'WEBPAY',
+      });
+
       this.btnWebpayPost = true;
       this.paymentWebpayForm = true;
 
@@ -1066,8 +1074,14 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
       if (this.btnWebpayPost) {
         return;
       }
-
       this.btnWebpayPost = true;
+
+      this._gtmService.addPaymentInfo({
+        dataLayer,
+        shoppingCart: this.cartSession,
+        paymentType: 'Unknown',
+        methodType: 'MERCADOPAGO',
+      });
 
       if (await this.validarStockActual()) return;
       await this.verificar_carro();
@@ -1095,6 +1109,13 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
       }
       this.loadkhipu = true;
       this.btnWebpayPost = true;
+
+      this._gtmService.addPaymentInfo({
+        dataLayer,
+        shoppingCart: this.cartSession,
+        paymentType: 'Unknown',
+        methodType: 'KHIPU',
+      });
       if (await this.validarStockActual()) return;
       await this.verificar_carro();
       await this.updateCartAndUserTurn();
@@ -1122,7 +1143,8 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
     this._gtmService.addPaymentInfo({
       dataLayer,
       shoppingCart: this.cartSession,
-      paymentType: '',
+      paymentType: 'Unknown',
+      methodType: 'OC',
     });
     try {
       if (await this.validarStockActual()) return;

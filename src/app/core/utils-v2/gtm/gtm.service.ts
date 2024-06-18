@@ -17,7 +17,6 @@ import {
 } from '@core/models-v2/cart/shopping-cart.interface';
 import { IProductCart } from 'src/app/modules/cart/page/page-cart/product-cart.interface';
 import { GtmEvent } from './gtm-events.enum';
-import { event } from 'jquery';
 
 @Injectable({
   providedIn: 'root',
@@ -206,7 +205,7 @@ export class GtmService {
       ecommerce: {
         currency: this.currency,
         value: total,
-        shipping_tier: 'Ground', // FIXME: siempre será `Ground`?
+        shipping_tier: 'Ground',
         items: products,
       },
     });
@@ -221,20 +220,24 @@ export class GtmService {
   addPaymentInfo({
     dataLayer,
     shoppingCart,
+    paymentType,
+    methodType,
   }: {
     dataLayer: any;
     shoppingCart: IShoppingCart;
     paymentType: string;
+    methodType: string;
   }): void {
     if (!shoppingCart._id) return;
 
     const { products, total } = GtmUtils.formatGtmCart(shoppingCart);
     dataLayer.push({
-      event: GtmEvent.ADD_SHIPPING_INFO,
+      event: GtmEvent.ADD_PAYMENT_INFO,
       ecommerce: {
         currency: this.currency,
         value: total,
-        payment_type: 'Credit Card', // Debit Card , Bank Transfer, Credit line
+        payment_type: paymentType, // Debit Card , Bank Transfer, Credit line
+        method_type: methodType,
         items: products,
       },
     });
