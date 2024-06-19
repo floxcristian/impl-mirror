@@ -1812,7 +1812,7 @@
                     paymentMethodActive != 'sinDefinir'
                   "
                   (click)="purchaseRequestAll()"
-                  [disabled]="formOv.invalid"
+                  [disabled]="formOv.invalid || isVacio(archivo)"
                   class="btn btn-lg btn-secondary w-100 text-center"
                 >
                   Solicitar Compra *
@@ -2571,7 +2571,7 @@
                 paymentMethodActive != 'sinDefinir'
               "
               (click)="purchaseRequestAll()"
-              [disabled]="formOv.invalid"
+              [disabled]="formOv.invalid || isVacio(archivo)"
               class="btn btn-lg btn-secondary w-100 text-center"
             >
               Solicitar Compra *

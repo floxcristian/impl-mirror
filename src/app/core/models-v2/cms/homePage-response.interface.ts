@@ -30,6 +30,8 @@ export interface IElement1 {
   values: string[];
   articles: IArticle[];
   image: string;
+  startDate: string | Date;
+  expirationDate: string | Date;
 }
 export interface IElement2 {
   title?: string;

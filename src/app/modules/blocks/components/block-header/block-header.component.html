@@ -2,7 +2,17 @@
   class="block-header"
   [ngStyle]="{ 'margin-top': header === 'Nuestras Marcas' ? '-90px' : '0px' }"
 >
-  <h3 *ngIf="header" class="block-header__title text-h3" [class.m-0]="m_0" [class.mb-4]="m_0">
+  <h3
+    *ngIf="header"
+    class="block-header__title text-h3"
+    [class.m-0]="m_0"
+    [class.mb-4]="m_0"
+    [ngStyle]="{
+      'margin-top': isCategory ? '0' : '3rem 0.5rem 2.5rem;',
+      'margin-bottom': isCategory ? '20px' : '2.5rem',
+      padding: isCategory ? '20px' : '0'
+    }"
+  >
     {{ header }}
   </h3>
 

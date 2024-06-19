@@ -1,4 +1,262 @@
-<div infiniteScroll [infiniteScrollDistance]="2" (scrolled)="onPageChange()">
+<div
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  (scrolled)="onPageChange()"
+  *ngIf="ruta[2] === prepainv"
+>
+  <!--
+  <ng-container *ngIf="innerWidth > 426">
+    <app-scroll-top [fast]="true"> </app-scroll-top>
+    <ng-container *ngIf="banners">
+      <a [href]="banners.url" [target]="banners.target">
+        <img [src]="banners.imageFull" width="100%" [alt]="banners.alt" />
+      </a>
+    </ng-container>
+    <div class="container h-100 my-2" id="top">
+      <div class="row justify-content-center h-100">
+        <div
+          class="card_especiales text-center col-sm-3 m-1 mb-3"
+          style="padding: 1.5rem !important"
+          *ngFor="
+            let objB of secciones
+              | paginate : { itemsPerPage: 7, currentPage: p }
+          "
+          (click)="getUrl(objB.id)"
+        >
+        
+          @if(objB.nombre === 'Baterías'){
+          <i class="fa-kit fa-battery fa-2xl" style="font-weight: 500"></i>
+          } @else if(objB.nombre === 'Climatizadores'){
+          <i
+            class="fa-kit fa-sensor-temperatura fa-2xl"
+            style="font-weight: 500"
+          ></i>
+          } @else if(objB.nombre === 'Plumillas'){
+          <i class="fa-kit fa-plumilla fa-2xl" style="font-weight: 500"></i>
+          } @else if(objB.nombre === 'Refrigerantes'){
+          <i
+            class="fa-kit fa-refrigerante fa-2xl"
+            style="font-weight: 500"
+          ></i>
+          } @else if(objB.nombre === 'Accesorios de aseo'){
+          <i
+            class="fa-kit fa-desinfectante fa-2xl"
+            style="font-weight: 500"
+          ></i>
+          } @else if(objB.nombre === 'Cadena de nieve'){
+          <i
+            class="fa-kit fa-cadena-nieve fa-2xl"
+            style="font-weight: 500"
+          ></i>
+          } @else if(objB.nombre === 'Ropa invierno'){
+          <i class="fa-kit fa-guantes fa-2xl" style="font-weight: 500"></i>
+          }
+
+          <div
+            style="
+              text-transform: uppercase;
+              font-size: 1.2rem;
+              height: 100%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            {{ objB.nombre }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container> -->
+
+  <div class="card" style="padding: 1rem; margin: 0">
+    <p-carousel
+      [value]="secciones"
+      [numVisible]="7"
+      [numScroll]="7"
+      [circular]="false"
+      [showIndicators]="showIndicators"
+      [showNavigators]="showIndicators"
+      [responsiveOptions]="responsiveOptions"
+    >
+      <ng-template let-category pTemplate="item">
+        <div
+          [ngClass]="category.nombre === nombre ? 'selected' : ''"
+          class="card_especiales text-center m-1 mb-3"
+          (click)="getUrl(category.id)"
+          style="
+            height: 92%;
+            display: flex;
+            flex-direction: column;
+            gap: 1.4rem;
+            justify-content: center;
+            padding-top: 18px !important;
+          "
+        >
+          @if(category.nombre === 'Baterías'){
+          <i class="fa-kit fa-battery fa-2xl" style="font-weight: 500"></i>
+          } @else if(category.nombre === 'Climatizadores'){
+          <i
+            class="fa-kit fa-sensor-temperatura fa-2xl"
+            style="font-weight: 500"
+          ></i>
+          } @else if(category.nombre === 'Plumillas'){
+          <i class="fa-kit fa-plumilla fa-2xl" style="font-weight: 500"></i>
+          } @else if(category.nombre === 'Refrigerantes'){
+          <i
+            class="fa-kit fa-refrigerante fa-2xl"
+            style="font-weight: 500"
+          ></i>
+          } @else if(category.nombre === 'Accesorios de aseo'){
+          <i
+            class="fa-kit fa-desinfectante fa-2xl"
+            style="font-weight: 500"
+          ></i>
+          } @else if(category.nombre === 'Cadena de nieve'){
+          <i
+            class="fa-kit fa-cadena-nieve fa-2xl"
+            style="font-weight: 500"
+          ></i>
+          } @else if(category.nombre === 'Ropa invierno'){
+          <i class="fa-kit fa-guantes fa-2xl" style="font-weight: 500"></i>
+          }
+
+          <div
+            style="
+              text-transform: uppercase;
+              font-size: 0.8rem;
+              height: 40%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            {{ category.nombre }}
+          </div>
+        </div>
+      </ng-template>
+    </p-carousel>
+  </div>
+
+  <!--
+  <ng-container *ngIf="innerWidth < 427">
+    <ng-container *ngIf="banners">
+      <a [href]="banners.url" [target]="banners.target">
+        <img
+          [src]="banners.imageMobile"
+          width="100%"
+          [alt]="banners.alt"
+          style="margin-top: -15px"
+        />
+      </a>
+    </ng-container>
+    <div class="container h-100 my-2" id="top">
+      <div class="row justify-content-center h-100">
+        <div
+          class="card_especiales text-center col-sm-3 m-1 p-0 mb-3"
+          *ngFor="
+            let objB of secciones
+              | paginate : { itemsPerPage: 3, currentPage: p };
+            let y = index
+          "
+          (click)="getUrl(objB.id)"
+        >
+          <div
+            style="
+              text-transform: uppercase;
+              font-size: 1.2rem;
+              height: 100%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            {{ objB.nombre }}
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <pagination-controls
+          (pageChange)="pageChanged($event)"
+          previousLabel=""
+          nextLabel=""
+        ></pagination-controls>
+      </div>
+    </div>
+  </ng-container>
+-->
+
+  <app-loading-element
+    [text]="'Cargando...'"
+    *ngIf="secciones.length === 0"
+  ></app-loading-element>
+
+  <div
+    *ngIf="secciones.length > 0"
+    class="products-view container mb-5"
+    (window:resize)="onResize($event)"
+  >
+    <div class="clearfix"></div>
+    <div
+      class="products-view__list products-list"
+      [attr.data-layout]="layout != 'list' ? grid : layout"
+      [attr.data-with-features]="
+        layout == 'grid-with-features' ? 'true' : 'false'
+      "
+    >
+      <div
+        class="products-list__body m-auto"
+        [class.w-80]="innerWidth > 426"
+        [class.w-100]="innerWidth <= 426"
+      >
+        <div *ngIf="nombre != null" class="text-center col-12">
+          <app-block-header
+            [header]="nombre"
+            [isCategory]="true"
+            colorText="text-primary"
+          ></app-block-header>
+          <div
+            *ngIf="cargandoProductos"
+            class="row flex-column justify-content-center align-content-center mt-5"
+          >
+            <div class="text-center">
+              <i class="fas fa-spinner fa-2x fa-spin fa-fw"></i>
+            </div>
+            <div class="mt-1">Cargando Artículos</div>
+          </div>
+        </div>
+
+        <div
+          *ngFor="let product of producto_espacial"
+          class="products-list__item mb-2 px-2 px-md-0"
+        >
+          <app-product-card-b2c-cms
+            [origen]="['catalogo-especial', ruta[2], nombre?.trim(), '']"
+            [product]="product"
+            [cartClass]="true"
+          />
+        </div>
+      </div>
+      <div
+        *ngIf="cargandoProductos2"
+        class="row flex-column justify-content-center align-content-center mt-5"
+      >
+        <div class="text-center">
+          <i class="fas fa-spinner fa-2x fa-spin fa-fw"></i>
+        </div>
+        <div class="mt-1">Cargando Artículos</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- version para todo -->
+<div
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  (scrolled)="onPageChange()"
+  *ngIf="ruta[2] !== prepainv"
+>
   <ng-container *ngIf="innerWidth > 426">
     <app-scroll-top [fast]="true"> </app-scroll-top>
     <ng-container *ngIf="banners">

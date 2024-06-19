@@ -18,6 +18,15 @@
   color: white;
 }
 
+.selected {
+  border: 1px solid white;
+  background-color: #0063b9;
+  padding: 10px !important;
+  border-radius: 16px;
+  font-weight: bold;
+  color: white;
+}
+
 ::ng-deep.ngx-pagination .current {
   padding: 0.1875rem 0.625rem;
   background: #0063b9 !important;

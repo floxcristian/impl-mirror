@@ -1,5 +1,5 @@
 export const environment = {
-  production: false,
+  production: true,
   country: 'cl',
   IVA: 0.19,
   // APIs
@@ -12,14 +12,17 @@ export const environment = {
   logoSrc: 'assets/images/logos/logo_header.svg',
   logoSrcFooter: 'assets/images/logos/logo_header2.PNG',
   // Base
-  canonical: 'https://dev.implementos.cl',
+  canonical: 'https://dev.devimplementos.cl',
+
   urlPagosImplementos: 'https://pagos.implementos.cl/',
   // Carro de compras
-  urlPaymentOmniVoucher:
-    'https://dev.implementos.cl/carro-compra/omni-gracias-por-tu-compra/',
-  urlPaymentOmniCanceled:
-    'https://dev.implementos.cl/carro-compra/omni-forma-de-pago',
   urlNotificaciones: 'https://dev-api.implementos.cl/api/notificaciones',
+  // No Env.
+  urlPaymentOmniCanceled:
+    'https://dev.devimplementos.cl/carro-compra/omni-forma-de-pago',
+  urlPaymentOmniVoucher:
+    'https://dev.devimplementos.cl/carro-compra/omni-gracias-por-tu-compra/',
+  // Nuevo Ecommerce
   apiEcommerce: 'https://dev-api.implementos.cl/ecommerce',
   basicAuthUser: 'services',
   basicAuthPass: '0.=j3D2ss1.w29-',

@@ -113,17 +113,18 @@ export class ProductCardB2cCmsComponent implements OnInit {
     if (!tags?.length) return;
 
     tags.forEach((tag) => {
-      this.cyber =
-        tag.code === 'cyber' && typeof tag.value === 'number' ? tag.value : 0;
+      if (tag.code === 'cyber')
+        this.cyber = typeof tag.value === 'number' ? tag.value : 0;
 
       if (tag.code === 'cyberMonday')
         this.cyberMonday = typeof tag.value === 'number' ? tag.value : 0;
-      else this.cyberMonday = 0;
+      // else this.cyberMonday = 0;
 
       if (tag.code === 'official_store') {
         this.isOfficial = 1;
         this.imageOEM = typeof tag.value === 'string' ? tag.value : '';
-      } else this.isOfficial = 0;
+      }
+      // else this.isOfficial = 0;
     });
   }
 

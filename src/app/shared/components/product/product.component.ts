@@ -275,20 +275,23 @@ export class ProductComponent implements OnInit, OnChanges {
   }
 
   generateTags(tags: MetaTag[] | undefined) {
+    console.log('tags', tags);
     if (tags) {
       tags.forEach((tag: MetaTag) => {
         if (tag.code === 'cyber')
           this.cyber = typeof tag.value === 'number' ? tag.value : 0;
-        else this.cyber = 0;
+        // else this.cyber = 0;
         if (tag.code === 'cyberMonday')
           this.cyberMonday = typeof tag.value === 'number' ? tag.value : 0;
-        else this.cyberMonday = 0;
+        // else this.cyberMonday = 0;
         if (tag.code === 'official_store') {
           this.isOfficial = 1;
           this.imageOEM = typeof tag.value === 'string' ? tag.value : '';
-        } else this.isOfficial = 0;
+        }
+        // else this.isOfficial = 0;
       });
     }
+    console.log('cyber value:', this.cyber);
   }
 
   ngOnChanges(): void {
