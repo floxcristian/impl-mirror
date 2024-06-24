@@ -5,23 +5,7 @@
         <h3 class="card-title" style="color: #0063b9">
           Comprar como invitado
         </h3>
-        <!--
-        <small>
-          <p style="color: #0063b9">
-            Al comprar como Invitado , el documento emitido siempre será
-            :<strong style="margin-left: 10px">BOLETA</strong> <br />
-            Si necesita <strong>FACTURA</strong> , por favor inicie sesión o
-            <a
-              [routerLink]="['/sitio', 'registro-usuario']"
-              style="color: #0063b9 !important"
-              class="link-primary"
-              data-dismiss="modal"
-              >Registrese como empresa</a
-            >
-          </p>
-        </small>
-      -->
-        <form [formGroup]="formVisita">
+        <form [formGroup]="guestForm">
           <div class="row">
             <div class="col-md-12">
               <div class="mb-3">
@@ -38,8 +22,8 @@
                 />
                 <p
                   *ngIf="
-                    formVisita.controls['rut'].invalid &&
-                    formVisita.controls['rut'].touched
+                    guestForm.controls['rut'].invalid &&
+                    guestForm.controls['rut'].touched
                   "
                   class="text-error-form-2"
                 >
@@ -110,7 +94,7 @@
                       <a
                         class="dropdown-item"
                         (click)="
-                          Select_fono(this.config.phoneCodes.mobile.code)
+                          selectPhoneCode(this.config.phoneCodes.mobile.code)
                         "
                         ><i
                           class="fa-solid fa-mobile-screen"
@@ -121,7 +105,7 @@
                       <a
                         class="dropdown-item"
                         (click)="
-                          Select_fono(this.config.phoneCodes.landline.code)
+                          selectPhoneCode(this.config.phoneCodes.landline.code)
                         "
                         ><i
                           class="fa-solid fa-phone"
@@ -135,32 +119,27 @@
                     formControlName="telefono"
                     type="text"
                     class="form-control"
-                    placeholder="Numero Contacto*"
-                    [maxLength]="maxPhone"
+                    placeholder="Número de contacto*"
+                    [maxLength]="phoneLength"
                     appPhoneChar
                   />
                 </div>
 
                 <p
                   *ngIf="
-                    formVisita.controls['telefono'].invalid &&
-                    formVisita.controls['telefono'].touched
+                    guestForm.controls['telefono'].invalid &&
+                    guestForm.controls['telefono'].touched
                   "
                   class="text-error-form-2"
                 >
-                  El número de contacto que ha ingresado no es válido
+                  El número de contacto que ha ingresado no es válido.
                 </p>
               </div>
             </div>
             <div class="col-md-12">
               <div class="mb-3">
-                <autocomplete
-                  #emailValidate
-                  givenPlaceHolder="Email"
-                  [disabled]="isValidDocumentId"
-                  [domainNames]="emailDomains"
-                >
-                </autocomplete>
+                <autocomplete #emailValidate givenPlaceHolder="Email" />
+
                 <!--
                 <input
                   formControlName="email"
@@ -187,19 +166,10 @@
       <ng-container *ngIf="innerWidth >= 768">
         <div class="card-footer p-0">
           <div class="row">
-            <!--
-            <div class="col-sm-12" style="margin-bottom: 10px">
-              <div
-                class="btn btn-success w-100 text-center btn-lg"
-                [routerLink]="['/sitio', 'registro-usuario']"
-              >
-                Quiero factura
-              </div>
-            </div> -->
             <div class="col-sm-12">
               <button
                 type="button"
-                [disabled]="!formVisita.valid || !emailValidate.correoValido"
+                [disabled]="!guestForm.valid || !emailValidate.isValidEmail"
                 class="btn btn-secondary btn-lg w-100 text-center"
                 (click)="registerUser(emailValidate)"
               >
@@ -211,24 +181,11 @@
       </ng-container>
       <ng-container *ngIf="innerWidth < 768">
         <div class="card-footer p-0">
-          <!--
-          <div class="row">
-            <div class="col-md-6" style="margin-bottom: 10px">
-              <div
-                class="btn btn-success w-100 text-center btn-lg"
-                [routerLink]="['/sitio', 'registro-usuario']"
-              >
-                Quiero factura
-              </div>
-            </div>
-          </div>
-        -->
-
           <div class="row">
             <div class="col-md-6">
               <button
                 type="button"
-                [disabled]="!formVisita.valid"
+                [disabled]="!guestForm.valid"
                 style="margin-bottom: 20px"
                 class="btn btn-secondary btn-lg w-100 text-center"
                 (click)="registerUser(emailValidate)"

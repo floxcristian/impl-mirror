@@ -1,103 +1,81 @@
-import { Component, Input } from '@angular/core';
+// Angular
+import { Component, Input, OnChanges } from '@angular/core';
+// Constants
+import { EMAIL_DOMAINS_AUTOCOMPLETE } from '@core/utils-v2/email/domains-autocomplete';
 @Component({
   selector: 'autocomplete',
   templateUrl: './angular-email-autocomplete.component.html',
   styleUrls: ['./angular-email-autocomplete.component.scss'],
 })
-export class AngularEmailAutocompleteComponent {
-  toggleDropDown: boolean;
-  dropDownValues: Array<{
-    imgUrl?: undefined | string;
-    value: string;
-  }> = [];
-  inputValue: string;
-  placeholder: string;
-  correoValido: boolean = false;
+export class AngularEmailAutocompleteComponent implements OnChanges {
+  @Input() givenPlaceHolder: string = '';
+
+  domains: string[] = EMAIL_DOMAINS_AUTOCOMPLETE;
+  suggestedEmails: string[] = [];
+  inputValue: string = '';
+  isValidEmail: boolean = false;
   regularExpression =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  @Input() givenPlaceHolder: string;
-  @Input() domainNames: Array<{
-    imgUrl?: undefined | string;
-    value: string;
-  }>;
-  @Input() disabled!: boolean;
 
-  constructor() {
-    this.toggleDropDown = false;
-    this.placeholder = '';
-    this.inputValue = '';
-    this.givenPlaceHolder = '';
-    this.domainNames = [];
+  ngOnChanges(): void {
+    this.checkIsValidEmail();
   }
 
-  ValidaCorreo = () => {
-    // validation email
-    if (this.inputValue?.length) {
-      this.correoValido = this.regularExpression.test(
-        String(this.inputValue).toLowerCase()
-      );
-    }
-  };
+  /**
+   * Verifica si el email ingresado es válido.
+   * @returns
+   */
+  private checkIsValidEmail(): void {
+    if (!this.inputValue.length) return;
 
-  handleSelect = (value: string) => {
-    this.inputValue = value;
-    this.ValidaCorreo();
-  };
+    this.isValidEmail = this.regularExpression.test(this.inputValue);
+  }
 
-  activaFiltro = (event: any) => {
-    this.toggleDropDown = true;
-  };
+  /**
+   * Seleccionar sugerencia de email.
+   * @param value
+   */
+  selectSuggestedEmail(suggestedEmail: string): void {
+    this.inputValue = suggestedEmail;
+    this.checkIsValidEmail();
+  }
 
-  onInputChange = (event: any) => {
-    let tecla_presionada = event.keyCode;
+  /**
+   * Se activa al presionar una tecla en el input.
+   * @param event
+   * @returns
+   */
+  onInputChange(event: any): void {
+    const tecla_presionada = event.keyCode;
 
     if (tecla_presionada == 27) {
-      // this.handleVisibility('hide');
       return;
     }
+    this.suggestedEmails = [];
 
-    this.toggleDropDown = true;
-    this.dropDownValues = [];
-
-    let last_value = this.inputValue.substr(-1, 1);
-
-    if (this.inputValue && this.inputValue.length > 0) {
-      // if(this.inputValue.indexOf("@") == -1 || last_value == '@'){
-
-      this.domainNames.forEach((domainName) => {
+    if (this.inputValue.length) {
+      this.domains.forEach((domain) => {
         let valueToDisplay: string;
 
         if (this.inputValue.indexOf('@') != -1) {
-          let correo = this.inputValue.split('@');
-
-          let correo_sin_dom = correo[0];
-
-          let dominio_usuario: string = correo[1];
-
-          let valor_domain: string = domainName.value;
+          const splittedEmail = this.inputValue.split('@');
+          const correo_sin_dom = splittedEmail[0];
+          const dominio_usuario: string = splittedEmail[1];
+          const valor_domain: string = domain;
 
           if (valor_domain.includes(dominio_usuario)) {
-            valueToDisplay = `${correo_sin_dom}@${domainName.value}`;
-            this.dropDownValues.push({
-              value: valueToDisplay,
-              imgUrl: domainName.imgUrl,
-            });
+            valueToDisplay = `${correo_sin_dom}@${domain}`;
+            this.suggestedEmails.push(valueToDisplay);
           }
         } else {
           valueToDisplay =
             this.inputValue.indexOf('@') == -1
-              ? `${this.inputValue}@${domainName.value}`
-              : `${this.inputValue}${domainName.value}`;
-          this.dropDownValues.push({
-            value: valueToDisplay,
-            imgUrl: domainName.imgUrl,
-          });
+              ? `${this.inputValue}@${domain}`
+              : `${this.inputValue}${domain}`;
+          this.suggestedEmails.push(valueToDisplay);
         }
-        // valueToDisplay = this.inputValue.indexOf("@") == -1 ? `${this.inputValue }@${domainName.value}` : `${this.inputValue }${domainName.value}`;
       });
-    } else {
-      this.toggleDropDown = false;
     }
-    this.ValidaCorreo();
-  };
+    this.checkIsValidEmail();
+  }
 }

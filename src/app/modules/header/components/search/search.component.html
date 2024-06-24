@@ -359,7 +359,7 @@
           <div class="col-12 products-list-search ps-5 p-2">
             <div class="item justify-content-end d-flex">
               <a
-              *ngIf="categorias.length > 1"
+                *ngIf="categorias.length > 1"
                 (click)="
                   menuSearch.toggle();
                   blurInput();
@@ -1009,6 +1009,7 @@
           >
             <i class="fa-light fa-map-location-dot fa-2xl lg:text-lg"></i>
           </div>
+
           <div
             style="
               height: 28px;
@@ -1248,7 +1249,7 @@
         </div>
 
         <div class="indicator__dropdown" style="right: 1rem">
-          <app-header-dropcart></app-header-dropcart>
+          <app-header-dropcart />
         </div>
       </a>
       <!-- Start::item carro -->
@@ -1288,7 +1289,7 @@
       <!-- End::item carro -->
 
       <!-- Opción para ingresar al sistema -->
-      <app-account></app-account>
+      <app-account />
     </div>
   </div>
 </div>

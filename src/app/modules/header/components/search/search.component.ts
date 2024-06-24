@@ -19,14 +19,8 @@ import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 // Rxjs
-import { Observable, Subject, Subscription, of } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  first,
-  map,
-} from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
 import { MenuCategoriasB2cService } from '../../../../shared/services/menu-categorias-b2c.service';
 import { isVacio } from '../../../../shared/utils/utilidades';
 import { SessionService } from '@core/services-v2/session/session.service';
@@ -260,7 +254,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     // });
     dataLayer.push({
       event: 'search',
-      busqueda: this.textToSearch
+      busqueda: this.textToSearch,
     });
 
     if (this.textToSearch.trim() === '') {
@@ -447,7 +441,7 @@ export class SearchComponent implements OnInit, OnDestroy {
           this.selectedVehicle = vehicle || null;
           this.notVehicleFound = vehicle ? false : true;
           this.existVehicleInFlota(this.selectedVehicle);
-          this.registerSearchVehicle(search,vehicle)
+          this.registerSearchVehicle(search, vehicle);
         },
         error: (err) => {
           this.isLoadingVehicles = false;
@@ -599,16 +593,18 @@ export class SearchComponent implements OnInit, OnDestroy {
   /**
    * Registrar busqueda de vehicle
    */
-  registerSearchVehicle(search:string,vehicle:IVehicle | null){
-    let vehicleParams:any = {}
-    if(vehicle){
-      vehicleParams.patent = vehicle?.PLACA_PATENTE,
-      vehicleParams.manufactureYear = vehicle?.ANO_FABRICACION,
-      vehicleParams.brand = vehicle?.MARCA,
-      vehicleParams.codeSii = vehicle?.codigoSii
-    }else{
-      vehicleParams.patent = search
+  registerSearchVehicle(search: string, vehicle: IVehicle | null) {
+    let vehicleParams: any = {};
+    if (vehicle) {
+      (vehicleParams.patent = vehicle?.PLACA_PATENTE),
+        (vehicleParams.manufactureYear = vehicle?.ANO_FABRICACION),
+        (vehicleParams.brand = vehicle?.MARCA),
+        (vehicleParams.codeSii = vehicle?.codigoSii);
+    } else {
+      vehicleParams.patent = search;
     }
-    this.vehicleService.registerSearchVehicle(this.session.documentId,vehicleParams).subscribe()
+    this.vehicleService
+      .registerSearchVehicle(this.session.documentId, vehicleParams)
+      .subscribe();
   }
 }

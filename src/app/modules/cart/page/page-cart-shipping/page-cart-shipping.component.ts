@@ -904,10 +904,9 @@ export class PageCartShippingComponent implements OnInit {
     this.loadingResumen = false;
   }
 
-  usuarioVisita(invitado: any) {
+  usuarioVisita(invitado: any): void {
     this.usuarioInvitado = true;
     invitado.tipoEnvio = '';
-    // this.localS.set('invitado', invitado);
     this.guestStorage.set(invitado);
 
     this.addNotificationContact();
