@@ -17,11 +17,27 @@
   </app-filtro-magico>
 
   <hr />
-  <div class="col-sm-12" style="margin-bottom: 10px"></div>
-  <div *ngIf="!availabilities.length" class="dia-container-habilitado">
+  <div
+    *ngIf="availabilities.length"
+    class="col-sm-12"
+    style="margin-bottom: 10px">
+    <app-mapa-fichas
+      *ngIf="!isLoading"
+      [selectedStore]="currentSelectedStore"
+      [stock]="stock"
+    />
+  </div>
+  <div *ngIf="!availabilities.length && !isLoading"
+        class="dia-container-habilitado">
     <div style="font-size: 14px; color: #00549d">
       <i class="fas fa-info-circle fa-lg me-1"></i> Seleccione Tienda ha
       retirar
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="dia-container-habilitado">
+    <div style="font-size: 14px; color: #00549d">
+      <i class="fas fa-info-circle fa-lg me-1"></i> Cargando Información
     </div>
   </div>
 
