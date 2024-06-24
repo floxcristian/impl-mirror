@@ -12,7 +12,7 @@ import { ConfigService } from '@core/config/config.service';
   styleUrls: ['./contactanos.component.scss'],
 })
 export class ContactanosComponent {
-  terminos = false;
+  terminos = true;
   config: IConfig;
   constructor(
     private readonly router: Router,
