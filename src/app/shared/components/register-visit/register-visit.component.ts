@@ -107,7 +107,7 @@ export class RegisterVisitComponent implements OnInit, OnChanges {
     const dataSave = { ...this.guestForm.value };
     try {
       const resp = await firstValueFrom(this.authService.checkEmail(email));
-      if (!resp.exists) {
+      if (!resp.exists || (resp.exists && resp.userType === 2)) {
         this.loadingForm = true;
 
         dataSave.email = email;
@@ -134,7 +134,7 @@ export class RegisterVisitComponent implements OnInit, OnChanges {
         }
 
         this.returnLoginEvent.emit(guestUser);
-      } else {
+      } else if(resp.exists && resp.userType != 2) {
         this.toastr.warning(
           'Hemos detectado que el email ingresado esta registrado, por favor inicie sesión para continuar.'
         );
