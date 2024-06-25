@@ -1,13 +1,18 @@
 <div class="row container-group-register">
-    <div class="container-login col-xs-12 col-lg-6">
-        <app-header-login [class]="'login-register'" [showLabel]="false" [linkRegister]="false" [linkRecoverPassword]="false">
-        </app-header-login>
-    </div>
+  <div class="container-login col-xs-12 col-lg-6">
+    <app-header-login
+      [class]="'login-register'"
+      [showLabel]="false"
+      [linkRegister]="false"
+      [linkRecoverPassword]="false"
+    />
+  </div>
 
-    <div class="container-register col-xs-12 col-lg-6">
-        <app-register-visit (returnLoginEvent)="returnInvitado($event);" [innerWidth]="innerWidth"  [invitado]="invitado"></app-register-visit>
-      <!--   <app-register [innerWidth]="innerWidth"></app-register> -->
-
-    </div>
-
+  <div class="container-register col-xs-12 col-lg-6">
+    <app-register-visit
+      (returnLoginEvent)="returnInvitado($event)"
+      [innerWidth]="innerWidth"
+      [invitado]="invitado"
+    />
+  </div>
 </div>

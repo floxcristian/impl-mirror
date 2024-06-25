@@ -357,12 +357,7 @@
             </div>
             <div class="col-md-12">
               <div class="mb-3">
-                <autocomplete
-                  #emailValidate
-                  givenPlaceHolder="Email"
-                  [domainNames]="domains"
-                >
-                </autocomplete>
+                <autocomplete #emailValidate givenPlaceHolder="Email" />
               </div>
             </div>
             <div class="col-md-12">
@@ -582,7 +577,7 @@
               !addressForm.valid ||
               !checkBoxTerminos ||
               isLoading ||
-              !emailValidate.correoValido
+              !emailValidate.isValidEmail
             "
             class="btn btn-lg btn-secondary w-100 text-center"
           >
@@ -618,7 +613,7 @@
                 !addressForm.valid ||
                 !checkBoxTerminos ||
                 isLoading ||
-                !emailValidate.correoValido
+                !emailValidate.isValidEmail
               "
               class="btn btn-lg btn-secondary w-100 text-center"
             >

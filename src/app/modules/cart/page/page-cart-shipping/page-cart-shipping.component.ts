@@ -802,7 +802,7 @@ export class PageCartShippingComponent implements OnInit {
     this.loadingResumen = false;
   }
 
-  usuarioVisita(invitado: any) {
+  usuarioVisita(invitado: any): void {
     this.usuarioInvitado = true;
     invitado.tipoEnvio = '';
     this.guestStorage.set(invitado);

@@ -59,6 +59,7 @@ export interface IPaymentButton {
 export interface IDocument {
   name: string;
   sample: string;
+  documentLength: number;
 }
 
 export interface IGoogleTagManager {

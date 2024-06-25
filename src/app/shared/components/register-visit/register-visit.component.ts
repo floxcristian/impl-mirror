@@ -9,7 +9,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 // Libs
 import { ToastrService } from 'ngx-toastr';
 // Rxjs
@@ -17,19 +16,15 @@ import { firstValueFrom } from 'rxjs';
 // Models
 import { IEcommerceUser } from '@core/models-v2/auth/user.interface';
 import { IGuest } from '@core/models-v2/storage/guest.interface';
-import { IBusinessLine } from '@core/services-v2/customer-business-line/business-line.interface';
 import { IConfig } from '@core/config/config.interface';
 // Services
 import { SessionStorageService } from '@core/storage/session-storage.service';
 import { AuthApiService } from '@core/services-v2/auth/auth.service';
 import { CartService } from '@core/services-v2/cart.service';
-import { CustomerBusinessLineApiService } from '@core/services-v2/customer-business-line/customer-business-line.api.service';
 import { ConfigService } from '@core/config/config.service';
+// Validators
 import { DocumentValidator } from '@core/validators/document-form.validator';
-import {
-  IEmailDomainAutocomplete,
-  getEmailDomainsToAutocomplete,
-} from '@core/utils-v2/email/domains-autocomplete';
+// Components
 import { AngularEmailAutocompleteComponent } from '../angular-email-autocomplete/angular-email-autocomplete.component';
 
 @Component({
@@ -41,71 +36,62 @@ export class RegisterVisitComponent implements OnInit, OnChanges {
   @ViewChild('emailValidate', { static: true })
   email!: AngularEmailAutocompleteComponent;
   @Output() returnLoginEvent: EventEmitter<any> = new EventEmitter();
-  @Input() linkLogin!: any;
   @Input() innerWidth!: number;
   @Input() invitado!: IEcommerceUser | IGuest;
-  giros: IBusinessLine[] = [];
-  comunas!: any[];
-  slices = 8;
-  formVisita!: FormGroup;
-  passwordFormGroup!: FormGroup;
-  isInvoice = false;
-  selectedPhoneCode: string;
+
+  guestForm!: FormGroup;
   loadingForm = false;
-  blockedForm = true;
-  isValidRut = false;
   config: IConfig;
-  emailDomains: IEmailDomainAutocomplete[];
-  isValidDocumentId!: boolean;
-  maxPhone: number = 8;
+
+  selectedPhoneCode: string;
+  phoneLength: number;
 
   constructor(
-    private toastr: ToastrService,
-    private fb: FormBuilder,
-    private router: Router,
-    // Services V2
+    private readonly toastr: ToastrService,
+    private readonly fb: FormBuilder,
     private readonly cartService: CartService,
     private readonly sessionStorage: SessionStorageService,
     private readonly authService: AuthApiService,
-    private readonly customerBusinessLineService: CustomerBusinessLineApiService,
     private readonly configService: ConfigService
   ) {
     this.config = this.configService.getConfig();
-    this.emailDomains = getEmailDomainsToAutocomplete();
     this.selectedPhoneCode = this.config.phoneCodes.mobile.code;
+    this.phoneLength = this.config.phoneCodes.mobile.lengthRule;
     this.buildForm();
   }
 
   ngOnChanges(): void {
-    if (this.invitado) {
-      if (
-        this.invitado.phone?.slice(0, 4) !== this.config.phoneCodes.mobile.code
-      ) {
-        this.slices = 9;
-        this.selectedPhoneCode = this.config.phoneCodes.landline.code;
-      }
-      this.formVisita.setValue({
-        rut: this.invitado.documentId || '',
-        nombre: this.invitado.firstName,
-        apellido: this.invitado.lastName,
-        telefono: this.invitado?.phone?.slice(-this.slices),
-        //email: this.invitado.email,
-      });
-      this.email.inputValue = this.invitado.email;
+    console.log('ngOnChanges====');
+    console.log('invitado: ', this.invitado);
+    if (!this.invitado) return;
+
+    if (!this.invitado.phone.startsWith(this.config.phoneCodes.mobile.code)) {
+      this.selectedPhoneCode = this.config.phoneCodes.landline.code;
+      this.phoneLength = this.config.phoneCodes.landline.lengthRule;
     }
+
+    this.guestForm.setValue({
+      rut: this.invitado.documentId || '',
+      nombre: this.invitado.firstName,
+      apellido: this.invitado.lastName,
+      telefono: this.invitado?.phone?.slice(-this.phoneLength),
+      //email: this.invitado.email,
+    });
+    this.email.inputValue = this.invitado.email;
   }
 
-  ngOnInit(): void {
-    this.formBlock(true);
-  }
+  ngOnInit(): void {}
 
+  /**
+   * Construir formulario de visita.
+   */
   private buildForm(): void {
-    this.formVisita = this.fb.group({
+    this.guestForm = this.fb.group({
       rut: [
         '',
         [
           Validators.required,
-          Validators.maxLength(10),
+          Validators.maxLength(this.config.document.documentLength),
           DocumentValidator.isValidDocumentId,
         ],
       ],
@@ -116,22 +102,12 @@ export class RegisterVisitComponent implements OnInit, OnChanges {
     });
   }
 
-  loadGiro(): void {
-    this.customerBusinessLineService.getBusinessLines().subscribe({
-      next: (businessLines) => (this.giros = businessLines),
-      error: (e) => {
-        console.error(e);
-        this.toastr.error('No se pudieron traer los giros comerciales');
-      },
-    });
-  }
-
   async registerUser(inputEmail: AngularEmailAutocompleteComponent) {
     const email = inputEmail.inputValue;
-    const dataSave = { ...this.formVisita.value };
+    const dataSave = { ...this.guestForm.value };
     try {
       const resp = await firstValueFrom(this.authService.checkEmail(email));
-      if (!resp.exists) {
+      if (!resp.exists || (resp.exists && resp.userType === 2)) {
         this.loadingForm = true;
 
         dataSave.email = email;
@@ -158,7 +134,7 @@ export class RegisterVisitComponent implements OnInit, OnChanges {
         }
 
         this.returnLoginEvent.emit(guestUser);
-      } else {
+      } else if (resp.exists && resp.userType != 2) {
         this.toastr.warning(
           'Hemos detectado que el email ingresado esta registrado, por favor inicie sesión para continuar.'
         );
@@ -185,71 +161,22 @@ export class RegisterVisitComponent implements OnInit, OnChanges {
     };
   }
 
-  invoice() {
-    this.isInvoice = !this.isInvoice;
-
-    if (this.isInvoice) {
-      window.scrollTo({ top: 0 });
-      this.formVisita.get('rut')?.setValue(null);
-      this.formVisita.get('razonsocial')?.setValidators([Validators.required]);
-      this.formVisita.get('giro')?.setValidators([Validators.required]);
-    } else {
-      this.formVisita.get('razonsocial')?.clearValidators();
-      this.formVisita.get('giro')?.clearValidators();
-    }
-
-    this.formVisita.get('razonsocial')?.updateValueAndValidity();
-    this.formVisita.get('giro')?.updateValueAndValidity();
-
-    setTimeout(() => {
-      this.formBlock();
-    }, 10);
-  }
-
-  returnLogin(): void {
-    this.returnLoginEvent.emit(true);
-  }
-
-  formBlock(force = false) {
-    if (force) {
-      this.isValidRut = true;
-    }
-
-    if (this.isValidRut) {
-      this.formVisita.get('nombre')?.enable();
-      this.formVisita.get('apellido')?.enable();
-      this.formVisita.get('telefono')?.enable();
-      //this.formVisita.get('email')?.enable();
-    } else {
-      this.formVisita.get('nombre')?.disable();
-      this.formVisita.get('apellido')?.disable();
-      this.formVisita.get('telefono')?.disable();
-      //this.formVisita.get('email')?.disable();
-    }
-  }
-
-  Select_fono(phoneCode: string): void {
+  /**
+   * Seleccionar el código de área del teléfono y habilitar validaciones de formulario según la selección.
+   * @param phoneCode
+   */
+  selectPhoneCode(phoneCode: string): void {
     this.selectedPhoneCode = phoneCode;
+    this.phoneLength =
+      this.selectedPhoneCode === this.config.phoneCodes.mobile.code
+        ? this.config.phoneCodes.mobile.lengthRule
+        : this.config.phoneCodes.landline.lengthRule;
 
-    if (this.selectedPhoneCode === this.config.phoneCodes.mobile.code) {
-      this.formVisita.controls['telefono'].setValidators([
-        Validators.required,
-        Validators.minLength(this.config.phoneCodes.mobile.lengthRule),
-        Validators.maxLength(this.config.phoneCodes.mobile.lengthRule),
-      ]);
-      this.maxPhone = this.config.phoneCodes.mobile.lengthRule;
-    } else {
-      this.formVisita.controls['telefono'].setValidators([
-        Validators.required,
-        Validators.minLength(this.config.phoneCodes.landline.lengthRule),
-        Validators.maxLength(this.config.phoneCodes.landline.lengthRule),
-      ]);
-      this.maxPhone = this.config.phoneCodes.landline.lengthRule;
-    }
-    this.formVisita.get('telefono')?.updateValueAndValidity();
-  }
-
-  facturar() {
-    this.router.navigate(['/sitio', 'registro-usuario']);
+    this.guestForm.controls['telefono'].setValidators([
+      Validators.required,
+      Validators.minLength(this.phoneLength),
+      Validators.maxLength(this.phoneLength),
+    ]);
+    this.guestForm.get('telefono')?.updateValueAndValidity();
   }
 }

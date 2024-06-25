@@ -28,10 +28,6 @@ import { CustomerApiService } from '@core/services-v2/customer/customer-api.serv
 import { SessionTokenStorageService } from '@core/storage/session-token-storage.service';
 import { GuestStorageService } from '@core/storage/guest-storage.service';
 import { DocumentValidator } from '@core/validators/document-form.validator';
-import {
-  IEmailDomainAutocomplete,
-  getEmailDomainsToAutocomplete,
-} from '@core/utils-v2/email/domains-autocomplete';
 import { removeSpecialCharacters } from './utils';
 import { IMapPosition } from '../map/map-store.interface';
 
@@ -65,7 +61,6 @@ export class RegisterComponent implements OnInit {
   checkBoxTerminos = false;
   checkBoxSuscribir = false;
   checkBoxEmpresa!: boolean;
-  domains: IEmailDomainAutocomplete[] = [];
   cantMaxRut: number = 10;
   //
   selectedAddress!: { address: string; zone: string } | null;
@@ -177,7 +172,6 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
     this.getBusinessLines();
     this.getCities();
-    this.domains = getEmailDomainsToAutocomplete();
     this.getContactPositions();
     //this.formBlock(true);
   }

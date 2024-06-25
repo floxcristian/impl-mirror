@@ -22,13 +22,17 @@
     <div class="col p-0">
       <div class="site-header__middle">
         <div class="site-header__search">
-          <app-header-search></app-header-search>
+          <app-header-search />
         </div>
       </div>
     </div>
   </div>
 
-  <div class="header_nav" #sticky_header_b2c_nav id="sticky_header_b2c_nav"></div>
+  <div
+    class="header_nav"
+    #sticky_header_b2c_nav
+    id="sticky_header_b2c_nav"
+  ></div>
 </div>
 
 <div class="site-header" *ngIf="!Hidebar()">

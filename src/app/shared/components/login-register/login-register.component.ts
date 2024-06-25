@@ -1,3 +1,4 @@
+// Angular
 import {
   Component,
   OnInit,
@@ -7,11 +8,10 @@ import {
   Inject,
   PLATFORM_ID,
 } from '@angular/core';
-import { Usuario } from '../../interfaces/login';
-import { GoogleTagManagerService } from 'angular-google-tag-manager';
+import { isPlatformBrowser } from '@angular/common';
+// Models
 import { IEcommerceUser } from '@core/models-v2/auth/user.interface';
 import { IGuest } from '@core/models-v2/storage/guest.interface';
-import { isPlatformBrowser } from '@angular/common';
 declare let dataLayer: any;
 
 @Component({
@@ -20,15 +20,11 @@ declare let dataLayer: any;
   styleUrls: ['./login-register.component.scss'],
 })
 export class LoginRegisterComponent implements OnInit {
-  @Output() outLogin: EventEmitter<any> = new EventEmitter();
   @Output() outInvitado: EventEmitter<any> = new EventEmitter();
   @Input() innerWidth!: number;
   @Input() invitado!: IEcommerceUser | IGuest;
 
-  constructor(
-    private readonly gtmService: GoogleTagManagerService,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
@@ -38,11 +34,12 @@ export class LoginRegisterComponent implements OnInit {
       // });
       dataLayer.push({
         event: 'profile',
-        pagePath: window.location.href
+        pagePath: window.location.href,
       });
     }
   }
-  returnInvitado(invitado: any) {
+
+  returnInvitado(invitado: any): void {
     this.outInvitado.emit(invitado);
   }
 }

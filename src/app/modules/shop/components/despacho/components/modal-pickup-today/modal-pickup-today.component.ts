@@ -25,6 +25,7 @@ export class ModalPickupTodayComponent {
   isLoading!: boolean;
   currentSelectedStore!: IStore;
   availabilities: ITripDate[] = [];
+  stock: number = 0;
 
   constructor(
     public readonly modalRef: BsModalRef,
@@ -63,9 +64,10 @@ export class ModalPickupTodayComponent {
         articles: [{ sku: this.productSku, quantity: this.productQuantity }],
       })
       .subscribe({
-        next: ({ tripDates }) => {
+        next: ({ stock, tripDates }) => {
           this.availabilities = tripDates;
           this.isLoading = false;
+          this.stock = stock;
         },
       });
   }

@@ -17,10 +17,6 @@ import { IContactPosition } from '@core/models-v2/customer/contact-position.inte
 import { IError } from '@core/models-v2/error/error.interface';
 import { IConfig } from '@core/config/config.interface';
 // Services
-import {
-  IEmailDomainAutocomplete,
-  getEmailDomainsToAutocomplete,
-} from '../../../core/utils-v2/email/domains-autocomplete';
 import { isVacio } from '../../utils/utilidades';
 import { AngularEmailAutocompleteComponent } from '../angular-email-autocomplete/angular-email-autocomplete.component';
 import { SessionService } from '@core/services-v2/session/session.service';
@@ -41,7 +37,6 @@ export class UpdateContactModalComponent implements OnInit {
   email!: AngularEmailAutocompleteComponent;
 
   formContacto!: FormGroup;
-  domains: IEmailDomainAutocomplete[] = [];
   cargos: IContactPosition[] = [];
   selectedPhoneCode: string;
   loadingForm = false;
@@ -50,7 +45,6 @@ export class UpdateContactModalComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private toastr: ToastrService,
-    // Services V2
     private readonly sessionService: SessionService,
     private readonly customerContactService: CustomerContactService,
     private readonly configService: ConfigService
@@ -60,7 +54,6 @@ export class UpdateContactModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.domains = getEmailDomainsToAutocomplete();
     this.getCargos();
     this.formDefault();
   }
@@ -96,7 +89,7 @@ export class UpdateContactModalComponent implements OnInit {
     });
     this.email.inputValue =
       this.contacto.email === '0' ? '' : this.contacto.email || '';
-    this.email.correoValido = this.contacto.email === '0' ? false : true;
+    this.email.isValidEmail = this.contacto.email === '0' ? false : true;
     if (this.contacto.documentId && this.contacto.documentId !== '') {
       this.formContacto.get('contactRut')?.disable();
     }

@@ -101,12 +101,13 @@ export class LogisticPromiseApiService {
           //     (acc += res.warehouses[warehouse].stock[sku] || 0),
           //   0
           // );
+          const stock = res.warehouses[params.location].stock[sku] || 0;
           const maxStock = res.candidateWarehouses.reduce(
             (a, b) => Math.max(a, res.warehouses[b].stock[sku] || 0),
             -Infinity
           );
           const tripDates = res.subOrders[0].tripDates;
-          return { maxStock, tripDates };
+          return { stock, maxStock, tripDates };
         })
       );
   }

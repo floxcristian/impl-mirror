@@ -1,24 +1,61 @@
 <div class="row">
-  <div class="col-sm-4 mb-2 mb-sm-0 ps-0 ps-0 ps-sm-2">
-    <div class="table">
+  <div class="col-sm-4 mb-2 mb-sm-0">
+    <div
+      class="table"
+      style="border-right: 0px; border-left: 0px; border-bottom: 0px"
+    >
       <div class="list-group" style="cursor: pointer; color: #0063b9">
         <a class="list-group-item list-group-item-action">
-          <div class="col-sm-12" style="padding: 0px">
+          <div class="col-sm-12" style="padding: 0px 5px !important">
             <i
               class="fas fa-store"
-              style="margin-right: 10px; color: #0063b9"
+              style="margin-right: 5px; color: #0063b9"
             ></i>
             {{ selectedStore.address }}
           </div>
-          <hr *ngIf="productDropshipment === 0" />
-          <div *ngIf="productDropshipment === 0" class="col-sm-12 text-danger">
+          <hr
+            style="margin: 1px 0px; padding: 1px"
+            *ngIf="productDropshipment === 0"
+          />
+          <div
+            *ngIf="productDropshipment === 0"
+            class="col-sm-12 text-danger"
+            style="padding: 5px 5px !important"
+          >
             {{ stock }} UNIDADES Disponibles
+          </div>
+          <div
+            *ngIf="stock === 0"
+            class="col-sm-12 text-danger"
+            style="
+              text-align: justify;
+              padding: 5px 5px !important;
+              font-style: italic;
+              font-size: 9px;
+            "
+          >
+            *Las fechas indicadas en la parte inferior indican cuando podrían
+            haber unidades para su retiro.
           </div>
         </a>
       </div>
+      <br />
+      <div
+        class="col-sm-12"
+        style="
+          color: #00549d;
+          text-align: justify;
+          padding: 5px 5px !important;
+          font-size: 13px;
+          letter-spacing: 0px;
+        "
+      >
+        En caso de necesitar más unidades, puedes simular las fechas de retiro
+        en el tipo de entrega previo a finalizar tu compra.
+      </div>
     </div>
   </div>
-  <div class="col-sm-8 ps-0 ps-0 ps-sm-2">
+  <div class="col-sm-8">
     <div style="border: 1px solid #00549d">
       <google-map
         *ngIf="isMapLoaded"

@@ -3,6 +3,7 @@
   "url": "www.implementos.pe",
   "document": {
     "name": "DNI",
+    "documentLength": 10,
     "sample": "11111111-1"
   },
   "phoneCodes": {
