@@ -28,6 +28,7 @@ import { filter } from 'rxjs/internal/operators/filter';
 import { ToastrService } from 'ngx-toastr';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { v1 as uuidv1 } from 'uuid';
+import { GoogleTagManagerService } from 'angular-google-tag-manager';
 // Models
 import { ShippingAddress } from '../../../../shared/interfaces/address';
 import { Usuario } from '../../../../shared/interfaces/login';
@@ -58,8 +59,6 @@ import { AgregarCentroCostoComponent } from '../../components/agregar-centro-cos
 import { DireccionMap } from 'src/app/shared/components/map/map.component';
 import { LocalStorageService } from '@core/modules/local-storage/local-storage.service';
 
-import { GoogleTagManagerService } from 'angular-google-tag-manager';
-import { SessionStorageService } from '@core/storage/session-storage.service';
 import { SessionService } from '@core/services-v2/session/session.service';
 import { PaymentMethodService } from '@core/services-v2/payment-method.service';
 
@@ -88,10 +87,9 @@ import { CustomerBusinessLineApiService } from '@core/services-v2/customer-busin
 import { ConfigService } from '@core/config/config.service';
 import { IConfig } from '@core/config/config.interface';
 import { DocumentValidator } from '@core/validators/document-form.validator';
+import { GtmService } from '@core/utils-v2/gtm/gtm.service';
 
 declare let dataLayer: any;
-
-// declare const $: any;
 export interface Archivo {
   archivo: File;
   nombre: string;
@@ -191,10 +189,10 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
     private modalService: BsModalService,
     private toastr: ToastrService,
     private readonly gtmService: GoogleTagManagerService,
+    private readonly _gtmService: GtmService,
     @Inject(PLATFORM_ID) private platformId: Object,
     private renderer: Renderer2,
     // Services V2
-    private readonly sessionStorage: SessionStorageService,
     private readonly guestStorage: GuestStorageService,
     private readonly sessionService: SessionService,
     private readonly receiveStorageService: ReceiveStorageService,
@@ -296,6 +294,7 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     this.userSession = this.sessionService.getSession();
     this.isB2B = this.sessionService.isB2B();
+
     if (this.isB2B || this.userSession.businessLine) {
       this.documentOptions.push({ id: InvoiceType.INVOICE, name: 'FACTURA' });
     }
@@ -410,18 +409,16 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
     this.paymentMethodService.banco$.subscribe((r) => {
       this.paymentKhipu(r);
     });
-    if (
-      this.userSession?.userRole !== UserRoleType.SUPERVISOR &&
-      this.userSession?.userRole !== UserRoleType.BUYER
-    ) {
+
+    if (!this.sessionService.isB2B()) {
       // this.gtmService.pushTag({
       //   event: 'payment',
       //   pagePath: window.location.href,
       // });
-      dataLayer.push({
+      /*dataLayer.push({
         event: 'payment',
-        pagePath: window.location.href
-      });
+        pagePath: window.location.href,
+      });*/
     }
     if (!this.userSession?.businessLine && !this.guest) {
       this.obtenerGiros();
@@ -691,31 +688,28 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
     this.loadingPage = true;
     this.loadingText = 'Generando cotización...';
 
-    this.cartService
-      .generateQuotation({
-        shoppingCartId,
-      })
-      .subscribe({
-        next: (r) => {
-          this.loadingPage = false;
+    this.cartService.generateQuotation(shoppingCartId).subscribe({
+      next: (r) => {
+        this.loadingPage = false;
 
-          const number = r.shoppingCart.salesId;
+        const number = r.shoppingCart.salesId;
 
-          this.cartService.load();
-          this.router.navigate([
-            '/carro-compra/comprobante-de-cotizacion',
-            number,
-          ]);
-        },
-        error: (e) => {
-          console.error(e);
-          this.toastr.error('Ha ocurrido un error al generar la cotización');
-        },
-      });
+        this.cartService.load();
+        this.router.navigate([
+          '/carro-compra/comprobante-de-cotizacion',
+          number,
+        ]);
+      },
+      error: (e) => {
+        console.error(e);
+        this.toastr.error('Ha ocurrido un error al generar la cotización');
+      },
+    });
   }
-
-  //  Sube documento y genera la solicitud
-  purchaseRequestAll() {
+  /**
+   * Sube documento y genera la solicitud de compra.
+   */
+  purchaseRequestAll(): void {
     this.loadingPage = true;
     const data = this.formOv.value;
     data.file = this.archivo !== undefined ? this.archivo?.archivo : null;
@@ -1048,6 +1042,13 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
     try {
       if (this.btnWebpayPost) return;
 
+      this._gtmService.addPaymentInfo({
+        dataLayer,
+        shoppingCart: this.cartSession,
+        paymentType: 'Unknown',
+        methodType: 'WEBPAY',
+      });
+
       this.btnWebpayPost = true;
       this.paymentWebpayForm = true;
 
@@ -1073,8 +1074,14 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
       if (this.btnWebpayPost) {
         return;
       }
-
       this.btnWebpayPost = true;
+
+      this._gtmService.addPaymentInfo({
+        dataLayer,
+        shoppingCart: this.cartSession,
+        paymentType: 'Unknown',
+        methodType: 'MERCADOPAGO',
+      });
 
       if (await this.validarStockActual()) return;
       await this.verificar_carro();
@@ -1102,6 +1109,13 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
       }
       this.loadkhipu = true;
       this.btnWebpayPost = true;
+
+      this._gtmService.addPaymentInfo({
+        dataLayer,
+        shoppingCart: this.cartSession,
+        paymentType: 'Unknown',
+        methodType: 'KHIPU',
+      });
       if (await this.validarStockActual()) return;
       await this.verificar_carro();
       await this.updateCartAndUserTurn();
@@ -1126,6 +1140,12 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
    * Continuar pago con XXX.
    */
   async paymentOv() {
+    this._gtmService.addPaymentInfo({
+      dataLayer,
+      shoppingCart: this.cartSession,
+      paymentType: 'Unknown',
+      methodType: 'OC',
+    });
     try {
       if (await this.validarStockActual()) return;
 

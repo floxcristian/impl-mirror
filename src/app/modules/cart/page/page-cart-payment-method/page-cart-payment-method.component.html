@@ -118,7 +118,6 @@
                         >
                       </div>
                       <div class="col-12" style="color: #0063b9">
-                        <!-- <i class="fa-solid fa-circle-check" style="color: #118565"></i> -->
                         <i
                           class="fa-solid fa-calendar-days"
                           style="margin-right: 10px; color: #0063b9"
@@ -244,7 +243,6 @@
                   <li class="list-group-item" tooltip="Fecha de entrega ">
                     <div class="row">
                       <div class="col-12" style="color: #0063b9">
-                        <!--<i class="fa-solid fa-circle-check" style="color: #118565"></i> -->
                         <i class="fas fa-store-alt" style="color: #0063b9"></i>
                         {{ tiendaRetiro.address || '' | titlecase }}
                       </div>
@@ -264,8 +262,6 @@
                       </div>
                       <div class="col-12" style="color: #0063b9">
                         <span>
-                          <!--<i class="fa-solid fa-circle-check" style="color: #118565"></i
-                          > -->
                           <i
                             class="fas fa-people-carry"
                             style="color: #0063b9"
@@ -299,7 +295,6 @@
                         >
                       </div>
                       <div class="col-12" style="color: #0063b9">
-                        <!--<i class="fa-solid fa-circle-check" style="color: #118565"></i> -->
                         <i
                           class="fa-solid fa-calendar-days"
                           style="margin-right: 10px; color: #0063b9"
@@ -1601,9 +1596,10 @@
                     style="margin-left: 10px"
                   ></i>
                 </button>
+
                 <!-- Start::ir a pagar2 pago con sms-->
                 <button
-                  name="paymentOvSms "
+                  name="paymentOvSms"
                   *ngIf="
                     userSession.userRole != userRoleType.BUYER &&
                     userSession.creditLine?.requiresConfirmation &&
@@ -1649,9 +1645,6 @@
                 <!-- End::ningún pago seleccionado siendo invitado (no tiene acción) (desktop) (ir a pagar3) -->
 
                 <!-- Start::pagar con mercadopago (no comprador ni invitado) (desktop) (ir a pagar4)-->
-                <!--<pre>
-                  userSession.user_role: {{ userSession.user_role }}
-                </pre> -->
                 <button
                   name="paymentMercadopago"
                   [disabled]="
@@ -1785,9 +1778,6 @@
                 <!-- End::pagar con webpay (no comprador ni invitado) (desktop) (ir a pagar8) -->
 
                 <!-- Start::pagar con webpay siendo invitado (desktop) (ir a pagar9) -->
-                <!--<pre style="background-color: yellow">
-                tienda: {{ tienda }}
-                </pre> -->
                 <button
                   name="paymentwebpay2"
                   [disabled]="
@@ -2708,5 +2698,5 @@
 <!-- End::modal para informar a cliente que hubieron problemas de stock -->
 
 <ng-template #bankmodal let-c="close" let-d="dismiss">
-  <app-bancoslist></app-bancoslist>
+  <app-bancoslist />
 </ng-template>

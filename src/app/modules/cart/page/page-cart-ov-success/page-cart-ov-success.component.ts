@@ -24,6 +24,7 @@ import { CartTagService } from '@core/services-v2/cart-tag.service';
 import { PaymentMethodService } from '@core/services-v2/payment-method.service';
 import { ConfigService } from '@core/config/config.service';
 import { IConfig } from '@core/config/config.interface';
+import { GtmService } from '@core/utils-v2/gtm/gtm.service';
 declare let fbq: any;
 declare let dataLayer: any;
 
@@ -64,6 +65,7 @@ export class PageCartOvSuccessComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private localS: LocalStorageService,
     @Inject(PLATFORM_ID) private platformId: Object,
+    private readonly _gtmService: GtmService,
     private readonly gtmService: GoogleTagManagerService,
     // Services V2
     private readonly sessionService: SessionService,
@@ -169,29 +171,32 @@ export class PageCartOvSuccessComponent implements OnInit, OnDestroy {
     let response = await firstValueFrom(this.cartService.getOneById(cartId));
     this.total = response.total;
     this.cartData = response.shoppingCart;
+    console.log('loadCartData: ', this.cartData);
     this.mostrar_detalle();
     this.numero = this.cartData.cartNumber ? this.cartData.cartNumber : 0;
     this.numeroCarro = this.cartData.cartNumber!.toString();
 
-    if (!this.cartData.tags || !this.cartData.tags.gtag) {
-      this.cartTagService.getGTagData(cartId).subscribe({
+    if (!this.cartData.tags?.gtag) {
+      this._gtmService.purchase(dataLayer, this.cartData);
+      /*this.cartTagService.getGTagData(cartId).subscribe({
         next: async (response) => {
+          console.log('cartTags: ', response);
           let index = 0;
-
-          await Promise.all(
-            response.data.map(async (item) => {
+          if (response.data) {
+            response.data.map((item) => {
               let tempcarro = response.shoppingCarts[index];
               index = index + 1;
 
-              if (!tempcarro.tags || !tempcarro.tags.gtag) {
+              if (!tempcarro.tags?.gtag) {
                 // this.gtmService.pushTag({
                 //   event: 'transaction',
                 //   ecommerce: item,
                 // });
-                dataLayer.push({
-                  event: 'transaction',
-                  ecommerce: item
-                });
+                /*dataLayer.push({
+        event: 'transaction',
+        ecommerce: item,
+      });
+                this._gtmService.purchase(dataLayer, item);
 
                 const id = tempcarro._id!.toString();
                 this.cartTagService
@@ -199,19 +204,17 @@ export class PageCartOvSuccessComponent implements OnInit, OnDestroy {
                     shoppingCartId: id,
                   })
                   .subscribe({
-                    next: () => {
-                      // console.log('ok gtag');
-                    },
+                    next: () => {},
                     error: (e) => console.error(e),
                   });
               }
-            })
-          );
+            });
+          }
         },
         error: (e) => {
           console.error(e);
         },
-      });
+      });*/
     }
 
     this.addFacebookPixel();

@@ -31,6 +31,8 @@ import { SessionService } from '@core/services-v2/session/session.service';
 import { CartService } from '@core/services-v2/cart.service';
 import { CartV2Service } from '@core/services-v2/cart/cart.service';
 import { MetaTag } from '@core/models-v2/article/article-response.interface';
+import { GtmService } from '@core/utils-v2/gtm/gtm.service';
+declare let dataLayer: any;
 
 @Component({
   selector: 'app-product-card-b2c-ficha',
@@ -87,6 +89,7 @@ export class ProductCardB2cFichaComponent implements OnInit {
     private route: Router,
     public currency: CurrencyService,
     public sanitizer: DomSanitizer,
+    private readonly _gtmService: GtmService,
     // Services V2
     private readonly sessionService: SessionService,
     public readonly cartService: CartV2Service
@@ -158,9 +161,9 @@ export class ProductCardB2cFichaComponent implements OnInit {
   }
 
   addToCart(): void {
-    if (this.addingToCart) {
-      return;
-    }
+    if (this.addingToCart) return;
+
+    this._gtmService.addToCart(dataLayer, this.productData as IArticle);
 
     if (this.origen) {
       // Seteamos el origen de donde se hizo click a add cart.

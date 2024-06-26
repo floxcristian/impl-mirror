@@ -59,6 +59,7 @@ export interface IShoppingCartProduct {
   };
   weight?: number;
   lading?: boolean;
+  iva?: number;
 }
 
 export interface IShoppingCartProductOrigin {

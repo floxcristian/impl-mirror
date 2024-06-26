@@ -21,10 +21,15 @@ export class CartTagService {
     return this.http.get<IShoppingCartDetail>(url);
   }
 
-  getGTagData(id: string): Observable<IGtagDataResponse> {
-    const url = `${API_CART}/${id}/gtag-data`;
-    return this.http.get<IGtagDataResponse>(url);
-  }
+  /**
+   * Obtener datos para gtag del carro de compras.
+   * @param cartId
+   * @returns
+   */
+  /*getGTagData(cartId: string): Observable<IGtagDataResponse> {
+    //const API_CART = 'http://localhost:3200/api/v1/shopping-cart';
+    return this.http.get<IGtagDataResponse>(`${API_CART}/${cartId}/gtag-data`);
+  }*/
 
   markGtag(params: { shoppingCartId: string }): Observable<ITagMarkResponse> {
     const { shoppingCartId } = params;

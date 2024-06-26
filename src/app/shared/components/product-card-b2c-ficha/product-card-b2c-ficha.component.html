@@ -607,11 +607,12 @@
               'background-color': (i + 1) % 2 !== 0 ? '#efefef' : '#fff'
             }"
           >
-          <td
-            style="width: 50%; border-right: solid 2px; color: #00549d"
-            *ngIf="productPrice.toQuantity !== 999"
+            <td
+              style="width: 50%; border-right: solid 2px; color: #00549d"
+              *ngIf="productPrice.toQuantity !== 999"
             >
-              {{ productPrice.fromQuantity }} a {{ productPrice.toQuantity - 1}} und.
+              {{ productPrice.fromQuantity }} a
+              {{ productPrice.toQuantity - 1 }} und.
             </td>
             <td
               style="width: 50%; border-right: solid 2px; color: #00549d"

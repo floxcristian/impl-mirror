@@ -64,7 +64,9 @@ import { LocalStorageService } from '@core/modules/local-storage/local-storage.s
 import { IComparedProduct } from './product/models/formatted-product-compare-response.interface';
 import { DefaultBranch } from '@core/utils-v2/default-branch.service';
 import { CallBackCartLoaded } from '@core/models-v2/cart/callback-cart-loaded.type';
+import { GtmService } from '@core/utils-v2/gtm/gtm.service';
 
+declare let dataLayer: any;
 const API_CART = `${environment.apiEcommerce}/api/v1/shopping-cart`;
 
 @Injectable({
@@ -84,6 +86,7 @@ export class CartService {
   private toastrServise = inject(ToastrService);
   private root = inject(RootService);
   private localS = inject(LocalStorageService);
+  private readonly _gtmService = inject(GtmService);
 
   private data: IShoppingCart = {
     products: [],
@@ -155,6 +158,7 @@ export class CartService {
     product: IArticle | IProduct | IComparedProduct, // sku, name, origin, images, quantity
     quantity: number
   ): Promise<IShoppingCart | undefined> {
+    // this._gtmService.addToCart(dataLayer, product);
     const { code: storeCode } = this.geolocationService.getSelectedStore();
     const { username, email, documentId } = this.sessionService.getSession();
 
@@ -637,8 +641,14 @@ export class CartService {
     );
   }
 
-  setNotificationContact(id: string, data: AddNotificacionContactRequest) {
-    return this.http.put(`${API_CART}/notification-contact/${id}`, data);
+  setNotificationContact(
+    cartId: string,
+    contact: AddNotificacionContactRequest
+  ) {
+    return this.http.put(
+      `${API_CART}/notification-contact/${cartId}`,
+      contact
+    );
   }
 
   /**
@@ -808,10 +818,7 @@ export class CartService {
     return this.http.put<IThanksForYourPurchase>(url, undefined);
   }
 
-  generateQuotation(params: {
-    shoppingCartId: string;
-  }): Observable<IShoppingCartDetail> {
-    const { shoppingCartId } = params;
+  generateQuotation(shoppingCartId: string): Observable<IShoppingCartDetail> {
     const url = `${API_CART}/${shoppingCartId}/generate-quotation`;
     return this.http.post<IShoppingCartDetail>(url, undefined);
   }

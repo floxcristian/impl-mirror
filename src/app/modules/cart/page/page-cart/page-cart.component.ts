@@ -1,22 +1,29 @@
+// Angular
 import {
   Component,
   Inject,
   OnDestroy,
   OnInit,
   PLATFORM_ID,
+  HostListener,
 } from '@angular/core';
+import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 import { FormControl, Validators } from '@angular/forms';
+// Rxjs
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
-import { RootService } from '../../../../shared/services/root.service';
-import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
-import { Banner } from '../../../../shared/interfaces/banner';
-import { HostListener } from '@angular/core';
+// Env
 import { environment } from '@env/environment';
+// Libs
+import { ToastrService } from 'ngx-toastr';
+// Services
+import { RootService } from '../../../../shared/services/root.service';
+import { Banner } from '../../../../shared/interfaces/banner';
+
 import { isVacio } from '../../../../shared/utils/utilidades';
-import { isPlatformBrowser } from '@angular/common';
-import { GoogleTagManagerService } from 'angular-google-tag-manager';
+
+//import { GoogleTagManagerService } from 'angular-google-tag-manager';
 import { ISession } from '@core/models-v2/auth/session.interface';
 import { SessionService } from '@core/services-v2/session/session.service';
 import { GeolocationServiceV2 } from '@core/services-v2/geolocation/geolocation.service';
@@ -34,13 +41,9 @@ import { IArticle } from '@core/models-v2/cms/special-reponse.interface';
 import { GuestStorageService } from '@core/storage/guest-storage.service';
 import { ConfigService } from '@core/config/config.service';
 import { IConfig } from '@core/config/config.interface';
+import { GtmService } from '@core/utils-v2/gtm/gtm.service';
+import { IProductCart } from './product-cart.interface';
 declare let dataLayer: any;
-
-interface Item {
-  ProductCart: IShoppingCartProduct;
-  quantity: number;
-  quantityControl: FormControl;
-}
 
 @Component({
   selector: 'app-cart',
@@ -50,8 +53,10 @@ interface Item {
 export class PageCartComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject();
 
+  sendedToGtm!: boolean;
+
   removedItems: IShoppingCart[] = [];
-  items: Item[] = [];
+  items: IProductCart[] = [];
   updating: boolean = false;
   saveTimer: any;
   innerWidth: number;
@@ -103,7 +108,8 @@ export class PageCartComponent implements OnInit, OnDestroy {
     private router: Router,
     public root: RootService,
     private toast: ToastrService,
-    private readonly gtmService: GoogleTagManagerService,
+    //private readonly gtmService: GoogleTagManagerService,
+    private readonly _gtmService: GtmService,
     @Inject(PLATFORM_ID) private platformId: Object,
     // Services V2
     private readonly sessionService: SessionService,
@@ -130,7 +136,7 @@ export class PageCartComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         map((ProductCarts) =>
-          (ProductCarts || []).map((item): Item => {
+          (ProductCarts || []).map((item): IProductCart => {
             return {
               ProductCart: item,
               quantity: item.quantity,
@@ -144,8 +150,9 @@ export class PageCartComponent implements OnInit, OnDestroy {
       )
       .subscribe((items) => {
         this.items = items;
-
-        //se obtienen los productos recomendados segun el contenido del carro
+        if (items.length && !this.sendedToGtm) {
+          this.gtmViewCart();
+        }
         this.getRecommendedProductsList();
       });
 
@@ -154,17 +161,21 @@ export class PageCartComponent implements OnInit, OnDestroy {
     });
     if (isPlatformBrowser(this.platformId)) {
       _this.shoppingCartService.calc(true);
-      if (!['supervisor', 'buyer'].includes(this.user?.userRole || '')) {
-        // this.gtmService.pushTag({
-        //   event: 'cart',
-        //   pagePath: window.location.href,
-        // });
-        dataLayer.push({
-          event: 'cart',
-          pagePath: window.location.href
-        });
-      }
     }
+  }
+
+  gtmViewCart() {
+    if (!isPlatformBrowser(this.platformId)) return;
+    // this.gtmService.pushTag({
+    //   event: 'cart',
+    //   pagePath: window.location.href,
+    // });}
+    /*dataLayer.push({
+        event: 'cart',
+        pagePath: window.location.href,
+      });*/
+    this._gtmService.viewCart(dataLayer, this.items);
+    this.sendedToGtm = true;
   }
 
   ngOnDestroy(): void {
@@ -181,7 +192,7 @@ export class PageCartComponent implements OnInit, OnDestroy {
     return needUpdate;
   }
 
-  async updateCart(quantity: number, item: Item) {
+  async updateCart(quantity: number, item: IProductCart) {
     if (quantity < 1) {
       quantity = 1;
       this.toast.error('No se permiten números negativos en la cantidad');
@@ -190,7 +201,7 @@ export class PageCartComponent implements OnInit, OnDestroy {
     item.ProductCart.quantity = quantity;
 
     const productos: IShoppingCartProduct[] = [];
-    this.items.map((r: Item) => {
+    this.items.map((r: IProductCart) => {
       productos.push(r.ProductCart);
     });
 
@@ -206,8 +217,9 @@ export class PageCartComponent implements OnInit, OnDestroy {
     });
   }
 
-  remove(item: IShoppingCartProduct): void {
-    this.shoppingCartService.remove(item);
+  remove(product: IShoppingCartProduct): void {
+    this.shoppingCartService.remove(product);
+    this.gtmRemoveFromCart(product);
   }
 
   // saveCart() {
@@ -287,5 +299,9 @@ export class PageCartComponent implements OnInit, OnDestroy {
     this.innerWidth = isPlatformBrowser(this.platformId)
       ? window.innerWidth
       : 900;
+  }
+
+  gtmRemoveFromCart(product: IShoppingCartProduct) {
+    this._gtmService.removeFromCart(dataLayer, product);
   }
 }

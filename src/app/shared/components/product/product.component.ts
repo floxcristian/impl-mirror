@@ -71,6 +71,7 @@ import { ModalScalePriceComponent } from '../modal-scale-price/modal-scale-price
 import { ConfigService } from '@core/config/config.service';
 import { IReviewsResponse } from '@core/models-v2/article/review-response.interface';
 import { environment } from '@env/environment';
+import { GtmService } from '@core/utils-v2/gtm/gtm.service';
 declare let dataLayer: any;
 
 @Component({
@@ -85,7 +86,6 @@ export class ProductComponent implements OnInit, OnChanges {
   featuredCarousel!: CarouselComponent;
   @ViewChildren('imageElement', { read: ElementRef })
   imageElements!: QueryList<ElementRef>;
-
   @ViewChild('carouselThumbs') carouselThumbs!: ElementRef;
 
   @Input() stock!: boolean;
@@ -99,6 +99,7 @@ export class ProductComponent implements OnInit, OnChanges {
     this.quantity.setValue(1);
 
     this.dataProduct = value;
+    console.log('dataProduct', this.dataProduct);
     this.images = GalleryUtils.formatImageSlider(value);
     this.generateTags(this.product.metaTags);
   }
@@ -198,6 +199,7 @@ export class ProductComponent implements OnInit, OnChanges {
     private cd: ChangeDetectorRef,
     private fb: FormBuilder,
     private readonly gtmService: GoogleTagManagerService,
+    private readonly _gtmService: GtmService,
     private renderer: Renderer2,
     // Services V2
     private cart: CartService,
@@ -247,16 +249,17 @@ export class ProductComponent implements OnInit, OnChanges {
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe();
 
-      if (!this.sessionService.isB2B()) {
-        // this.gtmService.pushTag({
-        //   event: 'productView',
-        //   pagePath: window.location.href,
-        // });
-        dataLayer.push({
+      //if (!this.sessionService.isB2B()) {
+      // this.gtmService.pushTag({
+      //   event: 'productView',
+      //   pagePath: window.location.href,
+      // });
+      this._gtmService.viewItem(dataLayer, this.dataProduct);
+      /*dataLayer.push({
           event: 'productView',
-          pagePath: window.location.href
-        });
-      }
+          pagePath: window.location.href,
+        });*/
+      //}
     }
 
     // Observable cuyo fin es saber cuando se presiona el boton agregar al carro utilizado para los dispositivos moviles.
@@ -272,7 +275,7 @@ export class ProductComponent implements OnInit, OnChanges {
   }
 
   generateTags(tags: MetaTag[] | undefined) {
-    console.log('tags',tags)
+    console.log('tags', tags);
     if (tags) {
       tags.forEach((tag: MetaTag) => {
         if (tag.code === 'cyber')
@@ -288,7 +291,7 @@ export class ProductComponent implements OnInit, OnChanges {
         // else this.isOfficial = 0;
       });
     }
-    console.log('cyber value:',this.cyber)
+    console.log('cyber value:', this.cyber);
   }
 
   ngOnChanges(): void {
@@ -367,6 +370,13 @@ export class ProductComponent implements OnInit, OnChanges {
 
       this.cart.add(this.product, this.quantity.value).finally(() => {
         this.addingToCart = false;
+        setTimeout(() => {
+          this._gtmService.addToCart(
+            dataLayer,
+            this.product,
+            this.quantity.value
+          );
+        }, 500);
       });
     }
   }

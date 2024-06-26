@@ -65,9 +65,7 @@ export class PageComprasComponent implements OnInit {
   }
 
   addToCart(index: number) {
-    if (this.addingToCart) {
-      return;
-    }
+    if (this.addingToCart) return;
     this.addingToCart = true;
     let products: IProduct[] = this.data[index]?.products || [];
     if (products.length) {
@@ -79,9 +77,7 @@ export class PageComprasComponent implements OnInit {
   }
 
   addCart(item: IProduct) {
-    if (this.addingToCart) {
-      return;
-    }
+    if (this.addingToCart) return;
     this.addingToCart = true;
     this.cart.add(item, 1).finally(() => {
       {

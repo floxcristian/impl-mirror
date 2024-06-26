@@ -10,6 +10,7 @@ export interface IConfig {
   sampleFiles: ISampleFiles;
   company: ICompany;
   mapCoordinates: google.maps.LatLngLiteral;
+  googleTagManager: IGoogleTagManager;
 }
 
 export interface ISampleFiles {
@@ -59,4 +60,8 @@ export interface IDocument {
   name: string;
   sample: string;
   documentLength: number;
+}
+
+export interface IGoogleTagManager {
+  currency: string;
 }

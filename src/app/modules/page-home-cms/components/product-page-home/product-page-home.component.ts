@@ -29,8 +29,17 @@ export class ProductPageHomeComponent implements OnInit {
 
   @Input() set blockElements(value: IElement1[] | IElement2) {
     this._blockElements = value as IElement1[];
-    this._blockElements = this._blockElements.map((item:IElement1) => {return { ...item, startDate: new Date(item.startDate) , expirationDate: new Date(item.expirationDate) }})
-    this._blockElements = this._blockElements.filter((item:IElement1) => item.startDate <= this.today && this.today <= item.expirationDate)
+    this._blockElements = this._blockElements.map((item: IElement1) => {
+      return {
+        ...item,
+        startDate: new Date(item.startDate),
+        expirationDate: new Date(item.expirationDate),
+      };
+    });
+    this._blockElements = this._blockElements.filter(
+      (item: IElement1) =>
+        item.startDate <= this.today && this.today <= item.expirationDate
+    );
   }
   _blockElements: IElement1[] = [];
   layout = 'grid-lg';
@@ -44,7 +53,7 @@ export class ProductPageHomeComponent implements OnInit {
   sPosition = 0;
   screenWidth: any;
   screenHeight: any;
-  today = new Date()
+  today = new Date();
 
   constructor(
     private router: Router,

@@ -134,7 +134,7 @@ export class RegisterVisitComponent implements OnInit, OnChanges {
         }
 
         this.returnLoginEvent.emit(guestUser);
-      } else if(resp.exists && resp.userType != 2) {
+      } else if (resp.exists && resp.userType != 2) {
         this.toastr.warning(
           'Hemos detectado que el email ingresado esta registrado, por favor inicie sesión para continuar.'
         );

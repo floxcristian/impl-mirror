@@ -12,8 +12,10 @@ import { DatePipe, isPlatformBrowser } from '@angular/common';
 // Libs
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 // Rxjs
 import { Subject, firstValueFrom, lastValueFrom } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 // Models
 import { CartTotal } from '../../../../shared/interfaces/cart-item';
 import { ICustomerAddress } from '@core/models-v2/customer/customer.interface';
@@ -24,14 +26,12 @@ import {
 import { Banner } from '../../../../shared/interfaces/banner';
 // Components
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
-// Constants
-import { ShippingType } from '../../../../core/enums';
 import { ModalConfirmDatesComponent } from './components/modal-confirm-dates/modal-confirm-dates.component';
-import { map, takeUntil } from 'rxjs/operators';
+// Constants
+
+// Services
+import { ShippingType } from '../../../../core/enums';
 import { LocalStorageService } from '@core/modules/local-storage/local-storage.service';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { GoogleTagManagerService } from 'angular-google-tag-manager';
-import { ClientsService } from '@shared/services/clients.service';
 import {
   DataModal,
   ModalComponent,
@@ -58,7 +58,6 @@ import { ICustomerPreference } from '@core/services-v2/customer-preference/model
 import { ReceiveStorageService } from '@core/storage/receive-storage.service';
 import { IReceive } from '@core/models-v2/storage/receive.interface';
 import { ShoppingCartStorageService } from '@core/storage/shopping-cart-storage.service';
-import { AddNotificacionContactRequest } from '@core/models-v2/requests/cart/add-notification-contact.request';
 import { GetLogisticPromiseRequest } from '@core/models-v2/requests/cart/logistic-promise-request';
 import { GetLogisticPromiseResponse } from '@core/models-v2/responses/logistic-promise-responses';
 import { IGuest } from '@core/models-v2/storage/guest.interface';
@@ -73,6 +72,10 @@ import { ConfigService } from '@core/config/config.service';
 import { IConfig } from '@core/config/config.interface';
 import { CallBackCartLoaded } from '@core/models-v2/cart/callback-cart-loaded.type';
 import { UserRoleType } from '@core/enums/user-role-type.enum';
+import { DateUtils } from './utils/date-utils.service';
+import { GtmService } from '@core/utils-v2/gtm/gtm.service';
+import { CartShippingUtils } from './utils/cart-shipping-utils.service';
+import { SessionUtils } from './utils/session-utils.service';
 declare let dataLayer: any;
 
 export let browserRefresh = false;
@@ -87,13 +90,16 @@ export class PageCartShippingComponent implements OnInit {
   @ViewChild('tabsShipping', { static: false }) tabsShipping!: TabsetComponent;
 
   innerWidth: number;
-  loadingSucursal: boolean = true;
+  //loadingSucursal: boolean = true;
   banners: Banner[] = [];
   private destroy$: Subject<void> = new Subject();
   usuarioInvitado: boolean = false;
+
+  // ???
   invitado!: IGuest;
-  direccion: boolean = false;
   usuarioInv!: IGuest;
+
+  showAddress: boolean = false;
   recibeType = 'yo';
   recibeOtra: boolean = false;
   recibeOtraname: string = '';
@@ -102,7 +108,7 @@ export class PageCartShippingComponent implements OnInit {
   showDetalleProductos: boolean = false;
   showresumen: boolean = false;
   tienda!: IStore;
-  retiro = '';
+  pickupDescription: string = '';
   conflictoEntrega: boolean = false;
   //variables para el despachos
   shippingType: string = '';
@@ -120,7 +126,7 @@ export class PageCartShippingComponent implements OnInit {
   shippingSelected: ShippingService | undefined | null = null;
 
   userSession!: ISession;
-  cartSession!: IShoppingCart; //CartData;
+  cartSession!: IShoppingCart;
   recidDireccion = 0;
   showMap: boolean = false;
 
@@ -129,8 +135,8 @@ export class PageCartShippingComponent implements OnInit {
   selectedShippingIdStore: any;
   tempShippingIdStore: any;
   shippingDaysStore: ShippingDateItem[] = [];
-  TiendasCargadas: boolean = false;
-  loadingShippingStore = false;
+  wereLoadedStores: boolean = false;
+  isLoadingPickupDates!: boolean;
   fecha = new Date();
   // despacho
   cardShippingActive = 0;
@@ -150,7 +156,7 @@ export class PageCartShippingComponent implements OnInit {
   tituloRecibe: string = 'Persona que recibe';
   loadingShippingAll = false;
   showAllAddress: boolean = false;
-  isLogin!: boolean;
+  isLoggedIn!: boolean;
   loadingResumen = false;
 
   // productos validados
@@ -171,17 +177,16 @@ export class PageCartShippingComponent implements OnInit {
     isDefault: boolean;
   };
 
+  hasSendGtmEvent: boolean = false;
+  retiroFlag: boolean = false;
+
   constructor(
     private toast: ToastrService,
     private datePipe: DatePipe,
     private router: Router,
     private localS: LocalStorageService,
     private modalService: BsModalService,
-
     private cd: ChangeDetectorRef,
-    private readonly gtmService: GoogleTagManagerService,
-    private clientsService: ClientsService,
-    // Services V2
     private readonly sessionService: SessionService,
     private readonly authStateService: AuthStateServiceV2,
     public readonly cart: CartService,
@@ -194,6 +199,7 @@ export class PageCartShippingComponent implements OnInit {
     private readonly customerService: CustomerService,
     private readonly customerAddressApiService: CustomerAddressApiService,
     public readonly configService: ConfigService,
+    private readonly _gmtService: GtmService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.config = this.configService.getConfig();
@@ -203,19 +209,19 @@ export class PageCartShippingComponent implements OnInit {
       : 900;
 
     this.tienda_actual = this.geolocationStorage.get();
+    this.userSession = this.sessionService.getSession();
+    this.invitado = this.guestStorage.get() as IGuest;
+    this.cartSession = this.shoppingCartStorage.get()!;
+    this.direccionConfigurada = this.customerPreferencesStorage.get();
   }
 
   async ngOnInit() {
-    this.cartSession = this.shoppingCartStorage.get()!;
+    console.log('this.cartSession: ', this.cartSession);
+    this.isLoggedIn = this.sessionService.isLoggedIn();
 
-    this.invitado = this.guestStorage.get() as IGuest;
-    this.tienda_actual = this.geolocationStorage.get();
-    this.userSession = this.sessionService.getSession();
-    this.addNotificationContact();
+    this.setNotificationContact();
     this.obtieneDireccionesCliente();
-    this.obtieneTiendas();
-    this.direccionConfigurada = this.customerPreferencesStorage.get();
-    this.isLogin = this.sessionService.isLoggedIn();
+    this.loadStores();
 
     if (!this.HideResumen()) {
       this.recibeType = 'yo';
@@ -225,7 +231,7 @@ export class PageCartShippingComponent implements OnInit {
       this.cart.dropCartActive$.next(false);
     });
 
-    this.subscribeOnLogin();
+    this.onLoginChange();
 
     this.cart.shippingValidateProducts$.subscribe(
       (r: IShoppingCartProduct[]) => {
@@ -241,33 +247,20 @@ export class PageCartShippingComponent implements OnInit {
       .pipe(
         takeUntil(this.destroy$),
         map((ProductCarts) =>
-          (ProductCarts || []).map((item) => {
-            return {
-              ProductCart: item,
-              quantity: item.quantity,
-            };
-          })
+          (ProductCarts || []).map((item) => ({
+            ProductCart: item,
+            quantity: item.quantity,
+          }))
         )
       )
       .subscribe((items) => {
+        console.log('itemsx: ', this.items);
         this.items = items;
       });
-    //marcaje google tag
+
     if (isPlatformBrowser(this.platformId)) {
-      this.onSelect(null, 'retiro');
-      if (
-        this.userSession.userRole !== UserRoleType.SUPERVISOR &&
-        this.userSession.userRole !== UserRoleType.BUYER
-      ) {
-        // this.gtmService.pushTag({
-        //   event: 'shipping',
-        //   pagePath: window.location.href,
-        // });
-        dataLayer.push({
-          event: 'shipping',
-          pagePath: window.location.href,
-        });
-      }
+      this.onSelectShippingType(null, 'retiro');
+      this._gmtService.beginCheckout(dataLayer, this.cartSession);
     }
   }
 
@@ -277,7 +270,7 @@ export class PageCartShippingComponent implements OnInit {
 
   async obtieneDireccionesCliente(isDelete: boolean = false) {
     this.loadingShippingAll = true;
-    const { documentId } = this.sessionService.getSession();
+    const { documentId } = this.userSession;
 
     if (!this.usuarioInvitado && documentId && documentId !== '0') {
       this.customerAddressApiService
@@ -287,10 +280,10 @@ export class PageCartShippingComponent implements OnInit {
             this.loadingShippingAll = false;
             if (!isDelete) {
               // Obtener última dirección (id más alto).
-              const addressIds = addresses.map((address) =>
+              const addressesIds = addresses.map((address) =>
                 Number(address.id)
               );
-              this.selectedShippingId = String(Math.max(...addressIds));
+              this.selectedShippingId = String(Math.max(...addressesIds));
             }
 
             this.addresses = addresses.map((address) => {
@@ -308,7 +301,7 @@ export class PageCartShippingComponent implements OnInit {
                 };
               return { ...address, fullAddress, isDefault };
             });
-            if (this.shippingType === 'despacho') this.obtieneDespachos();
+            if (this.shippingType === 'despacho') this.getDeliveries();
 
             this.showNewAddress = false;
           },
@@ -323,33 +316,23 @@ export class PageCartShippingComponent implements OnInit {
   }
 
   /**
-   * Obtiene contacto notificaciones.
+   * Establecer contacto para notificaciones del carro.
    */
-  async addNotificationContact() {
-    let data: AddNotificacionContactRequest = {};
-
-    this.userSession = this.sessionService.getSession();
+  private setNotificationContact(): void {
     this.invitado = this.guestStorage.get() as IGuest;
-    if (this.userSession.userRole != 'temp') {
-      data.phone = this.userSession.phone;
-      data.email = this.userSession.email;
-      data.name = this.userSession.firstName + ' ' + this.userSession.lastName;
-    } else if (this.userSession.userRole == 'temp' && this.invitado != null) {
-      data.phone = this.invitado.phone;
-      data.email = this.invitado.email;
-      data.name = this.getFullName(this.invitado);
-    }
-    if (data.name) {
-      await this.cart
-        .setNotificationContact(this.cartSession._id!.toString(), data)
-        .toPromise();
+    const contact = SessionUtils.getContact(this.userSession, this.invitado);
+    if (contact?.name) {
+      this.cart.setNotificationContact(
+        this.cartSession._id!.toString(),
+        contact
+      );
     }
   }
 
   /**
-   * Obtiene despachos a domicilio.
+   * Obtener despachos a domicilio.
    */
-  async obtieneDespachos(removeShipping = true) {
+  async getDeliveries(removeShipping = true): Promise<void> {
     this.fechas = [];
 
     const usuario = this.sessionService.getSession();
@@ -361,18 +344,6 @@ export class PageCartShippingComponent implements OnInit {
 
     if (resultado) {
       this.loadingShipping = true;
-      const data: GetLogisticPromiseRequest = {
-        user: usuario.username,
-        deliveryMode: 'delivery',
-        destination: `${resultado.city
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')}|${
-          resultado.regionCode ? resultado.regionCode : ''
-        }`,
-        address: resultado.address,
-        addressId: resultado.id,
-      };
-
       this.cardShippingActiveStore = 0;
 
       if (removeShipping) {
@@ -387,7 +358,17 @@ export class PageCartShippingComponent implements OnInit {
 
       try {
         const response: GetLogisticPromiseResponse = await lastValueFrom(
-          this.cart.logisticPromise(data)
+          this.cart.logisticPromise({
+            user: usuario.username,
+            deliveryMode: 'delivery',
+            destination: `${resultado.city
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')}|${
+              resultado.regionCode ? resultado.regionCode : ''
+            }`,
+            address: resultado.address,
+            addressId: resultado.id,
+          })
         );
         if (response.shoppingCart.groups) {
           this.shippingDays = [];
@@ -398,7 +379,7 @@ export class PageCartShippingComponent implements OnInit {
             i = i + 1;
             group.tripDates.forEach((item: IShoppingCartTripDate) => {
               let index = j++;
-              const obj = {
+              dia_despacho.push({
                 index,
                 id: group.id,
                 diasdemora: item.businessDays,
@@ -409,8 +390,7 @@ export class PageCartShippingComponent implements OnInit {
                 proveedor: item.carrier.description,
                 tipoenvio: item.serviceType.code,
                 tipopedido: item.serviceType.code,
-              };
-              dia_despacho.push(obj);
+              });
             });
 
             this.shippingDays.push({
@@ -434,90 +414,59 @@ export class PageCartShippingComponent implements OnInit {
       this.loadingResumen = false;
     }
 
-    this.ver_fechas();
+    this.pickupDescription = CartShippingUtils.getPickupDescription(
+      this.shippingDaysStore,
+      this.fecha_actual
+    );
   }
 
-  obtieneTiendas() {
-    let usuarioRole = this.userSession.userRole;
-    let data_usuario;
-
-    if (
-      this.userSession.username &&
-      this.userSession.username != this.userSession.email
-    )
-      data_usuario = this.userSession.username;
-    else if (
-      this.userSession.username &&
-      this.userSession.username == this.userSession.email
-    )
-      data_usuario = this.userSession.email;
-    else data_usuario = this.userSession.email;
-    if (usuarioRole === 'temp') {
-      data_usuario = this.userSession.email;
-    }
-
+  /**
+   * Cargar tiendas y establecer la tienda seleccionada.
+   */
+  private loadStores(): void {
+    this.wereLoadedStores = false;
     this.geolocationService.stores$.subscribe({
       next: (stores) => {
-        this.stores = stores;
-        this.TiendasCargadas = true;
-
-        // Poner tienda seleccionada al comienzo de la lista.
         const selectedStore = this.geolocationService.getSelectedStore();
-        const tiendaActual = this.stores.find((store) => {
-          return store.code === selectedStore.code /*selectedStore.codigo*/;
-        });
+        const selectedStoreDetail = stores.find(
+          (store) => store.code === selectedStore.code
+        );
 
-        // Hacer algo..
-        if (tiendaActual) {
-          const tiendas = this.stores.filter(
-            (store) => store.id != tiendaActual.id
-          );
-          tiendas.unshift(tiendaActual);
-          this.stores = tiendas;
-          this.selectedShippingIdStore = tiendaActual.id;
-          this.tempShippingIdStore = this.selectedShippingIdStore;
-          this.obtieneRetiro(false);
-        }
+        if (!selectedStoreDetail) return;
+
+        const filteredStores = stores.filter(
+          (store) => store.id != selectedStoreDetail.id
+        );
+        this.stores = [selectedStoreDetail, ...filteredStores];
+        this.selectedShippingIdStore = selectedStoreDetail.id;
+        this.tempShippingIdStore = this.selectedShippingIdStore;
+        this.wereLoadedStores = true;
+        console.log('loadStores');
+        this.getPickup(false);
       },
     });
   }
 
   /**
-   * Obtiene retiro en tienda.
+   * Obtener fechas para retiro en tienda.
    */
-  async obtieneRetiro(removeShipping = true) {
-    this.loadingShippingStore = true;
+  async getPickup(removeShipping = true) {
+    console.log('isLoadingPickupDates1: true');
+    this.isLoadingPickupDates = true;
 
     this.fechas = [];
-
-    // this.selectedShippingId = this.selectedShippingIdStore;
     const usuario = this.sessionService.getSession();
 
     if (!usuario.hasOwnProperty('username')) usuario.username = usuario.email;
-    const resultado = this.stores.find(
+    const selectedStore = this.stores.find(
       (item) => item.id == this.selectedShippingIdStore
     );
-    if (!resultado) return;
+    if (!selectedStore) return;
 
-    this.tienda = resultado;
+    this.tienda = selectedStore;
 
-    this.cambiarTienda(this.tienda, async (_: IShoppingCart) => {
-      this.localS.set(StorageKey.tiendaRetiro, resultado);
-
-      let disponible = resultado;
-      const data: GetLogisticPromiseRequest = {
-        user: usuario.username,
-        deliveryMode: 'pickup',
-        destination: disponible.code + '|' + disponible.regionCode,
-        address: disponible.name,
-        addressId: disponible.id,
-      };
-
-      /*
-      const sucursal = {
-        usuario: usuario.username,
-        sucursal: disponible.codigo
-      };*/
+    this.setSelectedStore(this.tienda, async (_: IShoppingCart) => {
+      this.localS.set(StorageKey.tiendaRetiro, selectedStore);
 
       if (removeShipping) {
         this.shippingSelected = null;
@@ -532,7 +481,13 @@ export class PageCartShippingComponent implements OnInit {
       this.shippingDaysStore = [];
       try {
         const response: GetLogisticPromiseResponse = await lastValueFrom(
-          this.cart.logisticPromise(data)
+          this.cart.logisticPromise({
+            user: usuario.username,
+            deliveryMode: 'pickup',
+            destination: `${selectedStore.code}|${selectedStore.regionCode}`,
+            address: selectedStore.name,
+            addressId: selectedStore.id,
+          })
         );
         if (response.shoppingCart.groups) {
           this.shippingDaysStore = [];
@@ -542,10 +497,11 @@ export class PageCartShippingComponent implements OnInit {
             let dia_despacho: ShippingService[] = [];
 
             group.tripDates.forEach((item: IShoppingCartTripDate) => {
-              let isSabado = this.valFindeSemana(
+              let isSaturday = DateUtils.isSaturday(
                 item.requestedDate.toString()
               );
-              const obj = {
+
+              dia_despacho.push({
                 index: i++,
                 id: group.id,
                 diasdemora: item.businessDays,
@@ -556,10 +512,8 @@ export class PageCartShippingComponent implements OnInit {
                 proveedor: item.carrier.description,
                 tipoenvio: 'TIENDA',
                 tipopedido: 'VEN- RPTDA',
-                isSabado: isSabado,
-              };
-
-              dia_despacho.push(obj);
+                isSabado: isSaturday,
+              });
             });
 
             this.shippingDaysStore.push({
@@ -572,11 +526,17 @@ export class PageCartShippingComponent implements OnInit {
         if (this.userSession.userRole == 'temp') {
           this.loadingResumen = false;
         }
-        this.loadingShippingStore = false;
-        this.ver_fechas();
+
+        this.pickupDescription = CartShippingUtils.getPickupDescription(
+          this.shippingDaysStore,
+          this.fecha_actual
+        );
+        console.log('isLoadingPickupDates2: false');
+        this.isLoadingPickupDates = false;
       } catch (e) {
         console.log(e);
-        this.loadingShippingStore = false;
+        console.log('isLoadingPickupDates3: false');
+        this.isLoadingPickupDates = false;
         this.shippingDaysStore = [];
       }
       //});
@@ -584,93 +544,27 @@ export class PageCartShippingComponent implements OnInit {
   }
 
   /**
-   * Obtiene el nombre del usuario.
-   */
-  private getFullName(guest: IGuest | ISession): string {
-    const { firstName, lastName } = guest;
-    return `${firstName} ${lastName}`;
-  }
-
-  /**
-   * TODO: juntar con seleccionar despacho.
-   */
-  //  seleccionaDespachoInvitado(item: ShippingService, pos): void {
-  // // invitado solamente <<<<<<<<<<<<<<<
-
-  //   let invitado: any = this.localS.get('invitado');
-  //   invitado.tipoEnvio = 'DES';
-  //   this.localS.remove('invitado');
-  //   this.localS.set('invitado', invitado);
-  //   this.usuarioInv = this.localS.get('invitado');
-  //   // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-  //   this.recibeYoname = this.getFullName(invitado);
-
-  //   this.cardShippingActive = item.index;
-  //   this.grupoShippingActive = this.shippingDays[pos].grupo;
-  //   this.shippingSelected = this.shippingDays[pos].fechas.find(item => item.index === this.cardShippingActive);
-  //   this.productosSeleccionado = this.shippingDays[pos].productodespacho;
-  //   this.recidDireccion = 0;
-  //   const nombre = `Despacho ` + this.datePipe.transform(this.shippingSelected.fecha, 'EEEE dd MMM');
-
-  //   const envio: CartTotal = {
-  //     price: this.shippingSelected.precio,
-  //     title: nombre,
-  //     type: 'shipping'
-  //   };
-
-  //   this.cart.addTotalShipping(envio);
-
-  //   // guardamos el despacho y vericamos si tiene descuento o no
-  //   this.saveShipping();
-  // }
-
-  /**
    *
+   * @param item
+   * @param pos
    */
-  // seleccionaDespachoOriginal(item: ShippingService, pos: number): void {
-  //   this.obj_fecha[pos] = item; // no esta
-  //   this.recibeYoname = this.getFullName(this.userSession);
-
-  //   this.cardShippingActive = item.index;
-  //   this.grupoShippingActive = this.shippingDays[pos].grupo;
-  //   this.shippingSelected = this.shippingDays[pos].fechas.find(item => item.index === this.cardShippingActive);
-  //   this.productosSeleccionado = this.shippingDays[pos].productodespacho;
-  //   this.recidDireccion = this.selectedShippingId;
-  //   const nombre = `Despacho ` + this.datePipe.transform(this.shippingSelected.fecha, 'EEEE dd MMM');
-  //   const envio: CartTotal = {
-  //     price: this.shippingSelected.precio,
-  //     title: nombre,
-  //     type: 'shipping'
-  //   };
-
-  //   this.cart.addTotalShipping(envio);
-  //   // guardamos el despacho y vericamos si tiene descuento o no
-  //   this.saveShipping();
-
-  //   // TODO:
-  //   this.fechas[pos] = this.shippingSelected.fecha;
-  //   this.localS.set('fechas', this.fechas);
-  //   this.localS.remove('tiendaRetiro');
-  // }
-
-  /* funcion de prueba*/
-  seleccionaDespacho(item: ShippingService, pos: number) {
+  seleccionaDespacho(item: ShippingService, pos: number): void {
     let invitado: any = null;
 
-    if (this.isLogin) {
-      this.recibeYoname = this.getFullName(this.userSession);
+    if (this.isLoggedIn) {
+      this.recibeYoname = SessionUtils.getFullName(this.userSession);
       this.recidDireccion = this.selectedShippingId;
       this.obj_fecha[pos] = item;
     }
     if (this.invitado) {
       invitado = this.guestStorage.get();
-      this.recibeYoname = this.getFullName(invitado);
+      this.recibeYoname = SessionUtils.getFullName(invitado);
       this.recidDireccion = 0;
       this.guestStorage.set(invitado);
       this.usuarioInv = this.guestStorage.get()!;
     }
 
+    console.log('this.shippingDays2: ', this.shippingDays[pos]);
     this.grupoShippingActive = this.shippingDays[pos].grupo ?? null;
     this.productosSeleccionado = this.shippingDays[pos].productodespacho;
 
@@ -683,12 +577,11 @@ export class PageCartShippingComponent implements OnInit {
       `Despacho ` +
       this.datePipe.transform(this.shippingSelected?.fecha, 'EEEE dd MMM');
 
-    const envio: CartTotal = {
+    this.cart.addTotalShipping({
       price: this.shippingSelected?.precio,
       title: nombre,
       type: 'shipping',
-    };
-    this.cart.addTotalShipping(envio);
+    });
 
     // guardamos el despacho y vericamos si tiene descuento o no
     this.saveShipping(pos, item.index);
@@ -696,34 +589,35 @@ export class PageCartShippingComponent implements OnInit {
     this.localS.set(StorageKey.fechas, this.fechas);
     this.localS.remove(StorageKey.tiendaRetiro);
   }
-  /** */
-  /**
-   *
-   */
-  seleccionaRetiro(item: ShippingService, pos: number) {
+
+  seleccionaRetiro(item: ShippingService, pos: number): void {
     this.obj_fecha[pos] = item;
     this.cardShippingActiveStore = item.index;
+    console.log('pos: ', pos);
+    console.log('this.shippingDaysStore1: ', this.shippingDaysStore);
+    // FIXME: shippingDaysStore queda vacio.
     this.grupoShippingActive = this.shippingDaysStore[pos].grupo ?? null;
     this.shippingSelected = (this.shippingDaysStore[pos].fechas || []).find(
       (item) => item.index === this.cardShippingActiveStore
     );
     this.recidDireccion = this.selectedShippingIdStore;
     this.fechas[pos] = this.shippingSelected?.fecha;
-    const envio: CartTotal = {
+
+    this.cart.addTotalShipping({
       price: this.shippingSelected?.precio,
       title: `Retiro tienda ${this.datePipe.transform(
         this.shippingSelected?.fecha,
         'EEEE dd MMM'
       )}`,
       type: 'shipping',
-    };
-    this.cart.addTotalShipping(envio);
+    });
 
     // guardamos el despacho y vericamos si tiene descuento o no
     this.saveShipping(pos, item.index);
     this.localS.set(StorageKey.fechas, this.fechas);
   }
 
+  /*
   addShipping(data: IShoppingCart) {
     if (data.shipment && data.shipment.discount > 0) {
       const descuentoEnvio: CartTotal = {
@@ -733,9 +627,13 @@ export class PageCartShippingComponent implements OnInit {
       };
       this.cart.addTotaldiscount(descuentoEnvio);
     }
-  }
+  }*/
 
-  next() {
+  /**
+   * Ir a la página de selección de pago.
+   */
+  goToPaymentPage(): void {
+    this._gmtService.addShippingInfo(dataLayer, this.cartSession);
     this.saveShipping(-1, -1, true);
   }
 
@@ -754,7 +652,7 @@ export class PageCartShippingComponent implements OnInit {
     if (indexGroup !== -1 && indexTripDate !== -1) {
       this.cart.updateShipping(indexGroup, indexTripDate).subscribe({
         next: (response: GetLogisticPromiseResponse) => {
-          const shoppingCart = response.shoppingCart;
+          //const shoppingCart = response.shoppingCart;
           this.loadingResumen = false;
           if (redirect) {
             this.router.navigate(['/', 'carro-compra', 'forma-de-pago']);
@@ -771,21 +669,23 @@ export class PageCartShippingComponent implements OnInit {
       this.getDireccionName(this.shippingSelected?.tipoenvio || '');
     } else {
       this.loadingResumen = false;
-      if (redirect) {
+      if (redirect)
         this.router.navigate(['/', 'carro-compra', 'forma-de-pago']);
-      }
     }
   }
 
-  subscribeOnLogin() {
-    this.authStateService.session$.subscribe((user) => {
-      this.isLogin = this.sessionService.isLoggedIn();
+  /**
+   *
+   */
+  private onLoginChange(): void {
+    this.authStateService.session$.subscribe(() => {
+      this.isLoggedIn = this.sessionService.isLoggedIn();
       this.obtieneDireccionesCliente();
-      this.addNotificationContact();
+      this.setNotificationContact();
     });
   }
 
-  openModal() {
+  private openModal(): void {
     const modalConfirmDates = this.modalService.show(
       ModalConfirmDatesComponent,
       {
@@ -803,7 +703,7 @@ export class PageCartShippingComponent implements OnInit {
       this.select_grupos = res;
     });
     modalConfirmDates.content?.selectTab.subscribe((res) => {
-      this.onSelect(null, res);
+      this.onSelectShippingType(null, res);
     });
   }
 
@@ -829,9 +729,16 @@ export class PageCartShippingComponent implements OnInit {
     this.innerWidth = event.target.innerWidth;
   }
 
-  retiroFlag: boolean = false;
-
-  onSelect(event: any, formaEntrega: 'retiro' | 'despacho' | 'sucursal') {
+  /**
+   * Al seleccionar el tipo de envío mediante los tabs.
+   * @param event
+   * @param formaEntrega
+   */
+  onSelectShippingType(
+    event: any,
+    formaEntrega: 'retiro' | 'despacho' | 'sucursal'
+  ): void {
+    console.log('onSelect');
     this.loadingResumen = true;
     this.select_grupos = false;
     this.confirmar = false;
@@ -841,12 +748,12 @@ export class PageCartShippingComponent implements OnInit {
 
     this.localS.remove(StorageKey.fechas);
     if (formaEntrega == 'sucursal') {
-      this.loadingSucursal = true;
+      //this.loadingSucursal = true;
       formaEntrega = 'despacho';
       this.shippingType = formaEntrega;
     } else {
       this.shippingType = formaEntrega;
-      this.loadingSucursal = false;
+      //this.loadingSucursal = false;
     }
     this.cart.updateShippingType(formaEntrega);
 
@@ -855,46 +762,37 @@ export class PageCartShippingComponent implements OnInit {
       // this.recibeType = 'yo';
       this.showAllAddress = false;
       this.showNewAddress = false;
-      this.direccion = false;
+      this.showAddress = false;
       this.selectedShippingIdStore = this.tempShippingIdStore;
 
       if (!this.selectedShippingIdStore) {
         this.shippingDaysStore = [];
         this.loadingResumen = false;
       } else if (this.selectedShippingIdStore) {
-        this.obtieneRetiro(false);
+        this.getPickup(false);
       }
-    } else if (formaEntrega === 'despacho' && this.isLogin) {
+    } else if (formaEntrega === 'despacho' && this.isLoggedIn) {
       this.selectedShippingId = null;
       this.retiroFlag = false;
-      // if (this.HideResumen()) {
-      //   this.recibeType = 'yo';
-      // } else {
-      //   this.recibeType = 'yo';
-      // }
       if (this.selectedShippingIdLast)
         this.selectedShippingId = this.selectedShippingIdLast;
       else this.setDefaultAddress();
 
       if (this.selectedShippingId) {
-        this.obtieneDespachos();
+        this.getDeliveries();
       }
     } else {
       this.retiroFlag = false;
     }
 
-    // let invitado: any = this.localS.get('invitado');
     let invitado = this.guestStorage.get();
-    if (invitado != null) {
+    if (invitado) {
       invitado.deliveryType = 'RC';
-      // this.localS.remove('invitado');
       this.guestStorage.remove();
-      // this.localS.set('invitado', invitado);
       this.guestStorage.set(invitado);
-      // this.usuarioInv = this.localS.get('invitado');
       this.usuarioInv = this.guestStorage.get()!;
 
-      this.obtieneDespachos();
+      this.getDeliveries();
     }
     //poner RC a cliente
     this.shippingDays = [];
@@ -908,14 +806,13 @@ export class PageCartShippingComponent implements OnInit {
     this.usuarioInvitado = true;
     invitado.tipoEnvio = '';
     this.guestStorage.set(invitado);
-
-    this.addNotificationContact();
+    this.setNotificationContact();
     window.scrollTo({ top: 0 });
   }
 
   // evento ejecutado cuando un invitado agrega una nueva direccion.
   async direccionVisita(direccion: any, removeShipping = true) {
-    this.direccion = true;
+    this.showAddress = true;
     let invitado = this.guestStorage.get() as IGuest;
 
     invitado.street = direccion.calle;
@@ -998,15 +895,16 @@ export class PageCartShippingComponent implements OnInit {
       }
     }
 
-    const request: GetLogisticPromiseRequest = {
-      shoppingCartId: this.cartSession._id!.toString(),
-      user: this.cartSession.user ?? '',
-      deliveryMode: DeliveryType.DELIVERY,
-      destination: destination,
-      addressId: address?.id ?? '',
-      address: address?.address ?? '',
-    };
-    const response = await firstValueFrom(this.cart.logisticPromise(request));
+    const response = await firstValueFrom(
+      this.cart.logisticPromise({
+        shoppingCartId: this.cartSession._id!.toString(),
+        user: this.cartSession.user ?? '',
+        deliveryMode: DeliveryType.DELIVERY,
+        destination: destination,
+        addressId: address?.id ?? '',
+        address: address?.address ?? '',
+      })
+    );
     const shoppingCart = response.shoppingCart;
 
     if (!response || !shoppingCart) {
@@ -1064,21 +962,18 @@ export class PageCartShippingComponent implements OnInit {
     this.localS.set(StorageKey.recibe, recibe);
   }
 
-  removeDespacho() {
+  removeDespacho(): void {
     this.cart.removeTotalShipping();
   }
 
   removeAddressInvitado() {
-    this.direccion = false;
+    this.showAddress = false;
     this.shippingSelected = null;
     this.selectedShippingId = null;
     this.shippingDays = [];
   }
-  toggleMap() {
-    this.showMap = !this.showMap;
-  }
 
-  // Funcion encargada de ocultar el resumen de la compra cuando se esta seleccionando direccion de envio.
+  // Ocultar el resumen de la compra cuando se esta seleccionando direccion de envio.
   HideResumen() {
     if (this.innerWidth <= 800) {
       return true;
@@ -1113,12 +1008,12 @@ export class PageCartShippingComponent implements OnInit {
   }
 
   // Funcion utilizada para verificar y devolver el nombre completo de una direccion, siendo usuario logeado o invitado.
-  getDireccionName(tipo: string) {
+  getDireccionName(shippingType: string) {
     var direccion: any;
-    if (tipo != 'TIENDA') {
+    if (shippingType !== 'TIENDA') {
       this.tituloDespacho = 'Dirección de despacho';
       this.tituloRecibe = 'Persona que recibe';
-      if (this.isLogin) {
+      if (this.isLoggedIn) {
         direccion = this.addresses.find(
           (direccion) => direccion.id === this.selectedShippingId
         );
@@ -1156,15 +1051,7 @@ export class PageCartShippingComponent implements OnInit {
       }
     }
 
-    if (direccion) {
-      this.direccionName = direccion;
-    } else {
-      this.direccionName = '';
-    }
-  }
-
-  setShowDetalleProductos(value: any) {
-    this.showDetalleProductos = value;
+    this.direccionName = direccion || '';
   }
 
   // Metodo que permite controlar cuando se muestran todas las direcciones de un usuario logeado.
@@ -1174,49 +1061,44 @@ export class PageCartShippingComponent implements OnInit {
     this.shippingSelected = null;
   }
 
-  changeAddress(recid: any) {
-    if (recid.length > 0) {
-      this.selectedShippingId = recid;
-      this.showAllAddress = false;
-      this.showDetalleProductos = false;
-      this.obtieneDespachos();
-      window.scrollTo({ top: 0 });
-      let address = this.addresses.find(
-        (address) => address.id == this.selectedShippingId
-      );
-      if (address) this.addressCustomerSelected = address;
-    }
+  /**
+   * Seleccionar dirección para despacho a domicilio.
+   * @param addressId
+   * @returns
+   */
+  selectDeliveryAddress(addressId: string): void {
+    if (!addressId) return;
+
+    this.selectedShippingId = addressId;
+    this.showAllAddress = false;
+    this.showDetalleProductos = false;
+    this.getDeliveries();
+    window.scrollTo({ top: 0 });
+    const selectedAddress = this.addresses.find(
+      (address) => address.id == this.selectedShippingId
+    );
+    if (selectedAddress) this.addressCustomerSelected = selectedAddress;
   }
 
   // permite setear los valores necesarios para modificar la direccion desde el boton de modificar direccion que solo aparece para pantallas mobiles.
   modificarSelectedAddress() {
     this.shippingSelected = null;
-    if (this.selectedShippingIdStore == null) {
+    if (!this.selectedShippingIdStore) {
       this.selectedShippingIdStore = this.tempShippingIdStore;
-      this.loadingShippingStore = true;
-      this.obtieneTiendas();
+      this.loadStores();
     }
 
-    if (this.isLogin) {
+    if (this.isLoggedIn) {
       this.setDefaultAddress();
-      this.obtieneDespachos();
+      this.getDeliveries();
     } else {
-      this.direccion = false; // null;
+      this.showAddress = false;
     }
     this.showDetalleProductos = false;
-    this.onSelect(null, 'retiro');
+    this.onSelectShippingType(null, 'retiro');
   }
 
-  /***
-   * Establecer dirección de despacho por defecto, siendo seleccionada la que tenga el id más alto (última añadida).
-   */
-  setDefaultAddress(): void {
-    if (this.selectedShippingId) return;
-    const addressIds = this.addresses.map((address) => Number(address.id));
-    this.selectedShippingId = String(Math.max(...addressIds));
-  }
-
-  cambiarTienda(
+  private setSelectedStore(
     newStore: IStore,
     callBackCartLoaded: CallBackCartLoaded
   ): void {
@@ -1229,36 +1111,18 @@ export class PageCartShippingComponent implements OnInit {
   }
 
   /**
-   * @author ignacio zapata  \"2020-11-06\
-   * @desc funcion utilizada para verificar si la fecha es un dia sabado.
-   * @params fecha en string
-   * @return
-   */
-  valFindeSemana(fecha: string) {
-    let isSabado = false;
-
-    let dia =
-      fecha && fecha.length > 0
-        ? moment(fecha).locale('es').format('dddd')
-        : null;
-    isSabado = dia && dia === 'sábado' ? true : false;
-
-    return isSabado;
-  }
-
-  /**
-   * @author Sebastian Aracena  \2021-04-15\
-   * @desc funcion utilizada para verificar si la fecha de la semana
+   * @desc Verificar si la fecha de la semana
    * @params item de grupo
    * @return
    */
   setSeleccionarEnvio(item: any, i: any) {
     if (this.shippingType == 'despacho') {
-      if (this.isLogin || this.usuarioInvitado)
+      if (this.isLoggedIn || this.usuarioInvitado)
         this.seleccionaDespacho(item, i);
       //else if (this.usuarioInvitado) this.seleccionaDespachoInvitado(item, i);
     } else {
-      if (this.isLogin || this.usuarioInvitado) this.seleccionaRetiro(item, i);
+      if (this.isLoggedIn || this.usuarioInvitado)
+        this.seleccionaRetiro(item, i);
       //else if () this.seleccionaRetiro(item, i);
     }
   }
@@ -1268,8 +1132,8 @@ export class PageCartShippingComponent implements OnInit {
    * @params item de grupo
    * @return
    */
-  setSeleccionarEnvioMobile(item: any, i: any) {
-    if (this.grupos == 0) this.grupos = this.grupos + 1;
+  setSeleccionarEnvioMobile(item: any, i: any): void {
+    if (!this.grupos) this.grupos = this.grupos + 1;
     else if (this.grupos != 0 && this.indexTemp != i)
       this.grupos = this.grupos + 1;
 
@@ -1278,7 +1142,7 @@ export class PageCartShippingComponent implements OnInit {
       while (this.obj_fecha.length > this.shippingDays.length) {
         this.obj_fecha.splice(this.obj_fecha.length - 1, 1);
       }
-      if (this.shippingDays.length == this.grupos) {
+      if (this.shippingDays.length === this.grupos) {
         this.confirmar = true;
         this.openModal();
       }
@@ -1287,122 +1151,88 @@ export class PageCartShippingComponent implements OnInit {
       while (this.obj_fecha.length > this.shippingDaysStore.length) {
         this.obj_fecha.splice(this.obj_fecha.length - 1, 1);
       }
-      if (this.shippingDaysStore.length == this.grupos) {
+      if (this.shippingDaysStore.length === this.grupos) {
         this.confirmar = true;
         this.openModal();
       }
     }
-
     this.indexTemp = i;
   }
 
   /**
-   * @desc Verificar si la fecha de la semana...
+   * @desc V
    * @params item de grupo
    * @return
    */
-  async eliminarGrupo(index: any) {
+  eliminarGrupo(index: any): void {
     this.loadingShipping = true;
     this.loadingResumen = true;
-    const resultado: any = this.addresses.find(
-      (address) => address.id == this.selectedShippingId
-    );
-    const usuario: ISession = this.sessionService.getSession();
-    let request: IRemoveGroupRequest = {};
+
+    let branch;
     if (this.shippingType === ShippingType.DESPACHO) {
-      request = {
-        user: usuario.username,
-        id: index,
-        branch: resultado.city,
-      };
+      const selectedAddress = this.addresses.find(
+        (address) => address.id === this.selectedShippingId
+      );
+      branch = selectedAddress?.city;
     } else {
-      let disponible = this.stores.find(
+      const selectedStore = this.stores.find(
         (item) => item.id == this.selectedShippingIdStore
       );
-      request = {
-        user: usuario.username,
-        id: index,
-        branch: disponible?.code,
-      };
+      branch = selectedStore?.code;
     }
 
-    this.cart.removeGroup(request).subscribe((r) => {
-      this.cart.load();
+    this.cart
+      .removeGroup({ user: this.userSession.username, id: index, branch })
+      .subscribe(() => {
+        this.cart.load();
+        this.shippingDaysStore = [];
+        this.shippingDays = [];
+        this.getDeliveries();
+        this.loadStores();
+      });
+  }
 
-      this.shippingDaysStore = [];
-      this.shippingDays = [];
-
-      this.obtieneDespachos();
-      this.obtieneTiendas();
+  /**
+   * Generar cotización.
+   */
+  generateQuotation(): void {
+    this.loadingCotizacion = true;
+    const shoppingCartId = this.cartSession._id!.toString();
+    this.cart.generateQuotation(shoppingCartId).subscribe({
+      next: (response) => {
+        this.loadingCotizacion = false;
+        this.cart.load();
+        this.router.navigate([
+          '/carro-compra/comprobante-de-cotizacion',
+          response.shoppingCart.salesId,
+        ]);
+      },
+      error: (err) => {
+        console.error(err);
+        this.toast.error('Ha ocurrido un error al generar la cotización.');
+      },
     });
   }
 
-  ver_fechas() {
-    if (this.shippingDaysStore.length) {
-      let menor = this.shippingDaysStore[0].fechas?.[0].fecha;
-      let menor_fecha: any = new Date(menor);
-      this.shippingDaysStore.map((item) => {
-        let fecha_comparar: any = new Date(item.fechas?.[0].fecha);
-        if (menor_fecha.getTime() >= fecha_comparar.getTime()) {
-          menor = item.fechas?.[0].fecha;
-          menor_fecha = new Date(menor);
-        }
-      });
-
-      if (moment(menor).startOf('day').toISOString() === this.fecha_actual) {
-        this.retiro = 'Retira Hoy';
-      } else {
-        if (moment(menor).weekday() == 1) this.retiro = 'Retira el día lunes';
-        else if (moment(menor).weekday() == 2)
-          this.retiro = 'Retira el día martes';
-        else if (moment(menor).weekday() == 3)
-          this.retiro = 'Retira el día miercoles';
-        else if (moment(menor).weekday() == 4)
-          this.retiro = 'Retira el día jueves';
-        else if (moment(menor).weekday() == 5)
-          this.retiro = 'Retira el día viernes';
-        else if (moment(menor).weekday() == 6)
-          this.retiro = 'Retira el día  sabado';
-        else if (moment(menor).weekday() == 7)
-          this.retiro = 'Retira el día  domingo';
-      }
-    }
+  /***
+   * Establecer dirección de despacho por defecto, siendo seleccionada la que tenga el id más alto (última añadida).
+   */
+  setDefaultAddress(): void {
+    if (this.selectedShippingId) return;
+    const addressIds = this.addresses.map((address) => Number(address.id));
+    this.selectedShippingId = String(Math.max(...addressIds));
   }
 
-  finishQuotation() {
-    const shoppingCartId = this.cartSession._id!.toString();
-    this.loadingCotizacion = true;
-
-    this.cart
-      .generateQuotation({
-        shoppingCartId,
-      })
-      .subscribe({
-        next: (r) => {
-          this.loadingCotizacion = false;
-
-          const number = r.shoppingCart.salesId;
-
-          this.cart.load();
-          this.router.navigate([
-            '/carro-compra/comprobante-de-cotizacion',
-            number,
-          ]);
-        },
-        error: (e) => {
-          console.error(e);
-          this.toast.error('Ha ocurrido un error al generar la cotización');
-        },
-      });
-  }
-
-  // Eliminar dirección
-  deleteAddress(direccion: any) {
+  /**
+   * Eliminar dirección de despacho a domicilio.
+   * @param address
+   */
+  deleteDeliveryAddress(address: any) {
     const initialState: DataModal = {
       titulo: 'Confirmación',
       mensaje: `¿Esta seguro que desea <strong>eliminar</strong> esta direccion?<br><br>
-                  Calle: <strong>${direccion.street}</strong><br>
-                  Número: <strong>${direccion.number}</strong>`,
+                  Calle: <strong>${address.street}</strong><br>
+                  Número: <strong>${address.number}</strong>`,
       tipoIcon: TipoIcon.QUESTION,
       tipoModal: TipoModal.QUESTION,
     };
@@ -1410,20 +1240,16 @@ export class PageCartShippingComponent implements OnInit {
       initialState,
       ignoreBackdropClick: true,
     });
-    bsModalRef.content.event.subscribe(async (res: any) => {
+    bsModalRef.content.event.subscribe((res: any) => {
       if (res) {
-        const documentId = this.userSession.documentId;
-        const addressId = direccion.id;
         this.customerAddressApiService
-          .deleteAddress(documentId, addressId)
+          .deleteAddress(this.userSession.documentId, address.id)
           .subscribe({
-            next: (_) => {
+            next: () => {
               this.toast.success('Dirección eliminada exitosamente.');
               this.respuesta(true, true);
-              if (
-                this.direccionConfigurada.deliveryAddress?.id === direccion.id
-              )
-                this.cambioDireccionPreferenciaCliente(direccion.id);
+              if (this.direccionConfigurada.deliveryAddress?.id === address.id)
+                this.updatePreferredDeliveryAddress(address.id);
             },
             error: (err: IError) => {
               this.toast.error(err.message);
@@ -1434,14 +1260,14 @@ export class PageCartShippingComponent implements OnInit {
   }
 
   /**
-   * Se activa si se elimina la dirección preferencia del cliente.
+   * Actualizar la dirección de despacho a domicilio preferida del cliente si se elimina la dirección actual preferida.
    * @param recid
    */
-  cambioDireccionPreferenciaCliente(addressId: string) {
+  updatePreferredDeliveryAddress(addressId: string): void {
     const preferences = this.customerPreferencesStorage.get();
-    let nueva_preferencia =
+    let preferredDeliveryAddressId =
       this.addresses.find((address) => address.id !== addressId) || null;
-    preferences.deliveryAddress = nueva_preferencia;
+    preferences.deliveryAddress = preferredDeliveryAddressId;
     this.customerPreferencesStorage.set(preferences);
   }
 }

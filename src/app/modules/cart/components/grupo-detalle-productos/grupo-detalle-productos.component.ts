@@ -47,7 +47,7 @@ export class GrupoDetalleProductosComponent implements OnInit {
     this.eliminarGrupo.unsubscribe();
   }
 
-  eliminar(index: any) {
+  eliminar(index: any): void {
     this.eliminarGrupo.emit(index);
     this.modalRef.hide();
   }
