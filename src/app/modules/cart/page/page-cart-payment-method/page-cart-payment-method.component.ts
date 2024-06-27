@@ -937,20 +937,20 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
     this.router.navigate(['/', 'carro-compra', 'forma-de-pago']);
   }
 
-  async validarStockActual() {
-    let consultaStock = await firstValueFrom(
-      this.cartService.validateStock({
-        shoppingCartId: this.cartSession._id!.toString(),
-      })
-    );
-    if (consultaStock.stockProblem && consultaStock.stockProblemLines) {
-      this.productosSinStock = consultaStock.stockProblemLines;
-      this.renderer
-        .selectRootElement(this.openModalButton.nativeElement)
-        .click();
-    }
-    return consultaStock.stockProblem;
-  }
+  // async validarStockActual() {
+  //   let consultaStock = await firstValueFrom(
+  //     this.cartService.validateStock({
+  //       shoppingCartId: this.cartSession._id!.toString(),
+  //     })
+  //   );
+  //   if (consultaStock.stockProblem && consultaStock.stockProblemLines) {
+  //     this.productosSinStock = consultaStock.stockProblemLines;
+  //     this.renderer
+  //       .selectRootElement(this.openModalButton.nativeElement)
+  //       .click();
+  //   }
+  //   return consultaStock.stockProblem;
+  // }
 
   VolverPaginaCarro() {
     this.router.navigate(['/', 'carro-compra']);
@@ -1052,7 +1052,7 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
       this.btnWebpayPost = true;
       this.paymentWebpayForm = true;
 
-      if (await this.validarStockActual()) return;
+      // if (await this.validarStockActual()) return;
       await this.verificar_carro();
       await this.updateCartAndUserTurn();
       await this.prepararCarroPrePago();
@@ -1083,7 +1083,7 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
         methodType: 'MERCADOPAGO',
       });
 
-      if (await this.validarStockActual()) return;
+      // if (await this.validarStockActual()) return;
       await this.verificar_carro();
       await this.updateCartAndUserTurn();
       await this.prepararCarroPrePago();
@@ -1116,7 +1116,7 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
         paymentType: 'Unknown',
         methodType: 'KHIPU',
       });
-      if (await this.validarStockActual()) return;
+      // if (await this.validarStockActual()) return;
       await this.verificar_carro();
       await this.updateCartAndUserTurn();
       await this.prepararCarroPrePago();
@@ -1147,7 +1147,7 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
       methodType: 'OC',
     });
     try {
-      if (await this.validarStockActual()) return;
+      // if (await this.validarStockActual()) return;
 
       if (
         this.archivo !== undefined &&
@@ -1208,7 +1208,7 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
    */
   async paymentOvSms() {
     try {
-      if (await this.validarStockActual()) return;
+      // if (await this.validarStockActual()) return;
 
       if (
         this.archivo !== undefined &&
