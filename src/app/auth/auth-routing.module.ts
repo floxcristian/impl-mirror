@@ -12,6 +12,7 @@ import { PageSpecialsComponent } from '../pages/page-specials/page-specials.comp
 
 import { AuthGuard } from '../core/guards/auth.guard';
 import { PageDevolucionesComponent } from '../pages/page-devoluciones/page-devoluciones.component';
+import { PageMesDelCamioneroComponent } from '../pages/page-mes-del-camionero/page-mes-del-camionero.component';
 
 const routes: Routes = [
   {
@@ -19,10 +20,13 @@ const routes: Routes = [
     pathMatch: 'full',
     redirectTo: 'inicio',
   },
-
   {
     path: 'devoluciones',
     component: PageDevolucionesComponent,
+  },
+  {
+    path: 'mes-del-camionero',
+    component: PageMesDelCamioneroComponent,
   },
   {
     path: 'carro-compra',

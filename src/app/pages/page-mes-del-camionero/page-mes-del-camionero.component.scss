@@ -1,0 +1,152 @@
+
+@font-face {
+  font-family: Myriad Pro;
+  font-weight: bold;
+  src: url('../../../assets/fonts/myriad-pro/MYRIADPRO-REGULAR.OTF');
+}
+
+::ng-deep.carouselLista .owl-prev {
+  @media (min-width: 576px) {
+    left: -35px !important;
+    font-size: 2rem !important;
+    top: 50% !important;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    display: block !important;
+
+    i {
+      color: #909090;
+    }
+  }
+}
+
+::ng-deep.carouselLista .owl-next {
+  @media (min-width: 576px) {
+    right: -35px !important;
+    font-size: 2rem !important;
+    top: 50% !important;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    display: block !important;
+
+    i {
+      color: #909090;
+    }
+  }
+}
+
+::ng-deep.carouselLista .owl-dots {
+  background: none;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+::ng-deep.carouselLista .owl-dot {
+  @media (min-width: 992px) {
+    width: 13px;
+    height: 13px;
+    border-radius: 10px;
+    background: #e0e0e0;
+    margin-left: 5px;
+  }
+}
+
+::ng-deep.carouselLista .owl-dot.active {
+  @media (min-width: 992px) {
+    background: #094cac;
+  }
+}
+
+.cont-escritorio {
+  width: 100vw;
+  font-family: Myriad Pro;
+}
+
+.body-form {
+  color: #000;
+}
+
+@media (min-width: 1400px) {
+  .cont-escritorio {
+    div.formulario {
+      .body-form {
+        transform: scale(1.5);
+      }
+    }
+  }
+
+  option {
+    font-size: 17px;
+  }
+}
+
+.cont-movil {
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+
+  div.body {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+  }
+
+  div.formulario {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .body-form {
+      color: #000;
+    }
+  }
+}
+
+@media (min-width: 700px) {
+  .cont-movil {
+    div.formulario {
+      .body-form {
+        transform: scale(1.5);
+        margin-top: 150px;
+      }
+    }
+  }
+}
+
+@media (max-width: 699px) {
+  .cont-movil {
+    div.formulario {
+      .body-form {
+        margin-top: 1.5rem;
+      }
+    }
+  }
+}
+
+h2,
+h4 {
+  font-weight: normal !important;
+}
+
+hr {
+  border-top: 2px solid rgb(0 0 0 / 30%) !important;
+}
+
+.btn {
+  border-radius: 15px !important;
+}
+
+button.disabled {
+  cursor: no-drop;
+}
+
+input.error {
+  border: 1px solid #ff000080 !important;
+}
+
+input.form-control-sm {
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+}
