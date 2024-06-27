@@ -515,7 +515,7 @@
               [text]="loadingText"
             ></app-loading-element>
 
-            <div *ngIf="guest">
+            <!-- <div *ngIf="guest">
               <div class="row">
                 <div style="margin-bottom: 10px; padding: 5px">
                   <div class="card-body m-0">
@@ -613,7 +613,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <ng-container *ngIf="alertCartShow && alertCart">
               <div class="alert-cart">
                 <div class="row" class="d-flex justify-content-center mb-3">
@@ -1062,7 +1062,7 @@
               [text]="loadingText"
             ></app-loading-element>
 
-            <div *ngIf="guest">
+            <!-- <div *ngIf="guest">
               <div class="row">
                 <div
                   class="card shadow-none"
@@ -1164,7 +1164,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <ng-container *ngIf="alertCartShow && alertCart">
               <div class="row" class="d-flex justify-content-center mb-3">
                 <div class="col-12" class="text-center">
@@ -2621,7 +2621,7 @@
   id="openModalButton"
   [hidden]="true"
   data-bs-toggle="modal"
-  data-target="#stockAlertModal"
+  data-bs-target="#stockAlertModal"
 >
   modal
 </button>
@@ -2629,11 +2629,9 @@
 <!-- Start::modal para informar a cliente que hubieron problemas de stock -->
 <div
   class="modal fade"
-  #stockAlertModal
   id="stockAlertModal"
   tabindex="-1"
-  data-backdrop="static"
-  role="dialog"
+  data-bs-backdrop="static"
   aria-labelledby="saveCartModalLabel"
   aria-hidden="true"
 >
@@ -2643,6 +2641,12 @@
         <h6>
           No se ha encontrado stock suficiente para los siguientes productos:
         </h6>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body" style="min-height: auto">
         <div
@@ -2687,7 +2691,7 @@
           type="button"
           class="btn btn-warning"
           (click)="VolverPaginaCarro()"
-          data-dismiss="modal"
+          data-bs-dismiss="modal"
         >
           Volver a Carro
         </button>
