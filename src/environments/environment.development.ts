@@ -36,7 +36,7 @@ export const environment = {
 
   // Sucursal por defecto a enviar a las apis. (Si no existe ninguna seleccionada)
   defaultBranch: {
-    zone: 'CENTRO',
+    zone: 'San Bernardo',
     code: 'SAN BRNRDO',
     city: 'SAN BERNARDO',
   },
