@@ -760,16 +760,17 @@ export class CartService {
     });
   }
 
-  validateStock(params: {
-    shoppingCartId: string;
-  }): Observable<IValidateShoppingCartStockResponse> {
-    return this.http.post<IValidateShoppingCartStockResponse>(
-      `${API_CART}/validate-stock`,
-      {
-        shoppingCartId: params.shoppingCartId,
-      }
-    );
-  }
+  //no se utiliza más, pero esta en el api todavia
+  // validateStock(params: {
+  //   shoppingCartId: string;
+  // }): Observable<IValidateShoppingCartStockResponse> {
+  //   return this.http.post<IValidateShoppingCartStockResponse>(
+  //     `${API_CART}/validate-stock`,
+  //     {
+  //       shoppingCartId: params.shoppingCartId,
+  //     }
+  //   );
+  // }
 
   saveTemp(params: {
     shoppingCartId: string;
