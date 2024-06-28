@@ -73,9 +73,9 @@ export class CustomerApiService {
       userType,
       customerType,
       businessLine: businessLine || '',
-      businessLineName: businessName || '',
+      businessLineName: businessLine || '',
       email: formattedEmail,
-      firstName,
+      firstName : isCompanyUser ? businessName : firstName,
       lastName,
       contact: {
         documentId: isCompanyUser ? contactDocumentId : documentId,
