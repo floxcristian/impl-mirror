@@ -59,6 +59,7 @@ export class AuthInterceptor implements HttpInterceptor {
           'Authorization',
           'Basic ' + this.authdata
         ),
+        // .set('X-Ecommerce-User', session?.email || ''),
       });
     }
 
