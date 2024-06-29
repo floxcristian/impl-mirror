@@ -13,7 +13,7 @@ export interface respuestaUploadImage {
   standalone: true,
   imports: [ImageCropperComponent, CommonModule],
   templateUrl: './upload-image-modal.component.html',
-  styleUrl: './upload-image-modal.component.scss'
+  styleUrl: './upload-image-modal.component.scss',
 })
 export class UploadImageModalComponent {
   @ViewChild(ImageCropperComponent) imageCropper!: ImageCropperComponent;
@@ -54,19 +54,17 @@ export class UploadImageModalComponent {
     this.imageCropper.transform = {
       ...this.imageCropper.transform,
       flipH: flippedV,
-      flipV: flippedH
+      flipV: flippedH,
     };
   }
 
   uploadImage() {
-    const blob  = this.croppedEvent.blob;
-    const file: File = this.imageChangedEvent.target.files[0]
-    console.log(this.croppedEvent, this.imageChangedEvent.target.files[0]);
+    const blob = this.croppedEvent.blob;
+    const file: File = this.imageChangedEvent.target.files[0];
 
     const resp: File = new File([blob!], file.name, { type: 'image/png' });
-    console.log(resp);
 
     this.respuesta.emit({ file: resp, url: this.croppedImage });
-    this.ModalRef.hide()
+    this.ModalRef.hide();
   }
 }

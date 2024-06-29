@@ -389,7 +389,7 @@
       style="height: 400px; background-color: #009579"
     >
       <div class="mt-3" style="font-size: 24px">
-        Ellos ya subieron su foto <br>¡Solo faltas tú!
+        Ellos ya subieron su foto <br />¡Solo faltas tú!
       </div>
       <owl-carousel-o
         class="carouselLista"
@@ -408,7 +408,7 @@
                   class="text-center text-white p-1"
                   style="background-color: #0063b9"
                 >
-                  {{ participantes[i].nombre }}
+                  {{ participantes[i].nombre | titlecase }}
                 </div>
               </div>
               <div
@@ -421,7 +421,7 @@
                   class="text-center text-white p-1"
                   style="background-color: #0063b9"
                 >
-                  {{ participantes[i + 1].nombre }}
+                  {{ participantes[i + 1].nombre | titlecase }}
                 </div>
               </div>
             </ng-template>
