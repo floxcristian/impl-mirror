@@ -1,0 +1,22 @@
+.modal-header {
+  padding: 0.5rem 1rem;
+  align-items: center;
+
+  .close {
+      margin: 0;
+      padding: 0 0.5rem;
+  }
+}
+
+.modal-body {
+  font-size: 15px;
+  min-height: auto !important;
+}
+
+::ng-deep.modal-camionero24 {
+  max-width: 650px;
+}
+
+img:hover {
+  transform: scale(1.1);
+}

@@ -50,16 +50,25 @@
     background: #e0e0e0;
     margin-left: 5px;
   }
-}
 
-::ng-deep.carouselLista .owl-dot.active {
-  @media (min-width: 992px) {
-    background: #094cac;
+  @media (max-width: 992px) {
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    background: #e0e0e0;
+    margin-left: 10px;
   }
 }
 
+::ng-deep.carouselLista .owl-dot.active {
+  // @media (min-width: 992px) {
+    background: #094cac;
+  // }
+}
+
 .cont-escritorio {
-  width: 100vw;
+  width: 1200px;
+  margin: auto;
   font-family: Myriad Pro;
 }
 
@@ -142,11 +151,23 @@ button.disabled {
   cursor: no-drop;
 }
 
+.input-group {
+  margin-bottom: 14px;
+}
+
 input.error {
   border: 1px solid #ff000080 !important;
 }
 
-input.form-control-sm {
-  border-top-left-radius: 0px !important;
-  border-bottom-left-radius: 0px !important;
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload {
+  cursor: pointer;
+    color: #444;
+    background-color: #ddd;
+    width: 100%;
+    border-radius: 3px;
+    padding: 10px;
 }
