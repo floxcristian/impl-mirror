@@ -59,7 +59,7 @@ export class PageMesDelCamioneroComponent {
     {
       nombre: 'Ingrid Brito',
       foto: 'assets/images/concursos/mesDelCamionero24/INGRID BRITO.webp',
-    }
+    },
   ];
 
   carouselOptions = {
@@ -119,19 +119,24 @@ export class PageMesDelCamioneroComponent {
       boletaFactura: ['', Validators.required],
     });
 
-    this.clientsService.getMesDelCamionero().subscribe(
-      (resp: any) => {
-        const fotos = resp.data.map((x: any) => {
+    this.cargaFotos();
+  }
+
+  cargaFotos() {
+    this.clientsService.getMesDelCamionero().subscribe((resp: any) => {
+      resp.data
+        .map((x: any) => {
           const obj = {
             nombre: x.nombre,
-            foto: x.foto.url
+            foto: x.foto.url,
           };
           return obj;
-        }).reverse().forEach((x: any) => {
-          this.participantes.unshift(x);
         })
-      }
-    )
+        .reverse()
+        .forEach((x: any) => {
+          this.participantes.unshift(x);
+        });
+    });
   }
 
   cargaFoto() {
@@ -169,10 +174,14 @@ export class PageMesDelCamioneroComponent {
         }
 
         this.cargando = false;
+        this.cargaFotos();
         this.formulario.reset();
         this.foto = undefined;
         this.fotoUrl = undefined;
-        this.modalService.show(Camionero24OkModalComponent, { class: 'mx-auto modal-camionero24', ignoreBackdropClick: true });
+        this.modalService.show(Camionero24OkModalComponent, {
+          class: 'mx-auto modal-camionero24',
+          ignoreBackdropClick: true,
+        });
       });
   }
 }
