@@ -1,0 +1,69 @@
+<div class="modal-header justify-content-between p-3 border-0">
+  <h5 class="modal-title">
+    <i class="fas fa-map-marked-alt mx-2"></i>Sube tu Foto
+  </h5>
+  <button
+    name="modalRef"
+    type="button"
+    class="btn-close pull-right"
+    aria-label="Close"
+    (click)="ModalRef.hide()"
+  ></button>
+</div>
+<div
+  class="modal-body px-5 pt-4 pb-5 text-center"
+  style="max-height: 80vh; overflow-y: auto"
+>
+  <label
+    *ngIf="!croppedImage"
+    for="file-upload"
+    class="custom-file-upload d-flex align-items-center justify-content-center"
+  >
+    <i class="fa-regular fa-cloud-arrow-up me-2" style="font-size: 1.7rem"></i>
+    <span class="mr-2">Subir Foto</span>
+  </label>
+  <input id="file-upload" type="file" (change)="fileChangeEvent($event)" />
+
+  <div *ngIf="croppedImage">
+    <button class="btn btn-primary me-3" (click)="rotateLeft()">
+      Rotar izquierda
+    </button>
+    <button class="btn btn-primary" (click)="rotateRight()">
+      Rotar derecha
+    </button>
+  </div>
+
+  <image-cropper
+    [imageChangedEvent]="imageChangedEvent"
+    [maintainAspectRatio]="true"
+    [aspectRatio]="428 / 185"
+    [resizeToWidth]="428"
+    format="png"
+    (imageCropped)="imageCropped($event)"
+    [canvasRotation]="canvasRotation"
+  ></image-cropper>
+
+  <div *ngIf="croppedImage" class="preview-container">
+    <h5>Vista previa de la imagen recortada:</h5>
+    <img [src]="croppedImage" class="preview-image" />
+  </div>
+</div>
+
+<div class="modal-footer justify-content-end">
+  <button
+    name="cerrar"
+    class="btn btn-link text-danger"
+    [disabled]="loadingForm"
+    (click)="ModalRef.hide()"
+  >
+    Cancelar
+  </button>
+  <button
+    name="agregarDireccion"
+    class="btn btn-primary"
+    [disabled]="!croppedImage"
+    (click)="uploadImage()"
+  >
+    Aceptar
+  </button>
+</div>

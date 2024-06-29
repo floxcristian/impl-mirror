@@ -101,3 +101,39 @@ export function rutPersonaValidator(
     return { invalidDocumentId: true };
   }
 }
+
+export function rutValidator(control: AbstractControl): { [key: string]: boolean } | null {
+  const rut = control.value;
+  const rexp = new RegExp(/^([0-9])+\-([kK0-9])+$/);
+
+  if (rut === null) {
+      return { rutMalo: true };
+  }
+
+  if (rut.match(rexp)) {
+      const RUT = rut.split('-');
+      const elRut = RUT[0];
+      let factor = 2;
+      let suma = 0;
+      let dv: string;
+      for (let i = elRut.length - 1; i >= 0; i--) {
+          factor = factor > 7 ? 2 : factor;
+          // tslint:disable-next-line: radix
+          suma += parseInt(elRut[i]) * factor++;
+      }
+      dv = (11 - (suma % 11)).toString();
+      if (dv === '11') {
+          dv = '0';
+      } else if (dv === '10') {
+          dv = 'k';
+      }
+
+      if (dv === RUT[1].toLowerCase()) {
+          return null;
+      } else {
+          return { rutMalo: true };
+      }
+  } else {
+      return { rutMalo: true };
+  }
+}

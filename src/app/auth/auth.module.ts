@@ -30,6 +30,7 @@ import { DevolucionOkModalComponent } from '../pages/components/devolucion-ok-mo
 // Modules
 import { FooterB2cModule } from '../modules/footer-b2c/footer-b2c.module';
 import { PageHomeCmsModule } from '../modules/page-home-cms/page-home-cms.module';
+import { PageMesDelCamioneroComponent } from '../pages/page-mes-del-camionero/page-mes-del-camionero.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { PageHomeCmsModule } from '../modules/page-home-cms/page-home-cms.module
     LayoutComponent,
     PageDevolucionesComponent,
     DevolucionOkModalComponent,
+    PageMesDelCamioneroComponent
   ],
   imports: [
     AuthRoutingModule,

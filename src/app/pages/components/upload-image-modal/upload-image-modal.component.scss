@@ -1,0 +1,67 @@
+.modal-header {
+  padding: 0.5rem 1rem;
+  align-items: center;
+
+  .close {
+    margin: 0;
+    padding: 0 0.5rem;
+  }
+}
+
+.modal-body {
+  font-size: 15px;
+  min-height: auto !important;
+}
+
+::ng-deep.modal-camionero24 {
+  @media (min-width: 992px) {
+    max-width: 500px;
+  }
+  @media (max-width: 992px) {
+    margin: 0px !important;
+    max-width: 100vw;
+  }
+}
+
+img:hover {
+  transform: scale(1.1);
+}
+
+.modal-body {
+  color: #000;
+}
+
+input[type='file'] {
+  display: none;
+}
+
+image-cropper {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+}
+
+.preview-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.preview-image {
+  width: 100%;
+  // height: 185px;
+  // object-fit: contain;
+  // border: 1px solid #ddd;
+  // box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.custom-file-upload {
+  border: 2px solid #ccc;
+  width: 178px;
+  padding: 8px;
+  margin: auto;
+  border-radius: 10px;
+  background-color: #0063b9;
+  color: #fff;
+  cursor: pointer;
+}
