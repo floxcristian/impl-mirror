@@ -218,7 +218,7 @@ export class PageCartShippingComponent implements OnInit {
   async ngOnInit() {
     console.log('this.cartSession: ', this.cartSession);
     this.isLoggedIn = this.sessionService.isLoggedIn();
-
+    this.updateStep()
     this.setNotificationContact();
     this.obtieneDireccionesCliente();
     this.loadStores();
@@ -266,6 +266,10 @@ export class PageCartShippingComponent implements OnInit {
 
   ngAfterContentChecked(): void {
     this.cd.detectChanges();
+  }
+
+  updateStep(){
+    if(this.cartSession._id) this.cart.saveStep(this.cartSession._id,2).subscribe()
   }
 
   async obtieneDireccionesCliente(isDelete: boolean = false) {

@@ -131,6 +131,7 @@ export class PageCartComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const _this = this;
+    this.updateStep()
     this.user = this.sessionService.getSession();
     this.shoppingCartService.items$
       .pipe(
@@ -162,6 +163,12 @@ export class PageCartComponent implements OnInit, OnDestroy {
     if (isPlatformBrowser(this.platformId)) {
       _this.shoppingCartService.calc(true);
     }
+  }
+
+  updateStep(){
+    let cartSession: IShoppingCart =
+    this.shoppingCartStorage.get() as IShoppingCart;
+    if(cartSession._id) this.shoppingCartService.saveStep(cartSession._id,1).subscribe()
   }
 
   gtmViewCart() {
