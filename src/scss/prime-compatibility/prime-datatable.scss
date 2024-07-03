@@ -1,0 +1,30 @@
+/*********************************************************************
+* Estilos para forzar que las tablas de primeng se muestren bien.
+* + Se ven mal porque choca con bootstrap.
+**********************************************************************/
+.p-datatable .p-datatable-tbody > tr > td {
+  border: 1px solid #e5e7eb !important;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0 !important;
+}
+
+.p-button.p-button-icon-only.p-button-rounded {
+  border-radius: 50% !important;
+}
+
+.p-dropdown-items {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.p-paginator .p-paginator-current {
+  margin-left: auto !important;
+}
+
+.p-datatable .p-datatable-header {
+  border: 1px solid #e5e7eb !important;
+  border-width: 1px 1px 0 1px !important;
+}

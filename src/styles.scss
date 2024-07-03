@@ -85,20 +85,19 @@
   padding-left: 15px !important;
 }
 
-.text-justify {
-  text-align: justify !important;
-}
-
 a:not([href]),
 a:not([href]):hover {
   color: inherit;
   text-decoration: none;
 }
 
-/* You can add global styles to this file, and also import other style files */
-
-@import 'bootstrap/scss/bootstrap';
+// Bootstrap
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css' layer(bootstrap);
+// Estilos del template de angular (quitar mas adelante esta dependencia).
 @import 'scss/style';
+// Primeng
+@import 'primeng/resources/themes/lara-light-blue/theme.css';
+@import 'primeng/resources/primeng.css';
 
 a {
   text-decoration: none;
@@ -191,31 +190,16 @@ agm-map {
   src: url('./assets/fonts/AvenirLTStd-Book.otf');
 }
 
-@font-face {
-  font-family: CatalogTitles;
-  font-weight: normal;
-  src: url('./assets/fonts/catalog-tiles-ico.woff');
-}
-
 .icono {
   font-family: 'MiIconos';
   font-style: normal;
   font-weight: normal;
-  // speak: none;
   display: inline-block;
   text-decoration: inherit;
   text-transform: none;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-.icono-home:before {
-  content: '\e907';
-}
-
-.icono-user:before {
-  content: '\e901';
 }
 
 .map-container {
@@ -290,7 +274,7 @@ body {
 * Estilos para forzar que las tablas de primeng se muestren bien.
 * + Se ven mal porque choca con bootstrap.
 **********************************************************************/
-.p-datatable .p-datatable-tbody > tr > td {
+/*.p-datatable .p-datatable-tbody > tr > td {
   border: 1px solid #e5e7eb !important;
 }
 
@@ -315,18 +299,19 @@ body {
 .p-datatable .p-datatable-header {
   border: 1px solid #e5e7eb !important;
   border-width: 1px 1px 0 1px !important;
-}
+}*/
 
 /*********
 *
 */
-.p-button {
+/*.p-button {
   border-radius: 6px !important;
-}
+}*/
 
 /****************
 *
 */
+/*
 .pt-5 {
   padding-top: 2rem !important;
 }
@@ -369,8 +354,9 @@ body {
 
 .text-color {
   color: var(--text-color) !important;
-}
+}*/
 
+/*
 .p-input-icon-left,
 .p-input-icon-right {
   position: relative;
@@ -404,7 +390,7 @@ body {
 
 .surface-border {
   border-color: var(--surface-border) !important;
-}
+}*/
 
 .p-column-filter-row .p-column-filter-menu-button,
 .p-column-filter-row .p-column-filter-clear-button {
@@ -444,9 +430,10 @@ body {
   padding: 0.5rem 0.5rem !important;
 }*/
 
+/*
 .p-overlay-badge .p-badge {
   transform: translate(67%, -29%) !important;
-}
+}*/
 
 /*
 .p-placeholder::-webkit-input-placeholder {
@@ -473,3 +460,5 @@ body {
 .p-dialog .p-dialog-content {
   padding: 0.8rem;
 }
+
+//@import 'node_modules/primeflex/primeflex.css';
