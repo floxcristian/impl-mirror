@@ -6,5 +6,4 @@ import { Component } from '@angular/core';
   styleUrl: './whatsapp.component.scss'
 })
 export class WhatsappComponent {
-
 }

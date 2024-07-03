@@ -29,7 +29,7 @@ import { AlertCartMinComponent } from './shared/components/alert-cart-min/alert-
   template: `
     <router-outlet />
     <app-alert-cart-min [product]="productCard" />
-    <app-whatsapp />
+    <!-- <app-whatsapp /> -->
   `,
 })
 export class AppComponent implements AfterViewInit, OnInit {
