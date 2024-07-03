@@ -1,0 +1,14 @@
+/****************************************************************
+* Estos estilos son temporales y son para sobreescribir estilos
+* de bootstrap que afectan a los estilos de primeng, incluso
+* utilizando @layer y dandole mayor prioridad a los estilos de 
+* primeng.
+*****************************************************************/
+
+/**
+* https://imgur.com/RhqM7GR
+**/
+a {
+  color: inherit;
+  text-decoration: none;
+}

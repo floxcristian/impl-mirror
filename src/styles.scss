@@ -4,10 +4,16 @@
 
 @import url('./scss/_preload.scss');
 
+/*
 .row > * {
   padding-left: 0 !important;
   padding-right: 0 !important;
-}
+}*/
+
+/**
+* Si comento esto se pierde `Mi carro` y 'Cuenta' en el header.
+**/
+/*
 .col,
 .col-1,
 .col-10,
@@ -82,13 +88,14 @@
   width: 100%;
   padding-right: 15px !important;
   padding-left: 15px !important;
-}
+}*/
 
+/*
 a:not([href]),
 a:not([href]):hover {
   color: inherit;
   text-decoration: none;
-}
+}*/
 
 // Bootstrap
 @import '../node_modules/bootstrap/dist/css/bootstrap.min.css' layer(bootstrap);
@@ -101,7 +108,9 @@ a:not([href]):hover {
 @import 'primeng/resources/primeng.css';
 @import 'primeflex/primeflex.css';
 @import 'primeicons/primeicons.css';
+@import 'scss-v2//temporal-primeng.scss';
 
+/* 
 a {
   text-decoration: none;
   background-color: transparent;
@@ -112,14 +121,10 @@ a:hover {
   color: #005db9;
   text-decoration: none;
 }
-
-agm-map {
-  height: 300px;
+*/
+.owl-stage-outer {
+  margin-top: 1px !important;
 }
-
-// .owl-stage-outer {
-//     margin-top: 1px!important;
-// }
 .titilo-w {
   width: 75px !important;
 }
@@ -135,14 +140,7 @@ agm-map {
 .modal-body {
     width: 800px!important;
 }
-
-.modal-wide {
-    width: 800px!important;
-} */
-
-.pac-container {
-  z-index: 99999 !important;
-}
+*/
 
 .ng-select.ng-select.ng-select-single.ng-select-filtered:not(.ng-select-opened)
   .ng-select-container.ng-has-value
@@ -193,21 +191,6 @@ agm-map {
   src: url('./assets/fonts/AvenirLTStd-Book.otf');
 }
 
-.icono {
-  font-family: 'MiIconos';
-  font-style: normal;
-  font-weight: normal;
-  display: inline-block;
-  text-decoration: inherit;
-  text-transform: none;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.map-container {
-  width: 100% !important;
-}
 .webchatStartButtonContainer {
   color: white;
   font-weight: bold;
@@ -302,97 +285,6 @@ body {
 .p-datatable .p-datatable-header {
   border: 1px solid #e5e7eb !important;
   border-width: 1px 1px 0 1px !important;
-}*/
-
-/*********
-*
-*/
-/*.p-button {
-  border-radius: 6px !important;
-}*/
-
-/****************
-*
-*/
-/*
-.pt-5 {
-  padding-top: 2rem !important;
-}
-
-.w-full {
-  width: 100% !important;
-}
-
-.gap-2 {
-  gap: 0.5rem !important;
-}
-
-.gap-3 {
-  gap: 1rem !important;
-}
-
-.flex {
-  display: flex !important;
-}
-
-.block {
-  display: block !important;
-}
-
-.mb-1 {
-  margin-bottom: 0.25rem !important;
-}
-
-.mt-3 {
-  margin-top: 1rem !important;
-}
-
-.flex-column {
-  flex-direction: column !important;
-}
-
-.text-base {
-  font-size: 1rem !important;
-}
-
-.text-color {
-  color: var(--text-color) !important;
-}*/
-
-/*
-.p-input-icon-left,
-.p-input-icon-right {
-  position: relative;
-  display: inline-block;
-}
-
-.m-0 {
-  margin: 0rem !important;
-}
-
-.font-semibold {
-  font-weight: 600 !important;
-}
-
-.text-xl {
-  font-size: 1.25rem !important;
-}
-
-.line-height-3 {
-  line-height: 1.5 !important;
-}
-
-.justify-content-end {
-  justify-content: flex-end !important;
-}
-
-.border-top-1 {
-  border-top-width: 1px !important;
-  border-top-style: solid;
-}
-
-.surface-border {
-  border-color: var(--surface-border) !important;
 }*/
 
 .p-column-filter-row .p-column-filter-menu-button,
