@@ -3,7 +3,6 @@
 ********************************************/
 
 @import url('./scss/_preload.scss');
-@import 'primeicons/primeicons.css';
 
 .row > * {
   padding-left: 0 !important;
@@ -98,6 +97,8 @@ a:not([href]):hover {
 // Primeng
 @import 'primeng/resources/themes/lara-light-blue/theme.css';
 @import 'primeng/resources/primeng.css';
+@import 'primeflex/primeflex.css';
+@import 'primeicons/primeicons.css';
 
 a {
   text-decoration: none;
@@ -460,5 +461,3 @@ body {
 .p-dialog .p-dialog-content {
   padding: 0.8rem;
 }
-
-//@import 'node_modules/primeflex/primeflex.css';
