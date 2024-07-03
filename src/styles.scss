@@ -93,7 +93,9 @@ a:not([href]):hover {
 // Bootstrap
 @import '../node_modules/bootstrap/dist/css/bootstrap.min.css' layer(bootstrap);
 // Estilos del template de angular (quitar mas adelante esta dependencia).
-@import 'scss/style';
+@layer template {
+  @import 'scss/style';
+}
 // Primeng
 @import 'primeng/resources/themes/lara-light-blue/theme.css';
 @import 'primeng/resources/primeng.css';
