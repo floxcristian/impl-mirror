@@ -100,7 +100,7 @@ a:not([href]):hover {
 // Bootstrap
 @import '../node_modules/bootstrap/dist/css/bootstrap.min.css' layer(bootstrap);
 // Estilos del template de angular (quitar mas adelante esta dependencia).
-@layer template {
+@layer template-old {
   @import 'scss/style';
 }
 // Primeng
@@ -108,7 +108,8 @@ a:not([href]):hover {
 @import 'primeng/resources/primeng.css';
 @import 'primeflex/primeflex.css';
 @import 'primeicons/primeicons.css';
-@import 'scss-v2/layout.scss';
+
+@import 'scss-v2/layout.scss' layer(layout);
 @import 'scss-v2/temporal-primeng.scss';
 
 /* 
@@ -234,20 +235,6 @@ a:hover {
     transform: scale(1);
     opacity: 1;
   }
-}
-
-html {
-  font-size: 14px;
-}
-
-body {
-  //font-family: var(--font-family);
-  //font-weight: normal;
-  background: var(--surface-ground);
-  //color: var(--text-color);
-  //padding: 1rem;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .card {

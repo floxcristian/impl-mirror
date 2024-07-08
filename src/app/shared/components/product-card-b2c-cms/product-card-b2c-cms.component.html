@@ -203,8 +203,8 @@
             root.product(productData.sku, productData.name, paramsCategory)
           "
         >
-          <span class="nombreP" style="-webkit-box-orient: vertical">
-            {{ productData.name | capitalizeFirst }}
+          <span class="nombreP text-600">
+            xx - {{ productData.name | capitalizeFirst }}
           </span>
         </a>
       </div>
@@ -628,7 +628,7 @@
         root.product(productData.sku, productData.name, paramsCategory)
       "
     >
-      <span class="nombreP">
+      <span class="nombreP text-600">
         {{ productData.name | slice : 0 : 30 | uppercase }} {{ ' ...' }}
       </span>
     </a>
