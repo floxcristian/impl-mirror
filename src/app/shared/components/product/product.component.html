@@ -1,17 +1,17 @@
 <div class="product product--layout--standard" *ngIf="product">
   <div class="product__content_232 d-flex row px-sm-4">
     <!--  NOMBRE VERSION MOVIL -->
-    <div class="col-12 d-block d-sm-none">
+    <div class="d-block d-sm-none">
       <h5 class="mb-1 text-start">{{ product.name | capitalizeFirst }}</h5>
     </div>
 
     <!-- DESKTOP  TABLET  MOBILE -->
     <!-- Imagenes -->
-    <div class="product__gallery mb-0 col-12 col-lg-6 ps-lg-0">
+    <div class="product__gallery mb-0 lg:col-6 ps-lg-0">
       <div class="product-gallery" *ngIf="showGallery">
         <div class="row">
           <div
-            class="col-sm-3 d-none d-lg-flex justify-content-center align-items-center"
+            class="sm:col-3 d-none d-lg-flex justify-content-center align-items-center"
           >
             <div class="w-100 h-100 p-2 relative">
               <div
@@ -32,7 +32,7 @@
               </div>
             </div>
           </div>
-          <div class="col-12 col-lg-9 ps-lg-0">
+          <div class="lg:col-9 ps-lg-0">
             <div
               class="product-gallery__featured position-relative"
               style="border: 1px solid #aaa"
@@ -135,7 +135,7 @@
 
     <!-- DESKTOP  TABLET -->
     <!-- Información Ficha -->
-    <div class="col-12 col-lg-6 ps-lg-4 mt-3 mt-lg-0 d-none d-sm-block">
+    <div class="col-12 lg:col-6 ps-lg-4 mt-1 lg:mt-0 d-none d-sm-block">
       <div>
         <div class="d-flex justify-content-between mb-1">
           <div>
@@ -162,13 +162,13 @@
           ></app-share-button>
         </div>
         <div class="row">
-          <div class="col">
+          <div>
             <p class="mb-2">
               <span class="text-lowercase">{{ product.description }}</span>
             </p>
           </div>
         </div>
-        <div class="row justify-content-start px-3">
+        <div class="justify-content-start">
           <div style="color: black">
             <strong>SKU {{ product.sku }}</strong>
             <span
@@ -185,7 +185,7 @@
 
         <hr class="mb-0" />
         <div
-          class="row justify-content-start px-3 my-2"
+          class="row justify-content-start px-1 my-2"
           *ngIf="dataProduct.priceInfo.scalePrice.length"
         >
           <div
@@ -325,12 +325,12 @@
         <div *ngIf="stock" class="product__sidebar col-12 p-0">
           <div
             class="product__prices"
-            [class.my-4]="dataProduct.priceInfo.scalePrice.length <= 1"
+            [class.my-1]="dataProduct.priceInfo.scalePrice.length <= 1"
             [class.my-0]="dataProduct.priceInfo.scalePrice.length > 1"
           >
             <ng-container *ngIf="product.price">
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-12">
                   <!-- // test -->
                   <span
                     *ngIf="product?.priceInfo?.documentId != '0'"
@@ -408,7 +408,7 @@
           <form class="product__options" *ngIf="innerWidth > 450">
             <div class="mb-2">
               <div class="row m-0 align-items-center">
-                <div class="col-sm-5 ps-5">
+                <div class="sm:col-5 ps-5">
                   <div class="d-flex flex-column">
                     <span> Cantidad </span>
                     <app-input-number
@@ -424,7 +424,7 @@
                 </div>
 
                 <!-- BOTON PARA DESKTOP y TABLET -->
-                <div class="col-sm-7 d-none d-sm-block">
+                <div class="sm:col-7 d-none d-sm-block">
                   <button
                     *ngIf="isAvailable"
                     name="Agregar "
@@ -481,9 +481,9 @@
 
           <hr />
 
-          <div class="row px-3 justify-content-end">
+          <div class="px-3 justify-content-end">
             <!-- Start::opciones de entrega (desktop) -->
-            <div class="col-12" style="margin-bottom: 10px">
+            <div class="col-12">
               <app-despacho
                 *ngIf="selectedStore"
                 [product]="product"
@@ -524,14 +524,14 @@
     <!-- Información Ficha -->
     <div
       *ngIf="showMobile"
-      class="col-12 col-lg-6 ps-lg-4 mt-0 mt-lg-0 d-block d-sm-none"
+      class="col-12 lg:col-6 ps-lg-4 mt-0 lg:mt-0 d-block d-sm-none"
     >
       <div>
         <div class="d-flex justify-content-between align-items-center">
           <div class="product__prices my-3">
             <ng-container *ngIf="product.price">
-              <div class="row">
-                <div class="col-md-12">
+              <div>
+                <div class="col-12">
                   <span
                     *ngIf="product.priceInfo.documentId != '0'"
                     tooltip="Precio con descuento cliente"
@@ -595,7 +595,7 @@
             ></app-share-button>
           </div>
         </div>
-        <div class="row justify-content-start px-3 mb-1">
+        <div class=" ustify-content-start px-3 mb-1">
           <div style="color: #bbb">
             SKU {{ product.sku }}
             <span
@@ -618,15 +618,15 @@
             }}
           </div>
         </div>
-        <div class="row mb-2">
-          <div class="col">
+        <div class="mb-2">
+          <div>
             <p class="mb-2">
               <span class="text-lowercase">{{ product.description }}</span>
             </p>
           </div>
         </div>
         <form *ngIf="stock" class="product__options">
-          <div class="row" *ngIf="quantityToScalePrice && !isB2B">
+          <div *ngIf="quantityToScalePrice && !isB2B">
             <div class="col-12 text-danger">
               <small
                 style="font-weight: bolder !important"
@@ -690,7 +690,7 @@
               <form [formGroup]="formProductRequest">
                 <div style="height: 198px">
                   <div class="row" style="gap: 1rem">
-                    <div class="col-md-12">
+                    <div class="col-12">
                       <label
                         for="customerName"
                         style="color: #0063b9; font-weight: 100"
@@ -706,7 +706,7 @@
                         />
                       </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-12">
                       <label
                         for="customerPhone"
                         style="color: #0063b9; font-weight: 100"
@@ -721,7 +721,7 @@
                         />
                       </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-12">
                       <label
                         for="email"
                         style="color: #0063b9; font-weight: 100"
@@ -770,7 +770,7 @@
 
         <!-- <hr class="mb-0" /> -->
         <div
-          class="row justify-content-start px-3 my-2"
+          class="justify-content-start px-3 my-2"
           *ngIf="dataProduct.priceInfo.scalePrice.length > 1 && !isB2B"
         >
           <div class="masXmenosTitle" (click)="showScalePrices()">
@@ -790,7 +790,7 @@
         <div class="product__sidebar col-12 p-0">
           <hr />
           <!-- Start::opciones de despacho (mobile)-->
-          <div class="row px-3">
+          <div class="px-3">
             <div class="col-12">
               <app-despacho
                 *ngIf="selectedStore && !estado"
