@@ -2,16 +2,15 @@
   class="container d-none d-xl-block"
   style="background-color: white; padding: 30px 10px"
 >
-  <div class="row mt-3">
-    <div class="col-20" *ngFor="let item of botones1">
-      <a [href]="item.url">
+  <div class="flex flex-wrap align-items-center mt-3">
+    <div class="col-20" *ngFor="let incentive of incentives">
+      <a [href]="incentive.url">
         <app-button
-          [imagen]="item.image"
-          [titulo]="item.title"
-          [linea1]="item.subtext1"
-          [linea2]="item.subtext2"
-        >
-        </app-button>
+          [imagen]="incentive.image"
+          [titulo]="incentive.title"
+          [linea1]="incentive.subtext1"
+          [linea2]="incentive.subtext2"
+        />
       </a>
     </div>
   </div>
@@ -21,27 +20,26 @@
   class="container block-slideshow mb-0 d-xl-none d-block"
   style="background-color: white; padding: 50px 10px 20px 10px"
 >
-  @if(botones1 && botones1.length > 0) {
+  @if(incentives.length) {
   <owl-carousel-o
     class="carouselButtons"
     [options]="options"
     appOwlPreventClick
     [ngClass]="{ item: true }"
   >
-    <ng-container *ngFor="let item of botones1; let i = index">
+    <ng-container *ngFor="let incentive of incentives; let i = index">
       <ng-template
         carouselSlide
         [id]="'id-' + i"
         style="height: 300px !important"
       >
-        <a [href]="item.url">
+        <a [href]="incentive.url">
           <app-button
-            [imagen]="item.image"
-            [titulo]="item.title"
-            [linea1]="item.subtext1"
-            [linea2]="item.subtext2"
-          >
-          </app-button>
+            [imagen]="incentive.image"
+            [titulo]="incentive.title"
+            [linea1]="incentive.subtext1"
+            [linea2]="incentive.subtext2"
+          />
         </a>
       </ng-template>
     </ng-container>

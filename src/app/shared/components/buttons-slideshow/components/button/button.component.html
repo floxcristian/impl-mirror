@@ -1,21 +1,22 @@
-<div class="row boton mx-1" style="min-height: 70px; height: 100%">
+<div
+  class="flex flex-wrap align-items-center boton mx-1"
+  style="min-height: 115px; height: 100%"
+>
   <div
-    class="col-3 p-0 d-flex justify-content-center align-items-center"
+    class="col-3 p-0 flex justify-content-center align-items-center"
     style="margin-right: -3px"
   >
     <i [ngClass]="imagen" style="font-size: 35px"></i>
   </div>
   <div class="col-9">
-    <div class="row">
+    <div class="flex flex-wrap align-items-center">
       <div class="col-12 p-0 titulo text-truncate" style="white-space: nowrap">
         {{ titulo }}
       </div>
-      <div class="col-12 p-0 linea1">
-        {{ linea1 }}
-      </div>
-      <div class="col-12 p-0 linea2">
+      <div class="col-12 p-0 linea1">{{ linea1 }} {{ linea2 }}</div>
+      <!--<div class="col-12 p-0 linea2">
         {{ linea2 }}
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

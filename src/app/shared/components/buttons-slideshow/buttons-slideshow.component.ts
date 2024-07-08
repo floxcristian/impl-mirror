@@ -11,7 +11,7 @@ import { CmsService } from '@core/services-v2/cms.service';
   styleUrls: ['./buttons-slideshow.component.scss'],
 })
 export class ButtonsSlideshowComponent implements OnInit {
-  botones1: IValueBox[] = [];
+  incentives: IValueBox[] = [];
 
   options = {
     lazyLoad: true,
@@ -37,7 +37,7 @@ export class ButtonsSlideshowComponent implements OnInit {
 
   getValueBoxes(): void {
     this.cmsService.getValueBoxes().subscribe({
-      next: (valueBoxes) => (this.botones1 = valueBoxes),
+      next: (valueBoxes) => (this.incentives = valueBoxes),
       error: (err) => console.log(err),
     });
   }
