@@ -1,26 +1,24 @@
-<div class="search d-flex align-items-center">
+<div class="search flex align-items-center">
   <div
-    class="nav-panel__indicators d-flex align-items-center"
+    class="nav-panel__indicators flex align-items-center"
     style="width: 160px"
   >
     <div
-      class="indicator position-relative indicator--trigger--click"
+      class="indicator relative indicator--trigger--click"
       (click)="menuCategorias.open(null, null)"
     >
-      <span class="indicator__button me-3" style="cursor: pointer">
+      <span class="indicator__button mr-3" style="cursor: pointer">
         <i class="fa-regular fa-bars hamburguesa"></i>
       </span>
     </div>
-    <div class="col-sm-5 p-0 d-flex justify-content-center">
-      Menú Categorías
-    </div>
+    <div class="sm:col-5 p-0 flex justify-content-center">Menú Categorías</div>
   </div>
 
   <!-- Start::search input -->
   <div class="search__form col p-0 me-5">
     <!-- FIXME: usar reactive forms -->
     <div
-      class="indicator indicator--trigger--click position-relative dropdown-search col p-0"
+      class="indicator indicator--trigger--click relative dropdown-search col p-0"
       appDropdown="indicator--opened"
       #menuSearch="appDropdown"
     >
@@ -74,14 +72,14 @@
         >
           <div class="item item-no-found">
             <span> No se encontraron coincidencias para </span>
-            <span class="fw-bold">
+            <span class="font-bold">
               <font color="blue">{{ textToSearch | capitalizeFirst }}</font>
             </span>
           </div>
         </div>
 
         <div
-          class="row ms-1 mt-3"
+          class="row ml-1 mt-3"
           *ngIf="(productosEncontrados?.length || 0) > 0"
         >
           <div class="col-30 col">
@@ -176,7 +174,7 @@
                   *ngIf="productosEncontrados?.length"
                 >
                   <div
-                    class="fw-bold text-uppercase"
+                    class="font-bold text-uppercase"
                     style="
                       padding: 0.5rem 0.75rem;
                       font-size: 0.9rem;
@@ -206,14 +204,14 @@
             </div>
           </div>
           <div
-            class="col-2 mb-2 ps-4"
+            class="col-2 mb-2 pl-4"
             style="
               border-left: solid 1px #094cac;
               border-right: solid 1px #094cac;
             "
           >
             <div
-              class="fw-bold text-uppercase"
+              class="font-bold text-uppercase"
               style="
                 padding: 0.5rem 0.75rem;
                 font-size: 0.9rem;
@@ -248,7 +246,7 @@
           </div>
           <div class="col">
             <div
-              class="fw-bold text-uppercase"
+              class="font-bold text-uppercase"
               style="
                 padding: 0.5rem 0.75rem;
                 font-size: 0.9rem;
@@ -257,13 +255,13 @@
             >
               Resultados de Productos
             </div>
-            <div class="d-flex justify-content-around m-2">
+            <div class="flex justify-content-around m-2">
               <div
-                class="d-flex flex-column px-3"
+                class="flex flex-column px-3"
                 *ngFor="let item of productosEncontrados | slice : 0 : 3"
                 style="width: 180px"
               >
-                <div class="mb-3 d-flex justify-content-center">
+                <div class="mb-3 flex justify-content-center">
                   <a
                     [routerLink]="item.url"
                     (click)="
@@ -297,7 +295,7 @@
                       item?.priceInfo?.commonPrice ==
                       item?.priceInfo?.customerPrice
                     "
-                    class="col-12 fw-bold"
+                    class="col-12 font-bold"
                     style="color: #094cac; font-size: 1.4rem"
                   >
                     {{
@@ -315,7 +313,7 @@
                       item?.priceInfo?.commonPrice !=
                       item?.priceInfo?.customerPrice
                     "
-                    class="text-danger fw-bold col-12"
+                    class="text-danger font-bold col-12"
                     style="font-size: 1.4rem"
                   >
                     {{
@@ -357,7 +355,7 @@
           style="border-top: solid 1px #094cac"
         >
           <div class="col-12 products-list-search ps-5 p-2">
-            <div class="item justify-content-end d-flex">
+            <div class="item justify-content-end flex">
               <a
                 *ngIf="categorias.length > 1"
                 (click)="
@@ -405,13 +403,13 @@
   <div class="overlay" *ngIf="isFocusedInput" (click)="blurInput()"></div>
 
   <div class="col-header-2" style="margin-top: 3px">
-    <div class="nav-panel__indicators d-flex align-items-center">
+    <div class="nav-panel__indicators flex align-items-center">
       <!-- Start::item dirección envío -->
       @if(session.documentId != '0'){
       <a
         pRipple
-        style="padding: 4px 6px !important; width: 85px; height: 80px"
-        class="flex flex-row lg:flex-column align-items-center cursor-pointer p-3 lg:justify-content-center border-round hover:text-white transition-duration-150 transition-colors"
+        style="padding: 4px 6px !important; width: 95px; height: 80px"
+        class="flex flex-column align-items-center cursor-pointer p-3 lg:justify-content-start border-round hover:text-white transition-duration-150 transition-colors"
         (click)="modificarDireccionDespacho()"
       >
         <div
@@ -420,7 +418,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 0.3rem;
           "
         >
           <i class="fa-light fa-location-dot fa-2xl lg:text-lg"></i>
@@ -452,47 +449,14 @@
       </a>
       }
       <!-- Start:item recibir compras -->
-      <!--<div
-        *ngIf="session?.documentId != '0'"
-        class="indicator position-relative indicator--trigger--click"
-        (click)="modificarDireccionDespacho()"
-      >
-        <span
-          class="indicator__button flex-column mt-2 me-3"
-          style="cursor: pointer"
-        >
-          <img
-            src="../../../../../assets/svg/06.svg"
-            style="width: 40px; height: 40px"
-            alt="seguimiento"
-          />
-          <span class="icon-title mt-2">Envío:</span>
-          <span class="icon-title" *ngIf="isVacio(direccion)"
-            >Sin dirección...</span
-          >
-          <span
-            class="icon-title"
-            *ngIf="!isVacio(direccion)"
-            style="margin-top: -4px"
-          >
-            {{
-              ((direccion.street + ' ' + direccion.number).length > 10
-                ? (direccion.street + ' ' + direccion.number).substring(0, 8) +
-                  '...'
-                : direccion.street + ' ' + direccion.number
-              ) | titlecase
-            }}
-          </span>
-        </span>
-      </div>-->
       <!-- End:item recibir compras -->
 
       <a
         appDropdown="indicator--opened"
         #menuVehiculo="appDropdown"
         pRipple
-        style="padding: 4px 6px !important; width: 85px; height: 80px"
-        class="flex flex-row lg:flex-column align-items-center cursor-pointer p-3 lg:justify-content-center border-round hover:text-white transition-duration-150 transition-colors position-relative indicator--trigger--click"
+        style="padding: 4px 6px !important; width: 95px; height: 80px"
+        class="flex flex-row lg:flex-column align-items-center cursor-pointer p-3 lg:justify-content-start border-round hover:text-white transition-duration-150 transition-colors relative indicator--trigger--click"
       >
         <div
           style="width: 100%; height: 100%"
@@ -508,7 +472,6 @@
               display: flex;
               justify-content: center;
               align-items: center;
-              margin-bottom: 0.3rem;
             "
           >
             <i
@@ -538,13 +501,13 @@
 
         <form
           [formGroup]="vehicleForm"
-          class="form-inline d-flex align-items-center"
+          class="form-inline flex align-items-center"
         >
           <div class="indicator__dropdown indicator__dropdown-vehiculo">
             <div class="alert-session card p-5 mt-4 shadow">
               <div *ngIf="!selectedVehicle">
                 <p
-                  class="d-flex justify-content-center"
+                  class="flex justify-content-center"
                   style="color: #0063b9; font-size: 18px; font-weight: bold"
                 >
                   Encuentra tus filtros
@@ -676,7 +639,7 @@
 
               <div *ngIf="selectedVehicle">
                 <p
-                  class="d-flex justify-content-center"
+                  class="flex justify-content-center"
                   style="color: #0063b9; font-size: 18px; font-weight: bold"
                 >
                   Mi Vehículo
@@ -773,224 +736,13 @@
       </a>
 
       <!-- Start::item vehículo -->
-      <!--
-      <div
-        *ngIf="isSearchVehicleVisible"
-        class="indicator position-relative indicator--trigger--click"
-        appDropdown="indicator--opened"
-        #menuVehiculo="appDropdown"
-      >
-     
-        <span
-          class="indicator__button flex-column mt-2 me-3"
-          style="cursor: pointer"
-          (click)="
-            $event.preventDefault();
-            menuVehiculo.toggle();
-            getAllCustomerVehicle()
-          "
-        >
-          <img
-            src="../../../../../assets/svg/09.svg"
-            style="width: 40px; height: 40px; margin-top: -12px"
-            alt="Cambiar vehículo"
-          />
 
-          <span class="icon-title mt-1">
-            {{
-              selectedVehicle
-                ? selectedVehicle.MARCA + ' ' + selectedVehicle.PLACA_PATENTE
-                : 'Buscar vehículo'
-            }}
-          </span>
-        </span>
- 
-
- 
-        <form
-          [formGroup]="vehicleForm"
-          class="form-inline d-flex align-items-center"
-        >
-          <div class="indicator__dropdown indicator__dropdown-vehiculo">
-            <div class="alert-session card p-5 mt-4 shadow">
-              <div *ngIf="!selectedVehicle">
-                <p
-                  class="d-flex justify-content-center"
-                  style="color: #0063b9; font-size: 18px; font-weight: bold"
-                >
-                  Buscar vehículo
-                  <img
-                    src="../../../../../assets/svg/23.svg"
-                    alt="información"
-                    style="
-                      width: 30px;
-                      height: 40px;
-                      margin-left: 10px;
-                      margin-top: -10px;
-                    "
-                  />
-                </p>
-           
-                <p-messages
-                  *ngIf="isClickedVehicleSearch"
-                  [(value)]="messages"
-                  [enableService]="false"
-                  [closable]="false"
-                ></p-messages>
-                <div>
-           
-                  <div style="display: flex; justify-content: center">
-                    <small id="patent-help"
-                      >Ingrese una patente para la búsqueda de filtros
-                      compatibles.</small
-                    >
-                  </div>
-
-                  <div
-                    class="flex justify-content-center"
-                    style="margin-top: 0.5rem"
-                  >
-                    <p-inputGroup>
-                      <p-dropdown
-                        id="patent"
-                        styleClass="hidden-empty-message"
-                        [options]="customerVehiclesFilter"
-                        [optionLabel]="getTypeFilter()"
-                        [optionValue]="getTypeFilter()"
-                        formControlName="search"
-                        placeholder="Seleccione o ingrese patente"
-                        [editable]="true"
-                        [showClear]="true"
-                        (onChange)="filterVehicle()"
-                      >
-                        <ng-template let-vehicle pTemplate="item">
-                          <div class="flex align-items-center gap-2">
-                            <div>
-                              {{ vehicle.patent }} - {{ vehicle.codeChasis }}
-                            </div>
-                          </div>
-                        </ng-template>
-                      
-                      </p-dropdown>
-                      <button
-                        type="button"
-                        pButton
-                        icon="pi pi-search"
-                        [loading]="isLoadingVehicles"
-                        [disabled]="
-                          vehicleForm.invalid ||
-                          isClickedVehicleSearch ||
-                          !searchInput?.value
-                        "
-                        (click)="searchVehicle(vehicleForm.value)"
-                      ></button>
-                    </p-inputGroup>
-                  </div>
-              
-                  <p
-                    *ngIf="notVehicleFound"
-                    class="text-error-form-2 text-center text-danger pt-2"
-                  >
-                    No se encontraron resultados.
-                  </p>
-                </div>
-              </div>
-
-              <div *ngIf="selectedVehicle">
-                <p
-                  class="d-flex justify-content-center"
-                  style="color: #0063b9; font-size: 18px; font-weight: bold"
-                >
-                  Mi Vehículo
-                
-                </p>
-
-                <table class="vehicle-table">
-                  <tbody>
-                    <tr>
-                      <td class="font-weight-bold">PATENTE</td>
-                      <td>{{ selectedVehicle.PLACA_PATENTE }}</td>
-                    </tr>
-                    <tr>
-                      <td class="font-weight-bold">MARCA</td>
-                      <td>{{ selectedVehicle.MARCA }}</td>
-                    </tr>
-                    <tr>
-                      <td>MODELO</td>
-                      <td>{{ selectedVehicle.MODELO }}</td>
-                    </tr>
-                    <tr>
-                      <td>TIPO</td>
-                      <td>{{ selectedVehicle.IMPtipo }}</td>
-                    </tr>
-                    <tr>
-                      <td>AÑO</td>
-                      <td>{{ selectedVehicle.ANO_FABRICACION }}</td>
-                    </tr>
-                    <tr>
-                      <td>MOTOR</td>
-                      <td>{{ selectedVehicle.COD_MOTOR || '-' }}</td>
-                    </tr>
-                    <tr>
-                      <td>CHASIS</td>
-                      <td>{{ selectedVehicle.COD_CHASIS || '-' }}</td>
-                    </tr>
-                    <tr>
-                      <td>DETALLE</td>
-                      <td>{{ selectedVehicle.detalle || '-' }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <p-messages
-                  *ngIf="!selectedVehicle?.codigoSii"
-                  severity="info"
-                >
-                  <ng-template pTemplate>
-                    <div class="w-100 text-center">
-                      No se encontraron filtros por el momento.
-                    </div>
-                  </ng-template>
-                </p-messages>
-                <div class="flex pb-3 gap-3">
-                  <p-button
-                    [ngStyle]="{ display: 'contents' }"
-                    styleClass="w-100"
-                    label="Cambiar"
-                    severity="secondary"
-                    (onClick)="cleanSelectedVehicle()"
-                  ></p-button>
-                  <p-button
-                    [disabled]="existInFlota"
-                    [loading]="isLoadingCreate"
-                    [ngStyle]="{ display: 'contents' }"
-                    styleClass="w-100"
-                    [label]="
-                      existInFlota ? 'Existe en Flota' : 'Agregar a Flota'
-                    "
-                    severity="warning"
-                    (onClick)="addMyFlota()"
-                  ></p-button>
-                </div>
-                <div *ngIf="selectedVehicle?.codigoSii">
-                  <p-button
-                    styleClass="w-100"
-                    label="Ver Filtros encontrados"
-                    (onClick)="goToProductsPage()"
-                  ></p-button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
-      
-      </div>
-    -->
       <!-- End::item vehículo -->
 
       <a
         pRipple
-        style="padding: 4px 6px !important; width: 85px; height: 80px"
-        class="flex flex-row lg:flex-column align-items-center cursor-pointer p-3 lg:justify-content-center border-round hover:text-white transition-duration-150 transition-colors indicator position-relative indicator--trigger--click"
+        style="padding: 4px 6px !important; width: 95px; height: 80px"
+        class="flex flex-column align-items-center cursor-pointer p-3 lg:justify-content-start border-round hover:text-white transition-duration-150 transition-colors indicator relative indicator--trigger--click"
         appDropdown="indicator--opened"
         #menuTienda="appDropdown"
       >
@@ -1004,7 +756,6 @@
               display: flex;
               justify-content: center;
               align-items: center;
-              margin-bottom: 0.3rem;
             "
           >
             <i class="fa-light fa-map-location-dot fa-2xl lg:text-lg"></i>
@@ -1030,7 +781,7 @@
         <div class="indicator__dropdown indicator__dropdown-tienda">
           <div class="alert-session card p-5 mt-4 shadow">
             <p
-              class="d-flex justify-content-center"
+              class="flex justify-content-center"
               style="color: #0063b9; font-size: 18px; font-weight: bold"
             >
               INFORMACIÓN
@@ -1045,11 +796,11 @@
                 "
               />
             </p>
-            <p class="d-flex justify-content-center">
+            <p class="flex justify-content-center">
               Se ha establecido la tienda más cercana a su ubicación.
             </p>
 
-            <div class="d-flex">
+            <div class="flex">
               <div class="col-6">
                 <button
                   class="btn btn-border-primary btn-lg text-center w-100"
@@ -1072,81 +823,14 @@
         </div>
       </a>
       <!-- Start::item mapa -->
-      <!--
-      <div
-        class="indicator position-relative indicator--trigger--click"
-        appDropdown="indicator--opened"
-        #menuTienda="appDropdown"
-      >
-     
-        <span
-          class="indicator__button flex-column mt-2 me-3"
-          style="cursor: pointer"
-          (click)="$event.preventDefault(); menuTienda.toggle()"
-        >
-          <img
-            src="../../../../../assets/svg/24.svg"
-            style="width: 40px; height: 40px; margin-top: -12px"
-            alt="Cambiar dirección"
-          />
-          <span class="icon-title mt-1">
-            {{ selectedStore ? selectedStore.zone : '' }}</span
-          >
-        </span>
-    
-    
-        <div class="indicator__dropdown indicator__dropdown-tienda">
-          <div class="alert-session card p-5 mt-4 shadow">
-            <p
-              class="d-flex justify-content-center"
-              style="color: #0063b9; font-size: 18px; font-weight: bold"
-            >
-              INFORMACIÓN
-              <img
-                src="../../../../../assets/svg/23.svg"
-                alt="información"
-                style="
-                  width: 30px;
-                  height: 40px;
-                  margin-left: 10px;
-                  margin-top: -10px;
-                "
-              />
-            </p>
-            <p class="d-flex justify-content-center">
-              Se ha establecido la tienda más cercana a su ubicación.
-            </p>
 
-            <div class="d-flex">
-              <div class="col-6">
-                <button
-                  class="btn btn-border-primary btn-lg text-center w-100"
-                  (click)="showStores()"
-                >
-                  Cambiar
-                </button>
-              </div>
-              <div class="col-6">
-                <button
-                  name="menuTienda"
-                  class="btn btn-secondary btn-lg w-100 text-center"
-                  (click)="menuTienda.toggle()"
-                >
-                  Mantener
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-  
-      </div>
-    -->
       <!-- End::item mapa -->
 
+      <!-- Start::item seguimiento -->
       <a
         pRipple
-        style="padding: 4px 6px !important; width: 85px; height: 80px"
-        class="flex flex-row lg:flex-column align-items-center cursor-pointer p-3 lg:justify-content-center border-round hover:text-white transition-duration-150 transition-colors"
+        style="padding: 4px 6px !important; width: 95px; height: 80px"
+        class="flex flex-column align-items-center cursor-pointer p-3 lg:justify-content-start border-round hover:text-white transition-duration-150 transition-colors"
         (click)="validarCuenta()"
       >
         <div
@@ -1155,7 +839,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 0.3rem;
           "
         >
           <i class="fa-light fa-truck-fast fa-2xl lg:text-lg"></i>
@@ -1175,31 +858,13 @@
           >
         </div>
       </a>
-      <!-- Start::item seguimiento -->
-      <!--
-      <div
-        class="indicator position-relative indicator--trigger--click"
-        (click)="validarCuenta()"
-      >
-        <span
-          class="indicator__button flex-column mt-2 me-3"
-          style="cursor: pointer"
-        >
-          <img
-            src="../../../../../assets/svg/09.svg"
-            style="width: 40px; height: 40px"
-            alt="seguimiento"
-          />
-          <span class="icon-title mt-2">Seguimiento</span>
-          <span class="icon-title" style="margin-top: -4px">de Pedido</span>
-        </span>
-      </div> -->
       <!-- End::item seguimiento -->
 
+      <!-- Start::item carro -->
       <a
         pRipple
-        style="padding: 4px 6px !important; width: 85px; height: 80px"
-        class="flex flex-row lg:flex-column align-items-center cursor-pointer p-3 lg:justify-content-center border-round hover:text-white transition-duration-150 transition-colors indicator indicator--trigger--click"
+        style="padding: 4px 6px !important; width: 95px; height: 80px"
+        class="flex flex-column align-items-center cursor-pointer p-3 lg:justify-content-start border-round hover:text-white transition-duration-150 transition-colors indicator indicator--trigger--click"
         appDropdown="indicator--opened"
         #cartDropdown="appDropdown"
       >
@@ -1213,18 +878,12 @@
               display: flex;
               justify-content: center;
               align-items: center;
-              margin-bottom: 0.3rem;
             "
           >
-            <!--<i
-              class="fa-light fa-cart-shopping fa-2xl lg:text-lg"
-              pBadge
-              [value]="shoppingCartService.quantity$ | async | filter"
-              severity="danger"
-            ></i>-->
             <i class="fa-light fa-cart-shopping fa-2xl lg:text-lg">
               <span *ngIf="shoppingCartService.quantity$ | async">
                 <span
+                  class="shopping-cart-badge"
                   pBadge
                   [value]="shoppingCartService.quantity$ | async | filter"
                   severity="danger"
@@ -1252,40 +911,6 @@
           <app-header-dropcart />
         </div>
       </a>
-      <!-- Start::item carro -->
-      <!--
-      <div
-        class="indicator indicator--trigger--click"
-        appDropdown="indicator--opened"
-        #cartDropdown="appDropdown"
-      >
-        <span
-          class="indicator__button flex-column me-4 mt-2"
-          style="cursor: pointer"
-          (click)="$event.preventDefault(); verificarCarro(cartDropdown)"
-        >
-          <span class="indicator__area indicator__area-cart">
-            <img
-              src="../../../../../assets/svg/07.svg"
-              style="width: 40px; height: 45px"
-              alt="carro"
-            />
-
-            <span
-              *ngIf="((shoppingCartService.quantity$ | async) || 0) > 0"
-              class="indicator__value"
-              >{{ shoppingCartService.quantity$ | async }}</span
-            >
-          </span>
-
-          <span class="icon-title mt-1">Mi</span>
-          <span class="icon-title" style="margin-top: -4px">Carro</span>
-        </span>
-
-        <div class="indicator__dropdown" style="right: 1rem">
-          <app-header-dropcart></app-header-dropcart>
-        </div>
-      </div>-->
       <!-- End::item carro -->
 
       <!-- Opción para ingresar al sistema -->

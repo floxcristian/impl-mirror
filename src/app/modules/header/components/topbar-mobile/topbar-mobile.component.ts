@@ -2,10 +2,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IConfig } from '@core/config/config.interface';
-import { ConfigService } from '@core/config/config.service';
 // Env
 import { environment } from '@env/environment';
 // Services
+import { ConfigService } from '@core/config/config.service';
 
 @Component({
   selector: 'app-topbar-mobile',

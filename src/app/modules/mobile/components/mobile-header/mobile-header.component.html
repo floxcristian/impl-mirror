@@ -57,6 +57,7 @@
                   <span *ngIf="cart.quantity$ | async">
                     <span
                       pBadge
+                      class="fa-xs"
                       [value]="cart.quantity$ | async | filter"
                       severity="danger"
                     ></span>
@@ -94,9 +95,7 @@
     <div class="container">
       <div class="mobile-header__body">
         <!-- BARRA DE BUSCADOR -->
-        <app-mobile-search
-          style="margin-top: 8px; width: 100%"
-        ></app-mobile-search>
+        <app-mobile-search style="margin-top: 8px; width: 100%" />
       </div>
     </div>
   </div>
