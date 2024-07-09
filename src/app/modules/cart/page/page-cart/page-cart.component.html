@@ -19,11 +19,10 @@
 
 <div *ngIf="items.length">
   <div class="container container-cart site_b2c">
-    <!-- <h1 class="mt-4 mb-3">Carro de compra</h1> -->
     <app-guided-steps [step]="1"></app-guided-steps>
     <div class="row">
-      <div class="col-12 col-xl-8 col-lg-8">
-        <div class="card h-100">
+      <div class="col-12 xl:col-8 lg:col-8 py-0">
+        <div class="card h-100 p-4">
           <div class="card-header" style="display: inline-block">
             <div
               class="col-12 text-h1"
@@ -53,7 +52,7 @@
                 style="margin-bottom: 20px !important"
                 *ngFor="let item of items; let i = index"
               >
-                <div class="col-12 col-lg-6">
+                <div class="col-12 lg:col-6">
                   <ng-container *ngIf="innerWidth < 992">
                     <div
                       style="float: right"
@@ -84,18 +83,18 @@
                       </a>
                     </div>
 
-                    <div class="col-9 col-md-8">
-                      <div class="col-sm-12">
+                    <div class="col-9 md:col-8">
+                      <div class="sm:col-12">
                         <span class="text-marca">
                           {{ item.ProductCart.brand }}
                         </span>
                       </div>
-                      <div class="col-sm-12">
+                      <div class="sm:col-12">
                         <span class="product-title">
                           {{ item.ProductCart.name | titlecase }}
                         </span>
                       </div>
-                      <div class="col-sm-12">
+                      <div class="sm:col-12">
                         <font
                           class="product-sku text-gray-2"
                           style="font-size: 75%"
@@ -103,7 +102,7 @@
                         >
                       </div>
 
-                      <div class="col-sm-12" *ngIf="innerWidth >= 992">
+                      <div class="sm:col-12" *ngIf="innerWidth >= 992">
                         <div
                           class="item"
                           [ngClass]="{
@@ -139,7 +138,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 lg:col-6">
                   <div
                     class="row"
                     [ngStyle]="{
@@ -149,7 +148,7 @@
                   >
                     <ng-container *ngIf="innerWidth < 992">
                       <div
-                        class="col-3 col-sm-3 text"
+                        class="col-3 sm:col-3 text"
                         style="
                           margin-top: 15px;
                           margin-left: 10px;
@@ -192,7 +191,7 @@
 
                     <div
                       [ngClass]="{
-                        'col-3 col-lg-3': innerWidth >= 1500,
+                        'col-3 lg:col-3': innerWidth >= 1500,
                         'col-3': innerWidth < 1500,
                         'col-5': innerWidth <= 450
                       }"
@@ -206,7 +205,7 @@
                     </div>
 
                     <div
-                      class="col-3 col-sm-3 text"
+                      class="col-3 sm:col-3 text"
                       style="
                         padding-top: 10px !important;
                         text-align: center;
@@ -277,14 +276,14 @@
 
       <ng-container *ngIf="innerWidth >= 992">
         <div
-          class="col-xl-4 col-lg-4 col-md-6"
+          class="xl:col-4 lg:col-4 md:col-6"
           style="padding: 15px; background-color: #e3e3e3"
         >
-          <div class="card h-100">
+          <div class="card h-100 p-4">
             <div class="card-header" style="display: inline-block">
               <div class="d-flex align-items-center">
                 <div
-                  class="col-sm-12 text-h1"
+                  class="sm:col-12 text-h1"
                   [ngStyle]="{
                     'font-size': innerWidth < 450 ? '16px' : '18px'
                   }"
@@ -349,7 +348,7 @@
           <div class="mb-5" (window:resize)="onResize($event)">
             <div class="shop-layout shop-layout--sidebar-- mb-3">
               <div class="shop-layout__content" style="width: 100%">
-                <div class="margin-less" style="margin-bottom: 35px">
+                <div>
                   <app-block-header
                     *ngIf="recommendedProducts.length > 0"
                     [header]="'Te podría interesar'"
@@ -415,7 +414,7 @@
           <div class="mb-5" (window:resize)="onResize($event)">
             <div class="shop-layout shop-layout--sidebar-- mb-3">
               <div class="shop-layout__content" style="width: 100%">
-                <div class="margin-less" style="margin-bottom: 15px">
+                <div>
                   <app-block-header
                     *ngIf="recommendedProducts.length > 0"
                     [header]="'Te podría interesar'"

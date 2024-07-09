@@ -1,13 +1,13 @@
-<div class="container-step d-flex mt-3 mb-3">
-  <div class="step col text-center" [ngClass]="{ 'step-active': step >= 1 }" (click)="RedirectTo(1)">
+<div class="container-step flex mt-3 mb-3">
+  <div class="step col-4 text-center" [ngClass]="{ 'step-active': step >= 1 }" (click)="RedirectTo(1)">
     <span class="number mx-auto number-right" style="margin-right: 10px" [ngClass]="{ 'number-right-active': step > 1 }">1</span>
     <strong>Carro</strong>
   </div>
-  <div class="step col text-center" [ngClass]="{ 'step-active': step >= 2 }" (click)="RedirectTo(2)">
+  <div class="step col-4 text-center" [ngClass]="{ 'step-active': step >= 2 }" (click)="RedirectTo(2)">
     <span class="number mx-auto number-right" [ngClass]="{ 'number-right-active': step > 2 }">2</span>
     <span class="subtitle">Entrega</span>
   </div>
-  <div class="step col text-center" [ngClass]="{ 'step-active': step == 3 }" (click)="RedirectTo(3)">
+  <div class="step col-4 text-center" [ngClass]="{ 'step-active': step == 3 }" (click)="RedirectTo(3)">
     <span class="number mx-auto">3</span>
     <span class="subtitle">Pago</span>
   </div>
