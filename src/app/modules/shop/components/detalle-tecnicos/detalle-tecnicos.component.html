@@ -1,84 +1,82 @@
 <div class="card shadow-none pt-sm-0">
   <div class="card-body d-flex justify-content-center">
     <div class="col-sm-10">
-      <div class="row">
-        <table class="table table-sm table-striped">
-          <thead>
-            <tr>
-              <th class="bg-primary text-center" colspan="2">
-                DETALLES TÉCNICOS
-              </th>
-            </tr>
-          </thead>
-          <tbody style="border: 1px solid #e7e7e7 !important">
-            <tr *ngIf="product?.partNumber">
-              <th [class.ps-3]="!w100" style="width: 40%">Numero de parte</th>
-              <td>{{ product?.partNumber || '-' }}</td>
-            </tr>
-            <tr *ngFor="let a of product?.attributes">
-              <th
-                style="width: 30%"
-                *ngIf="
-                  a.name != 'FICHA PDF' &&
-                  a.name != 'FICHA PDF IM' &&
-                  a.name != 'FICHA PDF PRV' &&
-                  a.name != 'VIDEO' &&
-                  a.name != 'CERTIFICADO PDF' &&
-                  a.name != 'CERTIFICADO PDF 2' &&
-                  a.name != 'CERTIFICADO PDF 3' &&
-                  a.name != 'HOJA DE SEGURIDAD PDF'
-                "
-              >
-                {{ a.name | capitalizeFirst }}
-              </th>
-              <td
-                style="width: 70%"
-                *ngIf="
-                  a.name != 'FICHA PDF' &&
-                  a.name != 'FICHA PDF IM' &&
-                  a.name != 'FICHA PDF PRV' &&
-                  a.name != 'VIDEO' &&
-                  a.name != 'CERTIFICADO PDF' &&
-                  a.name != 'CERTIFICADO PDF 2' &&
-                  a.name != 'CERTIFICADO PDF 3' &&
-                  a.name != 'HOJA DE SEGURIDAD PDF'
-                "
-              >
-                {{ a.value | capitalizeFirst }}
-              </td>
+      <table class="table table-sm table-striped">
+        <thead>
+          <tr>
+            <th class="bg-primary text-center" colspan="2">
+              DETALLES TÉCNICOS
+            </th>
+          </tr>
+        </thead>
+        <tbody style="border: 1px solid #e7e7e7 !important">
+          <tr *ngIf="product?.partNumber">
+            <th [class.ps-3]="!w100" style="width: 40%">Numero de parte</th>
+            <td>{{ product?.partNumber || '-' }}</td>
+          </tr>
+          <tr *ngFor="let a of product?.attributes">
+            <th
+              style="width: 30%"
+              *ngIf="
+                a.name != 'FICHA PDF' &&
+                a.name != 'FICHA PDF IM' &&
+                a.name != 'FICHA PDF PRV' &&
+                a.name != 'VIDEO' &&
+                a.name != 'CERTIFICADO PDF' &&
+                a.name != 'CERTIFICADO PDF 2' &&
+                a.name != 'CERTIFICADO PDF 3' &&
+                a.name != 'HOJA DE SEGURIDAD PDF'
+              "
+            >
+              {{ a.name | capitalizeFirst }}
+            </th>
+            <td
+              style="width: 70%"
+              *ngIf="
+                a.name != 'FICHA PDF' &&
+                a.name != 'FICHA PDF IM' &&
+                a.name != 'FICHA PDF PRV' &&
+                a.name != 'VIDEO' &&
+                a.name != 'CERTIFICADO PDF' &&
+                a.name != 'CERTIFICADO PDF 2' &&
+                a.name != 'CERTIFICADO PDF 3' &&
+                a.name != 'HOJA DE SEGURIDAD PDF'
+              "
+            >
+              {{ a.value | capitalizeFirst }}
+            </td>
 
-              <th
-                *ngIf="
-                  a.name == 'FICHA PDF' ||
-                  a.name == 'CERTIFICADO PDF' ||
-                  a.name == 'CERTIFICADO PDF 2' ||
-                  a.name == 'CERTIFICADO PDF 3' ||
-                  a.name == 'FICHA PDF IM' ||
-                  a.name == 'FICHA PDF PRV' ||
-                  a.name == 'HOJA DE SEGURIDAD PDF'
-                "
+            <th
+              *ngIf="
+                a.name == 'FICHA PDF' ||
+                a.name == 'CERTIFICADO PDF' ||
+                a.name == 'CERTIFICADO PDF 2' ||
+                a.name == 'CERTIFICADO PDF 3' ||
+                a.name == 'FICHA PDF IM' ||
+                a.name == 'FICHA PDF PRV' ||
+                a.name == 'HOJA DE SEGURIDAD PDF'
+              "
+            >
+              {{ a.name | capitalizeFirst }}
+            </th>
+            <td
+              *ngIf="
+                a.name == 'FICHA PDF' ||
+                a.name == 'CERTIFICADO PDF' ||
+                a.name == 'CERTIFICADO PDF 2' ||
+                a.name == 'CERTIFICADO PDF 3' ||
+                a.name == 'FICHA PDF IM' ||
+                a.name == 'FICHA PDF PRV' ||
+                a.name == 'HOJA DE SEGURIDAD PDF'
+              "
+            >
+              <a href="{{ a.value }}" target="_blank"
+                ><i class="fas fa-file-pdf me-2"></i>VER DOCUMENTO</a
               >
-                {{ a.name | capitalizeFirst }}
-              </th>
-              <td
-                *ngIf="
-                  a.name == 'FICHA PDF' ||
-                  a.name == 'CERTIFICADO PDF' ||
-                  a.name == 'CERTIFICADO PDF 2' ||
-                  a.name == 'CERTIFICADO PDF 3' ||
-                  a.name == 'FICHA PDF IM' ||
-                  a.name == 'FICHA PDF PRV' ||
-                  a.name == 'HOJA DE SEGURIDAD PDF'
-                "
-              >
-                <a href="{{ a.value }}" target="_blank"
-                  ><i class="fas fa-file-pdf me-2"></i>VER DOCUMENTO</a
-                >
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
