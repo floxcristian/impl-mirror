@@ -207,13 +207,13 @@
           style="display: flex; gap: 1.8rem"
         >
           <div style="display: flex; flex-direction: column; width: 46%">
-            <div style="height: 198px">
+            <div style="height: 210px">
               <div
                 style="
                   display: flex;
                   justify-content: center;
                   align-items: center;
-                  padding: 15px;
+                  padding: 10px;
                   background-color: #db0632;
                   color: white;
                   text-align: justify;
@@ -222,7 +222,7 @@
                   margin-top: 5px;
                 "
               >
-                <p>
+                <p class="mb-0">
                   Puedes enviar un mensaje al Whatsapp o completar el
                   formulario para solicitar el producto. Uno de nuestros
                   ejecutivos te responderá a la brevedad.
@@ -243,8 +243,8 @@
           </div>
           <div style="width: 46%">
             <form [formGroup]="formProductRequest">
-              <div style="height: 198px">
-                <div class="row" style="gap: 1rem">
+              <div style="height: 210px">
+                <div class="row" style="gap: 0.5rem">
                   <div class="col-md-12">
                     <label
                       for="customerName"
@@ -595,7 +595,7 @@
             ></app-share-button>
           </div>
         </div>
-        <div class=" ustify-content-start px-3 mb-1">
+        <div class="justify-content-start px-2 mb-1">
           <div style="color: #bbb">
             SKU {{ product.sku }}
             <span
@@ -609,7 +609,7 @@
             >
           </div>
         </div>
-        <div class="d-flex justify-content-start mb-1">
+        <div class="mx-2 d-flex justify-content-start mb-1">
           <div>
             {{
               product.brand
@@ -619,7 +619,7 @@
           </div>
         </div>
         <div class="mb-2">
-          <div>
+          <div class="mx-2">
             <p class="mb-2">
               <span class="text-lowercase">{{ product.description }}</span>
             </p>
@@ -648,7 +648,7 @@
           <hr style="background-color: red" />
           <div class="row px-3 mt-2">
             <div style="display: flex; flex-direction: column">
-              <div style="height: 145px">
+              <div style="height: 150px">
                 <div
                   style="
                     display: flex;
@@ -663,7 +663,7 @@
                     margin-top: 5px;
                   "
                 >
-                  <p>
+                  <p class="mb-0">
                     Puedes enviar un mensaje al Whatsapp o completar el
                     formulario para solicitar el producto. Uno de nuestros
                     ejecutivos te responderá a la brevedad.
@@ -689,8 +689,8 @@
             <div class="mt-3">
               <form [formGroup]="formProductRequest">
                 <div style="height: 198px">
-                  <div class="row" style="gap: 1rem">
-                    <div class="col-12">
+                  <div class="row" style="gap: 0.5rem">
+                    <div class="col-md-12">
                       <label
                         for="customerName"
                         style="color: #0063b9; font-weight: 100"
@@ -706,7 +706,7 @@
                         />
                       </div>
                     </div>
-                    <div class="col-12">
+                    <div class="col-md-12">
                       <label
                         for="customerPhone"
                         style="color: #0063b9; font-weight: 100"
@@ -721,7 +721,7 @@
                         />
                       </div>
                     </div>
-                    <div class="col-12">
+                    <div class="col-md-12">
                       <label
                         for="email"
                         style="color: #0063b9; font-weight: 100"
