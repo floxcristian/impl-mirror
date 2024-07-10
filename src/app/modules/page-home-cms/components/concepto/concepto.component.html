@@ -1,5 +1,5 @@
 <div class="row" [ngStyle]="style" (click)="send_pagina(caja.data.url)">
-  <div class="container-img" [ngStyle]="style" style="position: relative">
+  <div class="container-img relative p-0" [ngStyle]="style">
     <img
       [ngSrc]="caja.data.image"
       class="bg"
@@ -10,7 +10,7 @@
     />
   </div>
   <div
-    class="col-sm-12 d-flex justify-content-center"
+    class="sm:col-12 flex justify-content-center"
     style="cursor: pointer"
     [ngStyle]="style_title"
   >
@@ -18,5 +18,5 @@
       {{ caja.data.title }}
     </h4>
   </div>
-  <div class="col-sm-12 overlay" [ngStyle]="style_overlay"></div>
+  <div class="sm:col-12 overlay" [ngStyle]="style_overlay"></div>
 </div>
