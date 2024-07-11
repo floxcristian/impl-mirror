@@ -25,13 +25,12 @@ table {
 }
 
 .tabla-dias td {
-  padding-top: 0px !important;
-  padding-bottom: 4px !important;
-  padding-left: 10px !important;
-  padding-right: 1px !important;
+  // padding-top: 0px !important;
+  // padding-bottom: 4px !important;
+  // padding-left: 10px !important;
+  // padding-right: 1px !important;
   text-align: center;
-
-  overflow-x: auto;
+  // overflow-x: auto;
 }
 
 .dia-semana {
@@ -49,8 +48,8 @@ table {
 }
 
 .dia-container-habilitado > div > div {
-  padding-top: 4px;
-  padding-bottom: 4px;
+  // padding-top: 4px;
+  // padding-bottom: 4px;
   width: 88px !important;
   height: 83px !important;
   display: table-cell;
@@ -59,8 +58,8 @@ table {
 }
 
 .dia-container-activado {
-  padding-top: 4px;
-  padding-bottom: 4px;
+  // padding-top: 4px;
+  // padding-bottom: 4px;
   width: 88px !important;
   height: 83px !important;
   display: table-cell;
@@ -71,8 +70,8 @@ table {
 }
 
 .dia-container-desactivado {
-  padding-top: 4px;
-  padding-bottom: 4px;
+  // padding-top: 4px;
+  // padding-bottom: 4px;
   width: 88px !important;
   height: 83px !important;
   display: table-cell;
@@ -89,7 +88,7 @@ table {
 .dia-container-deshabilitado > div {
   width: 88px !important;
   height: 53px !important;
-  padding: 4px;
+  // padding: 4px;
   border: 1px solid #bfbfbf;
   background-color: #f5f5f5;
   border-radius: 4px;
