@@ -1,13 +1,13 @@
-<div class="row">
-  <div class="col-md-12 d-flex">
-    <div class="card m-0 shadow-none">
+<div>
+  <div class="col-12 flex p-0">
+    <div class="card p-4 m-0 shadow-none">
       <div class="card-body m-0" style="color: #0063b9">
         <h3 class="card-title" style="color: #0063b9">
           Comprar como invitado
         </h3>
         <form [formGroup]="guestForm">
-          <div class="row">
-            <div class="col-md-12">
+          <div>
+            <div class="col-12 py-0">
               <div class="mb-3">
                 <label style="color: #0063b9; font-weight: bold"
                   >{{ config.document.name }}*</label
@@ -35,7 +35,7 @@
                 </p>
               </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-12 py-0">
               <div class="mb-3">
                 <input
                   formControlName="nombre"
@@ -46,7 +46,7 @@
                 />
               </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-12 py-0">
               <div class="mb-3">
                 <input
                   formControlName="apellido"
@@ -58,7 +58,7 @@
               </div>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-12 py-0">
               <div class="mb-3">
                 <label style="color: #0063b9; font-weight: 100"
                   ><font style="margin-right: 10px">Código*</font> Teléfono
@@ -136,7 +136,7 @@
                 </p>
               </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-12 py-0">
               <div class="mb-3">
                 <autocomplete #emailValidate givenPlaceHolder="Email" />
 
@@ -165,8 +165,8 @@
       </div>
       <ng-container *ngIf="innerWidth >= 768">
         <div class="card-footer p-0">
-          <div class="row">
-            <div class="col-sm-12">
+          <div>
+            <div class="col-12 py-0">
               <button
                 type="button"
                 [disabled]="!guestForm.valid || !emailValidate.isValidEmail"
@@ -182,7 +182,7 @@
       <ng-container *ngIf="innerWidth < 768">
         <div class="card-footer p-0">
           <div class="row">
-            <div class="col-md-6">
+            <div class="md:col-6">
               <button
                 type="button"
                 [disabled]="!guestForm.valid"

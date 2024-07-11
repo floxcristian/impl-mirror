@@ -1,5 +1,5 @@
 <div class="row container-group-register">
-  <div class="container-login col-xs-12 col-lg-6">
+  <div class="container-login xs:col-12 lg:col-6 px-3 py-0">
     <app-header-login
       [class]="'login-register'"
       [showLabel]="false"
@@ -8,7 +8,7 @@
     />
   </div>
 
-  <div class="container-register col-xs-12 col-lg-6">
+  <div class="container-register xs:col-12 lg:col-6 py-0 px-3">
     <app-register-visit
       (returnLoginEvent)="returnInvitado($event)"
       [innerWidth]="innerWidth"

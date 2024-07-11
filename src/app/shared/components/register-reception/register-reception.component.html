@@ -1,5 +1,5 @@
-<div class="row d-flex justify-content-center">
-  <div class="col-md-12 d-flex">
+<div class="grid flex justify-content-center p-0">
+  <div class="col-12 flex py-0">
     <div class="card m-0 shadow-none">
       <div class="card-body m-0">
         <h3
@@ -10,7 +10,7 @@
         </h3>
         <form [formGroup]="formRecibe">
           <div class="row">
-            <div class="col-md-6">
+            <div class="md:col-6 py-0">
               <div class="mb-3">
                 <input
                   formControlName="firstName"
@@ -21,7 +21,7 @@
                 />
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="md:col-6 py-0">
               <div class="mb-3">
                 <input
                   formControlName="lastName"
@@ -33,7 +33,7 @@
               </div>
             </div>
 
-            <div class="col-md-6">
+            <div class="md:col-6 py-0">
               <div class="mb-3">
                 <label style="color: #0063b9">Telefono fijo/Celular</label>
                 <div class="input-group">
@@ -103,7 +103,7 @@
                 </p>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="md:col-6 py-0">
               <div class="mb-3">
                 <label style="color: #0063b9"
                   >{{ config.document.name }}*</label
@@ -142,7 +142,7 @@
         class="card-footer p-0 d-flex justify-content-center"
         style="margin-top: 10px"
       >
-        <div class="col-lg-12 col-sm-8">
+        <div class="lg:col-12 sm:col-8 p-0">
           <button
             name="aceptar"
             (click)="enviarReceptor()"

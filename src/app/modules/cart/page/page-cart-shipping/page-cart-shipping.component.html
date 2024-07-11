@@ -1,13 +1,13 @@
 <div
-  class="container container-cart site_b2c margencarro"
+  class="container container-cart site_b2c margencarro px-2"
   (window:resize)="onResize($event)"
 >
   <app-guided-steps [step]="2"></app-guided-steps>
 
   <div class="row">
     <!-- formulario inicio sesión -->
-    <div class="col-12 col-lg-7 col-xl-8" *ngIf="!isLoggedIn">
-      <div class="card" *ngIf="!usuarioInvitado && !isLoggedIn">
+    <div class="col-12 lg:col-7 xl:col-8 py-0" *ngIf="!isLoggedIn">
+      <div class="card p-4" *ngIf="!usuarioInvitado && !isLoggedIn">
         <div class="card-body">
           <app-login-register
             [innerWidth]="innerWidth"
@@ -18,7 +18,7 @@
       </div>
     </div>
     <div
-      class="col-12"
+      class="col-12 py-0"
       *ngIf="
         (usuarioInvitado || isLoggedIn) &&
         shippingSelected &&
@@ -58,7 +58,7 @@
           class="card-body d-flex flex-wrap align-items-lg-center mt-2"
           style="margin-bottom: 10px"
         >
-          <div class="col-12 col-sm-7">
+          <div class="col-12 sm:col-7 py-0">
             <!-- <span style="font-weight: bold; color: #0063b9 !important">{{
               direccionName | lowercase | titlecase
             }}</span
@@ -110,7 +110,7 @@
       </div>
     </div>
     <div
-      class="col-12"
+      class="col-12 py-0"
       *ngIf="
         (usuarioInvitado || isLoggedIn) &&
         shippingSelected &&
@@ -124,20 +124,20 @@
           {{ tituloRecibe }}
         </div>
         <div class="card-body mt-2">
-          <div class="col-12 col-lg-9" *ngIf="recibeOtraname.length > 0">
+          <div class="col-12 lg:col-9 py-0" *ngIf="recibeOtraname.length > 0">
             {{ recibeOtraname | titlecase }}
           </div>
-          <div class="col-12 col-lg-9" *ngIf="recibeOtraname.length === 0">
+          <div class="col-12 lg:col-9 py-0" *ngIf="recibeOtraname.length === 0">
             {{ recibeYoname | titlecase }}
           </div>
         </div>
       </div>
     </div>
     <div
-      class="col-lg-7 col-xl-8 col-xs-12"
+      class="lg:col-7 xl:col-8 xs:col-12 py-0"
       *ngIf="!select_grupos && (usuarioInvitado || isLoggedIn)"
     >
-      <div class="card h-100">
+      <div class="card h-100 p-4">
         <div class="card-header" style="color: #0063b9; margin-left: 17px">
           ELIGE EL TIPO DE ENTREGA
         </div>
@@ -158,7 +158,7 @@
                 </ng-template>
 
                 <div
-                  class="mb-3 me-3 col-12 col-lg-12 mt-3"
+                  class="mb-3 col-12 mt-3 py-0 px-3"
                   [hidden]="!stores.length"
                 >
                   <ng-select
@@ -193,26 +193,26 @@
                   <!-- <p *ngIf="tienda" class="subtitle" style="font-weight:normal;padding:0.5rem 2px">{{ tienda.direccion }}</p> -->
                 </div>
                 <div
-                  class="cart-address-container ms-3 col-12 col-lg-12 pt-3 pb-2 ps-2"
+                  class="cart-address-container ml-3 col-12 p-1"
                   style="color: #0063b9; margin-bottom: 10px"
                   [ngStyle]="{ width: innerWidth > 450 ? '96%' : '92%' }"
                 >
-                  <div class="row">
+                  <div class="grid m-0">
                     <div
-                      class="col-2 d-flex justify-content-center align-items-center"
+                      class="col-2 p-0 flex justify-content-center align-items-center"
                     >
                       <i
                         class="fa-solid fa-store m-0"
                         style="font-size: 21px !important; color: #0063b9"
                       ></i>
                     </div>
-                    <div *ngIf="tienda" class="col-10" style="font-size: 14px">
-                      <div class="row">
-                        <div class="col-sm-6 mt-1">
+                    <div *ngIf="tienda" class="col-10 p-0" style="font-size: 14px">
+                      <div class="grid m-0">
+                        <div class="col-6">
                           {{ tienda.address }}
                         </div>
                         <div
-                          class="col-sm-6"
+                          class="col-6"
                           style="font-weight: bold; font-size: 15px"
                         >
                           {{ pickupDescription | uppercase }}
@@ -235,7 +235,7 @@
                   text="Cargando fechas2"
                 />
                 <div *ngIf="!shippingDaysStore.length" class="no-shipping">
-                  <div class="col-12 col-lg-12">
+                  <div class="col-12 p-0">
                     <div
                       class="alert border border-warning"
                       style="width: 99%; color: #0063b9"
@@ -255,14 +255,13 @@
                     </div>
                   </div>
                 </div>
-
-                <div class="col-12">
+                <!-- Detalle de productos con su fecha entrega -->
+                <div class="col-12 py-0 px-3">
                   <ng-container
                     *ngFor="let item_0 of shippingDaysStore; let i = index"
                   >
                     <div
                       style="
-                        margin-bottom: 30px;
                         border: 1px solid #0063b9;
                         border-radius: 5px;
                         border-top: none;
@@ -311,8 +310,8 @@
                   </ng-container>
                 </div>
 
-                <div class="row ms-2 mt-4" *ngIf="shippingDaysStore.length">
-                  <div class="mb-3 col-12" style="color: #0063b9">
+                <div class="ms-2 mt-4" *ngIf="shippingDaysStore.length">
+                  <div class="mb-3 col-12 py-0" style="color: #0063b9">
                     <label>Seleccione quien retira el pedido</label>
                     <div class="clearfix"></div>
 
@@ -386,23 +385,23 @@
                     class="row me-1"
                     *ngIf="recibeType == 'otra' && recibeOtraname.length > 0"
                   >
-                    <div class="col-12">
+                    <div>
                       <p class="subtitle" style="color: #0063b9">
                         Persona que recibe
                       </p>
                     </div>
-                    <div class="col-12 col-sm-10 ms-1">
+                    <div class="col-12 ms-1 py-0">
                       <div
                         class="cart-address-container pt-3 pb-3 ps-2"
                         [ngClass]="
                           HideResumen() ? '' : 'd-flex align-items-center'
                         "
                       >
-                        <div class="row">
-                          <div class="col-12 col-sm-7">
+                        <div class="row col-12 py-0">
+                          <div class="col-12 sm:col-7">
                             {{ recibeOtraname | titlecase }}
                           </div>
-                          <div class="col-12 col-sm-5">
+                          <div class="col-12 sm:col-5 py-0">
                             <button
                               type="button"
                               class="btn btn-link text-start"
@@ -428,7 +427,7 @@
                   class="row"
                   *ngIf="recibeType == 'otra' && recibeOtraname.length == 0"
                 >
-                  <div class="col-sm-12">
+                  <div class="col-12 p-0">
                     <app-register-reception
                       (returnReceptionEvent)="reciboPedido($event)"
                     >
@@ -438,7 +437,7 @@
 
                 <div class="row">
                   <div
-                    class="col-sm-12"
+                    class="sm:col-12"
                     style="padding: 0 32px; margin-top: 10px"
                   >
                     @if(tienda && showMap){
@@ -493,7 +492,7 @@
                         <div
                           class="row pb-3 pt-3 d-flex align-items-sm-center ps-2"
                         >
-                          <div class="col-12 col-sm-6">
+                          <div class="col-12 sm:col-6">
                             <i
                               class="fa-solid fa-location-dot fa-fw"
                               style="font-size: 20px"
@@ -501,7 +500,7 @@
                             {{ direccion.fullAddress }}
                           </div>
                           <div
-                            class="col-12 col-sm-6 d-flex flex-sm-row-reverse"
+                            class="col-12 sm:col-6 d-flex flex-sm-row-reverse"
                             *ngIf="!showAllAddress"
                           >
                             <button
@@ -525,7 +524,7 @@
                             </button>
                           </div>
                           <div
-                            class="col-12 col-sm-6 d-flex flex-row-reverse"
+                            class="col-12 sm:col-6 d-flex flex-row-reverse"
                             *ngIf="showAllAddress"
                           >
                             <button
@@ -553,7 +552,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-12 col-lg-12">
+                    <div class="col-12">
                       <div
                         class="cart-new-address-container"
                         [ngClass]="showAllAddress ? 'mb-4' : ''"
@@ -562,7 +561,7 @@
                         <div
                           class="row pb-3 pt-3 d-flex flex-wrap align-items-sm-center ps-2"
                         >
-                          <div class="col-12 col-sm-6">
+                          <div class="col-12 sm:col-6">
                             <i
                               class="fas fa-plus"
                               style="
@@ -572,7 +571,7 @@
                             ></i>
                             Nueva Dirección
                           </div>
-                          <div class="col-12 col-sm-6 d-flex flex-row-reverse">
+                          <div class="col-12 sm:col-6 d-flex flex-row-reverse">
                             <button
                               name="open"
                               name="openModal"
@@ -602,17 +601,17 @@
 
                   <div *ngIf="usuarioInvitado && showAddress">
                     <div class="row ms-2 mt-3">
-                      <div class="col-12 col-lg-6">
+                      <div class="col-12 lg:col-6">
                         <p class="subtitle my-0 pt-0">Dirección de despacho</p>
                       </div>
                     </div>
 
-                    <div class="col-12 col-lg-12 ms-3 mt-3">
+                    <div class="col-12 ms-3 mt-3">
                       <div class="cart-address-container">
                         <div
                           class="row pb-3 pt-3 d-flex flex-wrap align-items-sm-center ps-2 me-1"
                         >
-                          <div class="col-12 col-sm-7">
+                          <div class="col-12 sm:col-7">
                             <div>
                               {{ usuarioInv.street }} {{ usuarioInv.number }},
                               depto/casa: {{ usuarioInv.department }},
@@ -621,7 +620,7 @@
                             <!-- <div *ngIf="usuarioInv.depto.length <= 0"> {{usuarioInv.calle}} {{usuarioInv.numero}}, {{usuarioInv.comuna}} </div> -->
                           </div>
                           <div
-                            class="col-12 col-sm-5 d-flex flex-sm-row-reverse"
+                            class="col-12 sm:col-5 d-flex flex-sm-row-reverse"
                           >
                             <button
                               title="Cambiar dirección"
@@ -668,7 +667,7 @@
                         Seleccione una dirección para proponer días de despacho
                       </p>
 
-                      <div *ngIf="isLoggedIn" class="col-12 col-lg-12">
+                      <div *ngIf="isLoggedIn" class="col-12">
                         <div
                           class="alert border border-warning"
                           style="width: 99%; color: #0063b9"
@@ -691,7 +690,7 @@
                       </div>
                       <div
                         *ngIf="!isLoggedIn && showAddress"
-                        class="col-12 col-lg-12"
+                        class="col-12"
                       >
                         <div
                           class="alert border border-warning"
@@ -878,10 +877,10 @@
                               "
                             >
                               <div class="row col-12">
-                                <div class="col-12 col-sm-7">
+                                <div class="col-12 sm:col-7">
                                   {{ recibeOtraname | titlecase }}
                                 </div>
-                                <div class="col-12 col-sm-5">
+                                <div class="col-12 sm:col-5">
                                   <button
                                     type="button"
                                     class="btn btn-link text-start"
@@ -918,7 +917,7 @@
                           recibeType == 'otra' && recibeOtraname.length == 0
                         "
                       >
-                        <div class="col-sm-12">
+                        <div class="sm:col-12">
                           <app-register-reception
                             (returnReceptionEvent)="reciboPedido($event)"
                           >
@@ -960,7 +959,7 @@
     <!-- Segmento asociado al detalle del pedido. -->
     <ng-container *ngIf="innerWidth >= 992; px">
       <div
-        class="col-12 col-lg-5 col-xl-4"
+        class="col-12 lg:col-5 xl:col-4"
         [hidden]="showAllAddress ? true : false"
         style="padding: 15px; background-color: #e3e3e3"
       >
@@ -1111,7 +1110,7 @@
     <!--- Segmento asociado el detalle del pedido en tabler-->
     <ng-container *ngIf="innerWidth >= 450 && innerWidth < 992; px">
       <div
-        class="col-12 col-lg-5 col-xl-4"
+        class="col-12 lg:col-5 xl:col-4"
         style="
           margin-top: 10px;
           margin-bottom: 10px;
