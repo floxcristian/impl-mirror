@@ -2,9 +2,9 @@
 import {
   Component,
   ElementRef,
-  Renderer2,
+  //Renderer2,
   ViewChild,
-  HostListener,
+  //HostListener,
 } from '@angular/core';
 import { Router } from '@angular/router';
 // Env
@@ -12,7 +12,7 @@ import { environment } from '@env/environment';
 // Models
 import { BuscadorB2B } from '../../shared/interfaces/buscadorB2B';
 // Services
-import { isVacio } from '../../shared/utils/utilidades';
+//import { isVacio } from '../../shared/utils/utilidades';
 import { LocalStorageService } from 'src/app/core/modules/local-storage/local-storage.service';
 import { StorageKey } from '@core/storage/storage-keys.enum';
 
@@ -28,8 +28,7 @@ export class HeaderComponent {
 
   constructor(
     private route: Router,
-    private localS: LocalStorageService,
-    private renderer: Renderer2
+    private localS: LocalStorageService //private renderer: Renderer2
   ) {
     const buscadorB2B = this.localS.get(StorageKey.buscadorB2B);
     if (!buscadorB2B) {
@@ -41,8 +40,8 @@ export class HeaderComponent {
       this.localS.set(StorageKey.buscadorB2B, data);
     }
   }
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
+  // @HostListener('window:scroll', [])
+  /*onWindowScroll() {
     if (!isVacio(this.sticky_b2c) && !isVacio(this.sticky_b2c_nav)) {
       const sticky = this.sticky_b2c.nativeElement.offsetTop;
       if (window.pageYOffset > sticky) {
@@ -59,8 +58,7 @@ export class HeaderComponent {
         );
       }
     }
-  }
-
+  }*/
   Hidebar() {
     let url = this.route.url;
     if (this.route.url.split('?')[0] != undefined) {
