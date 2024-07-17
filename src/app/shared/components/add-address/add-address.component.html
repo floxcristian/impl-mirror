@@ -1,7 +1,7 @@
-<div class="col-12 newAddress mt-3">
+<div class="col-12 newAddress mt-3 py-0">
   <div>
     <div class="row" *ngIf="invitado === false">
-      <div class="col-12 text-end">
+      <div class="col-12 text-end py-0">
         <span class="closeIcon"
           ><i
             class="fas fa-chevron-up"
@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-12 col-lg-12 mb-2">
+      <div class="col-12 mb-2 py-0">
         <app-map
           (clearAddress)="clearAddress()"
           [storeAddress]="tienda?.direccion || ''"
@@ -25,14 +25,14 @@
       <!--<pre>
         {{ addressForm.value | json }}
       </pre> -->
-      <div class="col-12 col-lg-12">
+      <div class="col-12 py-0">
         <form
           (ngSubmit)="agregarDireccion()"
           id="form"
           [formGroup]="addressForm"
         >
           <div class="row" style="color: #0063b9">
-            <div class="mb-3 col-md-8">
+            <div class="mb-3 md:col-8">
               <label>Calle (*)</label>
               <input
                 type="text"
@@ -42,7 +42,7 @@
               />
             </div>
 
-            <div class="mb-3 col-md-4">
+            <div class="mb-3 md:col-4">
               <label for="inputPassword4">Número</label>
               <input
                 [class.is-invalid]="
@@ -59,7 +59,7 @@
               />
               <div class="invalid-feedback">Ingrese el número</div>
             </div>
-            <div class="mb-3 col-md-6">
+            <div class="mb-3 md:col-6">
               <label>Departamento</label>
               <input
                 type="text"
@@ -69,7 +69,7 @@
               />
             </div>
 
-            <div class="mb-3 col-md-6">
+            <div class="mb-3 md:col-6">
               <label>Comuna (*)</label>
               <ng-select
                 [clearable]="false"
@@ -86,7 +86,7 @@
               </ng-select>
             </div>
 
-            <div class="mb-3 col-md-6" hidden>
+            <div class="mb-3 md:col-6" hidden>
               <label for="inputPassword4">Localización (*)</label>
               <div *ngIf="!localidades">
                 <p>Seleccione una comuna para ver localidades</p>
@@ -107,7 +107,7 @@
                 </ng-select>
               </div>
             </div>
-            <div class="mb-3 col-md-12">
+            <div class="mb-3 col-12">
               <label for="validationTextarea">Referencia</label>
               <textarea
                 class="form-control"

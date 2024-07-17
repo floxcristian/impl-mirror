@@ -155,7 +155,7 @@
                 <ng-template tabHeading>
                   <i
                     class="fa-sharp fa-solid fa-store"
-                    style="margin-right: 10px"
+                    style="margin-right: 10px; font-size: 28px"
                   ></i>
                   <span class="title">Retirar en tienda</span>
                 </ng-template>
@@ -312,7 +312,8 @@
                         "
                         [index]="i"
                         [fletes]="item_0.fechas"
-                      ></app-grupo-detalle-fechas-mobile>
+                      >
+                      </app-grupo-detalle-fechas-mobile>
                     </div>
                   </ng-container>
                 </div>
@@ -466,13 +467,20 @@
               >
                 <div [hidden]="showNewAddress">
                   <ng-template tabHeading>
-                    <i class="fas fa-truck"></i>
-                    <ng-container *ngIf="innerWidth >= 450">
+                    <i
+                      class="fas fa-truck"
+                      style="margin-right: 10px; font-size: 28px"
+                    ></i>
+                    <!-- <ng-container *ngIf="innerWidth >= 450">
                       <span class="title">Despacho a domicilio</span>
                     </ng-container>
                     <ng-container *ngIf="innerWidth < 450">
                       <span class="title">Despacho</span>
-                    </ng-container>
+                    </ng-container> -->
+                    <span class="title hidden sm:inline"
+                      >Despacho a domicilio</span
+                    >
+                    <span class="title sm:hidden">Despacho</span>
                   </ng-template>
 
                   <app-loading-element
@@ -488,7 +496,10 @@
                   >
                     <!-- Listado de direcciones de un usuario logeado -->
 
-                    <div *ngFor="let direccion of addresses" class="col-12">
+                    <div
+                      *ngFor="let direccion of addresses"
+                      class="col-12 py-0 px-3"
+                    >
                       <div
                         class="cart-address-container"
                         *ngIf="
@@ -497,9 +508,9 @@
                         [ngClass]="showAllAddress ? 'mb-4' : ''"
                       >
                         <div
-                          class="row pb-3 pt-3 d-flex align-items-sm-center ps-2"
+                          class="row pb-2 pt-2 d-flex align-items-sm-center pl-2"
                         >
-                          <div class="col-12 sm:col-6">
+                          <div class="col-12 sm:col-6 py-0">
                             <i
                               class="fa-solid fa-location-dot fa-fw"
                               style="font-size: 20px"
@@ -507,7 +518,7 @@
                             {{ direccion.fullAddress }}
                           </div>
                           <div
-                            class="col-12 sm:col-6 d-flex flex-sm-row-reverse"
+                            class="col-12 sm:col-6 py-0 d-flex flex-sm-row-reverse"
                             *ngIf="!showAllAddress"
                           >
                             <button
@@ -559,14 +570,14 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 py-0 px-3">
                       <div
                         class="cart-new-address-container"
-                        [ngClass]="showAllAddress ? 'mb-4' : ''"
+                        [ngClass]="showAllAddress ? 'mb-3' : ''"
                         *ngIf="showAllAddress || addresses.length === 0"
                       >
                         <div
-                          class="row pb-3 pt-3 d-flex flex-wrap align-items-sm-center ps-2"
+                          class="row pb-2 pt-2 d-flex flex-wrap align-items-sm-center pl-2"
                         >
                           <div class="col-12 sm:col-6">
                             <i
@@ -726,7 +737,7 @@
                       "
                     >
                       <!-- Segmento correspondiente al formulario asociado a la persona que recibe el producto-->
-                      <div class="row ms-2 mt-4" *ngIf="shippingDays.length">
+                      <div class="row ms-2 mt-3" *ngIf="shippingDays.length">
                         <!-- Formulario de  dias para despacho -->
 
                         <div class="row col-12">

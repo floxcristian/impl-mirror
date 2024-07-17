@@ -259,7 +259,7 @@ export class PageCartShippingComponent implements OnInit {
       });
 
     if (isPlatformBrowser(this.platformId)) {
-      this.onSelectShippingType(null, 'retiro');
+      this.onSelectShippingType(null, 'despacho');
       this._gmtService.beginCheckout(dataLayer, this.cartSession);
     }
   }
