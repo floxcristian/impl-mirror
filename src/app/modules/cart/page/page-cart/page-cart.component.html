@@ -300,7 +300,7 @@
                 <a
                   [routerLink]="['/', 'carro-compra', 'metodo-de-envio']"
                   (click)="limpiarInvitado()"
-                  class="btn btn-lg btn-secondary w-100 text-center"
+                  class="btn btn-lg btn-secondary w-100 text-center text-50"
                 >
                   Ir a comprar
                 </a>
@@ -465,7 +465,7 @@
       </ng-container>
 
       <ng-container *ngIf="innerWidth < 450">
-        <div *ngIf="items.length" class="footer-page">
+        <div *ngIf="items.length" class="footer-page w-screen">
           <div
             class="card h-100"
             style="margin-top: 5px; margin-bottom: -13px"
@@ -522,7 +522,7 @@
               <a
                 [routerLink]="['/', 'carro-compra', 'metodo-de-envio']"
                 (click)="limpiarInvitado()"
-                class="btn btn-lg btn-secondary w-100 text-center"
+                class="btn btn-lg btn-secondary w-100 text-center text-50"
               >
                 Ir a comprar
               </a>

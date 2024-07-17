@@ -160,7 +160,7 @@
             root.product(productData.sku, productData.name, paramsCategory)
           "
         >
-          <span class="nombreP" style="-webkit-box-orient: vertical">
+          <span class="nombreP p-0" style="-webkit-box-orient: vertical">
             {{ productData.name | capitalizeFirst }}
           </span>
         </a>
@@ -512,6 +512,7 @@
         >
           <div class="text-center" style="font-size: 14px">AGREGAR</div>
         </button>
+        <!--
         <button
           name="add"
           [disabled]="!productData.priceInfo.price"
@@ -522,13 +523,13 @@
           [ngClass]="{ 'btn-loading': addingToCart }"
         >
           <div class="text-center" style="font-size: 14px">AGREGAR</div>
-        </button>
+        </button> -->
       </div>
       <div
-        class="product-card__buttons"
+        class="product-card__buttons p-0"
         *ngIf="
-          productData.stockSummary.branchStock > 0 ||
-          productData.stockSummary.companyStock > 0
+          productData.stockSummary.branchStock ||
+          productData.stockSummary.companyStock
         "
       >
         <button
@@ -542,6 +543,7 @@
         >
           <div class="text-center" style="font-size: 14px">AGREGAR</div>
         </button>
+        <!--
         <button
           name="add"
           [disabled]="!productData.priceInfo.price"
@@ -552,13 +554,13 @@
           [ngClass]="{ 'btn-loading': addingToCart }"
         >
           <div class="text-center" style="font-size: 14px">AGREGAR</div>
-        </button>
+        </button> -->
       </div>
       <div
         class="product-card__buttons"
         *ngIf="
-          productData.stockSummary?.branchStock === 0 &&
-          productData.stockSummary?.companyStock === 0
+          !productData.stockSummary?.branchStock &&
+          !productData.stockSummary?.companyStock
         "
       >
         <button
