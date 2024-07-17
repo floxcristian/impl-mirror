@@ -56,7 +56,7 @@ export class MobileHeaderComponent implements OnInit, OnDestroy {
     private router: Router,
     public root: RootService,
     public cart: CartService,
-    public localS: LocalStorageService,
+    public localS: LocalStorageService
   ) {}
 
   ngOnInit() {}
@@ -66,16 +66,15 @@ export class MobileHeaderComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  Hidebar() {
-    let url = null;
+  Hidebar(): boolean {
+    /*let url = null;
     if (this.router.url.split('?')[0] != undefined) {
       url = '' + this.router.url.split('?')[0];
-    }
+    }*/
     if (this.router.url.includes('/carro-compra/')) {
       return false;
     } else {
       return true;
     }
   }
-
 }
