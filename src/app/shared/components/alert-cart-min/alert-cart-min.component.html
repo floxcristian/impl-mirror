@@ -11,27 +11,27 @@
       ></span>
     </div>
   </div>
-  <hr />
+  <hr class="m-2"/>
   <div class="d-flex align-items-center content-productDef">
-    <div class="col-3 productDef-image">
+    <div class="col-3 py-0 productDef-image">
       <img
         [src]="productDef.image"
         alt="carro-compra"
         class="img-fluid lazyload"
       />
     </div>
-    <div class="col-6">
+    <div class="col-6 py-0">
       <span class="d-block text-productDef">{{
         productDef.name | capitalizeFirst
       }}</span>
       <span class="text-productDef text-sku"> {{ productDef.sku }}</span>
     </div>
-    <div class="col-3 text-center">
+    <div class="col-3 py-0 text-center">
       <span class="d-block text-productDef text-center">Cantidad</span>
       <span class="number-productDef">{{ productDef.quantity }}</span>
     </div>
   </div>
-  <hr />
+  <hr class="m-2"/>
   <div style="margin-bottom: 10px">
     <button
       (click)="go_to()"
