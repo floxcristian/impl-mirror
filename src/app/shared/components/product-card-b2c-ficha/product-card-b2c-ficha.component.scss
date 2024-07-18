@@ -27,6 +27,12 @@
   }
 }
 
+@media (max-width: 576px) {
+  .product-card {
+    padding: 10px !important;
+  }
+}
+
 .product-card::before {
   content: '';
   display: flex;

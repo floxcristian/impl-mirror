@@ -495,7 +495,7 @@
   <div class="product-card__actions">
     <ng-container>
       <div
-        class="product-card__buttons"
+        class="product-card__buttons p-0"
         *ngIf="
           productData.stockSummary.branchStock === undefined &&
           productData.stockSummary.companyStock === undefined
@@ -557,7 +557,7 @@
         </button> -->
       </div>
       <div
-        class="product-card__buttons"
+        class="product-card__buttons p-0"
         *ngIf="
           !productData.stockSummary?.branchStock &&
           !productData.stockSummary?.companyStock

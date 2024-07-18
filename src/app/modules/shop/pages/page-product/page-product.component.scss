@@ -121,6 +121,12 @@ ul.product-card__features-list {
     .product-card {
       flex: 1 1 auto !important;
     }
+    @media (max-width: 576px) {
+      .product-card {
+        padding: 10px;
+        //width: 150px;
+      }
+    }
   }
 }
 
