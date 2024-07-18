@@ -39,6 +39,7 @@
       [ngbPopover]="popoverContent"
       #popover="ngbPopover"
       triggers="hover"
+      container="body"
       placement="bottom-left"
       (mousehover)="verPreciosEscala(popover)"
     >
@@ -579,7 +580,7 @@
 </div>
 
 <ng-template #popoverContent>
-  <div class="mb-4 product_content" style="min-height: 140px">
+  <div class="product_content" style="min-height: 140px">
     <a
       style="margin-bottom: 10px"
       appClick
