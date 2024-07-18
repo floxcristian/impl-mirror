@@ -139,7 +139,7 @@
     <div class="product-card__name">
       <div>
         <a
-          class="marcaP"
+          class="marcaP text-sm"
           (click)="cartService.setProductOrigin(origen)"
           appClick
           [routerLink]="
@@ -495,7 +495,7 @@
   <div class="product-card__actions">
     <ng-container>
       <div
-        class="product-card__buttons p-0"
+        class="product-card__buttons p-0 mt-2"
         *ngIf="
           productData.stockSummary.branchStock === undefined &&
           productData.stockSummary.companyStock === undefined
@@ -526,7 +526,7 @@
         </button> -->
       </div>
       <div
-        class="product-card__buttons p-0"
+        class="product-card__buttons p-0 mt-2"
         *ngIf="
           productData.stockSummary.branchStock ||
           productData.stockSummary.companyStock
@@ -557,7 +557,7 @@
         </button> -->
       </div>
       <div
-        class="product-card__buttons p-0"
+        class="product-card__buttons p-0 mt-2"
         *ngIf="
           !productData.stockSummary?.branchStock &&
           !productData.stockSummary?.companyStock
