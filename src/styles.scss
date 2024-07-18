@@ -111,6 +111,7 @@ a:not([href]):hover {
 
 @import 'scss-v2/layout.scss' layer(layout);
 @import 'scss-v2/temporal-primeng.scss';
+@import '~@ng-select/ng-select/themes/default.theme.css';
 
 /* 
 a {
