@@ -27,11 +27,11 @@
 .step .number-right::before {
   content: '';
   height: 2px;
-  width: 100%;
+  width: 25%;
   background-color: #b2b2b2;
   position: absolute;
   z-index: -1;
-  top: 32px;
+  top: 42px;
   bottom: 0;
 }
 

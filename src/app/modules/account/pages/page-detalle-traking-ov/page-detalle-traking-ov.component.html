@@ -1,7 +1,7 @@
 <app-tracking-steps
   [tipoEntrega]="detalle.shipping.shippingCode"
   [OVEstados]="OVEstados"
-></app-tracking-steps>
+/>
 <div class="row">
   <div class="col-sm-12">
     <div class="info-entrega" style="margin-bottom: 10px">
@@ -29,7 +29,7 @@
           class="row"
           *ngIf="
             OVEstados.length > 0 &&
-            OVEstados[OVEstados.length-1].status === 'received' &&
+            OVEstados[OVEstados.length - 1].status === 'received' &&
             recibo
           "
         >
@@ -67,7 +67,7 @@
               <th>Total</th>
             </thead>
             <tbody>
-                <tr *ngFor="let item of detalle.products">
+              <tr *ngFor="let item of detalle.products">
                 <td>
                   <a [routerLink]="['/inicio/productos/ficha/', item.sku]"
                     ><font color="#0063b9" style="margin-right: 10px">{{
