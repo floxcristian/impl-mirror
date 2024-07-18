@@ -4,7 +4,7 @@
 >
   <app-guided-steps [step]="2"></app-guided-steps>
 
-  <div class="row">
+  <div class="row m-0">
     <!-- formulario inicio sesión -->
     <div class="col-12 lg:col-7 xl:col-8 py-0" *ngIf="!isLoggedIn">
       <div class="card p-4" *ngIf="!usuarioInvitado && !isLoggedIn">
@@ -1017,7 +1017,7 @@
 
             <ng-container *ngIf="innerWidth >= 450">
               <div class="d-flex">
-                <div class="mt-3 col-6 ps-0 ps-1">
+                <div class="mt-1 col-6 py-0 px-1">
                   <a
                     [routerLink]="['/', 'carro-compra']"
                     (click)="removeDespacho()"
@@ -1027,7 +1027,7 @@
                   </a>
                 </div>
 
-                <div class="mt-3 col-6 ps-0 ps-1">
+                <div class="mt-1 col-6 py-0 px-1">
                   <button
                     name="next"
                     *ngIf="
@@ -1082,7 +1082,7 @@
               </div>
             </div>
             <ng-container *ngIf="documentType == 'cotizacion'">
-              <div class="w-100 text-center mt-5">
+              <div class="w-100 text-center mt-4">
                 <i class="far fa-file-pdf text-blue"></i>
                 <p class="text-center subtitle w-100 text-blue">
                   Ha elegido generar una cotización, presione el boton
@@ -1153,7 +1153,7 @@
 
             <ng-container *ngIf="innerWidth >= 450">
               <div class="d-flex">
-                <div class="mt-3 col-6 ps-0 ps-1">
+                <div class="mt-1 col-6 py-0 px-1">
                   <a
                     [routerLink]="['/', 'carro-compra']"
                     (click)="removeDespacho()"
@@ -1163,7 +1163,7 @@
                   </a>
                 </div>
 
-                <div class="mt-3 col-6 ps-0 ps-1">
+                <div class="mt-1 col-6 py-0 px-1">
                   <button
                     name="next"
                     *ngIf="
@@ -1251,7 +1251,6 @@
 
   <div class="footer-page w-screen" style="z-index: 900">
     <div
-      class="ms-3 me-3"
       style="margin-top: 5px; margin-bottom: -13px"
       [hidden]="showAllAddress ? true : false"
     >
@@ -1317,7 +1316,7 @@
                 </a>
             </div> -->
 
-          <div class="mt-3 col-12 ps-0 ps-1">
+          <div class="mt-1 col-12 py-0 px-1">
             <button
               name="next"
               *ngIf="
@@ -1350,7 +1349,7 @@
               Siguiente <i class="fas fa-chevron-right"></i>
             </button>
           </div>
-          <div class="mt-3 col-12 ps-0 ps-1">
+          <div class="mt-1 col-12 py-0 px-1">
             <a
               [href]="config.fullUrl"
               style="color: #118565; text-align: center; font-weight: bold"
