@@ -25,7 +25,7 @@
         <div class="card h-100 p-4">
           <div class="card-header" style="display: inline-block">
             <div
-              class="col-12 text-h1"
+              class="col-12 py-0 text-h1"
               [ngStyle]="{ 'font-size': innerWidth < 450 ? '16px' : '18px' }"
             >
               <i
@@ -52,7 +52,7 @@
                 style="margin-bottom: 20px !important"
                 *ngFor="let item of items; let i = index"
               >
-                <div class="col-12 lg:col-6">
+                <div class="col-12 lg:col-6 py-0">
                   <ng-container *ngIf="innerWidth < 992">
                     <div
                       style="float: right"
@@ -66,7 +66,7 @@
                   <div
                     class="row d-flex justify-content-center align-items-center"
                   >
-                    <div class="col-3">
+                    <div class="col-3 py-0">
                       <a
                         [routerLink]="
                           root.product(
@@ -83,18 +83,18 @@
                       </a>
                     </div>
 
-                    <div class="col-9 md:col-8">
-                      <div class="sm:col-12">
+                    <div class="col-9 md:col-8 py-0">
+                      <div class="col-12 py-0">
                         <span class="text-marca">
                           {{ item.ProductCart.brand }}
                         </span>
                       </div>
-                      <div class="sm:col-12">
+                      <div class="col-12 py-0">
                         <span class="product-title">
                           {{ item.ProductCart.name | titlecase }}
                         </span>
                       </div>
-                      <div class="sm:col-12">
+                      <div class="col-12 py-0">
                         <font
                           class="product-sku text-gray-2"
                           style="font-size: 75%"
@@ -102,7 +102,7 @@
                         >
                       </div>
 
-                      <div class="sm:col-12" *ngIf="innerWidth >= 992">
+                      <div class="col-12 py-0" *ngIf="innerWidth >= 992">
                         <div
                           class="item"
                           [ngClass]="{
@@ -138,7 +138,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-12 lg:col-6">
+                <div class="col-12 lg:col-6 py-0">
                   <div
                     class="row"
                     [ngStyle]="{
@@ -148,7 +148,7 @@
                   >
                     <ng-container *ngIf="innerWidth < 992">
                       <div
-                        class="col-3 sm:col-3 text"
+                        class="col-3 text py-0"
                         style="
                           margin-top: 15px;
                           margin-left: 10px;
@@ -190,6 +190,7 @@
                     </ng-container>
 
                     <div
+                      class="py-0"
                       [ngClass]="{
                         'col-3 lg:col-3': innerWidth >= 1500,
                         'col-3': innerWidth < 1500,
@@ -205,7 +206,7 @@
                     </div>
 
                     <div
-                      class="col-3 sm:col-3 text"
+                      class="col-3 text py-0"
                       style="
                         padding-top: 10px !important;
                         text-align: center;
@@ -235,7 +236,7 @@
                       >
                     </div>
                     <div
-                      class="col-1"
+                      class="col-1 py-0"
                       style="
                         margin-top: 8px;
                         padding: 1px !important;
@@ -283,7 +284,7 @@
             <div class="card-header" style="display: inline-block">
               <div class="d-flex align-items-center">
                 <div
-                  class="sm:col-12 text-h1"
+                  class="col-12 py-0 text-h1"
                   [ngStyle]="{
                     'font-size': innerWidth < 450 ? '16px' : '18px'
                   }"
@@ -315,7 +316,7 @@
           <div class="card h-100">
             <div class="card-header" style="display: inline-block">
               <div class="d-flex align-items-center">
-                <div class="col-9">Resumen de tu compra</div>
+                <div class="col-9 py-0">Resumen de tu compra</div>
               </div>
               <hr />
             </div>
@@ -340,7 +341,7 @@
     <div class="row m-0">
       <ng-container *ngIf="innerWidth >= 450">
         <div
-          class="col-12"
+          class="col-12 py-0"
           [ngStyle]="{
             'margin-bottom': showresumen == true ? '300px' : '80px'
           }"
@@ -406,7 +407,7 @@
       </ng-container>
       <ng-container *ngIf="innerWidth < 450">
         <div
-          class="col-12"
+          class="col-12 py-0"
           [ngStyle]="{
             'margin-bottom': showresumen == true ? '60px' : '40px'
           }"
@@ -477,7 +478,7 @@
             >
               <div class="d-flex">
                 <div
-                  class="col-9 text-justify"
+                  class="col-9 text-justify py-0"
                   style="font-size: 16px; color: #0d61bb"
                 >
                   <strong>Resumen de tu compra</strong>

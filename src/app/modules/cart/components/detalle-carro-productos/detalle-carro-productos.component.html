@@ -2,7 +2,7 @@
 
 <div *ngIf="seeProducts" class="dropcart__products-list">
   <ng-container *ngIf="productsAvailable.length">
-    <div class="row m-0" class="mensaje-entrega mb-3">
+    <div class="row m-0" class="mensaje-entrega mb-2">
       <div class="header">
         <i class="fas fa-check-circle" style="margin-right: 10px"></i>
         <span class="fw-bold"> {{ shippingTypeTitle }}</span>
@@ -12,7 +12,7 @@
   </ng-container>
 
   <div *ngIf="productsUnavailable.length">
-    <div class="row m-0" class="conflicto-entrega mb-3">
+    <div class="row m-0" class="conflicto-entrega mb-2">
       <div class="header">
         <i class="fas fa-info-circle" style="margin-right: 10px"> </i>
         <span class="fw-bold">Productos no disponible</span>

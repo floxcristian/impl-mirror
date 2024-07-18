@@ -29,7 +29,7 @@
               class="row block_despacho"
             >
               <div
-                class="col-12"
+                class="col-12 py-0"
                 style="flex-direction: column; justify-content: center"
               >
                 <div
@@ -48,14 +48,14 @@
                     class="row"
                     style="padding-top: 10px; margin-bottom: -5px"
                   >
-                    <div class="ms-1 col-12 d-flex justify-content-start">
+                    <div class="ms-1 col-12 py-0 d-flex justify-content-start">
                       DESPACHO A DOMICILIO
                     </div>
                   </div>
                 </div>
               </div>
               <!-- Start::información de despacho a domicilio -->
-              <div class="col-12">
+              <div class="col-12 py-0">
                 <ul class="list-group lista_despacho">
                   <li
                     *ngIf="direccionDespacho"
@@ -63,7 +63,7 @@
                     tooltip="Dirección de entrega "
                   >
                     <div class="row" style="color: #0063b9">
-                      <div class="col-12" style="color: #0063b9">
+                      <div class="col-12 py-0" style="color: #0063b9">
                         <i
                           class="fas fa-truck"
                           style="margin-right: 10px; color: #0063b9"
@@ -79,12 +79,12 @@
 
                   <li class="list-group-item" tooltip="Persona que recibe ">
                     <div class="row">
-                      <div class="col-12" style="color: #0063b9">
+                      <div class="col-12 py-0" style="color: #0063b9">
                         <span style="font-weight: bold"
                           >PERSONA QUE RECIBE</span
                         >
                       </div>
-                      <div class="col-12" style="color: #0063b9">
+                      <div class="col-12 py-0" style="color: #0063b9">
                         <span *ngIf="recibe && recibe.company">
                           <!-- <i class="fa-solid fa-circle-check" style="color: #118565"></i> -->
                           <i
@@ -110,14 +110,14 @@
                     tooltip="Fecha de entrega "
                   >
                     <div class="row">
-                      <div class="col-12">
+                      <div class="col-12 py-0">
                         <span style="font-weight: bold; color: #0063b9"
                           >FECHA DE ENTREGA {{ i + 1 }}/{{
                             fechas_entregas.length
                           }}</span
                         >
                       </div>
-                      <div class="col-12" style="color: #0063b9">
+                      <div class="col-12 py-0" style="color: #0063b9">
                         <i
                           class="fa-solid fa-calendar-days"
                           style="margin-right: 10px; color: #0063b9"
@@ -134,7 +134,7 @@
               </div>
 
               <!-- Start::configurar boleta o factura (desktop) -->
-              <div class="col-12" style="margin-top: 1rem">
+              <div class="col-12 py-0" style="margin-top: 1rem">
                 <!-- Start::tipo de documento (desktop) -->
                 <div
                   class="list-group-item"
@@ -142,12 +142,12 @@
                   style="margin-bottom: 1rem"
                 >
                   <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 py-0">
                       <span style="font-weight: bold; color: #0063b9"
                         >TIPO DE DOCUMENTO</span
                       >
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 py-0">
                       <ng-select
                         [(ngModel)]="selectedDocument"
                         placeholder="Seleccionar documento..."
@@ -178,12 +178,12 @@
                   "
                 >
                   <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 py-0">
                       <span style="font-weight: bold; color: #0063b9"
                         >GIROS</span
                       >
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 py-0">
                       <ng-select
                         [(ngModel)]="selectedGiro"
                         placeholder="Seleccionar giro..."
@@ -213,7 +213,7 @@
               class="row block_despacho"
             >
               <div
-                class="col-12"
+                class="col-12 py-0"
                 style="flex-direction: column; justify-content: center"
               >
                 <div
@@ -232,17 +232,17 @@
                     class="row"
                     style="padding-top: 10px; margin-bottom: -5px"
                   >
-                    <div class="ms-1 col-12 d-flex justify-content-start">
+                    <div class="ms-1 col-12 py-0 d-flex justify-content-start">
                       {{ tiendaRetiro.name }}
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="col-12">
+              <div class="col-12 py-0">
                 <ul class="list-group lista_despacho">
                   <li class="list-group-item" tooltip="Fecha de entrega ">
                     <div class="row">
-                      <div class="col-12" style="color: #0063b9">
+                      <div class="col-12 py-0" style="color: #0063b9">
                         <i class="fas fa-store-alt" style="color: #0063b9"></i>
                         {{ tiendaRetiro.address || '' | titlecase }}
                       </div>
@@ -255,12 +255,12 @@
                     tooltip="Persona que recibe "
                   >
                     <div class="row">
-                      <div class="col-12">
+                      <div class="col-12 py-0">
                         <span style="font-weight: bold; color: #0063b9"
                           >RETIRA EN TIENDA</span
                         >
                       </div>
-                      <div class="col-12" style="color: #0063b9">
+                      <div class="col-12 py-0" style="color: #0063b9">
                         <span>
                           <i
                             class="fas fa-people-carry"
@@ -287,14 +287,14 @@
                     tooltip="Fecha de entrega "
                   >
                     <div class="row">
-                      <div class="col-12">
+                      <div class="col-12 py-0">
                         <span style="font-weight: bold; color: #0063b9"
                           >FECHA DE ENTREGA {{ i + 1 }}/{{
                             fechas_entregas.length
                           }}</span
                         >
                       </div>
-                      <div class="col-12" style="color: #0063b9">
+                      <div class="col-12 py-0" style="color: #0063b9">
                         <i
                           class="fa-solid fa-calendar-days"
                           style="margin-right: 10px; color: #0063b9"
@@ -309,22 +309,21 @@
                   </li>
                 </ul>
               </div>
-              <div class="col-12" style="margin-top: 1rem">
+              <div class="col-12 py-0" style="margin-top: 1rem">
                 <div
                   class="list-group-item"
                   tooltip="Tipo de Documento"
                   style="margin-bottom: 1rem"
                 >
                   <div
-                    class="row"
-                    style="margin-left: -1.1rem; margin-right: -1.1rem"
+                    class="row px-2"
                   >
-                    <div class="col-12">
+                    <div class="col-12 py-0">
                       <span style="font-weight: bold; color: #0063b9"
                         >TIPO DE DOCUMENTO</span
                       >
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 py-0">
                       <ng-select
                         [(ngModel)]="selectedDocument"
                         placeholder="Seleccionar documento..."
@@ -356,12 +355,12 @@
                     class="row"
                     style="margin-left: -1.1rem; margin-right: -1.1rem"
                   >
-                    <div class="col-12">
+                    <div class="col-12 py-0">
                       <span style="font-weight: bold; color: #0063b9"
                         >GIROS</span
                       >
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 py-0">
                       <ng-select
                         [(ngModel)]="selectedGiro"
                         placeholder="Seleccionar giro..."
@@ -383,7 +382,7 @@
                   tooltip="Dirección"
                   *ngIf="selectedDocument === invoiceType.INVOICE && guest"
                 >
-                  <div class="col-12" style="padding: 0 !important">
+                  <div class="col-12 py-0" style="padding: 0 !important">
                     <app-map
                       title="DIRECCIÓN"
                       (clearAddress)="clearAddress()"
@@ -400,7 +399,7 @@
                       style="margin-top: 1rem; margin-left: 0.1rem"
                     >
                       <div
-                        class="mb-2 col-md-12"
+                        class="mb-2 col-12 py-0"
                         style="padding: 0 !important"
                       >
                         <label>Calle (*)</label>
@@ -413,7 +412,7 @@
                       </div>
 
                       <div
-                        class="mb-2 col-md-12"
+                        class="mb-2 col-12 py-0"
                         style="padding: 0 !important"
                       >
                         <label for="inputPassword4">Número</label>
@@ -434,7 +433,7 @@
                       </div> -->
 
                       <div
-                        class="mb-3 col-md-12"
+                        class="mb-3 col-12 py-0"
                         style="padding: 0 !important"
                       >
                         <label>Comuna (*)</label>
@@ -453,7 +452,7 @@
                         </ng-select>
                       </div>
 
-                      <div class="mb-3 col-md-12" hidden>
+                      <div class="mb-3 col-12 py-0" hidden>
                         <label for="inputPassword4">Localización (*)</label>
                         <div *ngIf="!localidades">
                           <p>Seleccione una comuna para ver localidades</p>
@@ -617,7 +616,7 @@
             <ng-container *ngIf="alertCartShow && alertCart">
               <div class="alert-cart">
                 <div class="row" class="d-flex justify-content-center mb-3">
-                  <div class="col-12" class="text-center">
+                  <div class="col-12 py-0" class="text-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="50"
@@ -644,7 +643,7 @@
                 </h4>
                 <ng-container *ngIf="rejectedCode != -11" class="mb-5">
                   <div class="row">
-                    <div class="col-12 text-center fw-bold">
+                    <div class="col-12 py-0 text-center fw-bold">
                       <p *ngIf="alertCart?.detalleMensaje">
                         {{ alertCart?.detalleMensaje }}
                       </p>
@@ -659,7 +658,7 @@
                     "
                   >
                     <div
-                      class="col-12 text-justify"
+                      class="col-12 py-0 text-justify"
                       style="font-size: 14px; font-weight: 600"
                     >
                       Si su dinero fue descontado será reversado en la proximas
@@ -669,7 +668,7 @@
                 </ng-container>
 
                 <div
-                  class="col-12"
+                  class="col-12 py-0"
                   class="text-center"
                   *ngIf="!alertCart?.pagoValidado"
                 >
@@ -696,8 +695,8 @@
                 <div *ngIf="guest" class="row-pagos">
                   <div
                     *ngFor="let item of paymentMethods"
-                    class="col-sm-12"
-                    style="margin-bottom: 5px"
+                    class="col-12 py-0"
+                    style="margin-bottom: 3px"
                     [class.mb-2]="innerWidth < 450"
                   >
                     <div
@@ -709,7 +708,7 @@
                       (click)="activepaymentMethod(item)"
                     >
                       <div
-                        class="col-sm-2 d-flex justify-content-center align-items-center"
+                        class="col-2 py-0 d-flex justify-content-center align-items-center"
                       >
                         <div class="form-check">
                           <!--icon pago-->
@@ -725,7 +724,7 @@
                           ></i>
                         </div>
                       </div>
-                      <div class="col-sm-10">
+                      <div class="col-10 py-0">
                         <span style="color: black">
                           <img
                             *ngIf="item.iconImage"
@@ -743,8 +742,8 @@
                 <div *ngIf="!guest" class="row-pagos">
                   <div
                     *ngFor="let item of paymentMethods"
-                    class="col-sm-12"
-                    style="margin-bottom: 5px"
+                    class="col-12 py-0"
+                    style="margin-bottom: 3px"
                     [class.mb-2]="innerWidth < 450"
                   >
                     <div
@@ -755,7 +754,7 @@
                       (click)="activepaymentMethod(item)"
                     >
                       <div
-                        class="col-sm-2 d-flex justify-content-center align-items-center"
+                        class="col-2 py-0 d-flex justify-content-center align-items-center"
                       >
                         <div class="form-check">
                           <!--icon pago-->
@@ -774,7 +773,7 @@
                         </div>
                       </div>
 
-                      <div class="col-sm-10">
+                      <div class="col-10 py-0">
                         <span>
                           <i
                             *ngIf="item.iconImage"
@@ -799,8 +798,8 @@
                   [formGroup]="formOv"
                   *ngIf="formOv && paymentMethodActive == 'ordenCompra'"
                 >
-                  <div class="row mt-2" style="margin-top: 10px">
-                    <div class="mb-3 col-md-6">
+                  <div class="row mt-2">
+                    <div class="mb-1 col-6 py-0">
                       <label>Número orden de compra</label>
                       <input
                         formControlName="number"
@@ -810,7 +809,7 @@
                       />
                     </div>
                     <hr />
-                    <div class="mb-3 col-md-6">
+                    <div class="mb-1 col-6 py-0">
                       <label>Monto orden de compra</label>
                       <input
                         formControlName="amount"
@@ -820,13 +819,13 @@
                       />
                     </div>
                     <div
-                      class="mb-3"
+                      class="mb-1 py-0"
                       [class.col-sm-12]="centrosCosto.length > 0"
                       [class.col-12]="centrosCosto.length == 0"
                     >
                       <label>Seleccione la orden de compra</label>
                       <div class="row">
-                        <div class="col-12 d-flex justify-content-start">
+                        <div class="col-12 py-0 d-flex justify-content-start">
                           <label
                             [for]="idArchivo"
                             [ngStyle]="{
@@ -855,7 +854,7 @@
                       </div>
                       <div class="row mt-12" *ngIf="archivo">
                         <div
-                          class="col-10 text-start text-truncate"
+                          class="col-10 py-0 text-start text-truncate"
                           style="font-size: 0.85rem"
                         >
                           <i
@@ -874,7 +873,7 @@
                     </div>
 
                     <div
-                      class="mb-3 col-md-12"
+                      class="mb-1 col-12 py-0"
                       *ngIf="centrosCosto.length > 0"
                     >
                       <label
@@ -908,7 +907,7 @@
                     </div>
                     <hr />
                     <div
-                      class="mb-3 col-md-12"
+                      class="mb-1 col-12 py-0"
                       *ngIf="centrosCosto.length == 0"
                     >
                       <label
@@ -930,7 +929,7 @@
                   </div>
                 </form>
 
-                <div class="mt-2 mb-3" *ngIf="clienteBloqueado">
+                <div class="mt-2 mb-1" *ngIf="clienteBloqueado">
                   <p>No es posible pagar con línea de crédito</p>
                   <div>
                     <b>Estado: </b
@@ -942,7 +941,7 @@
                   </div>
                 </div>
 
-                <div class="mt-2 mb-3" *ngIf="getBloqueoError">
+                <div class="mt-2 mb-1" *ngIf="getBloqueoError">
                   <p>
                     Recargue nuevamente la página para validar si tiene
                     habilitada su línea de crédito.
@@ -993,7 +992,7 @@
               !guest
             "
           >
-            <div class="col-12 text-end">
+            <div class="col-12 py-0 text-end">
               <div
                 class="cotizacionBtn"
                 (click)="setDocumentType('cotizacion')"
@@ -1012,13 +1011,13 @@
     <ng-container *ngIf="innerWidth < 450">
       <div class="container ms-4">
         <div
-          class="cart-address-container ms-3 col-12 col-lg-12 pt-3 pb-2 ps-2"
+          class="cart-address-container ms-3 col-12 pt-3 pb-2 ps-2"
           style="color: #0063b9; margin-bottom: 10px"
           [ngStyle]="{ width: innerWidth > 450 ? '96%' : '92%' }"
         >
           <div class="row">
             <div
-              class="col-2 d-flex justify-content-center"
+              class="col-2 py-0 d-flex justify-content-center"
               tyle=" color: #0063b9"
             >
               <i
@@ -1026,7 +1025,7 @@
                 style="font-size: 21px !important; color: #0063b9"
               ></i>
             </div>
-            <div class="col-10">
+            <div class="col-10 py-0">
               <p
                 style="font-weight: bold; margin-bottom: 5px"
                 [ngStyle]="{ 'font-size': innerWidth < 450 ? '16px' : '18px' }"
@@ -1047,7 +1046,7 @@
           </div>
         </div>
       </div>
-      <div class="col-xl-4 col-lg-4 col-md-6" [class.mb-3]="innerWidth < 450">
+      <div class="xl:col-4 lg:col-4 md:col-6" [class.mb-3]="innerWidth < 450">
         <div class="card h-100">
           <div
             class="card-header ms-4"
@@ -1167,7 +1166,7 @@
             </div> -->
             <ng-container *ngIf="alertCartShow && alertCart">
               <div class="row" class="d-flex justify-content-center mb-3">
-                <div class="col-12" class="text-center">
+                <div class="col-12 py-0" class="text-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="50"
@@ -1196,7 +1195,7 @@
 
                 <ng-container *ngIf="rejectedCode != -11" class="mb-5">
                   <div class="row">
-                    <div class="col-12 text-center fw-bold">
+                    <div class="col-12 py-0 text-center fw-bold">
                       <p *ngIf="alertCart?.detalleMensaje">
                         {{ alertCart?.detalleMensaje }}
                       </p>
@@ -1204,14 +1203,14 @@
                   </div>
 
                   <div
-                    class="row mb-3"
+                    class="row mb-1"
                     *ngIf="
                       alertCart?.proceso != 'Anulado' &&
                       !alertCart?.pagoValidado
                     "
                   >
                     <div
-                      class="col-12 text-justify"
+                      class="col-12 py-0 text-justify"
                       style="font-size: 13px; font-weight: 600"
                     >
                       Si su dinero fue descontado será reversado en la proximas
@@ -1221,7 +1220,7 @@
                 </ng-container>
 
                 <div
-                  class="col-12"
+                  class="col-12 py-0"
                   class="text-center"
                   *ngIf="!alertCart?.pagoValidado"
                 >
@@ -1239,12 +1238,12 @@
             <ng-container *ngIf="!alertCartShow">
               <ng-container *ngIf="documentType == 'factura'">
                 <div class="row justify-content-center">
-                  <div class="mb-3 col-11">
+                  <div class="mb-1 col-11 py-0">
                     <div *ngIf="guest" class="row mt-2">
                       <div
                         *ngFor="let item of paymentMethods"
-                        class="col-md-6"
-                        [class.mb-2]="innerWidth < 450"
+                        class="col-6 py-0"
+                        [class.mb-1]="innerWidth < 450"
                       >
                         <div
                           id="pagos_weypaid"
@@ -1273,7 +1272,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-10">
+                          <div class="col-10 py-0">
                             <span>
                               <img
                                 *ngIf="item.iconImage"
@@ -1281,7 +1280,7 @@
                                 [src]="item.iconImage"
                                 class="lazyload methodPaymentLogo"
                               />
-                              <label *ngIf="!item.iconImage">{{
+                              <label class="text-center" *ngIf="!item.iconImage">{{
                                 item.name | titlecase
                               }}</label>
                             </span>
@@ -1292,7 +1291,7 @@
                     <div *ngIf="!guest" class="row ion-justify-content-center">
                       <div
                         *ngFor="let item of paymentMethods"
-                        class="col-md-6"
+                        class="col-6 py-0"
                         [class.mb-2]="innerWidth < 450"
                       >
                         <div
@@ -1304,7 +1303,7 @@
                           (click)="activepaymentMethod(item)"
                         >
                           <div
-                            class="col-2 d-flex justify-content-center align-items-center"
+                            class="col-2 py-0 d-flex justify-content-center align-items-center"
                           >
                             <div class="form-check">
                               <i
@@ -1320,7 +1319,7 @@
                             </div>
                           </div>
 
-                          <div class="col-10">
+                          <div class="col-10 py-0">
                             <span>
                               <img
                                 *ngIf="item.iconImage"
@@ -1328,7 +1327,7 @@
                                 [alt]="item.code"
                                 class="methodPaymentLogo"
                               />
-                              <label *ngIf="!item.iconImage">{{
+                              <label class="text-center" *ngIf="!item.iconImage">{{
                                 item.name | titlecase
                               }}</label>
                             </span>
@@ -1344,7 +1343,7 @@
                   *ngIf="paymentMethodActive == 'ordenCompra'"
                 >
                   <div class="row">
-                    <div class="mb-3 col-md-6">
+                    <div class="mb-1 col-6 py-0">
                       <label>Número orden de compra</label>
                       <input
                         formControlName="number"
@@ -1354,7 +1353,7 @@
                       />
                     </div>
 
-                    <div class="mb-3 col-md-6">
+                    <div class="mb-1 col-6 py-0">
                       <label>Monto orden de compra</label>
                       <input
                         formControlName="amount"
@@ -1363,10 +1362,10 @@
                         placeholder="Ingrese el monto de su OC"
                       />
                     </div>
-                    <div class="mb-3 col-md-12">
+                    <div class="mb-1 col-12 py-0">
                       <label>Seleccione la orden de compra</label>
                       <div class="row">
-                        <div class="col-12 d-flex justify-content-start">
+                        <div class="col-12 py-0 d-flex justify-content-start">
                           <label
                             [for]="idArchivo"
                             [ngStyle]="{
@@ -1413,7 +1412,7 @@
                       </div>
                     </div>
 
-                    <div class="mb-3 col-md-6">
+                    <div class="mb-1 col-6 py-0">
                       <label>Centro de costo</label>
                       <select
                         class="form-control form-control-lg"
@@ -1496,7 +1495,7 @@
               !guest
             "
           >
-            <div class="col-12 text-end" style="color: #0063b9 !important">
+            <div class="col-12 py-0 text-end" style="color: #0063b9 !important">
               <div
                 class="cotizacionBtn"
                 (click)="setDocumentType('cotizacion')"
@@ -1535,7 +1534,7 @@
             <!-- Start:: -->
             <div class="row">
               <div
-                class="col-sm-12"
+                class="col-12 py-0"
                 *ngIf="cd_ver && userSession.creditLine?.requiresConfirmation"
               >
                 <app-codigo-oc
@@ -1550,7 +1549,7 @@
 
             <div class="row m-0">
               <!-- Start:: botón anterior (desktop) -->
-              <div class="mt-3 col-6 ps-0 ps-1" *ngIf="!cd_ver">
+              <div class="mt-2 col-6 py-0 px-1" *ngIf="!cd_ver">
                 <a
                   [routerLink]="['/', 'carro-compra', 'metodo-de-envio']"
                   class="btn btn-border-primary w-100 btn-lg text-center"
@@ -1565,7 +1564,7 @@
               <!-- End:: botón anterior (desktop) -->
 
               <!-- Start::botón ir a pagar (desktop) (ir a pagar1) -->
-              <div class="mt-3 col-6 ps-0 ps-1">
+              <div class="mt-2 col-6 py-0 px-1">
                 <button
                   name="paymentOv"
                   *ngIf="
@@ -1834,7 +1833,7 @@
               </div>
               <!-- End::botón ir a pagar (desktop) (ir a pagar1)  -->
 
-              <div class="mt-3 col-12 ps-0 ps-1">
+              <div class="mt-3 col-12 px-1">
                 <em *ngIf="userSession.userRole == userRoleType.BUYER"
                   >* Se generará una solicitud de compra y debe ser aprobada
                   por tu supervisor antes de generar el pedido.
@@ -1850,12 +1849,12 @@
 
     <!-- Start::despacho a domicilio o retiro en tienda (mobile) -->
     <ng-container *ngIf="innerWidth < 450">
-      <div class="col-xl-4 col-lg-4 col-md-6" [class.mb-3]="innerWidth < 450">
+      <div class="xl:col-4 lg:col-4 md:col-6" [class.mb-3]="innerWidth < 450">
         <div
           class="card"
           [ngClass]="{ 'h-100': innerWidth >= 450 }"
           [ngStyle]="{
-            'margin-bottom': showresumen == true ? '126px' : '220px'
+            'margin-bottom': showresumen == true ? '40px' : '20px'
           }"
         >
           <div class="card-body">
@@ -1873,7 +1872,7 @@
             >
               <!-- Start::despacho -->
               <div
-                class="col-12"
+                class="col-12 py-0"
                 style="flex-direction: column; justify-content: center"
               >
                 <div
@@ -1892,14 +1891,14 @@
                     class="row"
                     style="padding-top: 10px; margin-bottom: -5px"
                   >
-                    <div class="ms-3 col-1"></div>
-                    <div class="col-10">DESPACHO A DOMICILIO</div>
+                    <div class="ms-3 col-1 py-0"></div>
+                    <div class="col-10 py-0">DESPACHO A DOMICILIO</div>
                   </div>
                 </div>
               </div>
               <!-- End::despacho -->
 
-              <div class="col-12">
+              <div class="col-12 py-0">
                 <ul class="list-group lista_despacho">
                   <!-- Start::despacho -->
                   <li
@@ -1908,9 +1907,9 @@
                     tooltip="Dirección de entrega "
                   >
                     <div class="row">
-                      <div class="col-10 d-flex justify-content-start">
+                      <div class="col-10 py-0 d-flex justify-content-start">
                         <div class="row" style="color: #005db9 !important">
-                          <div class="col-12">
+                          <div class="col-12 py-0">
                             <i
                               class="fas fa-map-marked-alt"
                               style="color: #005db9 !important"
@@ -1931,21 +1930,21 @@
                   <li class="list-group-item" tooltip="Tipo de Documento ">
                     <div class="row">
                       <div
-                        class="ms-3 col-1 d-flex justify-content-center align-items-center"
+                        class="ms-3 col-1 py-0 d-flex justify-content-center align-items-center"
                       >
                         <i
                           class="fa-solid fa-circle-check"
                           style="color: #118565"
                         ></i>
                       </div>
-                      <div class="col-10 d-flex justify-content-start">
+                      <div class="col-10 py-0 d-flex justify-content-start">
                         <div class="row">
-                          <div class="col-12">
+                          <div class="col-12 py-0">
                             <span style="font-weight: bold; color: #005db9"
                               >TIPO DE DOCUMENTO</span
                             >
                           </div>
-                          <div class="col-12">
+                          <div class="col-12 py-0">
                             <p
                               *ngIf="!esBoleta"
                               style="color: #005db9; margin-bottom: -2px"
@@ -1984,16 +1983,16 @@
                   <li class="list-group-item" tooltip="Persona que recibe ">
                     <div class="row">
                       <div
-                        class="ms-3 col-1 d-flex justify-content-center align-items-center"
+                        class="ms-3 col-1 py-0 d-flex justify-content-center align-items-center"
                       >
                         <i
                           class="fa-solid fa-circle-check"
                           style="color: #118565"
                         ></i>
                       </div>
-                      <div class="col-10 d-flex justify-content-start">
+                      <div class="col-10 py-0 d-flex justify-content-start">
                         <div class="row">
-                          <div class="col-12">
+                          <div class="col-12 py-0">
                             <span
                               style="
                                 font-weight: bold;
@@ -2003,7 +2002,7 @@
                             >
                           </div>
                           <div
-                            class="col-12"
+                            class="col-12 py-0"
                             style="color: #005db9 !important"
                           >
                             <span *ngIf="recibe && recibe.company"
@@ -2034,23 +2033,23 @@
                   >
                     <div class="row">
                       <div
-                        class="ms-3 col-1 d-flex justify-content-center align-items-center"
+                        class="ms-3 col-1 py-0 d-flex justify-content-center align-items-center"
                       >
                         <i
                           class="fa-solid fa-circle-check"
                           style="color: #118565"
                         ></i>
                       </div>
-                      <div class="col-10 d-flex justify-content-start">
+                      <div class="col-10 py-0 d-flex justify-content-start">
                         <div class="row">
-                          <div class="col-12" style="color: #0063b9">
+                          <div class="col-12 py-0" style="color: #0063b9">
                             <span style="font-weight: bold"
                               >FECHA DE ENTREGA {{ i + 1 }}/{{
                                 fechas_entregas.length
                               }}</span
                             >
                           </div>
-                          <div class="col-12" style="color: #0063b9">
+                          <div class="col-12 py-0" style="color: #0063b9">
                             <i
                               class="fa-solid fa-calendar-days"
                               style="margin-right: 10px; color: #0063b9"
@@ -2078,7 +2077,7 @@
               "
               class="row block_despacho"
             >
-              <div class="col-12" style="color: #005db9 !important">
+              <div class="col-12 py-0" style="color: #005db9 !important">
                 <ul class="list-group lista_despacho">
                   <li
                     class="list-group-item"
@@ -2086,15 +2085,15 @@
                     style="border-top: 1px solid #005db9"
                   >
                     <div class="row">
-                      <div class="col-12 d-flex justify-content-start">
+                      <div class="col-12 py-0 d-flex justify-content-start">
                         <div class="row">
-                          <div class="col-12">
+                          <div class="col-12 py-0">
                             <span style="font-weight: bold; color: #005db9">{{
                               tiendaRetiro.name
                             }}</span>
                           </div>
                           <div
-                            class="col-12"
+                            class="col-12 py-0"
                             style="color: #005db9 !important"
                           >
                             <i
@@ -2114,10 +2113,10 @@
                     tooltip="Persona que recibe "
                   >
                     <div class="row">
-                      <div class="col-12 d-flex justify-content-start">
+                      <div class="col-12 py-0 d-flex justify-content-start">
                         <div class="row">
                           <div
-                            class="col-12"
+                            class="col-12 py-0"
                             style="color: #005db9 !important"
                           >
                             <span style="font-weight: bold"
@@ -2125,7 +2124,7 @@
                             >
                           </div>
                           <div
-                            class="col-12"
+                            class="col-12 py-0"
                             style="color: #005db9 !important"
                           >
                             <i
@@ -2155,16 +2154,16 @@
                       <div class="ms-3 col-1 d-flex justify-content-center align-items-center">
                         <i class="fa-solid fa-circle-check" style="color: #118565"></i>
                       </div> -->
-                      <div class="col-12 d-flex justify-content-start">
+                      <div class="col-12 py-0 d-flex justify-content-start">
                         <div class="row">
-                          <div class="col-12" style="color: #0063b9">
+                          <div class="col-12 py-0" style="color: #0063b9">
                             <span style="font-weight: bold"
                               >FECHA DE ENTREGA {{ i + 1 }}/{{
                                 fechas_entregas.length
                               }}</span
                             >
                           </div>
-                          <div class="col-12" style="color: #0063b9">
+                          <div class="col-12 py-0" style="color: #0063b9">
                             <i
                               class="fa-solid fa-calendar-days"
                               style="margin-right: 10px; color: #0063b9"
@@ -2181,7 +2180,7 @@
                   </li>
                 </ul>
               </div>
-              <div class="col-12" style="margin-top: 1rem">
+              <div class="col-12 py-0" style="margin-top: 1rem">
                 <div
                   class="list-group-item"
                   tooltip="Tipo de Documento"
@@ -2189,12 +2188,12 @@
                 >
                   <div class="row">
                     <div
-                      class="col-12"
+                      class="col-12 py-0"
                       style="color: #005db9 !important; font-size: 13px"
                     >
                       <span style="font-weight: bold">TIPO DE DOCUMENTO</span>
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 py-0">
                       <ng-select
                         [(ngModel)]="selectedDocument"
                         placeholder="Seleccionar documento..."
@@ -2222,12 +2221,12 @@
                   "
                 >
                   <div class="row">
-                    <div class="col-12">
+                    <div class="col-12 py-0">
                       <span style="font-weight: bold; color: #0063b9"
                         >GIROS</span
                       >
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 py-0">
                       <ng-select
                         [(ngModel)]="selectedGiro"
                         placeholder="Seleccionar giro..."
@@ -2262,7 +2261,7 @@
                   </div>
                   <form [formGroup]="formDireccion">
                     <div class="row g-3" style="margin-top: 1rem">
-                      <div class="mb-2 col-md-12">
+                      <div class="mb-2 col-12 py-0">
                         <label>Calle (*)</label>
                         <input
                           type="text"
@@ -2272,7 +2271,7 @@
                         />
                       </div>
 
-                      <div class="mb-2 col-md-12">
+                      <div class="mb-2 col-12 py-0">
                         <label for="inputPassword4">Número</label>
                         <input
                           type="number"
@@ -2290,7 +2289,7 @@
                         <input type="text" class="form-control" formControlName="depto" (blur)="cargarDireccion()" />
                       </div> -->
 
-                      <div class="mb-2 col-md-12">
+                      <div class="mb-2 col-12 py-0">
                         <label>Comuna (*)</label>
                         <ng-select
                           [clearable]="false"
@@ -2307,7 +2306,7 @@
                         </ng-select>
                       </div>
 
-                      <div class="mb-2 col-md-6" hidden>
+                      <div class="mb-2 col-6 py-0" hidden>
                         <label for="inputPassword4">Localización (*)</label>
                         <div *ngIf="!localidades">
                           <p>Seleccione una comuna para ver localidades</p>
@@ -2352,7 +2351,7 @@
 <!-- Start::resumen de tu compra (mobile) (no existe en desktop)-->
 <ng-container *ngIf="innerWidth < 450">
   <div style="margin-top: 50px">
-    <div class="footer_page">
+    <div class="footer_page w-screen" style="z-index: 900">
       <div class="card h-100" style="margin-top: 5px; margin-bottom: -13px">
         <div
           class="card-header"
@@ -2361,12 +2360,12 @@
         >
           <div class="d-flex">
             <div
-              class="col-9 text-justify"
+              class="col-9 py-0 text-justify"
               style="font-size: 16px; color: #0063b9"
             >
               <strong>Resumen de tu Compra</strong>
             </div>
-            <div class="col-3">
+            <div class="col-3 py-0">
               <i
                 [class]="showresumen ? 'fas fa-angle-down' : 'fas fa-angle-up'"
               ></i>
@@ -2387,7 +2386,7 @@
         </div>
         <ng-container *ngIf="showresumen != false">
           <div
-            class="col-12"
+            class="col-12 py-0"
             style="
               border: 1px solid;
               margin-top: 5px;
@@ -2413,7 +2412,7 @@
         </app-codigo-oc>
 
         <div class="row">
-          <div class="mt-3 col-12 ps-3 ps-3">
+          <div class="mt-2 col-12 py-0 px-1">
             <!-- Start::ir a pagar (mobile) (ir a pagar10)  -->
             <button
               name="paymentOv "
@@ -2592,7 +2591,7 @@
           </div>
 
           <div
-            class="mt-3 col-12 ps-0 ps-1"
+            class="mt-1 col-12 py-0 px-1"
             *ngIf="userSession.userRole == userRoleType.BUYER"
           >
             <em
@@ -2601,7 +2600,7 @@
             </em>
           </div>
 
-          <div class="mt-3 col-12 ps-0 ps-1">
+          <div class="mt-1 col-12 py-0 px-1">
             <a
               [href]="config.fullUrl"
               style="color: #118565; text-align: center; font-weight: bold"
@@ -2653,7 +2652,7 @@
           *ngFor="let productoSinStock of productosSinStock"
           class="row d-flex justify-content-center align-items-center"
         >
-          <div class="col-2">
+          <div class="col-2 py-0">
             <img
               *ngIf="productoSinStock.images"
               [src]="
@@ -2680,10 +2679,10 @@
               style="height: 60px; width: 60px"
             />
           </div>
-          <div class="col-7 text-truncate">
+          <div class="col-7 py-0 text-truncate">
             {{ productoSinStock.name | titlecase }}
           </div>
-          <div class="col-3">Cant: {{ productoSinStock.quantity }}</div>
+          <div class="col-3 py-0">Cant: {{ productoSinStock.quantity }}</div>
         </div>
       </div>
       <div class="modal-footer">

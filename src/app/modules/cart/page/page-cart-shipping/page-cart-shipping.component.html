@@ -471,12 +471,6 @@
                       class="fas fa-truck"
                       style="margin-right: 10px; font-size: 28px"
                     ></i>
-                    <!-- <ng-container *ngIf="innerWidth >= 450">
-                      <span class="title">Despacho a domicilio</span>
-                    </ng-container>
-                    <ng-container *ngIf="innerWidth < 450">
-                      <span class="title">Despacho</span>
-                    </ng-container> -->
                     <span class="title hidden sm:inline"
                       >Despacho a domicilio</span
                     >
@@ -542,7 +536,7 @@
                             </button>
                           </div>
                           <div
-                            class="col-12 sm:col-6 d-flex flex-row-reverse"
+                            class="col-12 sm:col-6 py-0 d-flex flex-row-reverse"
                             *ngIf="showAllAddress"
                           >
                             <button
@@ -579,7 +573,7 @@
                         <div
                           class="row pb-2 pt-2 d-flex flex-wrap align-items-sm-center pl-2"
                         >
-                          <div class="col-12 sm:col-6">
+                          <div class="col-12 sm:col-6 py-0">
                             <i
                               class="fas fa-plus"
                               style="
@@ -589,7 +583,7 @@
                             ></i>
                             Nueva Dirección
                           </div>
-                          <div class="col-12 sm:col-6 d-flex flex-row-reverse">
+                          <div class="col-12 sm:col-6 py-0 d-flex flex-row-reverse">
                             <button
                               name="open"
                               name="openModal"
@@ -619,17 +613,17 @@
 
                   <div *ngIf="usuarioInvitado && showAddress">
                     <div class="row ms-2 mt-3">
-                      <div class="col-12 lg:col-6">
+                      <div class="col-12 lg:col-6 py-0">
                         <p class="subtitle my-0 pt-0">Dirección de despacho</p>
                       </div>
                     </div>
 
-                    <div class="col-12 ms-3 mt-3">
+                    <div class="col-12 ms-3 mt-3 py-0">
                       <div class="cart-address-container">
                         <div
                           class="row pb-3 pt-3 d-flex flex-wrap align-items-sm-center ps-2 me-1"
                         >
-                          <div class="col-12 sm:col-7">
+                          <div class="col-12 sm:col-7 py-0">
                             <div>
                               {{ usuarioInv.street }} {{ usuarioInv.number }},
                               depto/casa: {{ usuarioInv.department }},
@@ -638,7 +632,7 @@
                             <!-- <div *ngIf="usuarioInv.depto.length <= 0"> {{usuarioInv.calle}} {{usuarioInv.numero}}, {{usuarioInv.comuna}} </div> -->
                           </div>
                           <div
-                            class="col-12 sm:col-5 d-flex flex-sm-row-reverse"
+                            class="col-12 sm:col-5 d-flex flex-sm-row-reverse py-0"
                           >
                             <button
                               title="Cambiar dirección"
@@ -685,7 +679,7 @@
                         Seleccione una dirección para proponer días de despacho
                       </p>
 
-                      <div *ngIf="isLoggedIn" class="col-12">
+                      <div *ngIf="isLoggedIn" class="col-12 py-0">
                         <div
                           class="alert border border-warning"
                           style="width: 99%; color: #0063b9"
@@ -740,8 +734,8 @@
                       <div class="row ms-2 mt-3" *ngIf="shippingDays.length">
                         <!-- Formulario de  dias para despacho -->
 
-                        <div class="row col-12">
-                          <div class="col-12" style="padding-right: 0px">
+                        <div class="row col-12 py-0">
+                          <div class="col-12 py-0">
                             <ng-container
                               *ngFor="
                                 let item_0 of shippingDays;
@@ -1004,7 +998,7 @@
               </div>
             </div>
           </div>
-          <hr />
+          <hr class="my-2"/>
 
           <div
             class="card-body"
@@ -1144,7 +1138,7 @@
                 Resumen de tu compra
               </div>
             </div>
-            <hr />
+            <hr class="my-2"/>
           </div>
           <div class="card-body">
             <app-loading-element
@@ -1239,7 +1233,7 @@
             <strong> Resumen de tu compra ({{ items.length }})</strong>
           </div>
         </div>
-        <hr />
+        <hr class="my-2"/>
       </div>
       <div class="card-body text-justify">
         <app-loading-element

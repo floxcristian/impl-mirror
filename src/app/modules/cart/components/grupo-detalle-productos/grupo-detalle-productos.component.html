@@ -3,17 +3,17 @@
     <div class="card-header text-white mb-0">
       <div class="grid m-0">
         <ng-container *ngIf="innerWidth > 450">
-          <div class="text-rigth col-5" style="font-size: 16px">
+          <div class="text-rigth col-5 py-0" style="font-size: 16px">
             <i
               class="fa-sharp fa-solid fa-circle-check"
               style="margin-right: 10px"
             ></i>
             Entrega {{ index }}/{{ length }}
           </div>
-          <div class="text-precio col-6" style="font-size: 16px">
+          <div class="text-precio col-6 py-0" style="font-size: 16px">
             <strong> {{ suma | currencyFormat }}</strong>
           </div>
-          <div class="text-precio col-1" (mousedown)="openModal(content)">
+          <div class="text-precio col-1 py-0" (mousedown)="openModal(content)">
             <i
               class="fa-sharp fa-solid fa-circle-xmark"
               style="font-size: 20px; color: white; cursor: pointer"
@@ -21,13 +21,13 @@
           </div>
         </ng-container>
         <ng-container *ngIf="innerWidth <= 450">
-          <div class="text-rigth col-5" style="font-size: 14px">
+          <div class="text-rigth col-5 py-0" style="font-size: 14px">
             Entrega {{ index }}/{{ length }}
           </div>
-          <div class="text-precio col-5" style="font-size: 14px">
+          <div class="text-precio col-5 py-0" style="font-size: 14px">
             <strong> {{ suma | currencyFormat }}</strong>
           </div>
-          <div class="text-precio col-1" (mousedown)="openModal(content)">
+          <div class="text-precio col-1 py-0" (mousedown)="openModal(content)">
             <i
               class="fa-sharp fa-solid fa-circle-xmark"
               style="font-size: 14px; color: white; cursor: pointer"
@@ -39,7 +39,7 @@
     <div class="card-body">
       <ng-container *ngFor="let item of grupo_producto">
         <div class="producto-card row">
-          <div class="text-center col-2">
+          <div class="text-center col-2 py-0">
             <img
               [src]="root.getUrlImagenMiniatura150(item)"
               width="50px"
@@ -47,7 +47,7 @@
               onerror="this.onerror=null; this.src='/assets/img/no-image-ficha.jpg'"
             />
           </div>
-          <div
+          <div class="py-0"
             [ngClass]="{
               'col-8': innerWidth > 450,
               'col-7': innerWidth <= 450
@@ -70,7 +70,7 @@
               {{ item.sku }}
             </div>
           </div>
-          <div class="col-2 d-flex justify-content-center align-items-center">
+          <div class="col-2 d-flex justify-content-center align-items-center py-0">
             <div
               [ngStyle]="{ 'font-size': innerWidth > 450 ? '11px' : '9px' }"
             >
