@@ -315,9 +315,7 @@
                   tooltip="Tipo de Documento"
                   style="margin-bottom: 1rem"
                 >
-                  <div
-                    class="row px-2"
-                  >
+                  <div class="row px-2">
                     <div class="col-12 py-0">
                       <span style="font-weight: bold; color: #0063b9"
                         >TIPO DE DOCUMENTO</span
@@ -1009,7 +1007,7 @@
 
     <!-- Start::forma de pago (mobile) -->
     <ng-container *ngIf="innerWidth < 450">
-      <div class="container ms-4">
+      <div class="container">
         <div
           class="cart-address-container ms-3 col-12 pt-3 pb-2 ps-2"
           style="color: #0063b9; margin-bottom: 10px"
@@ -1280,9 +1278,11 @@
                                 [src]="item.iconImage"
                                 class="lazyload methodPaymentLogo"
                               />
-                              <label class="text-center" *ngIf="!item.iconImage">{{
-                                item.name | titlecase
-                              }}</label>
+                              <label
+                                class="text-center"
+                                *ngIf="!item.iconImage"
+                                >{{ item.name | titlecase }}</label
+                              >
                             </span>
                           </div>
                         </div>
@@ -1327,9 +1327,11 @@
                                 [alt]="item.code"
                                 class="methodPaymentLogo"
                               />
-                              <label class="text-center" *ngIf="!item.iconImage">{{
-                                item.name | titlecase
-                              }}</label>
+                              <label
+                                class="text-center"
+                                *ngIf="!item.iconImage"
+                                >{{ item.name | titlecase }}</label
+                              >
                             </span>
                           </div>
                         </div>
@@ -1495,7 +1497,10 @@
               !guest
             "
           >
-            <div class="col-12 py-0 text-end" style="color: #0063b9 !important">
+            <div
+              class="col-12 py-0 text-end"
+              style="color: #0063b9 !important"
+            >
               <div
                 class="cotizacionBtn"
                 (click)="setDocumentType('cotizacion')"
@@ -2350,7 +2355,7 @@
 </div>
 <!-- Start::resumen de tu compra (mobile) (no existe en desktop)-->
 <ng-container *ngIf="innerWidth < 450">
-  <div style="margin-top: 50px">
+  <div>
     <div class="footer_page w-screen" style="z-index: 900">
       <div class="card h-100" style="margin-top: 5px; margin-bottom: -13px">
         <div

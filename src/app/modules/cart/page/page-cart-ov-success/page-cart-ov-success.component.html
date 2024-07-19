@@ -3,32 +3,34 @@
   *ngIf="showFolioMsj && numeroCarro"
 >
   <div
-    class="row justify-content-md-center msgStatus mb-4"
+    class="row justify-content-md-center msgStatus mb-3"
     *ngIf="screenWidth > 450"
   >
-    <div class="col-12 col-md-9 col-xl-6 mx-auto mb-3">
+    <div class="col-12 md:col-9 xl:col-6 py-0 mx-auto mb-3">
       <div
         appDragDrop
         class="block-drop-down-file mx-auto"
         style="background: #f5f5f5"
       >
         <div class="row">
-          <div class="col-4 d-flex justify-content-end align-items-center">
+          <div
+            class="col-4 py-0 d-flex justify-content-end align-items-center"
+          >
             <i
               class="fa-solid fa-circle-check"
               style="color: #118565; font-size: 48px"
             ></i>
           </div>
           <div
-            class="col-8 d-flex justify-content-center align-items-center"
+            class="col-8 py-0 d-flex justify-content-center align-items-center"
             style="color: #0063b9; font-size: 24px; font-weight: bold"
           >
             ¡GRACIAS POR TU COMPRA!
           </div>
         </div>
-        <div class="row mt-4">
+        <div class="row mt-2">
           <div
-            class="col-12 text-justify"
+            class="col-12 py-0 text-justify"
             style="color: #0063b9 !important; font-size: 18px"
           >
             <p>
@@ -43,7 +45,7 @@
               confirmación de su pedido:
             </p>
           </div>
-          <div class="col-12 mt-3">
+          <div class="col-12 py-0 mt-2">
             <button
               class="btn btn-lg btn-secondary w-100 text-center"
               style="font-size: 24px; padding-bottom: 45px"
@@ -51,7 +53,7 @@
               N° {{ ' ' + numeroCarro }}
             </button>
           </div>
-          <div class="col-12 mt-4 text-center">
+          <div class="col-12 py-0 mt-3 text-center">
             <h4 style="text-align: center; font-size: 22px">
               Muchas gracias por visitar {{ config.url }}
             </h4>
@@ -72,28 +74,28 @@
       </div>
     </div>
   </div>
-  <div class="row mt-4 mb-4" *ngIf="screenWidth <= 450">
+  <div class="row mt-3 mb-3" *ngIf="screenWidth <= 450">
     <div
-      class="col-12"
+      class="col-12 py-0"
       style="padding-left: 3rem; padding-right: 3rem; margin-top: 5px"
     >
       <div class="row">
-        <div class="col-4 d-flex justify-content-end align-items-center">
+        <div class="col-4 py-0 d-flex justify-content-end align-items-center">
           <i
             class="fa-solid fa-circle-check"
             style="color: #118565; font-size: 38px"
           ></i>
         </div>
         <div
-          class="col-8 d-flex justify-content-center align-items-center"
+          class="col-8 py-0 d-flex justify-content-center align-items-center"
           style="color: #0063b9; font-size: 20px; font-weight: bold"
         >
           ¡GRACIAS POR TU COMPRA!
         </div>
       </div>
-      <div class="row mt-4">
+      <div class="row mt-3">
         <div
-          class="col-12 text-justify"
+          class="col-12 py-0 text-justify"
           style="color: #0063b9; font-size: 16px"
         >
           <p>
@@ -108,7 +110,7 @@
             confirmación de su pedido:
           </p>
         </div>
-        <div class="col-12 mt-3">
+        <div class="col-12 py-0 mt-2">
           <button
             class="btn btn-lg btn-secondary w-100 text-center"
             style="font-size: 24px"
@@ -116,7 +118,7 @@
             N° {{ ' ' + numeroCarro }}
           </button>
         </div>
-        <div class="col-12 mt-4 text-center">
+        <div class="col-12 py-0 mt-3 text-center">
           <h4 style="text-align: center; font-size: 22px; margin-bottom: 15px">
             Muchas gracias por visitar {{ config.url }}
           </h4>
@@ -140,7 +142,7 @@
 
 <div class="container container-cart site_b2c" *ngIf="!showFolioMsj">
   <div class="row justify-content-md-center msgStatus">
-    <div class="col-12 col-md-9 col-xl-6 mx-auto mb-3">
+    <div class="col-12 md:col-9 xl:col-6 py-0 mx-auto mb-3">
       <div
         appDragDrop
         class="block-drop-down-file mx-auto d-flex align-items-center justify-content-center"
@@ -170,7 +172,7 @@
         </div>
 
         <div *ngIf="!loadingCart" class="d-block text-center">
-          <i class="fas fa-check-circle mb-3"></i>
+          <i class="fas fa-check-circle mb-2"></i>
           <h1>Hemos recibido su orden de compra!</h1>
           <h1>{{ numero }}</h1>
 
@@ -192,7 +194,7 @@
 
           <a
             [routerLink]="['/', 'inicio']"
-            class="mt-5 link-primary w-100 text-center"
+            class="mt-4 link-primary w-100 text-center"
           >
             <i class="fas fa-home"></i>
             Ir al home

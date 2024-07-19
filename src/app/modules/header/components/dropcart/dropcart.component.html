@@ -1,5 +1,5 @@
 <div class="dropcart container-cart">
-  <div class="dropcart-title mb-3" style="color: #0d61bb">
+  <div class="dropcart-title mb-2" style="color: #0d61bb">
     <i class="fas fa-shopping-cart me-1" style="color: #0d61bb"></i>
     Carro de compra
   </div>
@@ -27,7 +27,7 @@
             />
           </a>
         </div>
-        <div class="cart-product col-5 my-auto">
+        <div class="cart-product col-5 py-0 my-auto">
           <div class="text-truncate">
             <span
               class="product-title fw-bold"
@@ -72,7 +72,7 @@
           ></app-input-number>
         </div>
 
-        <div class="cart-price col-2 my-auto text-center">
+        <div class="cart-price col-2 py-0 my-auto text-center">
           <span class="cart-price-value fw-bold"
             >{{
               (!isVacio(session.preferences.iva)
@@ -98,7 +98,7 @@
     </div>
 
     <div class="dropcart__buttons mt-2 p-0 row">
-      <div class="col-md-6 col-lg-6">
+      <div class="col-6 py-0">
         <a
           class="btn btn-lg btn-border-primary text-center w-100"
           [routerLink]="['/', 'carro-compra']"
@@ -107,7 +107,7 @@
         >
       </div>
 
-      <div class="col-md-6 col-lg-6">
+      <div class="col-6 py-0">
         <a
           class="btn btn-lg btn-secondary w-100 text-center text-50"
           [routerLink]="['/', 'carro-compra', 'metodo-de-envio']"
