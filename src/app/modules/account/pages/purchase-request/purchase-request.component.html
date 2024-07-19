@@ -1,6 +1,6 @@
 <div>
-  <div class="top-bar-categories d-flex align-items-center">
-    <div class="title d-flex align-items-center me-auto">
+  <div class="top-bar-categories flex align-items-center">
+    <div class="title flex align-items-center me-auto">
       <i _ngcontent-serverapp-c11="" class="fas fa-file-invoice me-3"></i>
       <h5>Solicitudes de compra pendientes de aprobación</h5>
     </div>
@@ -37,14 +37,14 @@
                   <td>{{ item.updatedAt | date : 'dd-MM-yyyy HH:mm' }}</td>
                   <td>
                     <span
-                    class="badge-status"
-                    [ngClass]="{
-                      'bg-danger': item.status == 'rejected',
-                      'bg-warning': item.status == 'pending',
-                      'bg-info': item.status == 'generated',
-                      'bg-success': item.status == 'finalized',
-                      'bg-secondary': item.status == 'Desconocido'
-                    }"
+                      class="badge-status"
+                      [ngClass]="{
+                        'bg-danger': item.status == 'rejected',
+                        'bg-warning': item.status == 'pending',
+                        'bg-info': item.status == 'generated',
+                        'bg-success': item.status == 'finalized',
+                        'bg-secondary': item.status == 'Desconocido'
+                      }"
                     >
                       {{ item.status | translateStatus }}
                     </span>
@@ -52,7 +52,9 @@
                   <td>{{ item?.total | currencyFormat }}</td>
                   <td>
                     {{ item?.purchaseOrder?.number }}
-                    <span *ngIf="item?.purchaseOrder?.number == null">No definido</span>
+                    <span *ngIf="item?.purchaseOrder?.number == null"
+                      >No definido</span
+                    >
                   </td>
                   <td>
                     {{ item?.purchaseOrder?.amount | currencyFormat }}

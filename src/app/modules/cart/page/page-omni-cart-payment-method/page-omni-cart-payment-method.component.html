@@ -47,10 +47,7 @@
               <div class="card-body">
                 <ng-container *ngIf="alertCartShow && alertCart">
                   <div class="alert-cart">
-                    <div
-                      class="row"
-                      class="d-flex justify-content-center mb-3"
-                    >
+                    <div class="row" class="flex justify-content-center mb-3">
                       <div class="col-12" class="text-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -152,7 +149,7 @@
           <div class="col-sm-12">
             <div class="card">
               <div class="card-body">
-                <div class="d-flex justify-content-center">
+                <div class="flex justify-content-center">
                   <button
                     [disabled]="!selectedPaymentMethod"
                     (click)="goToPaymentGateway(shoppingCart._id || '')"

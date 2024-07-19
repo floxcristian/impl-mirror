@@ -3,7 +3,7 @@
     <h4 style="color: #094cac"><strong>Comentarios</strong></h4>
   </div>
 
-  <div class="d-flex flex-column pb-3 mb-3">
+  <div class="flex flex-column pb-3 mb-3">
     <div class="w-100 text-center mt-2">
       <h5>Sin comentarios</h5>
     </div>
@@ -29,14 +29,12 @@
   </div>
 
   <div class="card-body pb-3 mb-3">
-    <div
-      class="d-flex mb-3 mb-sm-2 justify-content-between align-items-center"
-    >
-      <div class="d-flex flex-column">
+    <div class="flex mb-3 mb-sm-2 justify-content-between align-items-center">
+      <div class="flex flex-column">
         <h6 class="mt-2" style="color: #094cac">
           <strong>Calificación general</strong>
         </h6>
-        <div class="d-flex">
+        <div class="flex">
           <span class="starsHeader">
             <span [ngStyle]="{ width: anchoPintado + 'px' }"></span>
           </span>
@@ -63,12 +61,12 @@
     </div>
 
     <div
-      class="d-flex flex-column flex-sm-row justify-content-between align-items-end overflow-auto"
+      class="flex flex-column flex-sm-row justify-content-between align-items-end overflow-auto"
       style="max-height: 150px"
     >
-      <div class="d-flex flex-column py-2 resumen">
-        <div *ngFor="let item of resumen" class="d-flex">
-          <div class="d-flex align-items-center nowrap me-2">
+      <div class="flex flex-column py-2 resumen">
+        <div *ngFor="let item of resumen" class="flex">
+          <div class="flex align-items-center nowrap me-2">
             <div>{{ item.stars }}</div>
             <div>
               <img
@@ -113,9 +111,9 @@
     </div>
   </div>
 
-  <div class="d-flex flex-column col-lg-6 col-12 p-0" style="color: #011935">
-    <div class="d-flex flex-column mb-4" *ngFor="let item of comentarios">
-      <div class="d-flex flex-column flex-sm-row">
+  <div class="flex flex-column col-lg-6 col-12 p-0" style="color: #011935">
+    <div class="flex flex-column mb-4" *ngFor="let item of comentarios">
+      <div class="flex flex-column flex-sm-row">
         <div class="me-4">
           <strong>{{ item.title | capitalizeFirst }}</strong>
         </div>

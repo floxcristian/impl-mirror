@@ -69,13 +69,9 @@
       <div class="card-body">
         <div class="mt-2" *ngFor="let info of item.products; let in = index">
           <div class="row">
-            <div class="col-3 col-sm-2 d-flex justify-content-center">
+            <div class="col-3 col-sm-2 flex justify-content-center">
               <a [routerLink]="root.product(info.sku, info.name)">
-                <img
-                  class="cart-img"
-                  [src]="info.preview"
-                  [alt]="info.name"
-                />
+                <img class="cart-img" [src]="info.preview" [alt]="info.name" />
               </a>
             </div>
             <div class="row col-9 col-sm-10">

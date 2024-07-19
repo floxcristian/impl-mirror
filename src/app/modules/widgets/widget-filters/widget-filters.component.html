@@ -99,7 +99,7 @@
                       <a
                         routerLinkActive="active"
                         [routerLink]="lvl1.url"
-                        class="mb-2 d-flex justify-content-between"
+                        class="mb-2 flex justify-content-between"
                         [ngClass]="{ active: lvl1.checked }"
                         [queryParams]="lvl1.queryParams"
                         (click)="marcarCategorias(lvl1)"
@@ -120,7 +120,7 @@
                             <a
                               routerLinkActive="active"
                               [routerLink]="lvl2.url"
-                              class="mb-2 d-flex justify-content-between"
+                              class="mb-2 flex justify-content-between"
                               [ngClass]="{ active: lvl2.checked }"
                               [queryParams]="lvl2.queryParams"
                               (click)="marcarCategorias(lvl2)"
@@ -139,7 +139,7 @@
                               <a
                                 routerLinkActive="active"
                                 [routerLink]="lvl3.url"
-                                class="mb-2 d-flex justify-content-between"
+                                class="mb-2 flex justify-content-between"
                                 [ngClass]="{ active: lvl3.checked }"
                                 [queryParams]="lvl3.queryParams"
                                 (click)="marcarCategorias(lvl3)"
@@ -161,7 +161,7 @@
                 </li>
               </ul>
 
-              <hr class="my-2"/>
+              <hr class="my-2" />
 
               <button
                 name="filtros"
@@ -236,7 +236,7 @@
                   }}</span> -->
                 </label>
               </div>
-              <hr class="my-2"/>
+              <hr class="my-2" />
             </div>
 
             <div *ngIf="filter.type === 'color'" class="filter-color">

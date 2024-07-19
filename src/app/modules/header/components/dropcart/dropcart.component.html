@@ -12,7 +12,7 @@
   </div>
   <ng-container *ngIf="(shoppingCartService.items$ | async)?.length">
     <div class="dropcart__products-list">
-      <div *ngFor="let item of items; let i = index" class="cart-row d-flex">
+      <div *ngFor="let item of items; let i = index" class="cart-row flex">
         <div class="dropcart__product-image me-3">
           <a
             [routerLink]="
@@ -87,7 +87,7 @@
         </div>
 
         <div
-          class="col-delete-product d-flex align-items-center"
+          class="col-delete-product flex align-items-center"
           (click)="remove(item.ProductCart)"
         >
           <span style="cursor: pointer">

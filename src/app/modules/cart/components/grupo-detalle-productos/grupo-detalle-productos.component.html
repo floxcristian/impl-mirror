@@ -47,7 +47,8 @@
               onerror="this.onerror=null; this.src='/assets/img/no-image-ficha.jpg'"
             />
           </div>
-          <div class="py-0"
+          <div
+            class="py-0"
             [ngClass]="{
               'col-8': innerWidth > 450,
               'col-7': innerWidth <= 450
@@ -70,7 +71,9 @@
               {{ item.sku }}
             </div>
           </div>
-          <div class="col-2 d-flex justify-content-center align-items-center py-0">
+          <div
+            class="col-2 flex justify-content-center align-items-center py-0"
+          >
             <div
               [ngStyle]="{ 'font-size': innerWidth > 450 ? '11px' : '9px' }"
             >

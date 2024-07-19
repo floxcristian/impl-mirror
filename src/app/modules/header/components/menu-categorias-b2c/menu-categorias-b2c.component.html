@@ -1,7 +1,7 @@
 <div class="mobilemenu" [ngClass]="{ 'mobilemenu--open': isOpen }">
   <div class="mobilemenu__backdrop" (click)="menuCategorias.close()"></div>
   <div class="mobilemenu__body">
-    <div class="px-3 d-flex align-items-center" style="height: 50px">
+    <div class="px-3 flex align-items-center" style="height: 50px">
       <i
         class="fa-regular fa-square-xmark fa-2x"
         style="cursor: pointer"
@@ -12,7 +12,7 @@
     <div class="mobilemenu__content">
       <ul>
         <li
-          class="mb-3 d-flex justify-content-between"
+          class="mb-3 flex justify-content-between"
           *ngFor="let item of items"
         >
           <div class="text-truncate" (click)="menuCategorias.open(2, item)">
@@ -25,7 +25,7 @@
       </ul>
       <ul style="border-top: 1px solid #fff; padding-top: 15px">
         <li
-          class="mb-3 d-flex justify-content-between"
+          class="mb-3 flex justify-content-between"
           *ngFor="let item of items_oficial"
         >
           <div class="text-truncate" (click)="menuCategorias.open(2, item)">

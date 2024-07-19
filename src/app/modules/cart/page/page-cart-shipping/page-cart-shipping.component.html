@@ -55,7 +55,7 @@
           </div>
         </div>
         <div
-          class="card-body d-flex flex-wrap align-items-lg-center mt-2"
+          class="card-body flex flex-wrap align-items-lg-center mt-2"
           style="margin-bottom: 10px"
         >
           <div class="col-12 sm:col-7 py-0">
@@ -402,7 +402,7 @@
                       <div
                         class="cart-address-container pt-3 pb-3 ps-2"
                         [ngClass]="
-                          HideResumen() ? '' : 'd-flex align-items-center'
+                          HideResumen() ? '' : 'flex align-items-center'
                         "
                       >
                         <div class="row col-12 py-0">
@@ -502,7 +502,7 @@
                         [ngClass]="showAllAddress ? 'mb-4' : ''"
                       >
                         <div
-                          class="row pb-2 pt-2 d-flex align-items-sm-center pl-2"
+                          class="row pb-2 pt-2 flex align-items-sm-center pl-2"
                         >
                           <div class="col-12 sm:col-6 py-0">
                             <i
@@ -512,7 +512,7 @@
                             {{ direccion.fullAddress }}
                           </div>
                           <div
-                            class="col-12 sm:col-6 py-0 d-flex flex-sm-row-reverse"
+                            class="col-12 sm:col-6 py-0 flex flex-sm-row-reverse"
                             *ngIf="!showAllAddress"
                           >
                             <button
@@ -536,11 +536,11 @@
                             </button>
                           </div>
                           <div
-                            class="col-12 sm:col-6 py-0 d-flex flex-row-reverse"
+                            class="col-12 sm:col-6 py-0 flex flex-row-reverse"
                             *ngIf="showAllAddress"
                           >
                             <button
-                              class="btn btn-sm btn-link text-red-500 p-0 d-flex"
+                              class="btn btn-sm btn-link text-red-500 p-0 flex"
                               style="align-items: center"
                               tooltip="Eliminar dirección"
                               placement="top"
@@ -571,7 +571,7 @@
                         *ngIf="showAllAddress || addresses.length === 0"
                       >
                         <div
-                          class="row pb-2 pt-2 d-flex flex-wrap align-items-sm-center pl-2"
+                          class="row pb-2 pt-2 flex flex-wrap align-items-sm-center pl-2"
                         >
                           <div class="col-12 sm:col-6 py-0">
                             <i
@@ -584,7 +584,7 @@
                             Nueva Dirección
                           </div>
                           <div
-                            class="col-12 sm:col-6 py-0 d-flex flex-row-reverse"
+                            class="col-12 sm:col-6 py-0 flex flex-row-reverse"
                           >
                             <button
                               name="open"
@@ -623,7 +623,7 @@
                     <div class="col-12 ms-3 mt-3 py-0">
                       <div class="cart-address-container">
                         <div
-                          class="row pb-3 pt-3 d-flex flex-wrap align-items-sm-center ps-2 me-1"
+                          class="row pb-3 pt-3 flex flex-wrap align-items-sm-center ps-2 me-1"
                         >
                           <div class="col-12 sm:col-7 py-0">
                             <div>
@@ -634,7 +634,7 @@
                             <!-- <div *ngIf="usuarioInv.depto.length <= 0"> {{usuarioInv.calle}} {{usuarioInv.numero}}, {{usuarioInv.comuna}} </div> -->
                           </div>
                           <div
-                            class="col-12 sm:col-5 d-flex flex-sm-row-reverse py-0"
+                            class="col-12 sm:col-5 flex flex-sm-row-reverse py-0"
                           >
                             <button
                               title="Cambiar dirección"
@@ -882,9 +882,7 @@
                             <div
                               class="cart-address-container pt-3 pb-3 ps-2"
                               [ngClass]="
-                                HideResumen()
-                                  ? ''
-                                  : 'd-flex align-items-center'
+                                HideResumen() ? '' : 'flex align-items-center'
                               "
                             >
                               <div class="row col-12">
@@ -1018,7 +1016,7 @@
             />
 
             <ng-container *ngIf="innerWidth >= 450">
-              <div class="d-flex">
+              <div class="flex">
                 <div class="mt-1 col-6 py-0 px-1">
                   <a
                     [routerLink]="['/', 'carro-compra']"
@@ -1154,7 +1152,7 @@
             />
 
             <ng-container *ngIf="innerWidth >= 450">
-              <div class="d-flex">
+              <div class="flex">
                 <div class="mt-1 col-6 py-0 px-1">
                   <a
                     [routerLink]="['/', 'carro-compra']"
@@ -1259,7 +1257,7 @@
       <div class="card" [ngClass]="valshowDetalleProductos() ? 'h-100' : ''">
         <div class="card-header" style="margin-bottom: 1px !important">
           <div
-            class="row d-flex"
+            class="row flex"
             (click)="showDetalleProductos = !showDetalleProductos"
           >
             <div

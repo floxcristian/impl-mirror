@@ -1,6 +1,6 @@
 <div
   *ngIf="cargando"
-  class="d-flex flex-wrap flex-column justify-content-center align-content-center mt-4"
+  class="flex flex-wrap flex-column justify-content-center align-content-center mt-4"
 >
   <div class="text-center">
     <i class="fas fa-spinner fa-2x fa-spin fa-fw"></i>
@@ -19,7 +19,7 @@
         <div *ngIf="obj.articles.length > 0" class="mb-5">
           <div class="row mt-2">
             <div
-              class="col-sm-12 d-flex justify-content-center"
+              class="col-sm-12 flex justify-content-center"
               [ngStyle]="{ 'margin-bottom': '1.8rem' }"
             >
               <h1 class="text-h1">
@@ -64,7 +64,7 @@
                       let item of relleno | slice : 0 : 6 - obj.articles.length
                     "
                   >
-                    <div class="d-flex w-100"></div>
+                    <div class="flex w-100"></div>
                   </ng-template>
                 </ng-container>
               </owl-carousel-o>

@@ -1,7 +1,7 @@
 <app-header-blog></app-header-blog>
 <div class="container mt-3">
   <ol class="breadcrumb flex-nowrap">
-    <li class="breadcrumb-item ps-2 d-flex align-items-center">
+    <li class="breadcrumb-item ps-2 flex align-items-center">
       <a [routerLink]="['/inicio']">Inicio</a>
       <i class="fas fa-chevron-right" style="margin-left: 10px"></i>
     </li>
@@ -22,7 +22,7 @@
           <div class="card">
             <img [src]="noticia.image" class="card-img-top" alt="" />
             <div
-              class="card-body mt-5 d-flex flex-column justify-content-between"
+              class="card-body mt-5 flex flex-column justify-content-between"
             >
               <div>
                 <h5 class="card-title">{{ noticia.title }}</h5>

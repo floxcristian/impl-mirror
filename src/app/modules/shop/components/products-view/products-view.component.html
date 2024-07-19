@@ -5,10 +5,7 @@
 >
   <app-scroll-top [fast]="true"> </app-scroll-top>
   <div class="products-view" (window:resize)="onResize($event)">
-    <div
-      class="col-12 py-0 mt-2"
-      *ngIf="!totalRegistros && !isInitialLoading"
-    >
+    <div class="col-12 py-0 mt-2" *ngIf="!totalRegistros && !isInitialLoading">
       <div class="alert alert-info text-center">
         No se encontraron productos.
       </div>
@@ -41,14 +38,14 @@
         </div>
       </div>
     </ng-container>
-    <div class="d-flex mb-3 menu-opciones-producto" *ngIf="showProductOptions">
+    <div class="flex mb-3 menu-opciones-producto" *ngIf="showProductOptions">
       <div
-        class="d-flex flew-wrap w-100 align-items-center"
+        class="flex flew-wrap w-100 align-items-center"
         *ngIf="totalRegistros"
       >
         <div
           *ngIf="!isInitialLoading"
-          class="col-4 py-0 col-lg w-auto d-flex justify-content-start"
+          class="col-4 py-0 col-lg w-auto flex justify-content-start"
           style="margin-right: 5px"
         >
           <div class="d-block d-lg-none">
@@ -67,7 +64,7 @@
           *ngIf="!isInitialLoading"
           [class.col-11]="innerWidth > 991"
           [class.col-8]="innerWidth <= 991"
-          class="me-2 py-0 d-flex justify-content-end"
+          class="me-2 py-0 flex justify-content-end"
         >
           <label for="view-options-sort">
             <i

@@ -116,7 +116,7 @@
                     [class.col-12]="!fotoUrl"
                   >
                     <label
-                      class="custom-file-upload d-flex align-items-center"
+                      class="custom-file-upload flex align-items-center"
                       (click)="cargaFoto()"
                     >
                       <i
@@ -184,7 +184,7 @@
           <ng-container *ngIf="i % 2 == 0">
             <ng-template carouselSlide>
               <div
-                class="d-flex flex-column p-3"
+                class="flex flex-column p-3"
                 style="background-color: #009579"
               >
                 <img [src]="participantes[i].foto" style="height: 120px" />
@@ -197,7 +197,7 @@
               </div>
               <div
                 *ngIf="participantes[i + 1]"
-                class="d-flex flex-column p-3"
+                class="flex flex-column p-3"
                 style="background-color: #009579"
               >
                 <img [src]="participantes[i + 1].foto" style="height: 120px" />
@@ -332,7 +332,7 @@
                   </div>
                   <div class="col-12 mt-2">
                     <label
-                      class="custom-file-upload d-flex align-items-center"
+                      class="custom-file-upload flex align-items-center"
                       (click)="cargaFoto()"
                     >
                       <i
@@ -400,7 +400,7 @@
           <ng-container *ngIf="i % 2 == 0">
             <ng-template carouselSlide>
               <div
-                class="d-flex flex-column p-3"
+                class="flex flex-column p-3"
                 style="background-color: #009579"
               >
                 <img [src]="participantes[i].foto" style="height: 79px" />
@@ -413,7 +413,7 @@
               </div>
               <div
                 *ngIf="participantes[i + 1]"
-                class="d-flex flex-column p-3"
+                class="flex flex-column p-3"
                 style="background-color: #009579"
               >
                 <img [src]="participantes[i + 1].foto" style="height: 79px" />

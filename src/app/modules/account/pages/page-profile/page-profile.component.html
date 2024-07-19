@@ -1,10 +1,10 @@
 <div
-  class="top-bar-categories d-flex align-items-center mb-3"
+  class="top-bar-categories flex align-items-center mb-3"
   [class.p-0]="innerWidth < 450"
   [class.ps-4]="innerWidth < 450"
   (window:resize)="onResize($event)"
 >
-  <div class="title d-flex align-items-center me-auto">
+  <div class="title flex align-items-center me-auto">
     <i _ngcontent-serverapp-c11="" class="fas fa-tachometer-alt me-3"></i>
     <h5>Mi perfil</h5>
     <h2 class="float-start">
@@ -128,10 +128,10 @@
           </div>
         </div>
         <div class="row mt-2">
-          <div class="col-5 d-flex align-items-center title2 m-0">
+          <div class="col-5 flex align-items-center title2 m-0">
             <span>Dirección despacho predeterminada:</span>
           </div>
-          <div class="col-7 d-flex align-items-center">
+          <div class="col-7 flex align-items-center">
             <div class="text-start">
               {{
                 direccionDespacho?.street + ' ' + direccionDespacho?.number

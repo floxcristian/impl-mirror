@@ -48,7 +48,7 @@
           <div class="card-body">
             <div class="cart-table" *ngIf="innerWidth > 450">
               <div
-                class="row d-flex align-items-center mb-1 rowborde"
+                class="row flex align-items-center mb-1 rowborde"
                 style="margin-bottom: 20px !important"
                 *ngFor="let item of items; let i = index"
               >
@@ -64,7 +64,7 @@
                     </div>
                   </ng-container>
                   <div
-                    class="row d-flex justify-content-center align-items-center"
+                    class="row flex justify-content-center align-items-center"
                   >
                     <div class="col-3 py-0">
                       <a
@@ -282,7 +282,7 @@
         >
           <div class="card h-100 p-4">
             <div class="card-header" style="display: inline-block">
-              <div class="d-flex align-items-center">
+              <div class="flex align-items-center">
                 <div
                   class="col-12 py-0 text-h1"
                   [ngStyle]="{
@@ -315,7 +315,7 @@
         <div class="col-sm" style="margin-top: 20px">
           <div class="card h-100">
             <div class="card-header" style="display: inline-block">
-              <div class="d-flex align-items-center">
+              <div class="flex align-items-center">
                 <div class="col-9 py-0">Resumen de tu compra</div>
               </div>
               <hr />
@@ -392,7 +392,7 @@
                                 | slice : 0 : 6 - recommendedProducts.length
                             "
                           >
-                            <div class="d-flex w-100"></div>
+                            <div class="flex w-100"></div>
                           </ng-template>
                         </ng-container>
                       </owl-carousel-o>
@@ -476,7 +476,7 @@
               style="display: inline-block"
               (mousedown)="showresumen = !showresumen"
             >
-              <div class="d-flex">
+              <div class="flex">
                 <div
                   class="col-9 text-justify py-0"
                   style="font-size: 16px; color: #0d61bb"

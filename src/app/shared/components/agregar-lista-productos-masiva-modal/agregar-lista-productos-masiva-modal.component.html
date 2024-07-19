@@ -101,7 +101,7 @@
             aria-label="nombre"
             [(ngModel)]="nombre"
           />
-          <div class="w-100 d-flex justify-content-end mt-1">
+          <div class="w-100 flex justify-content-end mt-1">
             <div class="max-caracteres">
               {{ cantCaracteres }} / {{ maxCaracteres }}
             </div>
@@ -137,7 +137,7 @@
       <div *ngIf="productosCargados.length">
         <div class="border accordion-header">
           <div
-            class="mb-0 d-flex"
+            class="mb-0 flex"
             style="cursor: pointer"
             [attr.aria-expanded]="!collapsed1State"
             aria-controls="productosOK"
@@ -153,7 +153,7 @@
               ><span *ngIf="productosCargados.length">Productos cargados</span>
               correctamente
             </div>
-            <div style="float: right" class="me-3 d-flex align-items-center">
+            <div style="float: right" class="me-3 flex align-items-center">
               <span
                 class="fas fa-chevron-{{ collapsed1State ? 'right' : 'down' }}"
                 style="cursor: pointer"
@@ -168,7 +168,7 @@
           style="max-height: 200px; overflow-y: scroll"
         >
           <div
-            class="border-start border-end border-bottom py-2 px-3 d-flex flex-wrap justify-content-center"
+            class="border-start border-end border-bottom py-2 px-3 flex flex-wrap justify-content-center"
           >
             <div class="producto" *ngFor="let item of productosCargados">
               <div>
@@ -200,7 +200,7 @@
       <div *ngIf="productosNoCargados.length">
         <div class="border accordion-header">
           <div
-            class="mb-0 d-flex"
+            class="mb-0 flex"
             style="cursor: pointer"
             [attr.aria-expanded]="!collapsed2State"
             aria-controls="productosERROR"
@@ -217,7 +217,7 @@
                 >Productos No encontrados</span
               >
             </div>
-            <div style="float: right" class="me-3 d-flex align-items-center">
+            <div style="float: right" class="me-3 flex align-items-center">
               <span
                 class="fas fa-chevron-{{ collapsed2State ? 'right' : 'down' }}"
                 style="cursor: pointer"
@@ -232,7 +232,7 @@
           style="max-height: 200px; overflow-y: scroll"
         >
           <div
-            class="border-start border-end border-bottom pt-2 pb-2 ps-3 ps-3 d-flex flex-wrap justify-content-center"
+            class="border-start border-end border-bottom pt-2 pb-2 ps-3 ps-3 flex flex-wrap justify-content-center"
           >
             <div class="producto" *ngFor="let item of productosNoCargados">
               <div>

@@ -92,7 +92,7 @@
     <div class="col-sm-12 col-12 mt-1 p-1" style="min-height: 130px">
       <div
         *ngIf="imagen"
-        class="col-md-1 align-items justify-content-between d-flex"
+        class="col-md-1 align-items justify-content-between flex"
       >
         <img
           class="img-fluid"
@@ -500,7 +500,7 @@
       [ngClass]="esWeb ? 'conMT' : 'sinMT'"
       *ngIf="!folio"
     >
-      <div class="d-flex justify-content-around">
+      <div class="flex justify-content-around">
         <app-share-button
           [producto]="plana.products"
           [catalogo]="true"

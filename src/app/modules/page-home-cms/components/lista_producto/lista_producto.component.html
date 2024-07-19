@@ -18,7 +18,7 @@
 <div *ngIf="!cargar" class="container-product" style="margin-top: 10px">
   <div class="row mt-2">
     <div
-      class="col-sm-12 d-flex justify-content-center"
+      class="col-sm-12 flex justify-content-center"
       [ngStyle]="{ 'margin-bottom': !isVacio(subtitle) ? '0px' : '1.8rem' }"
     >
       <h1 class="text-h1">
@@ -28,7 +28,7 @@
   </div>
   <div class="row mt-3" *ngIf="!isVacio(subtitle)">
     <div
-      class="col-sm-12 d-flex justify-content-center"
+      class="col-sm-12 flex justify-content-center"
       style="margin-bottom: 1.8rem"
     >
       <h1 class="text-subtitle">

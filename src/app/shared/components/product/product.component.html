@@ -137,7 +137,7 @@
     <!-- Información Ficha -->
     <div class="col-12 lg:col-6 ps-lg-4 mt-1 lg:mt-0 hidden sm:block">
       <div>
-        <div class="d-flex justify-content-between mb-1">
+        <div class="flex justify-content-between mb-1">
           <div>
             {{
               product.brand
@@ -152,7 +152,7 @@
             [evaluationSummary]="evaluationSummary"
           />
         </div>
-        <div class="d-flex justify-content-between">
+        <div class="flex justify-content-between">
           <h5 class="product__name mb-1">
             {{ product.name | capitalizeFirst }}
           </h5>
@@ -409,7 +409,7 @@
             <div class="mb-2">
               <div class="row m-0 align-items-center">
                 <div class="sm:col-5 ps-5">
-                  <div class="d-flex flex-column">
+                  <div class="flex flex-column">
                     <span> Cantidad </span>
                     <app-input-number
                       aria-label="Quantity"
@@ -494,7 +494,7 @@
             <!-- End::opciones de entrega (desktop) -->
 
             <!-- Start::wishlist -->
-            <div *ngIf="isB2B" class="listaBotones d-flex">
+            <div *ngIf="isB2B" class="listaBotones flex">
               <button
                 name="addingToWishlist"
                 class="addListaBoton btn btn-light btn-svg-icon px-2"
@@ -527,7 +527,7 @@
       class="col-12 lg:col-6 ps-lg-4 mt-0 lg:mt-0 d-block d-sm-none"
     >
       <div>
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="flex justify-content-between align-items-center">
           <div class="product__prices my-3">
             <ng-container *ngIf="product.price">
               <div>
@@ -609,7 +609,7 @@
             >
           </div>
         </div>
-        <div class="mx-2 d-flex justify-content-start mb-1">
+        <div class="mx-2 flex justify-content-start mb-1">
           <div>
             {{
               product.brand
@@ -804,7 +804,7 @@
 
           <hr />
           <div>
-            <div class="d-flex justify-content-center">
+            <div class="flex justify-content-center">
               <app-product-rating
                 [producto]="product"
                 (comentarioGuardado)="comentarioGuardado.emit(true)"
@@ -815,7 +815,7 @@
           </div>
 
           <!-- Start::wishlist (mobile) -->
-          <div *ngIf="isB2B" class="listaBotones d-flex">
+          <div *ngIf="isB2B" class="listaBotones flex">
             <button
               name="addingToWishlist"
               class="addListaBoton btn btn-light btn-svg-icon px-2"

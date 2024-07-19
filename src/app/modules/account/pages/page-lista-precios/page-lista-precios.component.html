@@ -1,11 +1,11 @@
 <div
-  class="top-bar-categories d-flex align-items-center mb-3"
+  class="top-bar-categories flex align-items-center mb-3"
   [class.p-0]="innerWidth < 450"
   [class.ps-3]="innerWidth < 450"
   [class.ps-3]="innerWidth < 450"
   (window:resize)="onResize($event)"
 >
-  <div class="title d-flex align-items-center me-auto">
+  <div class="title flex align-items-center me-auto">
     <i _ngcontent-serverapp-c11="" class="fas fa-truck-moving me-3"></i>
     <h5>Lista de Precios</h5>
   </div>
@@ -70,7 +70,7 @@
         </div>
 
         <div
-          class="d-flex flex-wrap justify-content-center flex-column"
+          class="flex flex-wrap justify-content-center flex-column"
           *ngIf="precios && precios.length > 0 && !showLoading"
         >
           <!-- Mobile -->
@@ -95,13 +95,13 @@
                 />
               </a>
             </div>
-            <div class="col-8 col-sm-5 d-flex align-items-center">
+            <div class="col-8 col-sm-5 flex align-items-center">
               <span class="product-title hidden sm:block">
                 {{ item.name | titlecase }}
               </span>
             </div>
             <div
-              class="col-8 col-sm-2 flex-sm-column justify-content-xl-end justify-content-center d-flex align-items-center"
+              class="col-8 col-sm-2 flex-sm-column justify-content-xl-end justify-content-center flex align-items-center"
             >
               <span class="product-sku ms-2 hidden sm:block">
                 {{ item.customerCode }}
@@ -111,7 +111,7 @@
               </span>
             </div>
             <div
-              class="col-12 col-sm-3 flex-sm-column justify-content-xl-end justify-content-center d-flex align-items-center"
+              class="col-12 col-sm-3 flex-sm-column justify-content-xl-end justify-content-center flex align-items-center"
             >
               <span class="precio-price-value"
                 ><span class="precio-meson">{{

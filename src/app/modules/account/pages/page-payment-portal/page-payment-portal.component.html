@@ -1,10 +1,10 @@
 <div
-  class="top-bar-categories d-flex align-items-center mb-3"
+  class="top-bar-categories flex align-items-center mb-3"
   [class.p-0]="innerWidth < 450"
   [class.ps-4]="innerWidth < 450"
   (window:resize)="onResize($event)"
 >
-  <div class="title d-flex align-items-center me-auto">
+  <div class="title flex align-items-center me-auto">
     <i _ngcontent-serverapp-c11="" class="fas fa-money-check-alt me-3"></i>
     <h5>Portal de pagos</h5>
   </div>
@@ -115,7 +115,9 @@
               </tr>
               <tr>
                 <th class="fw-bold titilo-w">Adeudado</th>
-                <td class="text-start">{{ item.dueBalanceAmount | currencyFormat }}</td>
+                <td class="text-start">
+                  {{ item.dueBalanceAmount | currencyFormat }}
+                </td>
               </tr>
               <tr>
                 <th class="fw-bold titilo-w">Estado</th>
@@ -189,7 +191,9 @@
                 <td>{{ item.invoiceNumber }}</td>
                 <td>{{ item.createdAt | date : 'dd-MM-yyyy' }}</td>
                 <td>{{ item.dueDate | date : 'dd-MM-yyyy' }}</td>
-                <td class="text-end">{{ item.dueBalanceAmount | currencyFormat }}</td>
+                <td class="text-end">
+                  {{ item.dueBalanceAmount | currencyFormat }}
+                </td>
                 <td>
                   <span
                     class="badge"
@@ -200,7 +204,9 @@
                   >
                     {{ item.status }}
                   </span>
-                  <span *ngIf="item.days ? item.days : 0 > 0"> {{ item.days }} días</span>
+                  <span *ngIf="item.days ? item.days : 0 > 0">
+                    {{ item.days }} días</span
+                  >
                 </td>
                 <td class="td-checkbox">
                   <div class="form-check form-check-lg">

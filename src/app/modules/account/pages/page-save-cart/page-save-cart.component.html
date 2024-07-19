@@ -1,11 +1,11 @@
 <div
-  class="top-bar-categories d-flex align-items-center mb-3"
+  class="top-bar-categories flex align-items-center mb-3"
   [class.p-0]="innerWidth < 450"
   [class.ps-3]="innerWidth < 450"
   [class.ps-3]="innerWidth < 450"
   (window:resize)="onResize($event)"
 >
-  <div class="title d-flex align-items-center me-auto">
+  <div class="title flex align-items-center me-auto">
     <i _ngcontent-serverapp-c11="" class="fas fa-truck-moving me-3"></i>
     <h5>Carros Guardados</h5>
   </div>
@@ -71,7 +71,7 @@
           <div class="accordion" id="DetalleCarro">
             <div *ngFor="let cart of lstCart" class="mb-2">
               <div class="border accordion-header">
-                <div class="mb-0 d-flex align-items-center">
+                <div class="mb-0 flex align-items-center">
                   <div
                     class="col-md-2 col-sm-3 hidden sm:flex align-items-center"
                   >
@@ -148,7 +148,7 @@
                 data-parent="#DetalleCarro"
               >
                 <div
-                  class="border-start border-end border-bottom d-flex flex-wrap justify-content-center flex-column"
+                  class="border-start border-end border-bottom flex flex-wrap justify-content-center flex-column"
                 >
                   <div
                     class="d-sm-flex d-block align-items-center flex-grow-1 flex-shrink-1 border-bottom"
@@ -172,7 +172,7 @@
                       </a>
                     </div>
                     <div
-                      class="col-8 col-sm-5 col-xl-6 d-flex align-items-center"
+                      class="col-8 col-sm-5 col-xl-6 flex align-items-center"
                     >
                       <span class="product-title hidden sm:block">
                         {{ item.name | titlecase }}
@@ -190,7 +190,7 @@
                       <div class="clearfix"></div>
                     </div>
                     <div
-                      class="col-3 col-sm-2 d-flex align-items-center text-nowrap"
+                      class="col-3 col-sm-2 flex align-items-center text-nowrap"
                     >
                       <span class="precio hidden md:block me-1">{{
                         item.price | currencyFormat
@@ -201,9 +201,7 @@
                     </div>
                     <div
                       class="col-12 col-sm-3 col-xl-2 text-end text-nowrap"
-                      [ngClass]="
-                        MobileView() ? '' : 'd-flex align-items-center'
-                      "
+                      [ngClass]="MobileView() ? '' : 'flex align-items-center'"
                     >
                       <span class="cart-subtitle hidden md:block"
                         >Sub Total</span
