@@ -6,7 +6,7 @@
   <app-scroll-top [fast]="true"> </app-scroll-top>
   <div class="products-view" (window:resize)="onResize($event)">
     <div
-      class="col-12 col-lg-12 mt-3"
+      class="col-12 py-0 mt-2"
       *ngIf="!totalRegistros && !isInitialLoading"
     >
       <div class="alert alert-info text-center">
@@ -17,7 +17,7 @@
       <div class="row w-100">
         <div
           *ngIf="totalRegistros"
-          class="col-12 order-3 order-lg-2 text-justify"
+          class="col-12 py-0 order-3 order-lg-2 text-justify"
           [class.ms-xl-2]="innerWidth >= 1550"
           style="padding-left: 0px; font-size: 18px"
         >
@@ -48,7 +48,7 @@
       >
         <div
           *ngIf="!isInitialLoading"
-          class="col-4 col-lg w-auto d-flex justify-content-start"
+          class="col-4 py-0 col-lg w-auto d-flex justify-content-start"
           style="margin-right: 5px"
         >
           <div class="d-block d-lg-none">
@@ -67,7 +67,7 @@
           *ngIf="!isInitialLoading"
           [class.col-11]="innerWidth > 991"
           [class.col-8]="innerWidth <= 991"
-          class="me-2 d-flex justify-content-end"
+          class="me-2 py-0 d-flex justify-content-end"
         >
           <label for="view-options-sort">
             <i
@@ -83,11 +83,6 @@
               name=""
               id="view-options-sort"
             >
-              <!-- <option [ngValue]="null">Seleccione Orden</option>
-              <option value="precio|desc">Mayor precio</option>
-              <option value="precio|asc">Menor Precio</option>
-              <option value="nombre|asc">Nombre</option>
-              <option value="marca|asc">Marca</option> -->
               <option value="null">Seleccione Orden</option>
               <option value="price|desc">Mayor precio</option>
               <option value="price|asc">Menor Precio</option>

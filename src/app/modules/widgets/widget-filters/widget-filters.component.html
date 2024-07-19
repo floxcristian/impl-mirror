@@ -80,7 +80,7 @@
 
         <div
           *ngIf="filter.type == 'checkbox' && i == 1 && filtrosOculto"
-          class="col text-center mensaje-filtros-ocultos"
+          class="col py-0 text-center mensaje-filtros-ocultos"
         >
           <i class="fas fa-filter"></i>
           Debe seleccionar una categoría para ver los filtros
@@ -161,7 +161,7 @@
                 </li>
               </ul>
 
-              <hr />
+              <hr class="my-2"/>
 
               <button
                 name="filtros"
@@ -236,7 +236,7 @@
                   }}</span> -->
                 </label>
               </div>
-              <hr />
+              <hr class="my-2"/>
             </div>
 
             <div *ngIf="filter.type === 'color'" class="filter-color">
