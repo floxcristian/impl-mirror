@@ -199,18 +199,18 @@
                       </a>
                     </div>
                     <div class="col-8 col-sm-5 d-flex align-items-center">
-                      <span class="product-title d-none d-sm-block">
+                      <span class="product-title hidden sm:block">
                         {{ product.name | titlecase }}
                       </span>
                     </div>
                     <div
                       class="col-8 col-sm-2 flex-sm-column justify-content-xl-end justify-content-center d-flex align-items-center"
                     >
-                      <span class="product-sku ms-2 d-none d-sm-block">
+                      <span class="product-sku ms-2 hidden sm:block">
                         {{ getCustomerCode(product) }}
                       </span>
                       <span
-                        class="product-sku text-gray-2 ms-2 d-none d-sm-block"
+                        class="product-sku text-gray-2 ms-2 hidden sm:block"
                       >
                         {{ product.sku }}
                       </span>

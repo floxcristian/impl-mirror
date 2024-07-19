@@ -6,7 +6,7 @@
     </h4>
   </div>
 </div>
-<div class="d-none d-lg-block">
+<div class="hidden lg:block">
   <div class="grid-gallery">
     <ng-container *ngFor="let item of grid_layout; let i = index">
       <div [ngStyle]="item">
@@ -16,7 +16,7 @@
   </div>
 </div>
 
-<div class="d-none d-md-block d-lg-none">
+<div class="hidden md:block lg:hidden">
   <div class="grid-gallery">
     <ng-container *ngFor="let item of grid_layout; let i = index">
       <div [ngStyle]="item">
@@ -26,7 +26,7 @@
   </div>
 </div>
 
-<div class="d-block d-md-none">
+<div class="block md:hidden">
   <div class="gallery-tablet">
     @if(grid_layout && grid_layout.length > 0) {
     <owl-carousel-o class="carouselConcepto" [options]="carouselOptions">

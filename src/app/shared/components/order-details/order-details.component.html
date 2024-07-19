@@ -26,7 +26,7 @@
               'bg-secondary': data.shoppingCart.status == 'Desconocido'
             }"
           >
-           {{ data.shoppingCart.status ?? '' | translateStatus }}
+            {{ data.shoppingCart.status ?? '' | translateStatus }}
           </span>
         </div>
       </div>
@@ -73,7 +73,7 @@
 
   <div class="clearfix mt-5"></div>
 
-  <div class="table-responsive d-none d-sm-block">
+  <div class="table-responsive hidden sm:block">
     <table class="table">
       <thead>
         <tr>

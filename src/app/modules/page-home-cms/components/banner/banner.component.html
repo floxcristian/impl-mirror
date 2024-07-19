@@ -1,25 +1,27 @@
 <!-- Start::banner (lg+) -->
-<div class="col-sm-12 p-0 d-none d-lg-block">
+<div class="col-sm-12 p-0 hidden lg:block">
   <a [href]="bannerCms.buttonUrl">
     <img
       [src]="bannerCms.imageClassic"
       [alt]="bannerCms.alt"
       [title]="bannerCms.title"
       class="img-fluid"
-      style="width: 100%; height: 100%;"
+      style="width: 100%; height: 100%"
     />
   </a>
 </div>
 <!-- End::banner (lg+) -->
 
 <!-- Start::banner (xs, sm y md) -->
-<div class="col-sm-12 d-flex justify-content-center align-items-center p-0 d-block d-lg-none">
+<div
+  class="col-sm-12 d-flex justify-content-center align-items-center p-0 d-block d-lg-none"
+>
   <a [href]="bannerCms.buttonUrl">
     <img
       [src]="bannerCms.imageMobile"
       [alt]="bannerCms.alt"
       [title]="bannerCms.title"
-      style="width: 100%; height: 100%;"
+      style="width: 100%; height: 100%"
     />
   </a>
 </div>

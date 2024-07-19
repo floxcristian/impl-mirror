@@ -6,7 +6,7 @@
   <div>
     <button class="btn btn-link btn-sm" (click)="agregarVinFlota()">
       <i class="fas fa-plus fa-lg me-2"></i>Agregar
-      <span class="d-none d-sm-inline p-0">centro de costo</span>
+      <span class="hiddem sm:inline p-0">centro de costo</span>
     </button>
   </div>
 </div>
@@ -21,7 +21,7 @@
           *ngIf="cargando"
         >
         </app-loading-element>
-        <div class="d-block d-md-none">
+        <div class="block md:hidden">
           <div
             [ngClass]="{ dropcart__totals: i > 0 }"
             style="font-size: 0.85rem"
@@ -55,7 +55,7 @@
           </div>
         </div>
 
-        <div class="d-none d-md-block">
+        <div class="hidden md:block">
           <div
             [ngStyle]="{ display: centrosCosto.length > 0 ? 'block' : 'none' }"
           >

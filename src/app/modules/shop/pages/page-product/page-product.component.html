@@ -43,7 +43,7 @@
 
       <div
         *ngIf="!showMobile && product?.visible === 1"
-        class="d-none d-sm-block"
+        class="hidden sm:block"
       >
         <!-- Matriz Comparativa (Articulos similares) -->
         <ng-container *ngIf="matriz.length > 1">

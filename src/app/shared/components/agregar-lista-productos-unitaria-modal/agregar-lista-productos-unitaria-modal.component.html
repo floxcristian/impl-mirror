@@ -37,12 +37,12 @@
         <div *ngIf="seleccionandoLista">
           <label>Selccionar una lista existente</label>
         </div>
-        <span class="position-absolute" style="right: 30px; top: 2px">
+        <span class="absolute" style="right: 30px; top: 2px">
           <button
             class="btn btn-sm btn-link p-0"
             (click)="creandoLista = false; seleccionandoLista = false"
           >
-            <span class="d-none d-sm-inline p-0">Volver</span
+            <span class="hidden sm:inline p-0">Volver</span
             ><i class="fas fa-undo-alt ms-2"></i>
           </button>
         </span>

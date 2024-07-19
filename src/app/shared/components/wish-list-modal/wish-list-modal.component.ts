@@ -74,7 +74,7 @@ export class WishListModalComponent implements OnInit {
     );
     this.renderer.addClass(
       this.renderer.selectRootElement('.validacion', true),
-      'd-none'
+      'hidden'
     );
   }
 
@@ -82,7 +82,7 @@ export class WishListModalComponent implements OnInit {
     if (!this.nombre.length) {
       this.renderer.removeClass(
         this.renderer.selectRootElement('.validacion', true),
-        'd-none'
+        'hidden'
       );
       this.renderer.addClass(
         this.renderer.selectRootElement('.validacion', true),

@@ -7,12 +7,12 @@
     <div class="w-100 text-center mt-2">
       <h5>Sin comentarios</h5>
     </div>
-    <div class="d-none d-sm-flex justify-content-end">
+    <div class="hidden sm:flex justify-content-end">
       <button class="btn btn-sm btn-primary" (click)="escribirComentario()">
         <i class="fas fa-pencil-alt me-2"></i>Escribir comentario
       </button>
     </div>
-    <div class="d-block d-sm-none mt-2">
+    <div class="block sm:hidden mt-2">
       <button
         class="btn w-100"
         style="color: #0d61bb; border: 1px solid #0d61bb; font-size: 1rem"
@@ -45,7 +45,7 @@
           </div>
         </div>
       </div>
-      <div class="d-none d-sm-block">
+      <div class="hidden sm:block">
         <button class="btn btn-sm btn-primary" (click)="escribirComentario()">
           <i class="fas fa-pencil-alt me-2"></i>Escribir comentario
         </button>
@@ -63,9 +63,10 @@
     </div>
 
     <div
-      class="d-flex flex-column flex-sm-row justify-content-between align-items-end overflow-auto" style="max-height: 150px; "
+      class="d-flex flex-column flex-sm-row justify-content-between align-items-end overflow-auto"
+      style="max-height: 150px"
     >
-      <div class="d-flex flex-column py-2 resumen "  >
+      <div class="d-flex flex-column py-2 resumen">
         <div *ngFor="let item of resumen" class="d-flex">
           <div class="d-flex align-items-center nowrap me-2">
             <div>{{ item.stars }}</div>
@@ -137,8 +138,8 @@
       <div class="mb-2">
         <small
           ><span class="me-3">Por {{ item.name }}</span> Hace
-          {{ item.createdAt | relativeTime}} </small
-        >
+          {{ item.createdAt | relativeTime }}
+        </small>
       </div>
       <div class="text-justify">
         {{ item.comment | capitalizeFirst }}

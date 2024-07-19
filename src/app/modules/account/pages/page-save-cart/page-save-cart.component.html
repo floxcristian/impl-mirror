@@ -52,19 +52,19 @@
             </div>
           </div>
           <div class="row mb-3 fw-bold" *ngIf="lstCart && lstCart.length > 0">
-            <div class="col-md-2 d-none d-md-block">
+            <div class="col-md-2 hidden md:block">
               <span class="ms-3">Cantidad </span>
             </div>
-            <div class="col-md-3 d-none d-md-block">
+            <div class="col-md-3 hidden md:block">
               <span> Fecha Creación </span>
             </div>
-            <div class="col-md-3 d-none d-md-block">
+            <div class="col-md-3 hidden md:block">
               <span> Total Carro </span>
             </div>
-            <div class="col-md-2 d-none d-md-block">
+            <div class="col-md-2 hidden md:block">
               <span> Opciones </span>
             </div>
-            <div class="col-md-2 d-none d-md-block text-end">
+            <div class="col-md-2 hidden md:block text-end">
               <span class="me-3"> Ver Detalle </span>
             </div>
           </div>
@@ -73,19 +73,19 @@
               <div class="border accordion-header">
                 <div class="mb-0 d-flex align-items-center">
                   <div
-                    class="col-md-2 col-sm-3 d-none d-sm-flex align-items-center"
+                    class="col-md-2 col-sm-3 hidden sm:flex align-items-center"
                   >
                     <i class="fas fa fa-shopping-cart me-1"></i
                     >{{ cart.products.length
-                    }}<span class="d-none d-xl-inline ms-1">artículo(s)</span>
+                    }}<span class="hidden xl:inline ms-1">artículo(s)</span>
                   </div>
-                  <div class="col-md-3 d-none d-md-block">
+                  <div class="col-md-3 hidden md:block">
                     {{ cart.createdAt | date : 'dd-MM-yyyy' }}
                   </div>
                   <div class="col-md-3 col-sm-4 col-5 text-nowrap fw-bolder">
                     {{ getTotalCart(cart.products) | currencyFormat }}
                   </div>
-                  <div class="col-md-3 col-sm-4 d-none d-xl-block">
+                  <div class="col-md-3 col-sm-4 hidden xl:block">
                     <button
                       class="btn btn-sm btn-secondary me-2"
                       style="font-size: 12px"
@@ -174,16 +174,16 @@
                     <div
                       class="col-8 col-sm-5 col-xl-6 d-flex align-items-center"
                     >
-                      <span class="product-title d-none d-sm-block">
+                      <span class="product-title hidden sm:block">
                         {{ item.name | titlecase }}
                       </span>
                       <span
-                        class="product-sku text-gray-2 ms-2 d-none d-xl-block"
+                        class="product-sku text-gray-2 ms-2 hidden xl:block"
                       >
                         {{ item.sku }}
                       </span>
                       <span
-                        class="product-sku text-gray-2 ms-2 d-none d-xl-block"
+                        class="product-sku text-gray-2 ms-2 hidden xl:block"
                       >
                         {{ item.brand }}
                       </span>
@@ -192,10 +192,10 @@
                     <div
                       class="col-3 col-sm-2 d-flex align-items-center text-nowrap"
                     >
-                      <span class="precio d-none d-md-block me-1">{{
+                      <span class="precio hidden md:block me-1">{{
                         item.price | currencyFormat
                       }}</span
-                      ><span class="cantidad d-none d-sm-block">
+                      ><span class="cantidad hidden sm:block">
                         x {{ item.quantity }}
                       </span>
                     </div>
@@ -205,7 +205,7 @@
                         MobileView() ? '' : 'd-flex align-items-center'
                       "
                     >
-                      <span class="cart-subtitle d-none d-md-block"
+                      <span class="cart-subtitle hidden md:block"
                         >Sub Total</span
                       >
                       <span class="cart-price-value ms-2">{{

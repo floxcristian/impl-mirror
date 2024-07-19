@@ -1,7 +1,7 @@
 <div class="product product--layout--standard" *ngIf="product">
-  <div class="product__content_232 d-flex row px-sm-4">
+  <div class="product__content_232 flex row px-sm-4">
     <!--  NOMBRE VERSION MOVIL -->
-    <div class="d-block d-sm-none">
+    <div class="block sm:hidden">
       <h5 class="mb-1 text-start">{{ product.name | capitalizeFirst }}</h5>
     </div>
 
@@ -11,7 +11,7 @@
       <div class="product-gallery" *ngIf="showGallery">
         <div class="row">
           <div
-            class="sm:col-3 d-none d-lg-flex justify-content-center align-items-center"
+            class="sm:col-3 hidden lg:flex justify-content-center align-items-center"
           >
             <div class="w-100 h-100 p-2 relative">
               <div
@@ -135,7 +135,7 @@
 
     <!-- DESKTOP  TABLET -->
     <!-- Información Ficha -->
-    <div class="col-12 lg:col-6 ps-lg-4 mt-1 lg:mt-0 d-none d-sm-block">
+    <div class="col-12 lg:col-6 ps-lg-4 mt-1 lg:mt-0 hidden sm:block">
       <div>
         <div class="d-flex justify-content-between mb-1">
           <div>
@@ -424,7 +424,7 @@
                 </div>
 
                 <!-- BOTON PARA DESKTOP y TABLET -->
-                <div class="sm:col-7 d-none d-sm-block">
+                <div class="sm:col-7 hidden sm:block">
                   <button
                     *ngIf="isAvailable"
                     name="Agregar "

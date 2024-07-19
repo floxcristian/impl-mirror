@@ -3,7 +3,7 @@
     <div class="row justify-content-center">
       <!-- Start::devoluciones (lg+) -->
       <div
-        class="col-3 py-0 d-none d-lg-block"
+        class="col-3 py-0 hidden lg:block"
         style="cursor: pointer"
         [routerLink]="['/sitio/politicas/cambios-devolucion']"
       >
@@ -30,7 +30,7 @@
 
       <!-- Start::devoluciones (sm y md) -->
       <div
-        class="col-3 py-0 d-none d-sm-block d-lg-none"
+        class="col-3 py-0 hidden sm:block lg:hidden"
         style="cursor: pointer"
         [routerLink]="['/sitio/politicas/cambios-devolucion']"
       >
@@ -84,7 +84,7 @@
 
       <!-- Start::tiendas (lg+) -->
       <div
-        class="col-3 py-0 d-none d-lg-block"
+        class="col-3 py-0 hidden lg:block"
         style="cursor: pointer"
         [routerLink]="['/sitio/tiendas']"
       >
@@ -110,7 +110,7 @@
 
       <!-- Start::tiendas (sm y md) -->
       <div
-        class="col-3 py-0 d-none d-sm-block d-lg-none"
+        class="col-3 py-0 hidden sm:block lg:hidden"
         style="cursor: pointer"
         [routerLink]="['/sitio/tiendas']"
       >
@@ -161,7 +161,7 @@
       <!-- End::tiendas (xs) -->
 
       <!-- Start::catálogos (lg+) -->
-      <div class="col-3 py-0 d-none d-lg-block" style="cursor: pointer">
+      <div class="col-3 py-0 hidden lg:block" style="cursor: pointer">
         <a href="/catalogos/listado-catalogos" target="_blank">
           <div class="row m-0">
             <div class="col-4 py-0">
@@ -186,7 +186,7 @@
 
       <!-- Start::catálogos (sm y md) -->
       <div
-        class="col-3 py-0 d-none d-sm-block d-lg-none"
+        class="col-3 py-0 hidden sm:block lg:hidden"
         style="cursor: pointer"
       >
         <a href="/catalogos/listado-catalogos" target="_blank">
@@ -264,7 +264,7 @@
   <div class="container absolute sm:p-1">
     <!-- Start::newsletter (+sm) -->
     <div
-      class="d-flex flex-column offset-5 col-7 py-0 align-items-center d-none d-sm-block"
+      class="d-flex flex-column offset-5 col-7 py-0 align-items-center hidden sm:block"
     >
       <div class="text-center titulo">NEWSLETTER</div>
       <div class="text-center">
@@ -322,7 +322,7 @@
 
 <!-- Start::footer (+lg) -->
 <div
-  class="site-footer d-none d-lg-block"
+  class="site-footer hidden lg:block"
   [hidden]="HideFooter() ? true : false"
 >
   <div class="container">
@@ -334,7 +334,7 @@
         <div class="col-custom px-0">
           <app-holding-epysa></app-holding-epysa>
         </div>
-        <div class="col-custom d-none d-lg-block px-0">
+        <div class="col-custom hidden lg:block px-0">
           <app-mi-cuenta></app-mi-cuenta>
         </div>
         <div class="col ps-0 py-0">

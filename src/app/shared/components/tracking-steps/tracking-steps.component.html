@@ -1,6 +1,6 @@
 <!-- Formato pantallas grandes -->
-<div class="d-none d-sm-block">
-  <div class="container-step d-flex mt-3 mb-3">
+<div class="hidden sm:block">
+  <div class="container-step flex mt-3 mb-3">
     <ng-container *ngIf="tipoEntrega != 'RETDA'">
       <div
         class="step col text-center"
@@ -17,9 +17,7 @@
           *ngIf="Informe_estado[0] && Informe_estado[0].trackingDate"
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[0].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[0].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
       </div>
 
@@ -41,9 +39,7 @@
           *ngIf="Informe_estado[1] && Informe_estado[1].trackingDate"
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[1].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[1].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
         <span
           *ngIf="
@@ -53,9 +49,7 @@
           "
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[2].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[2].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
         <span
           *ngIf="
@@ -66,9 +60,7 @@
           "
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
       </div>
 
@@ -86,9 +78,7 @@
           *ngIf="Informe_estado[2] && Informe_estado[2].trackingDate"
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[2].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[2].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
         <span
           *ngIf="
@@ -98,9 +88,7 @@
           "
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
       </div>
 
@@ -135,7 +123,8 @@
           <ng-container
             *ngIf="
               Informe_estado[3] !== undefined &&
-              (Informe_estado[3].status == 'N/A' || Informe_estado[3].status == 'cancelled')
+              (Informe_estado[3].status == 'N/A' ||
+                Informe_estado[3].status == 'cancelled')
             "
             >Cancelada</ng-container
           >
@@ -152,9 +141,7 @@
           *ngIf="Informe_estado[3] && Informe_estado[3].trackingDate"
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
       </div>
     </ng-container>
@@ -174,9 +161,7 @@
           *ngIf="Informe_estado[0] && Informe_estado[0].trackingDate"
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[0].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[0].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
       </div>
 
@@ -198,9 +183,7 @@
           *ngIf="Informe_estado[1] && Informe_estado[1].trackingDate"
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[1].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[1].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
         <span
           *ngIf="
@@ -210,9 +193,7 @@
           "
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[2].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[2].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
         <span
           *ngIf="
@@ -223,9 +204,7 @@
           "
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
       </div>
 
@@ -243,9 +222,7 @@
           *ngIf="Informe_estado[2] && Informe_estado[2].trackingDate"
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[2].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[2].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
         <span
           *ngIf="
@@ -256,9 +233,7 @@
           "
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[1].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[1].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
         <span
           *ngIf="
@@ -269,9 +244,7 @@
           "
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
       </div>
 
@@ -306,7 +279,8 @@
           <ng-container
             *ngIf="
               Informe_estado[3] !== undefined &&
-              (Informe_estado[3].status == 'undefined' || Informe_estado[3].status == 'cancelled')
+              (Informe_estado[3].status == 'undefined' ||
+                Informe_estado[3].status == 'cancelled')
             "
             >Cancelada</ng-container
           >
@@ -323,9 +297,7 @@
           *ngIf="Informe_estado[3] && Informe_estado[3].trackingDate"
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
       </div>
     </ng-container>
@@ -352,9 +324,7 @@
           *ngIf="Informe_estado[0] && Informe_estado[0].trackingDate"
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[0].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[0].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
         <br />
         <span> <i class="fas fa-long-arrow-alt-down icon-down"></i> </span>
@@ -378,9 +348,7 @@
           *ngIf="Informe_estado[1] && Informe_estado[1].trackingDate"
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[1].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[1].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
         <span
           *ngIf="
@@ -390,9 +358,7 @@
           "
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[2].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[2].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
         <span
           *ngIf="
@@ -403,9 +369,7 @@
           "
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
         <br /><span>
           <i class="fas fa-long-arrow-alt-down icon-down"></i>
@@ -426,9 +390,7 @@
           *ngIf="Informe_estado[2] && Informe_estado[2].trackingDate"
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[2].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[2].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
         <span
           *ngIf="
@@ -438,9 +400,7 @@
           "
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
         <br /><span>
           <i class="fas fa-long-arrow-alt-down icon-down"></i>
@@ -495,9 +455,7 @@
           *ngIf="Informe_estado[3] && Informe_estado[3].trackingDate"
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
       </div>
     </ng-container>
@@ -517,9 +475,7 @@
           *ngIf="Informe_estado[0] && Informe_estado[0].trackingDate"
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[0].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[0].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
         <br />
         <span> <i class="fas fa-long-arrow-alt-down icon-down"></i> </span>
@@ -543,9 +499,7 @@
           *ngIf="Informe_estado[1] && Informe_estado[1].trackingDate"
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[1].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[1].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
         <span
           *ngIf="
@@ -555,9 +509,7 @@
           "
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[2].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[2].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
         <span
           *ngIf="
@@ -568,9 +520,7 @@
           "
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
         <br />
         <span> <i class="fas fa-long-arrow-alt-down icon-down"></i> </span>
@@ -590,9 +540,7 @@
           *ngIf="Informe_estado[2] && Informe_estado[2].trackingDate"
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[2].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[2].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
         <span
           *ngIf="
@@ -603,9 +551,7 @@
           "
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[1].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[1].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
         <span
           *ngIf="
@@ -616,9 +562,7 @@
           "
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
         <br />
         <span> <i class="fas fa-long-arrow-alt-down icon-down"></i> </span>
@@ -672,9 +616,7 @@
           *ngIf="Informe_estado[3] && Informe_estado[3].trackingDate"
           style="font-size: 14px"
         >
-          {{
-            Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss'
-          }}
+          {{ Informe_estado[3].trackingDate | date : 'dd/MM/yyyy HH:mm:ss' }}
         </span>
       </div>
     </ng-container>

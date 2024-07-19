@@ -1,5 +1,5 @@
 <!-- Start::slideshow si tiene mas de un item (lg+) -->
-<div *ngIf="slides.length > 1" class="block-slideshow d-none d-lg-block">
+<div *ngIf="slides.length > 1" class="block-slideshow hidden lg:block">
   <owl-carousel-o
     class="carouselMundo"
     [options]="carouselOptions"
@@ -45,7 +45,7 @@
 <!-- End::slideshow si tiene mas de un item (lg+) -->
 
 <!-- Start::slideshow si tiene un solo item (lg+) -->
-<div *ngIf="slides.length == 1" class="block-slideshow d-none d-lg-block">
+<div *ngIf="slides.length == 1" class="block-slideshow hidden lg:block">
   <owl-carousel-o
     class="carouselMundo"
     [options]="carouselOptions2"
@@ -110,14 +110,14 @@
               [src]="slide.imageMobile"
               [alt]="slide.alt"
               [title]="slide.alt"
-              class="img-fluid-product d-none d-sm-block"
+              class="img-fluid-product hidden sm:block"
             />
 
             <img
               [src]="slide.imageTablet"
               [alt]="slide.alt"
               [title]="slide.alt"
-              class="img-fluid-product d-block d-sm-none"
+              class="img-fluid-product block sm:hidden"
             />
 
             <div class="overlay">
