@@ -494,88 +494,33 @@
   <!-- FIN texto cuando no haya stock -->
 
   <div class="product-card__actions">
-    <ng-container>
-      <div
-        class="product-card__buttons p-0 mt-2"
-        *ngIf="
-          productData.stockSummary.branchStock === undefined &&
-          productData.stockSummary.companyStock === undefined
-        "
+    <div class="product-card__buttons p-0 mt-2">
+      @if(productData.stockSummary.branchStock ||
+      productData.stockSummary.companyStock){
+      <button
+        name="addToCart"
+        [disabled]="!productData.priceInfo.price"
+        class="btn btn-secondary product-card__addtocart w-100"
+        type="button"
+        appClick
+        (click)="addToCart()"
+        [ngClass]="{ 'btn-loading': addingToCart }"
       >
-        <button
-          name="addToCart"
-          [disabled]="!productData.priceInfo.price"
-          class="btn btn-secondary product-card__addtocart w-100"
-          type="button"
-          appClick
-          (click)="addToCart()"
-          [ngClass]="{ 'btn-loading': addingToCart }"
-        >
-          <div class="text-center" style="font-size: 14px">AGREGAR</div>
-        </button>
-        <!--
-        <button
-          name="add"
-          [disabled]="!productData.priceInfo.price"
-          class="btn btn-secondary product-card__addtocart product-card__addtocart--list"
-          type="button"
-          appClick
-          (click)="addToCart()"
-          [ngClass]="{ 'btn-loading': addingToCart }"
-        >
-          <div class="text-center" style="font-size: 14px">AGREGAR</div>
-        </button> -->
-      </div>
-      <div
-        class="product-card__buttons p-0 mt-2"
-        *ngIf="
-          productData.stockSummary.branchStock ||
-          productData.stockSummary.companyStock
+        <div class="text-center" style="font-size: 14px">AGREGAR</div>
+      </button>
+      } @else{
+      <button
+        [routerLink]="
+          root.product(productData.sku, productData.name, paramsCategory)
         "
+        class="btn btn-secondary product-card__addtocart w-100"
+        type="button"
+        appClick
       >
-        <button
-          name="addToCart"
-          [disabled]="!productData.priceInfo.price"
-          class="btn btn-secondary product-card__addtocart w-100"
-          type="button"
-          appClick
-          (click)="addToCart()"
-          [ngClass]="{ 'btn-loading': addingToCart }"
-        >
-          <div class="text-center" style="font-size: 14px">AGREGAR</div>
-        </button>
-        <!--
-        <button
-          name="add"
-          [disabled]="!productData.priceInfo.price"
-          class="btn btn-secondary product-card__addtocart product-card__addtocart--list"
-          type="button"
-          appClick
-          (click)="addToCart()"
-          [ngClass]="{ 'btn-loading': addingToCart }"
-        >
-          <div class="text-center" style="font-size: 14px">AGREGAR</div>
-        </button> -->
-      </div>
-      <div
-        class="product-card__buttons p-0 mt-2"
-        *ngIf="
-          !productData.stockSummary?.branchStock &&
-          !productData.stockSummary?.companyStock
-        "
-      >
-        <button
-          [routerLink]="
-            root.product(productData.sku, productData.name, paramsCategory)
-          "
-          class="btn btn-secondary product-card__addtocart w-100"
-          type="button"
-          appClick
-        >
-          <div class="text-center" style="font-size: 14px">SOLICITAR</div>
-        </button>
-      </div>
-    </ng-container>
+        <div class="text-center" style="font-size: 14px">SOLICITAR</div>
+      </button>
+      }
+    </div>
   </div>
 </div>
 

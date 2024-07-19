@@ -238,26 +238,22 @@
                         <div
                           class="mb-2 d-flex flex-column justify-content-center align-items-center"
                         >
+                          @if(item.stockSummary.branchStock ||
+                          item.stockSummary.companyStock){
                           <button
-                            *ngIf="
-                              item.stockSummary.branchStock ||
-                              item.stockSummary.companyStock
-                            "
                             class="btn btn-sm btn-secondary"
                             (click)="addComparedProductToCart(item)"
                           >
                             AGREGAR
                           </button>
+                          } @else{
                           <button
-                            *ngIf="
-                              !item.stockSummary.branchStock &&
-                              !item.stockSummary.companyStock
-                            "
                             class="btn btn-sm btn-secondary"
                             [routerLink]="root.product(item.sku, item.name)"
                           >
                             SOLICITAR
                           </button>
+                          }
                         </div>
                       </td>
                     </tr>
@@ -657,26 +653,22 @@
                     <div
                       class="mb-2 d-flex flex-column justify-content-center align-items-center"
                     >
+                      @if(item.stockSummary.branchStock ||
+                      item.stockSummary.companyStock){
                       <button
-                        *ngIf="
-                          item.stockSummary.branchStock > 0 ||
-                          item.stockSummary.companyStock > 0
-                        "
                         class="btn btn-sm btn-secondary"
                         (click)="addComparedProductToCart(item)"
                       >
                         AGREGAR
                       </button>
+                      } @else {
                       <button
-                        *ngIf="
-                          item.stockSummary.branchStock === 0 &&
-                          item.stockSummary.companyStock === 0
-                        "
                         class="btn btn-sm btn-secondary"
                         [routerLink]="root.product(item.sku, item.name)"
                       >
                         SOLICITAR
                       </button>
+                      }
                     </div>
                   </td>
                 </tr>
