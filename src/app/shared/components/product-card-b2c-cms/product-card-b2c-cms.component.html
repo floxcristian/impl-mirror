@@ -124,7 +124,7 @@
       />
     </a>
   </div>
-  <div class="product-card__info relative px-2">
+  <div class="product-card__info relative px-0 lg:px-3">
     <div class="product-card__badges-list-right" *ngIf="cyberMonday">
       <div
         class="badge_cyber float-end"
@@ -378,7 +378,7 @@
     "
   >
     <div
-      class="product-card__info flex-column mt-1"
+      class="product-card__info flex-column mt-1 px-0 lg:px-3"
       style="padding-bottom: 4px"
     >
       <ng-container>
@@ -518,7 +518,7 @@
 
   <!-- Texto cuando no haya stock del producto -->
   <div
-    class="product-card__info px-2"
+    class="product-card__info px-0 lg:px-3"
     *ngIf="
       !productData.stockSummary.branchStock &&
       !productData.stockSummary.companyStock
@@ -534,7 +534,7 @@
   </div>
   <!-- FIN texto cuando no haya stock -->
 
-  <div class="product-card__actions p-2">
+  <div class="product-card__actions p-0 lg:p-3">
     <div class="product-card__buttons p-0">
       @if(productData.stockSummary.branchStock ||
       productData.stockSummary.companyStock){
