@@ -479,13 +479,13 @@
   <div
     class="product-card__info"
     *ngIf="
-      productData.stockSummary.branchStock === 0 &&
-      productData.stockSummary.companyStock === 0
+      !productData.stockSummary.branchStock &&
+      !productData.stockSummary.companyStock
     "
   >
     <ng-container>
-      <div class="no_stock">
-        <div class="text-center" style="margin: 0px; padding: 0">
+      <div class="no_stock bg-red-500 text-50">
+        <div class="text-center">
           <span>Sujeto a disponibilidad </span>
         </div>
       </div>

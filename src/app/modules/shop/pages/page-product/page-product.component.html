@@ -226,7 +226,7 @@
                             !item.stockSummary.companyStock
                           "
                         >
-                          <div class="no_stock">
+                          <div class="no_stock bg-red-500 text-50">
                             <div
                               class="text-center"
                               style="margin: 0px; padding: 0"
@@ -637,11 +637,11 @@
                     <div
                       class="col-12 marcaP text-center"
                       *ngIf="
-                        item.stockSummary.branchStock === 0 &&
-                        item.stockSummary.companyStock === 0
+                        !item.stockSummary.branchStock &&
+                        !item.stockSummary.companyStock
                       "
                     >
-                      <div class="no_stock">
+                      <div class="no_stock bg-red-500 text-50">
                         <div
                           class="text-center"
                           style="margin: 0px; padding: 0"
