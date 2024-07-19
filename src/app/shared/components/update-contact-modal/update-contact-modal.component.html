@@ -32,7 +32,7 @@
             formContacto.controls['contactRut'].invalid &&
             formContacto.controls['contactRut'].touched
           "
-          class="text-danger float-start"
+          class="text-red-500 float-start"
         >
           El {{ config.document.name }} ingresado no es válido.
         </p>
@@ -133,7 +133,7 @@
               formContacto.controls['telefono'].invalid &&
               formContacto.controls['telefono'].touched
             "
-            class="text-danger"
+            class="text-red-500"
           >
             El número de contacto no es válido.
           </p>

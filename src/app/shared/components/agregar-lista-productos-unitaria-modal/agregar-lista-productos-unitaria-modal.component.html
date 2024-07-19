@@ -129,7 +129,7 @@
               placement="top"
               (click)="unselectProduct(i)"
             >
-              <i class="fas fa-trash-alt text-danger"></i>
+              <i class="fas fa-trash-alt text-red-500"></i>
             </button>
           </td>
         </tr>
@@ -141,7 +141,7 @@
 <div class="modal-footer">
   <button
     name="Cerrar"
-    class="btn btn-link text-danger me-2"
+    class="btn btn-link text-red-500 me-2"
     (click)="close(false)"
     [disabled]="isLoading"
   >

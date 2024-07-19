@@ -229,13 +229,13 @@
                   </button>
                   <button
                     *ngIf="item.typeCode === ADDRESS_TYPE.DELIVERY"
-                    class="btn btn-sm btn-link text-danger p-0"
+                    class="btn btn-sm btn-link text-red-500 p-0"
                     tooltip="Eliminar dirección"
                     placement="top"
                     container="body"
                     (click)="deleteAddress(item)"
                   >
-                    <i class="fas fa-trash-alt text-danger fa-lg me-1"></i>
+                    <i class="fas fa-trash-alt text-red-500 fa-lg me-1"></i>
                     Eliminar
                   </button>
                 </td>
@@ -283,7 +283,7 @@
                     container="body"
                     (click)="deleteAddress(item)"
                   >
-                    <i class="fas fa-trash-alt text-danger fa-lg"></i>
+                    <i class="fas fa-trash-alt text-red-500 fa-lg"></i>
                   </button>
                 </td>
               </tr>
@@ -393,13 +393,13 @@
                     </button>
                     <button
                       *ngIf="item.contactType === 'COM'"
-                      class="btn btn-sm btn-link text-danger p-0"
+                      class="btn btn-sm btn-link text-red-500 p-0"
                       tooltip="Eliminar contacto"
                       placement="top"
                       container="body"
                       (click)="deleteContact(item)"
                     >
-                      <i class="fas fa-trash-alt text-danger fa-lg me-1"></i>
+                      <i class="fas fa-trash-alt text-red-500 fa-lg me-1"></i>
                       Eliminar
                     </button>
                   </td>
@@ -470,7 +470,7 @@
                       container="body"
                       (click)="deleteContact(item)"
                     >
-                      <i class="fas fa-trash-alt text-danger fa-lg"></i>
+                      <i class="fas fa-trash-alt text-red-500 fa-lg"></i>
                     </button>
                   </td>
                 </tr>

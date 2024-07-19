@@ -20,7 +20,10 @@
       class="fas fa-exclamation-circle me-2"
       style="color: red"
     ></i>
-    <i *ngIf="tipoIcon === 5" class="fas fa-question-circle me-2 text-info"></i>
+    <i
+      *ngIf="tipoIcon === 5"
+      class="fas fa-question-circle me-2 text-info"
+    ></i>
     <span style="font-size: 16px">{{ titulo }}</span>
   </h5>
   <button
@@ -41,7 +44,7 @@
   <button
     *ngIf="tipoModal === 2"
     name="Cerrar"
-    class="btn btn-link text-danger me-2"
+    class="btn btn-link text-red-500 me-2"
     (click)="clickBoton('NO')"
   >
     {{ textoBotonNO }}

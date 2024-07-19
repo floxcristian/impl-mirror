@@ -177,7 +177,7 @@
               style="color: #408b00"
               ><strong>EN STOCK</strong></span
             >
-            <span class="ms-2 text-danger" *ngIf="!stock"
+            <span class="ms-2 text-red-500" *ngIf="!stock"
               ><strong>SUJETO A DISPONIBILIDAD</strong></span
             >
           </div>
@@ -335,7 +335,7 @@
                   <span
                     *ngIf="product?.priceInfo?.documentId != '0'"
                     tooltip="Precio con descuento cliente"
-                    class="text-price-product me-2 text-danger"
+                    class="text-price-product me-2 text-red-500"
                     [ngStyle]="{
                       'font-size.rem':
                         dataProduct.priceInfo.scalePrice.length > 1
@@ -459,7 +459,7 @@
             </div>
             <div class="row px-3" *ngIf="quantityToScalePrice && !isB2B">
               <div
-                class="col-12 text-danger px-3"
+                class="col-12 text-red-500 px-3"
                 *ngIf="quantityToScalePrice === 1"
               >
                 <small
@@ -468,7 +468,7 @@
                 >
               </div>
               <div
-                class="col-12 text-danger px-3"
+                class="col-12 text-red-500 px-3"
                 *ngIf="quantityToScalePrice > 1"
               >
                 <small
@@ -535,7 +535,7 @@
                   <span
                     *ngIf="product.priceInfo.documentId != '0'"
                     tooltip="Precio con descuento cliente"
-                    class="text-price-product me-2 text-danger"
+                    class="text-price-product me-2 text-red-500"
                     style="font-size: 2rem"
                   >
                     {{
@@ -604,7 +604,7 @@
               style="color: #408b00"
               ><strong>EN STOCK</strong></span
             >
-            <span class="ms-2 text-danger" *ngIf="!stock"
+            <span class="ms-2 text-red-500" *ngIf="!stock"
               ><strong>SUJETO A DISPONIBILIDAD</strong></span
             >
           </div>
@@ -627,7 +627,7 @@
         </div>
         <form *ngIf="stock" class="product__options">
           <div *ngIf="quantityToScalePrice && !isB2B">
-            <div class="col-12 text-danger">
+            <div class="col-12 text-red-500">
               <small
                 style="font-weight: bolder !important"
                 *ngIf="quantityToScalePrice === 1"

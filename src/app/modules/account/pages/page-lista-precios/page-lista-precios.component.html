@@ -121,7 +121,7 @@
                 }}</span>
                 {{ iva ? 'c/iva' : 's/iva' }}</span
               >
-              <span class="precio-price-value text-danger ms-3 ms-sm-0"
+              <span class="precio-price-value text-red-500 ms-3 ms-sm-0"
                 >{{
                   iva
                     ? (item.price | currencyFormat)
@@ -199,7 +199,7 @@
                     }}</span>
                     {{ iva ? 'c/iva' : 's/iva' }}
                   </td>
-                  <td class="text-center text-danger">
+                  <td class="text-center text-red-500">
                     {{
                       iva
                         ? (item.price | currencyFormat)

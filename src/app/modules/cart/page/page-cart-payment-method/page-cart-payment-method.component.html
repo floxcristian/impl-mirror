@@ -632,7 +632,7 @@
                     </svg>
                   </div>
                 </div>
-                <h4 class="text-danger text-center">
+                <h4 class="text-red-500 text-center">
                   {{
                     rejectedCode != -11
                       ? 'Pago Rechazado'
@@ -865,7 +865,7 @@
                           class="btn btn-sm btn-min_pad p-0 m-0"
                           (click)="eliminaArchivo()"
                         >
-                          <i class="fas fa-trash-alt text-danger"></i>
+                          <i class="fas fa-trash-alt text-red-500"></i>
                         </label>
                       </div>
                     </div>
@@ -931,7 +931,7 @@
                   <p>No es posible pagar con línea de crédito</p>
                   <div>
                     <b>Estado: </b
-                    ><span class="text-danger"><b>BLOQUEADO</b></span
+                    ><span class="text-red-500"><b>BLOQUEADO</b></span
                     ><br />
                     <span *ngIf="bloqueoCliente != null">
                       <b>Motivo: </b>{{ bloqueoCliente }}
@@ -947,7 +947,7 @@
                 </div>
 
                 <div class="row" *ngIf="paymentMethodActive == 'sinDefinir'">
-                  <p class="text-center subtitle w-100 text-danger">
+                  <p class="text-center subtitle w-100 text-red-500">
                     * Ha indicado que el supervisor al momento de aprobar la
                     compra, seleccionará la forma de pago.
                   </p>
@@ -1183,7 +1183,7 @@
                 </div>
               </div>
               <div class="alert-cart">
-                <h4 class="text-danger text-center">
+                <h4 class="text-red-500 text-center">
                   {{
                     rejectedCode != -11
                       ? 'Pago Rechazado'
@@ -1409,7 +1409,7 @@
                           class="btn btn-sm btn-min_pad p-0 m-0"
                           (click)="eliminaArchivo()"
                         >
-                          <i class="fas fa-trash-alt text-danger"></i>
+                          <i class="fas fa-trash-alt text-red-500"></i>
                         </label>
                       </div>
                     </div>
@@ -1438,7 +1438,7 @@
                   <p>No es posible pagar con línea de crédito</p>
                   <div>
                     <b>Estado: </b
-                    ><span class="text-danger"><b>BLOQUEADO</b></span
+                    ><span class="text-red-500"><b>BLOQUEADO</b></span
                     ><br />
                     <span *ngIf="bloqueoCliente.nombreMotivoBloqueo != null">
                       <b>Motivo: </b>{{ bloqueoCliente.nombreMotivoBloqueo }}
@@ -1454,7 +1454,7 @@
                 </div>
 
                 <div class="row" *ngIf="paymentMethodActive == 'sinDefinir'">
-                  <p class="text-center subtitle w-100 text-danger">
+                  <p class="text-center subtitle w-100 text-red-500">
                     * Ha indicado que el supervisor al momento de aprobar la
                     compra, seleccionará la forma de pago.
                   </p>

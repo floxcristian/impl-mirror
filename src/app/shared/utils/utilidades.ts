@@ -42,11 +42,11 @@ export function calculaIcono(extension: string) {
       icono = 'far fa-file-excel text-success fa-lg';
       break;
     case 'pdf':
-      icono = 'far fa-file-pdf text-danger fa-lg';
+      icono = 'far fa-file-pdf text-red-500 fa-lg';
       break;
     // case 'ppt':
     // case 'pptx':
-    //     icono = 'fa fa-file-powerpoint-o text-danger fa-lg';
+    //     icono = 'fa fa-file-powerpoint-o text-red-500 fa-lg';
     //     break;
     // case 'txt':
     // case 'log':
@@ -56,7 +56,7 @@ export function calculaIcono(extension: string) {
     //     icono = 'fa fa-file-code-o text-success fa-lg';
     //     break;
     // case 'jpg':
-    //     icono = 'fa fa-file-image-o text-danger fa-lg';
+    //     icono = 'fa fa-file-image-o text-red-500 fa-lg';
     //     break;
     // case 'gif':
     //     icono = 'fa fa-file-image-o text-muted fa-lg';
@@ -102,38 +102,40 @@ export function rutPersonaValidator(
   }
 }
 
-export function rutValidator(control: AbstractControl): { [key: string]: boolean } | null {
+export function rutValidator(
+  control: AbstractControl
+): { [key: string]: boolean } | null {
   const rut = control.value;
   const rexp = new RegExp(/^([0-9])+\-([kK0-9])+$/);
 
   if (rut === null) {
-      return { rutMalo: true };
+    return { rutMalo: true };
   }
 
   if (rut.match(rexp)) {
-      const RUT = rut.split('-');
-      const elRut = RUT[0];
-      let factor = 2;
-      let suma = 0;
-      let dv: string;
-      for (let i = elRut.length - 1; i >= 0; i--) {
-          factor = factor > 7 ? 2 : factor;
-          // tslint:disable-next-line: radix
-          suma += parseInt(elRut[i]) * factor++;
-      }
-      dv = (11 - (suma % 11)).toString();
-      if (dv === '11') {
-          dv = '0';
-      } else if (dv === '10') {
-          dv = 'k';
-      }
+    const RUT = rut.split('-');
+    const elRut = RUT[0];
+    let factor = 2;
+    let suma = 0;
+    let dv: string;
+    for (let i = elRut.length - 1; i >= 0; i--) {
+      factor = factor > 7 ? 2 : factor;
+      // tslint:disable-next-line: radix
+      suma += parseInt(elRut[i]) * factor++;
+    }
+    dv = (11 - (suma % 11)).toString();
+    if (dv === '11') {
+      dv = '0';
+    } else if (dv === '10') {
+      dv = 'k';
+    }
 
-      if (dv === RUT[1].toLowerCase()) {
-          return null;
-      } else {
-          return { rutMalo: true };
-      }
-  } else {
+    if (dv === RUT[1].toLowerCase()) {
+      return null;
+    } else {
       return { rutMalo: true };
+    }
+  } else {
+    return { rutMalo: true };
   }
 }

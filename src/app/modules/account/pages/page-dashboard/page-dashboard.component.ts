@@ -95,7 +95,7 @@ export class PageDashboardComponent {
           text: 'Desde el mes pasado',
           value: porcentaje - 100,
           icon: porcentaje - 100 >= 0 ? 'fa fa-arrow-up' : 'fa fa-arrow-down',
-          textClass: porcentaje - 100 >= 0 ? 'text-success' : 'text-danger',
+          textClass: porcentaje - 100 >= 0 ? 'text-success' : 'text-red-500',
         };
         this.cargaDatosVentaValorada(data);
       },
