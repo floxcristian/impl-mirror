@@ -154,7 +154,11 @@ export class PageVerCatalogoFlipComponent implements OnInit {
           if (res.data.netPrice) this.iva = !res.data.netPrice;
           this.skus = res.data.skus;
           this.catalogo = res.data.body;
-          await this.establecerPrecio();
+          if (res.data.catalogType !== 'Distribuidor') {
+            await this.establecerPrecio();
+          } else {
+            this.armaCatalogo();
+          }
           await this.cargarMarcas(res.data);
           setTimeout(() => {
             this.loadFlip();
