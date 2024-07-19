@@ -8,7 +8,7 @@
       <li>
         Llámanos a la línea de atención al cliente<br />
         <div class="row">
-          <div class="col-5 d-flex align-items-center">
+          <div class="col-5 py-0 d-flex align-items-center">
             <a [href]="'tel:' + config.company.formattedPhone">
               <img
                 class="me-2"
@@ -19,7 +19,7 @@
               {{ config.company.phone }}
             </a>
           </div>
-          <div class="col-6 text-start">
+          <div class="col-6 py-0 text-start">
             <a
               [href]="
                 'https://api.whatsapp.com/send?phone=' +
@@ -50,7 +50,7 @@
       </li>
       <li class="mt-3">
         <div class="row">
-          <div class="col-12">
+          <div class="col-12 py-0">
             <img
               class="me-2"
               src="../../../../../assets/svg/15.svg"
@@ -63,8 +63,8 @@
         </div>
       </li>
       <li class="mt-3">
-        <div class="row">
-          <div class="col-12">
+        <div class="row m-0">
+          <div class="col-12 py-0">
             <img
               class="me-2"
               src="../../../../../assets/svg/06-solid.svg"
@@ -78,7 +78,7 @@
       <li class="mt-3">
         <div class="row text-center">
           <div
-            class="col-12 col-lg-4 d-flex justify-content-center"
+            class="col-12 lg:col-4 py-0 d-flex justify-content-center"
             (click)="Contacto()"
             style="
               cursor: pointer;
@@ -103,17 +103,17 @@
 <!-- Start::menu item (xs, sm y md) -->
 <div class="d-block d-lg-none">
   <div
-    class="col-sm-12"
+    class="col-12 py-0"
     data-bs-toggle="collapse"
     data-bs-target="#contactanos"
     [attr.aria-expanded]="terminos"
     aria-controls="contactanos"
   >
     <div class="row">
-      <div class="col-8 d-flex justify-content-start">
+      <div class="col-8 py-0 d-flex justify-content-start">
         <h5 class="fw-bold text-center">Contáctanos</h5>
       </div>
-      <div class="col-4 d-flex justify-content-end">
+      <div class="col-4 py-0 d-flex justify-content-end">
         <i class="fa-solid fa-chevron-down"></i>
       </div>
     </div>
@@ -130,7 +130,7 @@
       <li class="ps-3">
         Llámanos a la línea de atención al cliente<br />
         <div class="row">
-          <div class="col-5 d-flex align-items-center">
+          <div class="col-5 py-0 d-flex align-items-center">
             <a [href]="'tel:' + config.company.formattedPhone">
               <img
                 class="me-2"
@@ -141,7 +141,7 @@
               {{ config.company.phone }}
             </a>
           </div>
-          <div class="col-6 text-start">
+          <div class="col-6 py-0 text-start">
             <a
               [href]="
                 'https://api.whatsapp.com/send?phone=' +
@@ -172,7 +172,7 @@
       </li>
       <li class="mt-3 ps-3">
         <div class="row">
-          <div class="col-12">
+          <div class="col-12 py-0">
             <img
               class="me-2"
               src="../../../../../assets/svg/15.svg"
@@ -186,7 +186,7 @@
       </li>
       <li class="mt-3 ps-3">
         <div class="row">
-          <div class="col-12">
+          <div class="col-12 py-0">
             <img
               class="me-2"
               src="../../../../../assets/svg/06-solid.svg"
@@ -200,7 +200,7 @@
       <li class="mt-3 ps-3">
         <div class="row text-center">
           <div
-            class="ms-3 col-4 d-flex justify-content-center"
+            class="ms-3 col-4 py-0 d-flex justify-content-center"
             (click)="Contacto()"
             style="
               cursor: pointer;
