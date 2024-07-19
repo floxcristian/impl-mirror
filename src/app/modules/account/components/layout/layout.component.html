@@ -1,6 +1,6 @@
-<div class="container mt-5 mt-sm-5 mt-md-5 mt-lg-0" style="max-width: 1360px">
+<div class="container mt-5 lg:mt-0" style="max-width: 1360px">
   <div class="row flex-nowrap">
-    <div class="col flex">
+    <div class="col py-0">
       <div
         class="menu-account hidden lg:block"
         [ngClass]="{ 'menu-account-min': menuCollapsed }"
@@ -42,7 +42,7 @@
           </ul>
         </div>
       </div>
-      <div class="col p-0">
+      <div class="col py-0 p-0">
         <router-outlet></router-outlet>
         <div style="margin-bottom: 70px !important"></div>
       </div>

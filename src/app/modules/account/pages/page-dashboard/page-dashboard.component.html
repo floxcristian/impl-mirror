@@ -1,10 +1,10 @@
 <div
-  class="top-bar-categories flex align-items-center mb-3"
+  class="top-bar-categories align-items-center mb-3"
   [class.p-0]="innerWidth < 450"
-  [class.ps-4]="innerWidth < 450"
+  [class.pl-1]="innerWidth < 450"
   (window:resize)="onResize($event)"
 >
-  <div class="title flex align-items-center me-auto">
+  <div class="title align-items-center me-auto">
     <i _ngcontent-serverapp-c11="" class="fas fa-tachometer-alt me-3"></i>
     <h5>Mi perfil</h5>
     <h2 class="float-start">
@@ -14,8 +14,8 @@
   </div>
 </div>
 
-<div class="dashboard row mx-4">
-  <div class="col-xl-4 col-lg-4 col-md-6 ps-lg-0 mt-2">
+<div class="dashboard row mx-2">
+  <div class="lg:col-4  md:col-6 lg:pl-0 mt-1">
     <app-card-dashboard
       title="Compras del periodo"
       [value]="ventaMes | currency : 'CLP'"
@@ -26,7 +26,7 @@
     </app-card-dashboard>
   </div>
 
-  <div *ngIf="isB2B" class="col-xl-4 col-lg-4 col-md-6 ps-lg-0 mt-2">
+  <div *ngIf="isB2B" class="lg:col-4 md:col-6 lg:pl-0 mt-1">
     <app-card-dashboard-no-chart
       titulo="Mi crédito"
       iconClass="fas fa-credit-card"
@@ -36,7 +36,7 @@
     </app-card-dashboard-no-chart>
   </div>
 
-  <div *ngIf="isB2B" class="col-xl-4 col-lg-4 col-md-6 mt-2">
+  <div *ngIf="isB2B" class="lg:col-4 md:col-6 mt-1">
     <app-card-dashboard-no-chart
       titulo="Mis facturas por pagar"
       iconClass="fas fa-file-invoice-dollar"
@@ -47,8 +47,8 @@
   </div>
 </div>
 
-<div class="row mx-4 mb-5">
-  <div class="col-12 mt-4">
+<div class="row mx-2 mb-3">
+  <div class="col-12 py-0 mt-2">
     <app-card-dashboard-line-chart
       titulo="Últimos 12 períodos"
       iconClass="fas fa-chart-line"
@@ -59,7 +59,7 @@
     ></app-card-dashboard-line-chart>
   </div>
 
-  <div class="col-12 mt-4">
+  <div class="col-12 py-0 mt-2">
     <app-card-dashboard-horizontal-bar-chart
       titulo="Ventas por categoría"
       iconClass="fas fa-chart-bar"

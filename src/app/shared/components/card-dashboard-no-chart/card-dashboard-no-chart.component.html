@@ -1,7 +1,7 @@
 <div class="card card-stats mb-4 mb-xl-0 h-100">
   <div class="card-body">
-    <div class="row">
-      <div class="col">
+    <div class="row m-0">
+      <div class="col py-0">
         <h5 class="card-title text-uppercase text-muted mb-2">{{ titulo }}</h5>
         <div *ngFor="let item of data" style="font-size: 0.9rem">
           <span class="fw-bold me-2 text-muted">{{ item.label }}</span>
@@ -11,7 +11,7 @@
           >
         </div>
       </div>
-      <div class="col-auto">
+      <div class="col py-0">
         <div
           class="icon icon-shape text-white rounded-circle shadow {{
             iconContainerClass
