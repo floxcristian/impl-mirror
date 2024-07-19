@@ -1,5 +1,5 @@
-<div class="row">
-  <div class="col-md-12 d-flex">
+<div class="row m-0">
+  <div class="col-12 py-0 d-flex">
     <div class="card m-0 shadow-none">
       <div class="card-body m-0">
         <app-loading-element
@@ -8,10 +8,10 @@
         ></app-loading-element>
 
         <h3 class="card-title">Registro de Usuario</h3>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="mb-3">
-              <div class="col p-0">
+        <div class="row m-2">
+          <div class="col-6 py-0">
+            <div class="mb-2">
+              <div class="col p-0 py-0">
                 <div class="form-check form-check-lg">
                   <span class="form-check-input input-check">
                     <span class="input-check__body">
@@ -42,9 +42,9 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="mb-3">
-              <div class="col p-0">
+          <div class="col-6 py-0">
+            <div class="mb-2">
+              <div class="col p-0 py-0">
                 <div class="form-check form-check-lg">
                   <span class="form-check-input input-check">
                     <span class="input-check__body">
@@ -77,13 +77,13 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row m-0">
           @if(!isPerson){
           <form *ngIf="!isPerson" [formGroup]="companyForm">
-            <h2 class="form-title col-md-12" style="color: #0063b9">
+            <h2 class="form-title col-12 py-0" style="color: #0063b9">
               Datos Empresa
             </h2>
-            <div class="col-md-12">
+            <div class="col-12 py-0">
               <label style="color: #0063b9; font-weight: 100"
                 >{{ config.document.name }}* (ej:
                 {{ config.document.sample }})</label
@@ -125,8 +125,8 @@
                 El {{ config.document.name }} ingresado no es válido.
               </p>
             </div>
-            <div class="col-md-12 mt-3">
-              <div class="mb-3">
+            <div class="col-12 py-0 mt-3">
+              <div class="mb-2">
                 <input
                   formControlName="businessName"
                   type="text"
@@ -135,8 +135,8 @@
                 />
               </div>
             </div>
-            <div class="col-md-12">
-              <div class="mb-3">
+            <div class="col-12 py-0">
+              <div class="mb-2">
                 <ng-select
                   [clearable]="false"
                   [searchable]="true"
@@ -151,10 +151,10 @@
               </div>
             </div>
 
-            <h2 class="form-title col-md-12" style="color: #0063b9">
+            <h2 class="form-title col-12 py-0" style="color: #0063b9">
               <span>Datos Contacto</span>
             </h2>
-            <div class="col-12">
+            <div class="col-12 py-0">
               <label style="color: #0063b9; font-weight: 100"
                 >{{ config.document.name }}* ({{
                   config.document.sample
@@ -179,8 +179,8 @@
                 El {{ config.document.name }} ingresado no es válido.
               </p>
             </div>
-            <div class="col-12 mt-3">
-              <div class="mb-3">
+            <div class="col-12 py-0 mt-3">
+              <div class="mb-2">
                 <ng-select
                   [clearable]="false"
                   [searchable]="true"
@@ -199,10 +199,10 @@
           <form [formGroup]="personForm">
             <!-- Fixme -->
 
-            <h2 class="form-title col-md-12" style="color: #0063b9">
+            <h2 class="form-title col-12 py-0" style="color: #0063b9">
               <span>Datos Cliente</span>
             </h2>
-            <div class="col-md-12">
+            <div class="col-12 py-0">
               <label style="color: #0063b9; font-weight: 100"
                 >{{ config.document.name }}* (ej:{{
                   config.document.sample
@@ -255,8 +255,8 @@
           <!-- End::formulario persona -->
 
           <form [formGroup]="commonForm">
-            <div class="col-md-12 mt-3">
-              <div class="mb-3">
+            <div class="col-12 py-0 mt-3">
+              <div class="mb-2">
                 <input
                   formControlName="firstName"
                   type="text"
@@ -266,8 +266,8 @@
                 />
               </div>
             </div>
-            <div class="col-md-12">
-              <div class="mb-3">
+            <div class="col-12 py-0">
+              <div class="mb-2">
                 <input
                   formControlName="lastName"
                   type="text"
@@ -277,8 +277,8 @@
                 />
               </div>
             </div>
-            <div class="col-md-12">
-              <div class="mb-3">
+            <div class="col-12 py-0">
+              <div class="mb-2">
                 <label style="color: #0063b9; font-weight: 100"
                   ><font style="margin-right: 10px">Código*</font>
                   <font>Teléfono Fijo/Celular</font></label
@@ -355,13 +355,13 @@
                 </p>
               </div>
             </div>
-            <div class="col-md-12">
-              <div class="mb-3">
+            <div class="col-12 py-0">
+              <div class="mb-2">
                 <autocomplete #emailValidate givenPlaceHolder="Email" />
               </div>
             </div>
-            <div class="col-md-12">
-              <div class="mb-3">
+            <div class="col-12 py-0">
+              <div class="mb-2">
                 <input
                   type="password"
                   formControlName="password"
@@ -380,8 +380,8 @@
                 </p>
               </div>
             </div>
-            <div class="col-md-12">
-              <div class="mb-3">
+            <div class="col-12 py-0">
+              <div class="mb-2">
                 <input
                   type="password"
                   formControlName="confirmPassword"
@@ -408,8 +408,8 @@
 
         <!-- Start::formulario de dirección -->
         <form [formGroup]="addressForm">
-          <div class="row mb-4">
-            <div class="col-12">
+          <div class="row mx-0 mt-0 mb-4">
+            <div class="col-12 py-0">
               <app-map
                 [autocompletado]="autocompletado"
                 (clearAddress)="cleanAddress()"
@@ -425,9 +425,9 @@
               />
             </div>
           </div>
-          <div class="mb-3">
+          <div class="mb-2">
             <div class="row m-0">
-              <div class="col-md-9 ps-0" [class.mb-3]="innerWidth < 427">
+              <div class="col-9 py-0 ps-0" [class.mb-3]="innerWidth < 427">
                 <input
                   formControlName="street"
                   type="text"
@@ -438,7 +438,7 @@
                 />
               </div>
 
-              <div class="col-md-3 p-0">
+              <div class="col-3 py-0 p-0">
                 <input
                   formControlName="streetNumber"
                   type="text"
@@ -450,9 +450,9 @@
             </div>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-2">
             <div class="row m-0">
-              <div class="col-md-6 ps-0" [class.mb-3]="innerWidth < 427">
+              <div class="col-6 py-0 ps-0" [class.mb-3]="innerWidth < 427">
                 <input
                   formControlName="departmentOrHouse"
                   type="text"
@@ -461,7 +461,7 @@
                 />
               </div>
 
-              <div class="col-md-6 ps-0">
+              <div class="col-6 py-0 ps-0">
                 <ng-select
                   [clearable]="false"
                   [searchable]="true"
@@ -478,7 +478,7 @@
             </div>
           </div>
 
-          <div class="mb-3 col-md-12 px-0">
+          <div class="mb-2 col-12 py-0 px-0">
             <textarea
               class="form-control"
               placeholder="Ingrese una referencia para su dirección"
@@ -488,11 +488,11 @@
         </form>
         <!-- End::formulario de dirección -->
 
-        <div class="row">
+        <div class="row m-0">
           <!-- Start::checkox suscripción -->
-          <div class="col-md-12">
-            <div class="mb-3">
-              <div class="col p-0">
+          <div class="col-12 py-0">
+            <div class="mb-2">
+              <div class="col py-0 p-0">
                 <div class="form-check form-check-lg">
                   <span class="form-check-input input-check">
                     <span class="input-check__body">
@@ -526,9 +526,9 @@
           <!-- End::checkox suscripción -->
 
           <!-- Start::aceptar terminos -->
-          <div class="col-md-12">
-            <div class="mb-3">
-              <div class="col p-0">
+          <div class="col-12 py-0">
+            <div class="mb-2">
+              <div class="col py-0 p-0">
                 <div class="form-check form-check-lg">
                   <span class="form-check-input input-check">
                     <span class="input-check__body">
@@ -598,7 +598,7 @@
 
   <!-- Start::botones de accion (movil) -->
   <ng-container *ngIf="innerWidth < 450">
-    <div class="col-sm-12" style="margin-top: 100px">
+    <div class="col-12 py-0" style="margin-top: 100px">
       <div class="footer-page">
         <div class="card">
           <div class="card-body">
