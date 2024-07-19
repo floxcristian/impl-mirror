@@ -15,7 +15,7 @@
           >
             <div class="w-100 h-100 p-2 relative">
               <div
-                class="d-block vertical-owl-carousel"
+                class="block vertical-owl-carousel"
                 *ngIf="images.length > 1"
               >
                 <owl-carousel-o [options]="customThumbsOptions">
@@ -399,7 +399,7 @@
 
             <span
               *ngIf="!product.price"
-              class="d-block w-100 text-start text-uppercase"
+              class="block w-100 text-start text-uppercase"
               >...</span
             >
           </div>
@@ -524,7 +524,7 @@
     <!-- Información Ficha -->
     <div
       *ngIf="showMobile"
-      class="col-12 lg:col-6 ps-lg-4 mt-0 lg:mt-0 d-block d-sm-none"
+      class="col-12 lg:col-6 ps-lg-4 mt-0 lg:mt-0 block lg:hidden"
     >
       <div>
         <div class="flex justify-content-between align-items-center">
@@ -584,7 +584,7 @@
 
             <span
               *ngIf="!product.price"
-              class="d-block w-100 text-start text-uppercase"
+              class="block w-100 text-start text-uppercase"
               >...</span
             >
           </div>
@@ -855,6 +855,6 @@
 <app-addcart-button
   [disponibilidad]="isAvailable"
   (quantity)="refreshProductPrice($event)"
-  class="d-block d-sm-none"
+  class="block lg:hidden"
 ></app-addcart-button>
 <!-- botton add card en movile / end -->

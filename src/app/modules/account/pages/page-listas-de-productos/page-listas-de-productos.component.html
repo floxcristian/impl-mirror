@@ -168,10 +168,10 @@
               >
                 <div class="flex flex-wrap justify-content-center flex-column">
                   <div
-                    class="border-bottom d-sm-flex d-block align-items-center flex-grow-1 flex-shrink-1"
+                    class="border-bottom block sm:flex align-items-center flex-grow-1 flex-shrink-1"
                     *ngFor="let product of lista.articles"
                   >
-                    <div class="col-12 d-block d-sm-none text-center">
+                    <div class="col-12 block sm:hidden text-center">
                       <span class="product-title">
                         {{ product.name | titlecase }} </span
                       ><br />

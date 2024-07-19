@@ -112,7 +112,7 @@
 
 <!-- Start::navbar slideshow (xs, sm y md) -->
 @if (_blockElements) {
-<div class="d-block d-lg-none">
+<div class="block lg:hidden">
   @if (refresh) {
   <div class="w-100" style="min-height: 50px"></div>
   } @else {
@@ -151,7 +151,7 @@
 
 <!-- Start::imagen portada slideshow (xs, sm y md) -->
 @if (_blockElements) {
-<div class="d-block d-lg-none">
+<div class="block lg:hidden">
   @if (refresh2) {
   <div
     class="w-100"
@@ -208,7 +208,7 @@
 
 <!-- Start::listado productos slideshow (xs, sm y md) -->
 @if (producto_selecionado) {
-<div class="d-block d-lg-none">
+<div class="block lg:hidden">
   <div
     class="products-view__list products-list"
     data-layout="grid-5-full"

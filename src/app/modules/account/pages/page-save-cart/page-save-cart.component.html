@@ -106,7 +106,7 @@
                     </button>
                   </div>
                   <div
-                    class="col-md-3 col-sm-4 col-5 d-xl-none d-block text-nowrap"
+                    class="col-md-3 col-sm-4 col-5 xl:hidden block text-nowrap"
                   >
                     <button
                       class="btn btn-secondary btn-sm me-sm-2 me-1"
@@ -151,10 +151,10 @@
                   class="border-start border-end border-bottom flex flex-wrap justify-content-center flex-column"
                 >
                   <div
-                    class="d-sm-flex d-block align-items-center flex-grow-1 flex-shrink-1 border-bottom"
+                    class="block sm:flex align-items-center flex-grow-1 flex-shrink-1 border-bottom"
                     *ngFor="let item of cart.products"
                   >
-                    <div class="col-12 d-block d-sm-none text-center">
+                    <div class="col-12 block lg:hidden text-center">
                       <span class="product-title">
                         {{ item.name | titlecase }} <b>X</b>
                         {{ item.quantity }}

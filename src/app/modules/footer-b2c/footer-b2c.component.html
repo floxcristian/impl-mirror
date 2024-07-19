@@ -57,7 +57,7 @@
 
       <!-- Start::devoluciones (xs) -->
       <div
-        class="col-12 py-0 d-block d-sm-none"
+        class="col-12 py-0 block lg:hidden"
         style="cursor: pointer; margin-bottom: 15px"
         [routerLink]="['/sitio/politicas/cambios-devolucion']"
       >
@@ -136,7 +136,7 @@
 
       <!-- Start::tiendas (xs) -->
       <div
-        class="col-12 py-0 d-block d-sm-none"
+        class="col-12 py-0 block lg:hidden"
         style="cursor: pointer; margin-left: 0px; margin-bottom: 15px"
         [routerLink]="['/sitio/tiendas']"
       >
@@ -213,7 +213,7 @@
 
       <!-- Start::catálogos xs -->
       <div
-        class="col-12 py-0 d-block d-sm-none"
+        class="col-12 py-0 block lg:hidden"
         style="cursor: pointer; margin-left: 0px; margin-bottom: 10px"
       >
         <a href="/catalogos/listado-catalogos" target="_blank">
@@ -291,7 +291,7 @@
 
     <!-- Start::newsletter (xs) -->
     <div
-      class="flex flex-column col-12 py-0 align-items-center d-block d-sm-none"
+      class="flex flex-column col-12 py-0 align-items-center block lg:hidden"
     >
       <div class="text-center titulo">NEWSLETTER</div>
       <div class="text-center">
@@ -356,7 +356,7 @@
 
 <!-- Start::footer xs, sm y md -->
 <div
-  class="site-footer d-block d-lg-none"
+  class="site-footer block lg:hidden"
   [hidden]="HideFooter() ? true : false"
 >
   <app-fotter-site-mobile>-</app-fotter-site-mobile>

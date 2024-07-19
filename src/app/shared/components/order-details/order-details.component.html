@@ -97,7 +97,7 @@
           </th>
           <th class="text-start">
             <span class="d-blok">{{ item.name }}</span>
-            <span class="d-block">{{ item.sku }}</span>
+            <span class="block">{{ item.sku }}</span>
           </th>
           <th class="text-start">{{ item.price | currencyFormat }}</th>
           <th class="text-start">{{ item.quantity }}</th>
@@ -109,7 +109,7 @@
     </table>
   </div>
   <!-- Vista card de productos en mobile -->
-  <div class="d-sm-none d-block">
+  <div class="lg:hidden block">
     <ng-container
       *ngFor="let item of data.shoppingCart.products; let i = index"
     >
