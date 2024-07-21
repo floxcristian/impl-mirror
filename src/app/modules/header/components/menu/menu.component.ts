@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NestedLink } from '../../../../shared/interfaces/nested-link';
 
 @Component({
@@ -6,11 +6,7 @@ import { NestedLink } from '../../../../shared/interfaces/nested-link';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent {
   @Input() layout: 'classic' | 'topbar' = 'classic';
   @Input() items: NestedLink[] = [];
-
-  constructor() {}
-
-  ngOnInit() {}
 }

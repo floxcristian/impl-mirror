@@ -44,17 +44,18 @@
   <!-- End::botón iniciar sesión -->
 
   <!-- Start::dropdown -->
-  <div class="indicator__dropdown" style="max-height: auto; overflow-y: auto">
+  <div
+    class="indicator__dropdown shadow-2"
+    style="max-height: auto; overflow-y: auto"
+  >
     <ng-container *ngIf="mostrarMenu && !mostrarBienvenida">
-      <app-header-menu layout="topbar" [items]="linkMiCuenta">
-      </app-header-menu>
+      <app-header-menu layout="topbar" [items]="linkMiCuenta" />
     </ng-container>
     <ng-container *ngIf="!mostrarMenu">
       <app-header-login
         (muestraLogin)="cambiaElementosMenu($event)"
         [linkRegister]="true"
-      >
-      </app-header-login>
+      />
     </ng-container>
 
     <div

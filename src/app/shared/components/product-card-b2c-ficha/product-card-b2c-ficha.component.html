@@ -7,35 +7,14 @@
     'product-card--layout--list': layout === 'list',
     'product-card--layout--horizontal': layout === 'horizontal'
   }"
-  style="height: 100%; overflow: hidden"
+  style="height: 100%; overflow: hidden; background-color: yellow"
 >
   <span class="floating-offers" *ngIf="layout === 'horizontal'"> 50% </span>
 
-  <div
-    class="product-card__badges-list"
-    *ngIf="productData.priceInfo.hasScalePrice"
-    style="margin-left: 0px !important"
-  >
-    <div *ngIf="!preciosEscalas">
-      <picture>
-        <source
-          srcset="assets/images/llevaMasPagaMenos/50x50_cuadrado.webp"
-          type="image/webp"
-        />
-        <source
-          srcset="assets/images/llevaMasPagaMenos/50x50_cuadrado.jpg"
-          type="image/jpg"
-        />
-        <img
-          src="assets/images/llevaMasPagaMenos/50x50_cuadrado.jpg"
-          class="img_escala"
-          alt="precio escala"
-        />
-      </picture>
-    </div>
+  @if(productData.priceInfo.hasScalePrice){
+  <div class="product-card__badges-list" style="margin-left: 0px !important">
     <div
-      *ngIf="preciosEscalas"
-      style="cursor: pointer"
+      class="cursor-pointer"
       [ngbPopover]="popoverContent"
       #popover="ngbPopover"
       triggers="hover"
@@ -60,6 +39,7 @@
       </picture>
     </div>
   </div>
+  }
 
   <div class="product-card__badges-list-right" *ngIf="(cyberMonday || 0) > 0">
     <div
@@ -170,8 +150,8 @@
 
     <ng-container
       *ngIf="
-        productData.stockSummary.branchStock !== undefined &&
-        productData.stockSummary.companyStock !== undefined
+        productData.stockSummary.branchStock &&
+        productData.stockSummary.companyStock
       "
     >
       <div
@@ -303,7 +283,7 @@
           </div>
           <div
             *ngIf="
-              productData.priceInfo.commonPrice !=
+              productData.priceInfo.commonPrice !==
               productData.priceInfo.customerPrice
             "
             tooltip="Precio normal"
@@ -342,12 +322,7 @@
     >
       <ng-container>
         <div class="flex align-items-center">
-          <ng-container
-            *ngIf="
-              productData.deliverySupply?.deliveryIsToday !== null &&
-              productData.deliverySupply?.deliveryIsToday
-            "
-          >
+          <ng-container *ngIf="productData.deliverySupply?.deliveryIsToday">
             <i class="fas fa-shipping-fast me-2"></i>
             <div
               style="
@@ -368,12 +343,7 @@
               >
             </div>
           </ng-container>
-          <ng-container
-            *ngIf="
-              productData.deliverySupply?.deliveryIsToday == null ||
-              !productData.deliverySupply?.deliveryIsToday
-            "
-          >
+          <ng-container *ngIf="!productData.deliverySupply?.deliveryIsToday">
             <div
               *ngIf="
                 productData.deliverySupply?.deliveryDate == null;
