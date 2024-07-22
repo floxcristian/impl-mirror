@@ -462,86 +462,80 @@
           </div>
         </div>
       </ng-container>
-
-      <ng-container *ngIf="innerWidth < 450">
-        <div *ngIf="items.length" class="footer-page w-screen">
-          <div
-            class="card h-100"
-            style="margin-top: 5px; margin-bottom: -13px"
-          >
-            <div
-              class="card-header"
-              style="display: inline-block"
-              (mousedown)="showresumen = !showresumen"
-            >
-              <div class="flex">
-                <div
-                  class="col-9 text-justify py-0"
-                  style="font-size: 16px; color: #0d61bb"
-                >
-                  <strong>Resumen de tu compra</strong>
-                </div>
-                <div class="col-3">
-                  <i
-                    [class]="
-                      showresumen ? 'fas fa-angle-down' : 'fas fa-angle-up'
-                    "
-                  ></i>
-                </div>
-              </div>
-            </div>
-            <div *ngIf="!showresumen" class="card-body text-justify">
-              <div class="dropcart__totals text-justify">
-                <table>
-                  <tr style="font-size: 14px; color: #0d61bb">
-                    <th>Total</th>
-                    <td class="fw-bold">
-                      {{ shoppingCartService.total$ | async | currencyFormat }}
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-            <ng-container *ngIf="showresumen">
-              <div
-                class="col-12 py-0"
-                style="
-                  border: 1px solid;
-                  margin-top: 5px;
-                  margin-bottom: 5px;
-                  color: rgba(0, 0, 0, 0.1);
-                "
-              ></div>
-
-              <div class="card-body text-justify" style="font-size: 14px">
-                <app-detalle-carro-productos [seeProducts]="false" />
-              </div>
-            </ng-container>
-            <div class="mt-3 col-12 ps-0 ps-1">
-              <a
-                [routerLink]="['/', 'carro-compra', 'metodo-de-envio']"
-                (click)="limpiarInvitado()"
-                class="btn btn-lg btn-secondary w-100 text-center text-50"
-              >
-                Ir a comprar
-              </a>
-            </div>
-            <div class="mt-3 col-12 ps-0 ps-1">
-              <a
-                [href]="config.fullUrl"
-                style="color: #118565; text-align: center; font-weight: bold"
-              >
-                Seguir comprando</a
-              >
-            </div>
-          </div>
-
-          <div class="row"></div>
-        </div>
-      </ng-container>
     </div>
   </div>
 </div>
+<ng-container *ngIf="innerWidth < 450">
+  <div *ngIf="items.length" class="footer-page w-screen sticky">
+    <div class="card h-100" style="margin-top: 5px; margin-bottom: -13px">
+      <div
+        class="card-header"
+        style="display: inline-block"
+        (mousedown)="showresumen = !showresumen"
+      >
+        <div class="flex">
+          <div
+            class="col-9 text-justify py-0"
+            style="font-size: 16px; color: #0d61bb"
+          >
+            <strong>Resumen de tu compra</strong>
+          </div>
+          <div class="col-3">
+            <i
+              [class]="showresumen ? 'fas fa-angle-down' : 'fas fa-angle-up'"
+            ></i>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!showresumen" class="card-body text-justify">
+        <div class="dropcart__totals text-justify">
+          <table>
+            <tr style="font-size: 14px; color: #0d61bb">
+              <th>Total</th>
+              <td class="fw-bold">
+                {{ shoppingCartService.total$ | async | currencyFormat }}
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <ng-container *ngIf="showresumen">
+        <div
+          class="col-12 py-0"
+          style="
+            border: 1px solid;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            color: rgba(0, 0, 0, 0.1);
+          "
+        ></div>
+
+        <div class="card-body text-justify" style="font-size: 14px">
+          <app-detalle-carro-productos [seeProducts]="false" />
+        </div>
+      </ng-container>
+      <div class="mt-3 col-12 ps-0 ps-1">
+        <a
+          [routerLink]="['/', 'carro-compra', 'metodo-de-envio']"
+          (click)="limpiarInvitado()"
+          class="btn btn-lg btn-secondary w-100 text-center text-50"
+        >
+          Ir a comprar
+        </a>
+      </div>
+      <div class="mt-3 col-12 ps-0 ps-1">
+        <a
+          [href]="config.fullUrl"
+          style="color: #118565; text-align: center; font-weight: bold"
+        >
+          Seguir comprando</a
+        >
+      </div>
+    </div>
+
+    <div class="row"></div>
+  </div>
+</ng-container>
 
 <!--Modal para confirmar guardar carro -->
 <div
