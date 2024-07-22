@@ -1,5 +1,5 @@
 <div
-  class="product-card"
+  class="product-card p-2 lg-p-3"
   [ngClass]="{
     'product-card--layout--grid product-card--size--sm': layout === 'grid-sm',
     'product-card--layout--grid product-card--size--nl': layout === 'grid-nl',
@@ -116,8 +116,10 @@
       />
     </a>
   </div>
+
   <div class="product-card__info">
     <div class="product-card__name">
+      <!-- Start::marca -->
       <div>
         <a
           class="marcaP text-sm"
@@ -133,7 +135,10 @@
           }}</a
         >
       </div>
-      <div class="mt-1">
+      <!-- End::marca -->
+
+      <!-- Start::descripción -->
+      <div class="mt-2">
         <a
           appClick
           (click)="cartService.setProductOrigin(origen)"
@@ -141,185 +146,93 @@
             root.product(productData.sku, productData.name, paramsCategory)
           "
         >
-          <span class="nombreP p-0" style="-webkit-box-orient: vertical">
+          <span class="nombreP text-600 p-0">
             {{ productData.name | capitalizeFirst }}
           </span>
         </a>
       </div>
+      <!-- End::descripción -->
     </div>
 
-    <ng-container
-      *ngIf="
-        productData.stockSummary.branchStock &&
-        productData.stockSummary.companyStock
-      "
+    <!-- Start::precios -->
+    @if(productData.stockSummary.branchStock ||
+    productData.stockSummary.companyStock){
+    <div
+      class="product-card__prices flex flex-column mt-2"
+      style="height: 39px"
+      [ngStyle]="{
+        'align-items':
+          productData.priceInfo.commonPrice ==
+          productData.priceInfo.customerPrice
+            ? 'center'
+            : 'unset'
+      }"
     >
+      @if(productData.priceInfo.commonPrice ===
+      productData.priceInfo.customerPrice) {
+      <!-- Start::precio normal -->
       <div
-        class="product-card__prices text-end ps-0"
-        style="padding-top: 4px !important; height: 40px"
-        *ngIf="
-          productData.stockSummary.branchStock > 0 ||
-          productData.stockSummary.companyStock > 0
+        class="product-card__new-price py-0"
+        [style.font-size]="isOnProductPage ? '17px' : '21px'"
+      >
+        {{
+          (session.preferences.iva
+            ? productData.priceInfo.customerPrice
+            : productData.priceInfo.customerNetPrice
+          ) | currencyFormat
+        }}
+        <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
+      </div>
+      <!-- End::precio normal -->
+      } @else {
+      <!--- Start::precio oferta y normal --->
+      <div
+        class="product-card__new-price text-red-500 py-0"
+        style="padding-left: 0 !important; padding-right: 5px !important"
+      >
+        {{
+          (session.preferences.iva
+            ? productData.priceInfo.customerPrice
+            : productData.priceInfo.customerNetPrice
+          ) | currencyFormat
+        }}
+        <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
+      </div>
+      <div
+        tooltip="Precio normal"
+        class="product-card__old-price py-0"
+        style="
+          text-align: left;
+          padding-left: 0 !important;
+          padding-right: 5px !important;
         "
-        [ngStyle]="{
-          display:
-            productData.priceInfo.commonPrice ==
-            productData.priceInfo.customerPrice
-              ? 'flex'
-              : 'block',
-          'align-items':
-            productData.priceInfo.commonPrice ==
-            productData.priceInfo.customerPrice
-              ? 'center'
-              : 'unset'
-        }"
       >
-        <ng-container>
-          <div
-            *ngIf="
-              productData.priceInfo.commonPrice ==
-              productData.priceInfo.customerPrice
-            "
-            class="product-card__new-price col-12 py-0"
-            style="padding-left: 0 !important; padding-right: 5px !important"
-            [style.font-size]="isOnProductPage ? '17px' : '21px'"
-          >
-            {{
-              (session.preferences.iva
-                ? productData.priceInfo.customerPrice
-                : productData.priceInfo.customerNetPrice
-              ) | currencyFormat
-            }}
-            <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
-          </div>
-          <div
-            *ngIf="
-              productData.priceInfo.commonPrice !=
-              productData.priceInfo.customerPrice
-            "
-            class="product-card__new-price text-red-500 col-12 py-0"
-            style="padding-left: 0 !important; padding-right: 5px !important"
-          >
-            {{
-              (session.preferences.iva
-                ? productData.priceInfo.customerPrice
-                : productData.priceInfo.customerNetPrice
-              ) | currencyFormat
-            }}
-            <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
-          </div>
-          <div
-            *ngIf="
-              productData.priceInfo.commonPrice !=
-              productData.priceInfo.customerPrice
-            "
-            tooltip="Precio normal"
-            class="product-card__old-price col-12 py-0"
-            style="
-              text-align: left;
-              padding-left: 0 !important;
-              padding-right: 5px !important;
-            "
-          >
-            {{
-              (session.preferences.iva
-                ? productData.priceInfo.commonPrice
-                : productData.priceInfo.commonNetPrice
-              ) | currencyFormat
-            }}
-            <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
-            <br />
-          </div>
-        </ng-container>
+        {{
+          (session.preferences.iva
+            ? productData.priceInfo.commonPrice
+            : productData.priceInfo.commonNetPrice
+          ) | currencyFormat
+        }}
+        <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
+        <br />
       </div>
-    </ng-container>
-    <ng-container
-      *ngIf="
-        productData.stockSummary.branchStock === undefined &&
-        productData.stockSummary.companyStock === undefined
-      "
-    >
-      <div
-        class="product-card__prices text-end ps-0"
-        style="padding-top: 4px !important; height: 40px"
-      >
-        <ng-container>
-          <div
-            *ngIf="
-              productData.priceInfo.commonPrice ==
-              productData.priceInfo.customerPrice
-            "
-            class="product-card__new-price col-12 py-0"
-            style="padding-left: 0 !important; padding-right: 5px !important"
-            [style.font-size]="isOnProductPage ? '17px' : '21px'"
-          >
-            {{
-              (session.preferences.iva
-                ? productData.priceInfo.customerPrice
-                : productData.priceInfo.customerNetPrice
-              ) | currencyFormat
-            }}
-            <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
-          </div>
-          <div
-            *ngIf="
-              productData.priceInfo.commonPrice !=
-              productData.priceInfo.customerPrice
-            "
-            class="product-card__new-price text-red-500 col-12 py-0"
-            style="
-              padding-left: 0 !important;
-              padding-right: 5px !important;
-              margin-left: 5px;
-            "
-          >
-            {{
-              (session.preferences.iva
-                ? productData.priceInfo.customerPrice
-                : productData.priceInfo.customerNetPrice
-              ) | currencyFormat
-            }}
-            <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
-          </div>
-          <div
-            *ngIf="
-              productData.priceInfo.commonPrice !==
-              productData.priceInfo.customerPrice
-            "
-            tooltip="Precio normal"
-            class="product-card__old-price col-12 py-0"
-            style="
-              text-align: left;
-              padding-left: 0 !important;
-              padding-right: 5px !important;
-            "
-          >
-            {{
-              (session.preferences.iva
-                ? productData.priceInfo.commonPrice
-                : productData.priceInfo.commonNetPrice
-              ) | currencyFormat
-            }}
-            <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
-            <br />
-          </div>
-        </ng-container>
-      </div>
-    </ng-container>
+      <!--- End::precio oferta y normal --->
+
+      }
+    </div>
+    }
   </div>
-  <!-- Momentaneo para ver "llega y retiro" -->
+
+  <!-- Start::fecha retiro y recibo -->
   <ng-container
     *ngIf="
-      productData.deliverySupply?.deliveryLocation !== null &&
-      productData.deliverySupply?.pickupLocation !== null &&
-      (productData.stockSummary.branchStock > 0 ||
-        productData.stockSummary.companyStock > 0)
+      productData.deliverySupply?.deliveryLocation &&
+      productData.deliverySupply?.pickupLocation &&
+      (productData.stockSummary.branchStock ||
+        productData.stockSummary.companyStock)
     "
   >
-    <div
-      class="product-card__info flex-column mt-1"
-      style="padding-bottom: 4px"
-    >
+    <div class="product-card__info flex-column mt-1">
       <ng-container>
         <div class="flex align-items-center">
           <ng-container *ngIf="productData.deliverySupply?.deliveryIsToday">
@@ -443,28 +356,21 @@
       </ng-container>
     </div>
   </ng-container>
-  <!-- Fin momentaneo -->
+  <!-- End::fecha retiro y recibo -->
 
-  <!-- Texto cuando no haya stock del producto -->
-  <div
-    class="product-card__info"
-    *ngIf="
-      !productData.stockSummary.branchStock &&
-      !productData.stockSummary.companyStock
-    "
-  >
-    <ng-container>
-      <div class="no_stock bg-red-500 text-50">
-        <div class="text-center">
-          <span>Sujeto a disponibilidad </span>
-        </div>
-      </div>
-    </ng-container>
+  <!-- Start::sujeto a disponibilidad -->@if(!productData.stockSummary.branchStock
+  && !productData.stockSummary.companyStock){
+  <div class="product-card__info px-0 mt-2">
+    <div class="no_stock text-center bg-red-500 text-50 border-round-md">
+      <span>Sujeto a disponibilidad </span>
+    </div>
   </div>
-  <!-- FIN texto cuando no haya stock -->
+  }
+  <!-- End::sujeto a disponibilidad -->
 
-  <div class="product-card__actions">
-    <div class="product-card__buttons p-0 mt-2">
+  <!-- Start::botones de acción -->
+  <div class="product-card__actions mt-2">
+    <div class="product-card__buttons p-0">
       @if(productData.stockSummary.branchStock ||
       productData.stockSummary.companyStock){
       <button
@@ -492,6 +398,7 @@
       }
     </div>
   </div>
+  <!-- End::botones de acción -->
 </div>
 
 <ng-template #popoverContent>
