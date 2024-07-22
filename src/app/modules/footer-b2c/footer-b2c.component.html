@@ -1,4 +1,5 @@
-<div class="mb-1" [hidden]="HideFooter() ? true : false">
+@if(!HideFooter()){
+<div class="mb-1">
   <div class="container" style="background-color: white; padding-bottom: 50px">
     <div class="row justify-content-center">
       <!-- Start::devoluciones (lg+) -->
@@ -240,11 +241,8 @@
     </div>
   </div>
 </div>
-
-<div
-  class="newsletter position-relative"
-  [hidden]="HideFooter() ? true : false"
->
+} @if(!HideFooter()){
+<div class="newsletter position-relative">
   <picture>
     <source
       srcset="../../../../../assets/images/banners/Banner-implementos_01.webp"
@@ -319,9 +317,10 @@
     <!-- End::newsletter (xs) -->
   </div>
 </div>
+}
 
 <!-- Start::footer (+lg) -->
-@if(HideFooter()){
+@if(!HideFooter()){
 <div class="site-footer hidden lg:block">
   <div class="container">
     <div class="py-2">
@@ -351,14 +350,12 @@
   <div style="height: 30px; background-color: #000"></div>
 </div>
 }
-
 <!-- End::footer (+lg) -->
 
 <!-- Start::footer xs, sm y md -->
-<div
-  class="site-footer block lg:hidden"
-  [hidden]="HideFooter() ? true : false"
->
+@if(!HideFooter()){
+<div class="site-footer block lg:hidden">
   <app-fotter-site-mobile>-</app-fotter-site-mobile>
 </div>
+}
 <!-- End::footer xs, sm y md -->

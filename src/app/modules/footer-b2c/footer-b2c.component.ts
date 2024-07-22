@@ -14,7 +14,7 @@ export class FooterB2cComponent implements OnInit {
 
   constructor(public router: Router, private renderer: Renderer2) {}
 
-  async ngOnInit() {
+  ngOnInit() {
     const body_e = this.renderer.selectRootElement('body', true); // safari
     this.renderer.setProperty(body_e, 'scrollTop', 0);
     const html_e = this.renderer.selectRootElement('html', true); //other
