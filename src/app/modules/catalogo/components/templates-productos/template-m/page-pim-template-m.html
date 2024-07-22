@@ -27,11 +27,11 @@
     "
   >
     <div
-      class="row p-2"
+      class="row m-0 p-1"
       style="padding: 0rem; height: 370px; text-align: left"
     >
-      <div class="col-md-12 col-sm-12 p-0">
-        <div class="col-md-12 col-sm-12 p-0">
+      <div class="col-12 p-0">
+        <div class="col-12 p-0">
           <img
             *ngIf="imagen"
             src="https://images.implementos.cl/marcas/small/{{isString(plana.products.attributes[5].value) | uppercase}}.png"
@@ -42,7 +42,7 @@
         </div>
 
         <div
-          class="col-md-12 col-sm-12 p-0"
+          class="col-12 p-0"
           *ngIf="!imagen && plana.products.attributes[5].value != '0'"
           style="
             color: #000000;
@@ -56,7 +56,7 @@
         </div>
 
         <div
-          class="col-md-12 col-sm-12 p-0"
+          class="col-12 p-0"
           *ngIf="plana.products.attributes[5].value == '0'"
           style="
             color: #000000;
@@ -70,7 +70,7 @@
         </div>
 
         <div
-          class="col-md-12 col-sm-12 p-0"
+          class="col-12 p-0"
           style="
             text-align: left;
             line-height: 1;
@@ -85,7 +85,7 @@
         </div>
 
         <div
-          class="col-md-12 col-sm-12 p-0 mt-1"
+          class="col-12 p-0 mt-1"
           style="
             font-size: 14px;
             text-align: left;
@@ -98,7 +98,7 @@
         </div>
 
         <div
-          class="col-md-12 col-sm-12 p-0 mt-1"
+          class="col-12 p-0 mt-1"
           style="
             font-size: 14px;
             text-align: left;
@@ -114,7 +114,7 @@
         class="row justify-content-around m-1 w-100"
         style="height: 165px; align-items: center"
       >
-        <div *ngIf="visibleImg1" class="col-md-4 col-sm-4">
+        <div *ngIf="visibleImg1" class="col-4 py-0">
           <img
             class="img-fluid"
             width="150px"
@@ -124,7 +124,7 @@
           />
         </div>
 
-        <div *ngIf="visibleImg2" class="col-md-4 col-sm-4">
+        <div *ngIf="visibleImg2" class="col-4 py-0">
           <img
             class="img-fluid"
             width="150px"
@@ -133,7 +133,7 @@
           />
         </div>
 
-        <div *ngIf="visibleImg3" class="col-md-4 col-sm-4">
+        <div *ngIf="visibleImg3" class="col-4 py-0">
           <img
             class="img-fluid"
             width="150px"
@@ -146,7 +146,7 @@
       <div
         *ngIf="plana.products.precioEscala && plana.products.cyber === 1 && precios"
       >
-        <div class="col-md-12 flex p-0">
+        <div class="md:col-12 flex p-0">
           <img
             style="
               width: 100px;
@@ -214,11 +214,11 @@
         </picture>
       </div>
 
-      <div *ngIf="precios" class="col-md-12 col-sm-12 flex p-0">
+      <div *ngIf="precios" class="md:col-12 sm:col-12 flex p-0">
         <!-- PRECIOS -->
-        <div class="col-md-7 col-sm-7 p-0" *ngIf="preciosLista.length === 3">
+        <div class="md:col-7 sm:col-7 p-0" *ngIf="preciosLista.length === 3">
           <div class="row h-100 w-100" style="align-items: flex-end">
-            <div class="col-md-12">
+            <div class="col-12 py-0">
               <table
                 class="table p-0 m-0 borderless"
                 style="border-spacing: 0px !important"
@@ -263,9 +263,9 @@
           </div>
         </div>
 
-        <div class="col-md-7 col-sm-7 p-0" *ngIf="preciosLista.length === 2">
+        <div class="md:col-7 md:col-7 p-0" *ngIf="preciosLista.length === 2">
           <div class="row h-100 w-100" style="align-items: flex-end">
-            <div class="col-md-12">
+            <div class="md:col-12 py-0">
               <table class="table p-0 m-0 borderless">
                 <tbody>
                   <tr>
@@ -302,9 +302,9 @@
           </div>
         </div>
 
-        <div class="col-md-7 col-sm-7 p-0" *ngIf="preciosLista.length === 1">
+        <div class="md:col-7 sm:col-7 p-0" *ngIf="preciosLista.length === 1">
           <div class="row h-100 w-100" style="align-items: flex-end">
-            <div class="col-md-12">
+            <div class="md:col-12">
               <table class="table p-0 m-0 borderless">
                 <tbody>
                   <tr>
@@ -340,9 +340,9 @@
         </div>
 
         <!-- COMPARTIR Y CARRO -->
-        <div class="col-md-5 p-0 pb-2">
-          <div class="row h-100 w-100" style="align-items: flex-end">
-            <div class="col-md-12 flex">
+        <div class="md:col-5 sm:col-5 p-0 pb-2">
+          <div class="row m-0 h-100 w-100" style="align-items: flex-end">
+            <div class="col-12 py-0 flex">
               <app-icon
                 *ngIf="carro"
                 name="cart-20"

@@ -71,7 +71,7 @@
                   style="background-color: #00967f"
                 >
                   <div class="row justify-content-between">
-                    <div class="col-9 col-sm-9">
+                    <div class="col-9 py-0">
                       <div>
                         <img
                           style="margin-top: 5px; width: 75%; height: 75%"
@@ -81,7 +81,7 @@
                         />
                       </div>
                     </div>
-                    <div class="col-3 col-sm-3" *ngIf="!folio">
+                    <div class="col-3 py-0" *ngIf="!folio">
                       <div class="mobile-header__indicators">
                         <div class="indicator indicator--mobile">
                           <a
@@ -113,9 +113,9 @@
               </div>
 
               <div class="container">
-                <div class="row ps-3 ps-3">
+                <div class="row pl-2 m-0">
                   <div
-                    class="col-6 col-sm-6"
+                    class="col-6 py-0"
                     *ngIf="pagina[0] && pagina[0].products"
                   >
                     <app-template-mobile
@@ -128,7 +128,7 @@
                     </app-template-mobile>
                   </div>
                   <div
-                    class="col-6 col-sm-6"
+                    class="col-6 py-0"
                     *ngIf="pagina[1] && pagina[1].products"
                   >
                     <app-template-mobile
@@ -141,7 +141,7 @@
                     </app-template-mobile>
                   </div>
                   <div
-                    class="col-6 col-sm-6"
+                    class="col-6 py-0"
                     *ngIf="pagina[2] && pagina[2].products"
                   >
                     <app-template-mobile
@@ -154,7 +154,7 @@
                     </app-template-mobile>
                   </div>
                   <div
-                    class="col-6 col-sm-6"
+                    class="col-6 py-0"
                     *ngIf="pagina[3] && pagina[3].products"
                   >
                     <app-template-mobile
@@ -167,7 +167,7 @@
                     </app-template-mobile>
                   </div>
                   <div
-                    class="col-6 col-sm-6"
+                    class="col-6 py-0"
                     *ngIf="pagina[4] && pagina[4].products"
                   >
                     <app-template-mobile
@@ -180,7 +180,7 @@
                     </app-template-mobile>
                   </div>
                   <div
-                    class="col-6 col-sm-6"
+                    class="col-6 py-0"
                     *ngIf="pagina[5] && pagina[5].products"
                   >
                     <app-template-mobile
@@ -193,7 +193,7 @@
                     </app-template-mobile>
                   </div>
                   <div
-                    class="col-6 col-sm-6"
+                    class="col-6 py-0"
                     *ngIf="pagina[6] && pagina[6].products"
                   >
                     <app-template-mobile
@@ -206,7 +206,7 @@
                     </app-template-mobile>
                   </div>
                   <div
-                    class="col-6 col-sm-6"
+                    class="col-6 py-0"
                     *ngIf="pagina[7] && pagina[7].products"
                   >
                     <app-template-mobile
@@ -269,8 +269,8 @@
     </div>
     <div class="mobile-footer" *ngIf="!cargandoCat">
       <div class="container">
-        <div class="row pt-1">
-          <div class="col-4 text-center">
+        <div class="row m-0 pt-1">
+          <div class="col-4 py-0 text-center">
             <button
               class="btn"
               style="padding-top: 1rem !important"
@@ -284,7 +284,7 @@
             </button>
           </div>
           <div
-            class="col-4 text-center"
+            class="col-4 py-0 text-center"
             style="
               padding-top: 0.5rem !important;
               font-size: 20px;
@@ -294,7 +294,7 @@
             <span>{{ pageCurrent }}</span> de
             <span class="page-total">{{ pageTotal }}</span>
           </div>
-          <div class="col-4 text-center">
+          <div class="col-4 py-0 text-center">
             <button
               class="btn"
               style="padding-top: 1rem !important"
@@ -310,7 +310,7 @@
 </div>
 <div *ngIf="dispositivo === 'web'">
   <div class="row justify-content-center mt-4">
-    <div class="col-md-10" *ngIf="tags.length > 0">
+    <div class="md:col-10 py-0" *ngIf="tags.length > 0">
       <app-template-menu-catalogo
         [tags]="tags"
         [tipoDispositivo]="dispositivo"
@@ -347,8 +347,8 @@
       </div>
     </div>
   </div>
-  <div class="row justify-content-center mt-3">
-    <div class="col-md-1 col-sm-4 ps-1">
+  <div class="row justify-content-center mt-2">
+    <div class="md:col-1 sm:col-4 py-0 pl-1">
       <div
         *ngIf="!cargandoCat && tipoCatalogo != 'Automatico'"
         class="float-start align-middle"
@@ -376,7 +376,7 @@
       </div>
     </div>
 
-    <div class="col-md-10 col-sm-10">
+    <div class="md:col-10 sm:col-10 py-0">
       <div
         class="flip-book"
         #demoBookExample
@@ -427,8 +427,8 @@
           <div class="page" *ngIf="pagina[0].type != 'portada'">
             <div class="page-content">
               <div *ngIf="i % 2 === 0; else otro">
-                <div class="row">
-                  <div class="col-md-12">
+                <div class="row m-0">
+                  <div class="md:col-12 py-0">
                     <div class="headerLeft">
                       <img
                         style="height: 40px"
@@ -467,9 +467,9 @@
                 >
                   <div
                     *ngIf="pagina.marcas"
-                    class="row justify-content-around flex lista-marcas"
+                    class="row m-0 justify-content-around flex lista-marcas"
                   >
-                    <div class="col">
+                    <div class="col py-0">
                       <img
                         src="https://images.implementos.cl/marcas/small/{{
                           pagina.marcas[0] | uppercase
@@ -479,7 +479,7 @@
                         onError="this.src='./assets/images/catalogo/place-150x150.png'"
                       />
                     </div>
-                    <div class="col">
+                    <div class="col py-0">
                       <img
                         src="https://images.implementos.cl/marcas/small/{{
                           pagina.marcas[1] | uppercase
@@ -489,7 +489,7 @@
                         onError="this.src='./assets/images/catalogo/place-150x150.png'"
                       />
                     </div>
-                    <div class="col">
+                    <div class="col py-0">
                       <img
                         src="https://images.implementos.cl/marcas/small/{{
                           pagina.marcas[2] | uppercase
@@ -499,7 +499,7 @@
                         onError="this.src='./assets/images/catalogo/place-150x150.png'"
                       />
                     </div>
-                    <div class="col">
+                    <div class="col py-0">
                       <img
                         src="https://images.implementos.cl/marcas/small/{{
                           pagina.marcas[3] | uppercase
@@ -509,7 +509,7 @@
                         onError="this.src='./assets/images/catalogo/place-150x150.png'"
                       />
                     </div>
-                    <div class="col">
+                    <div class="col py-0">
                       <img
                         src="https://images.implementos.cl/marcas/small/{{
                           pagina.marcas[4] | uppercase
@@ -519,7 +519,7 @@
                         onError="this.src='./assets/images/catalogo/place-150x150.png'"
                       />
                     </div>
-                    <div class="col">
+                    <div class="col py-0">
                       <img
                         src="https://images.implementos.cl/marcas/small/{{
                           pagina.marcas[5] | uppercase
@@ -534,8 +534,8 @@
               </div>
               <ng-template #otro>
                 <div>
-                  <div class="row">
-                    <div class="col-md-12">
+                  <div class="row m-0">
+                    <div class="md:col-12 py-0">
                       <div class="headerRight">
                         <img
                           style="height: 30%"
@@ -581,7 +581,7 @@
                       *ngIf="pagina.marcas"
                       class="row justify-content-around flex lista-marcas"
                     >
-                      <div class="col">
+                      <div class="col py-0">
                         <img
                           src="https://images.implementos.cl/marcas/small/{{
                             pagina.marcas[0] | uppercase
@@ -591,7 +591,7 @@
                           onError="this.src='./assets/images/catalogo/place-150x150.png'"
                         />
                       </div>
-                      <div class="col">
+                      <div class="col py-0">
                         <img
                           src="https://images.implementos.cl/marcas/small/{{
                             pagina.marcas[1] | uppercase
@@ -601,7 +601,7 @@
                           onError="this.src='./assets/images/catalogo/place-150x150.png'"
                         />
                       </div>
-                      <div class="col">
+                      <div class="col py-0">
                         <img
                           src="https://images.implementos.cl/marcas/small/{{
                             pagina.marcas[2] | uppercase
@@ -611,7 +611,7 @@
                           onError="this.src='./assets/images/catalogo/place-150x150.png'"
                         />
                       </div>
-                      <div class="col">
+                      <div class="col py-0">
                         <img
                           src="https://images.implementos.cl/marcas/small/{{
                             pagina.marcas[3] | uppercase
@@ -621,7 +621,7 @@
                           onError="this.src='./assets/images/catalogo/place-150x150.png'"
                         />
                       </div>
-                      <div class="col">
+                      <div class="col py-0">
                         <img
                           src="https://images.implementos.cl/marcas/small/{{
                             pagina.marcas[4] | uppercase
@@ -631,7 +631,7 @@
                           onError="this.src='./assets/images/catalogo/place-150x150.png'"
                         />
                       </div>
-                      <div class="col">
+                      <div class="col py-0">
                         <img
                           src="https://images.implementos.cl/marcas/small/{{
                             pagina.marcas[5] | uppercase
@@ -645,7 +645,7 @@
                   </div>
                 </div>
               </ng-template>
-              <div class="row">
+              <div class="row m-0">
                 <ng-container *ngFor="let plana of pagina">
                   <!-- Producto S - size:1  -->
                   <div *ngIf="plana.size == 1">
@@ -676,8 +676,8 @@
               </div>
 
               <div *ngIf="i % 2 === 0; else otroFooter">
-                <div class="row">
-                  <div class="col-md-12">
+                <div class="row m-0">
+                  <div class="md:col-12">
                     <div *ngIf="folio">
                       <img
                         class="img-fluid"
@@ -703,8 +703,8 @@
                 </div>
               </div>
               <ng-template #otroFooter>
-                <div class="row">
-                  <div class="col-md-12">
+                <div class="row m-0">
+                  <div class="md:col-12">
                     <div class="text-end" *ngIf="folio">
                       <img
                         class="img-fluid"
@@ -747,7 +747,7 @@
       </div>
     </div>
 
-    <div class="col-md-1 col-sm-1 ps-1">
+    <div class="md:col-1 sm:col-1 py-0 pl-1">
       <div
         *ngIf="!cargandoCat && tipoCatalogo != 'Automatico'"
         class="float-end align-middle"
@@ -781,14 +781,14 @@
   </div>
 
   <div *ngIf="!cargandoCat" class="row">
-    <div class="col-12 text-center mt-2 h6">
+    <div class="col-12 text-center mt-2 h6 py-0">
       <span>{{ pageCurrent }}</span> de
       <span class="page-total">{{ pageTotal }}</span>
     </div>
   </div>
 </div>
 <div *ngIf="dispositivo === 'tablet'" class="tablet">
-  <div class="row justify-content-center">
+  <div class="row justify-content-center m-0">
     <div class="flip-book" #demoBookExample id="demoBookExample">
       <!-- Portada -->
       <div
@@ -838,8 +838,8 @@
                 class="container-fluid p-2 justify-content-between"
                 style="background-color: #00967f"
               >
-                <div class="row justify-content-between">
-                  <div class="col-9">
+                <div class="row m-0 justify-content-between">
+                  <div class="col-9 py-0">
                     <div>
                       <img
                         style="margin-top: 5px; width: 45%; height: 45%"
@@ -848,7 +848,7 @@
                       />
                     </div>
                   </div>
-                  <div class="col-3" *ngIf="!folio">
+                  <div class="col-3 py-0" *ngIf="!folio">
                     <div class="mobile-header__indicators">
                       <div class="indicator indicator--mobile">
                         <a
@@ -898,9 +898,9 @@
                 >
                   <div
                     *ngIf="pagina.marcas"
-                    class="row justify-content-around flex lista-marcas"
+                    class="row m-0 justify-content-around flex lista-marcas"
                   >
-                    <div class="col">
+                    <div class="col py-0">
                       <img
                         src="https://images.implementos.cl/marcas/small/{{
                           pagina.marcas[0] | uppercase
@@ -910,7 +910,7 @@
                         onError="this.src='./assets/images/catalogo/place-150x150.png'"
                       />
                     </div>
-                    <div class="col">
+                    <div class="col py-0">
                       <img
                         src="https://images.implementos.cl/marcas/small/{{
                           pagina.marcas[1] | uppercase
@@ -920,7 +920,7 @@
                         onError="this.src='./assets/images/catalogo/place-150x150.png'"
                       />
                     </div>
-                    <div class="col">
+                    <div class="col py-0">
                       <img
                         src="https://images.implementos.cl/marcas/small/{{
                           pagina.marcas[2] | uppercase
@@ -930,7 +930,7 @@
                         onError="this.src='./assets/images/catalogo/place-150x150.png'"
                       />
                     </div>
-                    <div class="col">
+                    <div class="col py-0">
                       <img
                         src="https://images.implementos.cl/marcas/small/{{
                           pagina.marcas[3] | uppercase
@@ -940,7 +940,7 @@
                         onError="this.src='./assets/images/catalogo/place-150x150.png'"
                       />
                     </div>
-                    <div class="col">
+                    <div class="col py-0">
                       <img
                         src="https://images.implementos.cl/marcas/small/{{
                           pagina.marcas[4] | uppercase
@@ -950,7 +950,7 @@
                         onError="this.src='./assets/images/catalogo/place-150x150.png'"
                       />
                     </div>
-                    <div class="col">
+                    <div class="col py-0">
                       <img
                         src="https://images.implementos.cl/marcas/small/{{
                           pagina.marcas[5] | uppercase
@@ -997,7 +997,7 @@
                       *ngIf="pagina.marcas"
                       class="row justify-content-around flex lista-marcas"
                     >
-                      <div class="col">
+                      <div class="col py-0">
                         <img
                           src="https://images.implementos.cl/marcas/small/{{
                             pagina.marcas[0] | uppercase
@@ -1007,7 +1007,7 @@
                           onError="this.src='./assets/images/catalogo/place-150x150.png'"
                         />
                       </div>
-                      <div class="col">
+                      <div class="col py-0">
                         <img
                           src="https://images.implementos.cl/marcas/small/{{
                             pagina.marcas[1] | uppercase
@@ -1017,7 +1017,7 @@
                           onError="this.src='./assets/images/catalogo/place-150x150.png'"
                         />
                       </div>
-                      <div class="col">
+                      <div class="col py-0">
                         <img
                           src="https://images.implementos.cl/marcas/small/{{
                             pagina.marcas[2] | uppercase
@@ -1027,7 +1027,7 @@
                           onError="this.src='./assets/images/catalogo/place-150x150.png'"
                         />
                       </div>
-                      <div class="col">
+                      <div class="col py-0">
                         <img
                           src="https://images.implementos.cl/marcas/small/{{
                             pagina.marcas[3] | uppercase
@@ -1037,7 +1037,7 @@
                           onError="this.src='./assets/images/catalogo/place-150x150.png'"
                         />
                       </div>
-                      <div class="col">
+                      <div class="col py-0">
                         <img
                           src="https://images.implementos.cl/marcas/small/{{
                             pagina.marcas[4] | uppercase
@@ -1047,7 +1047,7 @@
                           onError="this.src='./assets/images/catalogo/place-150x150.png'"
                         />
                       </div>
-                      <div class="col">
+                      <div class="col py-0">
                         <img
                           src="https://images.implementos.cl/marcas/small/{{
                             pagina.marcas[5] | uppercase
@@ -1140,7 +1140,7 @@
     </div>
   </div>
   <div
-    class="col-md-12"
+    class="col-12 py-0"
     class="mobile-header"
     *ngIf="tags.length > 0"
     style="font-size: 16px"
@@ -1153,8 +1153,8 @@
     ></app-template-menu-catalogo>
   </div>
   <div class="mobile-footer" *ngIf="!cargandoCat">
-    <div class="row">
-      <div class="col-4 text-center">
+    <div class="row m-0">
+      <div class="col-4 py-0 text-center">
         <button
           class="btn"
           style="padding-top: 1rem !important"
@@ -1164,7 +1164,7 @@
         </button>
       </div>
       <div
-        class="col-4 text-center"
+        class="col-4 py-0 text-center"
         style="
           padding-top: 0.5rem !important;
           font-size: 20px;
@@ -1174,7 +1174,7 @@
         <span>{{ pageCurrent }}</span> de
         <span class="page-total">{{ pageTotal }}</span>
       </div>
-      <div class="col-4 text-center">
+      <div class="col-4 py-0 text-center">
         <button
           class="btn"
           style="padding-top: 1rem !important"
