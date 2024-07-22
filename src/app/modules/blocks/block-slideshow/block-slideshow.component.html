@@ -1,4 +1,6 @@
-@if (slides && slides.length > 0) {
+<!-- <pre>slides.length: {{ slides.length }}</pre> -->
+
+@if (slides.length) {
 <div class="block-slideshow">
   <owl-carousel-o
     [options]="options"
@@ -7,42 +9,33 @@
   >
     <ng-container *ngFor="let slide of slides; index as i">
       <ng-template carouselSlide [id]="slide.imageClassic">
-        @if (i === 0) {
-        <a [href]="slide.buttonUrl">
-          <div
-            class="slide_container block lg:hidden"
-            style="aspect-ratio: 138/139"
-          >
-            <img [ngSrc]="slide.imageMobile" [alt]="slide.alt" fill priority />
-          </div>
-          <div
-            class="slide_container hidden sm:block"
-            style="aspect-ratio: 10/3"
-          >
+        <!--  Start::imagen desktop -->
+        <div
+          class="slide_container hidden sm:block cursor-pointer"
+          style="aspect-ratio: 10/3"
+        >
+          <a [href]="slide.buttonUrl">
             <img
               [ngSrc]="slide.imageClassic"
               [alt]="slide.alt"
               fill
-              priority
+              [attr.priority]="i === 0 ? '' : null"
             />
-          </div>
-        </a>
-        } @else {
-        <a [href]="slide.buttonUrl">
-          <div
-            class="slide_container block sm:hidden"
-            style="aspect-ratio: 138/139"
-          >
-            <img [ngSrc]="slide.imageMobile" [alt]="slide.alt" fill />
-          </div>
-          <div
-            class="slide_container mobile hidden sm:block"
-            style="aspect-ratio: 10/3"
-          >
-            <img [ngSrc]="slide.imageClassic" [alt]="slide.alt" fill />
-          </div>
-        </a>
-        }
+          </a>
+        </div>
+        <!--  End::imagen desktop -->
+        <!-- Start::imagen mobile -->
+        <div
+          class="slide_container block lg:hidden"
+          style="aspect-ratio: 138/139"
+        >
+          <img
+            [ngSrc]="slide.imageMobile"
+            [alt]="slide.alt"
+            fill
+            [attr.priority]="i === 0 ? '' : null"
+          />
+        </div>
       </ng-template>
     </ng-container>
   </owl-carousel-o>

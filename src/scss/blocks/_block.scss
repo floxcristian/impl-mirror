@@ -4,16 +4,18 @@
 @import '../variables';
 @import '../functions';
 
+/*
 .block {
-  margin-bottom: $block-margin-bottom;
-}
+  // margin-bottom: $block-margin-bottom;
+}*/
 .block--highlighted {
   padding: 50px 0 60px;
   background: $block-highlighted-bg;
 }
 
+/*
 @media (max-width: breakpoint(md-end)) {
   .block {
     margin-bottom: $block-margin-bottom-md;
   }
-}
+}*/
