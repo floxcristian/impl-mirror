@@ -7,7 +7,7 @@
     'product-card--layout--list': layout === 'list',
     'product-card--layout--horizontal': layout === 'horizontal'
   }"
-  style="height: 100%; overflow: hidden; min-height: 364px"
+  style="height: 100%; overflow: hidden; min-height: 380px"
 >
   <span class="floating-offers" *ngIf="layout === 'horizontal'"> 50% </span>
 
@@ -219,13 +219,9 @@
     @if(productData.stockSummary.branchStock ||
     productData.stockSummary.companyStock){
     <div
-      class="product-card__prices mt-2 lg:mt-3"
+      class="product-card__prices flex flex-column mt-2 lg:mt-3"
+      style="height: 39px"
       [ngStyle]="{
-        display:
-          productData.priceInfo.commonPrice ===
-          productData.priceInfo.customerPrice
-            ? 'flex'
-            : 'block',
         'align-items':
           productData.priceInfo.commonPrice ===
           productData.priceInfo.customerPrice
