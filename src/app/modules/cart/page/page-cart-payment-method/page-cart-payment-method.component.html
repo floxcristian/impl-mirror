@@ -2353,272 +2353,271 @@
     <!-- End::despacho a domicilio o retiro en tienda (mobile) -->
   </div>
 </div>
-<!-- Start::resumen de tu compra (mobile) (no existe en desktop)-->
-<ng-container *ngIf="innerWidth < 450">
-  <div>
-    <div class="footer_page w-screen sticky" style="z-index: 900">
-      <div class="card h-100" style="margin-top: 5px; margin-bottom: -13px">
-        <div
-          class="card-header"
-          style="display: inline-block"
-          (mousedown)="showresumen = !showresumen"
-        >
-          <div class="flex">
+
+     <!-- Start::resumen de tu compra (mobile) (no existe en desktop)-->
+     <ng-container *ngIf="innerWidth < 450">
+        <div class="footer_page w-screen sticky" style="z-index: 900">
+          <div class="card h-100" style="margin-top: 5px; margin-bottom: -13px">
             <div
-              class="col-9 py-0 text-justify"
-              style="font-size: 16px; color: #0063b9"
+              class="card-header"
+              style="display: inline-block"
+              (mousedown)="showresumen = !showresumen"
             >
-              <strong>Resumen de tu Compra</strong>
+              <div class="flex">
+                <div
+                  class="col-9 py-0 text-justify"
+                  style="font-size: 16px; color: #0063b9"
+                >
+                  <strong>Resumen de tu Compra</strong>
+                </div>
+                <div class="col-3 py-0">
+                  <i
+                    [class]="showresumen ? 'fas fa-angle-down' : 'fas fa-angle-up'"
+                  ></i>
+                </div>
+              </div>
             </div>
-            <div class="col-3 py-0">
-              <i
-                [class]="showresumen ? 'fas fa-angle-down' : 'fas fa-angle-up'"
-              ></i>
+            <div *ngIf="!showresumen" class="card-body text-justify">
+              <div class="dropcart__totals text-justify">
+                <table>
+                  <tr style="font-size: 14px; color: #005db9">
+                    <th>Total</th>
+                    <td class="fw-bold">
+                      {{ cartService.total$ | async | currencyFormat }}
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <ng-container *ngIf="showresumen != false">
+              <div
+                class="col-12 py-0"
+                style="
+                  border: 1px solid;
+                  margin-top: 5px;
+                  margin-bottom: 5px;
+                  color: rgba(0, 0, 0, 0.1);
+                "
+              ></div>
+    
+              <div class="card-body text-justify" style="font-size: 14px">
+                <app-detalle-carro-productos
+                  [shippingType]="cartSession.shipment?.deliveryMode"
+                  [seeProducts]="false"
+                />
+              </div>
+            </ng-container>
+            <app-codigo-oc
+              *ngIf="cd_ver"
+              [id]="cartSession._id"
+              [purchaseOrderId]="purchaseOrderId"
+              (verificar)="Confirmar($event)"
+              (renv_cod)="paymentOvSms()"
+            >
+            </app-codigo-oc>
+    
+            <div class="row">
+              <div class="mt-2 col-12 py-0 px-1">
+                <!-- Start::ir a pagar (mobile) (ir a pagar10)  -->
+                <button
+                  name="paymentOv "
+                  *ngIf="
+                    userSession.userRole != userRoleType.BUYER &&
+                    !userSession.creditLine?.requiresConfirmation &&
+                    !['webPay', 'mercadopago', 'khipu'].includes(
+                      paymentMethodActive || ''
+                    ) &&
+                    !guest
+                  "
+                  (click)="paymentOv()"
+                  [disabled]="
+                    formOv.invalid ||
+                    isVacio(paymentMethodActive) ||
+                    isVacio(archivo) ||
+                    loadingPage ||
+                    (!userSession.businessLine &&
+                      selectedDocument === invoiceType.INVOICE &&
+                      !selectedGiro)
+                  "
+                  class="btn btn-lg btn-secondary w-100 text-center"
+                >
+                  Ir a pagar
+                  <i class="fas fa-chevron-right" style="margin-left: 10px"></i>
+                </button>
+                <!-- End::ir a pagar (mobile) (ir a pagar10) -->
+    
+                <!-- Start:: (ir a pagar11) -->
+                <button
+                  name="paymentOvSms "
+                  *ngIf="
+                    userSession.userRole != userRoleType.BUYER &&
+                    userSession.creditLine?.requiresConfirmation &&
+                    !cd_ver &&
+                    paymentMethodActive != 'webPay' &&
+                    paymentMethodActive != 'mercadopago' &&
+                    !guest
+                  "
+                  (click)="paymentOvSms()"
+                  [disabled]="
+                    formOv.invalid ||
+                    isVacio(paymentMethodActive) ||
+                    loadingPage ||
+                    (!userSession.businessLine &&
+                      selectedDocument === invoiceType.INVOICE &&
+                      !selectedGiro)
+                  "
+                  class="btn btn-lg btn-secondary w-100 text-center"
+                >
+                  Ir a pagar<i
+                    class="fa-solid fa-comment-sms"
+                    style="margin-left: 10px"
+                  ></i>
+                </button>
+                <!-- End::(ir a pagar11) -->
+    
+                <!-- Start::pagar con webpay (no comprador ni invitado) (mobile) (ir a pagar12) -->
+                <button
+                  name="paymentWebpay "
+                  [disabled]="
+                    btnWebpayPost ||
+                    alertCartShow ||
+                    (!userSession.businessLine &&
+                      selectedDocument === invoiceType.INVOICE &&
+                      !selectedGiro)
+                  "
+                  *ngIf="
+                    userSession.userRole != userRoleType.BUYER &&
+                    paymentMethodActive == 'webPay' &&
+                    !guest
+                  "
+                  (click)="creteateTransactionTransBank()"
+                  class="btn btn-lg btn-secondary w-100 text-center"
+                >
+                  Ir a pagar <i class="fas fa-chevron-right"></i>
+                </button>
+                <!-- End::pagar con webpay (no comprador ni invitado) (mobile) (ir a pagar12) -->
+    
+                <!-- Start::pagar con webpay siendo invitado (mobile) (ir a pagar13) -->
+                <button
+                  name="paymentwebpay2"
+                  *ngIf="guest && paymentMethodActive == 'webPay'"
+                  [disabled]="
+                    !formVisita.valid ||
+                    !validado ||
+                    alertCartShow ||
+                    btnWebpayPost ||
+                    (!userSession.businessLine &&
+                      selectedDocument === invoiceType.INVOICE &&
+                      !selectedGiro) ||
+                    (guest &&
+                      selectedDocument === invoiceType.INVOICE &&
+                      (!formDireccion.valid || !tienda))
+                  "
+                  (click)="creteateTransactionTransBank()"
+                  class="btn btn-lg btn-secondary w-100 text-center"
+                >
+                  Ir a pagar <i class="fas fa-chevron-rightp"></i>
+                </button>
+                <!-- End::pagar con webpay siendo invitado (mobile) (ir a pagar13) -->
+    
+                <!-- Start::pagar con mercadopago (no comprador ni invitado) (mobile) (ir a pagar14) -->
+                <button
+                  name="paymentMercadopago"
+                  [disabled]="
+                    btnWebpayPost ||
+                    alertCartShow ||
+                    !selectedDocument ||
+                    (!userSession.businessLine &&
+                      selectedDocument === invoiceType.INVOICE &&
+                      !selectedGiro)
+                  "
+                  *ngIf="
+                    userSession.userRole != userRoleType.BUYER &&
+                    paymentMethodActive == 'mercadopago' &&
+                    !guest
+                  "
+                  (click)="paymentMercadopago()"
+                  class="btn btn-lg btn-secondary w-100 text-center"
+                >
+                  Ir a pagar <i class="fas fa-chevron-right"></i>
+                </button>
+                <!-- End::pagar con mercadopago (no comprador ni invitado) (mobile) (ir a pagar14) -->
+    
+                <!-- Start::pagar con mercadopago siendo invitado (mobile) (ir a pagar15) -->
+                <button
+                  *ngIf="guest && paymentMethodActive == 'mercadopago'"
+                  name="paymentMercadopago2 "
+                  [disabled]="
+                    !formVisita.valid ||
+                    !validado ||
+                    alertCartShow ||
+                    btnWebpayPost ||
+                    !selectedDocument ||
+                    (!userSession.businessLine &&
+                      selectedDocument === invoiceType.INVOICE &&
+                      !selectedGiro) ||
+                    (guest &&
+                      selectedDocument === invoiceType.INVOICE &&
+                      (!formDireccion.valid || !tienda))
+                  "
+                  (click)="paymentMercadopago()"
+                  class="btn btn-lg btn-secondary w-100 tex-tcenter"
+                >
+                  Ir a pagar <i class="fas fa-chevron-right"></i>
+                </button>
+                <!-- End::pagar con mercadopago siendo invitado (mobile) (ir a pagar15) -->
+    
+                <!-- Start::solicitar compra -->
+                <button
+                  name="purchaseRequestAll "
+                  *ngIf="
+                    userSession.userRole == userRoleType.BUYER &&
+                    paymentMethodActive != 'sinDefinir'
+                  "
+                  (click)="purchaseRequestAll()"
+                  [disabled]="formOv.invalid || isVacio(archivo)"
+                  class="btn btn-lg btn-secondary w-100 text-center"
+                >
+                  Solicitar Compra *
+                </button>
+    
+                <button
+                  name="purchaseRequest "
+                  *ngIf="
+                    userSession.userRole == userRoleType.BUYER &&
+                    paymentMethodActive == 'sinDefinir'
+                  "
+                  (click)="purchaseRequest()"
+                  class="btn btn-lg btn-secondary w-100 text-center"
+                >
+                  Solicitar Compra *
+                </button>
+                <!-- End::solicitar compra -->
+              </div>
+    
+              <div
+                class="mt-1 col-12 py-0 px-1"
+                *ngIf="userSession.userRole == userRoleType.BUYER"
+              >
+                <em
+                  >* Se generará una solicitud de compra y debe ser aprobada por tu
+                  supervisor antes de generar el pedido.
+                </em>
+              </div>
+    
+              <div class="mt-1 col-12 py-0 px-1">
+                <a
+                  [href]="config.fullUrl"
+                  style="color: #118565; text-align: center; font-weight: bold"
+                >
+                  Seguir comprando</a
+                >
+              </div>
             </div>
           </div>
         </div>
-        <div *ngIf="!showresumen" class="card-body text-justify">
-          <div class="dropcart__totals text-justify">
-            <table>
-              <tr style="font-size: 14px; color: #005db9">
-                <th>Total</th>
-                <td class="fw-bold">
-                  {{ cartService.total$ | async | currencyFormat }}
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <ng-container *ngIf="showresumen != false">
-          <div
-            class="col-12 py-0"
-            style="
-              border: 1px solid;
-              margin-top: 5px;
-              margin-bottom: 5px;
-              color: rgba(0, 0, 0, 0.1);
-            "
-          ></div>
-
-          <div class="card-body text-justify" style="font-size: 14px">
-            <app-detalle-carro-productos
-              [shippingType]="cartSession.shipment?.deliveryMode"
-              [seeProducts]="false"
-            />
-          </div>
-        </ng-container>
-        <app-codigo-oc
-          *ngIf="cd_ver"
-          [id]="cartSession._id"
-          [purchaseOrderId]="purchaseOrderId"
-          (verificar)="Confirmar($event)"
-          (renv_cod)="paymentOvSms()"
-        >
-        </app-codigo-oc>
-
-        <div class="row">
-          <div class="mt-2 col-12 py-0 px-1">
-            <!-- Start::ir a pagar (mobile) (ir a pagar10)  -->
-            <button
-              name="paymentOv "
-              *ngIf="
-                userSession.userRole != userRoleType.BUYER &&
-                !userSession.creditLine?.requiresConfirmation &&
-                !['webPay', 'mercadopago', 'khipu'].includes(
-                  paymentMethodActive || ''
-                ) &&
-                !guest
-              "
-              (click)="paymentOv()"
-              [disabled]="
-                formOv.invalid ||
-                isVacio(paymentMethodActive) ||
-                isVacio(archivo) ||
-                loadingPage ||
-                (!userSession.businessLine &&
-                  selectedDocument === invoiceType.INVOICE &&
-                  !selectedGiro)
-              "
-              class="btn btn-lg btn-secondary w-100 text-center"
-            >
-              Ir a pagar
-              <i class="fas fa-chevron-right" style="margin-left: 10px"></i>
-            </button>
-            <!-- End::ir a pagar (mobile) (ir a pagar10) -->
-
-            <!-- Start:: (ir a pagar11) -->
-            <button
-              name="paymentOvSms "
-              *ngIf="
-                userSession.userRole != userRoleType.BUYER &&
-                userSession.creditLine?.requiresConfirmation &&
-                !cd_ver &&
-                paymentMethodActive != 'webPay' &&
-                paymentMethodActive != 'mercadopago' &&
-                !guest
-              "
-              (click)="paymentOvSms()"
-              [disabled]="
-                formOv.invalid ||
-                isVacio(paymentMethodActive) ||
-                loadingPage ||
-                (!userSession.businessLine &&
-                  selectedDocument === invoiceType.INVOICE &&
-                  !selectedGiro)
-              "
-              class="btn btn-lg btn-secondary w-100 text-center"
-            >
-              Ir a pagar<i
-                class="fa-solid fa-comment-sms"
-                style="margin-left: 10px"
-              ></i>
-            </button>
-            <!-- End::(ir a pagar11) -->
-
-            <!-- Start::pagar con webpay (no comprador ni invitado) (mobile) (ir a pagar12) -->
-            <button
-              name="paymentWebpay "
-              [disabled]="
-                btnWebpayPost ||
-                alertCartShow ||
-                (!userSession.businessLine &&
-                  selectedDocument === invoiceType.INVOICE &&
-                  !selectedGiro)
-              "
-              *ngIf="
-                userSession.userRole != userRoleType.BUYER &&
-                paymentMethodActive == 'webPay' &&
-                !guest
-              "
-              (click)="creteateTransactionTransBank()"
-              class="btn btn-lg btn-secondary w-100 text-center"
-            >
-              Ir a pagar <i class="fas fa-chevron-right"></i>
-            </button>
-            <!-- End::pagar con webpay (no comprador ni invitado) (mobile) (ir a pagar12) -->
-
-            <!-- Start::pagar con webpay siendo invitado (mobile) (ir a pagar13) -->
-            <button
-              name="paymentwebpay2"
-              *ngIf="guest && paymentMethodActive == 'webPay'"
-              [disabled]="
-                !formVisita.valid ||
-                !validado ||
-                alertCartShow ||
-                btnWebpayPost ||
-                (!userSession.businessLine &&
-                  selectedDocument === invoiceType.INVOICE &&
-                  !selectedGiro) ||
-                (guest &&
-                  selectedDocument === invoiceType.INVOICE &&
-                  (!formDireccion.valid || !tienda))
-              "
-              (click)="creteateTransactionTransBank()"
-              class="btn btn-lg btn-secondary w-100 text-center"
-            >
-              Ir a pagar <i class="fas fa-chevron-rightp"></i>
-            </button>
-            <!-- End::pagar con webpay siendo invitado (mobile) (ir a pagar13) -->
-
-            <!-- Start::pagar con mercadopago (no comprador ni invitado) (mobile) (ir a pagar14) -->
-            <button
-              name="paymentMercadopago"
-              [disabled]="
-                btnWebpayPost ||
-                alertCartShow ||
-                !selectedDocument ||
-                (!userSession.businessLine &&
-                  selectedDocument === invoiceType.INVOICE &&
-                  !selectedGiro)
-              "
-              *ngIf="
-                userSession.userRole != userRoleType.BUYER &&
-                paymentMethodActive == 'mercadopago' &&
-                !guest
-              "
-              (click)="paymentMercadopago()"
-              class="btn btn-lg btn-secondary w-100 text-center"
-            >
-              Ir a pagar <i class="fas fa-chevron-right"></i>
-            </button>
-            <!-- End::pagar con mercadopago (no comprador ni invitado) (mobile) (ir a pagar14) -->
-
-            <!-- Start::pagar con mercadopago siendo invitado (mobile) (ir a pagar15) -->
-            <button
-              *ngIf="guest && paymentMethodActive == 'mercadopago'"
-              name="paymentMercadopago2 "
-              [disabled]="
-                !formVisita.valid ||
-                !validado ||
-                alertCartShow ||
-                btnWebpayPost ||
-                !selectedDocument ||
-                (!userSession.businessLine &&
-                  selectedDocument === invoiceType.INVOICE &&
-                  !selectedGiro) ||
-                (guest &&
-                  selectedDocument === invoiceType.INVOICE &&
-                  (!formDireccion.valid || !tienda))
-              "
-              (click)="paymentMercadopago()"
-              class="btn btn-lg btn-secondary w-100 tex-tcenter"
-            >
-              Ir a pagar <i class="fas fa-chevron-right"></i>
-            </button>
-            <!-- End::pagar con mercadopago siendo invitado (mobile) (ir a pagar15) -->
-
-            <!-- Start::solicitar compra -->
-            <button
-              name="purchaseRequestAll "
-              *ngIf="
-                userSession.userRole == userRoleType.BUYER &&
-                paymentMethodActive != 'sinDefinir'
-              "
-              (click)="purchaseRequestAll()"
-              [disabled]="formOv.invalid || isVacio(archivo)"
-              class="btn btn-lg btn-secondary w-100 text-center"
-            >
-              Solicitar Compra *
-            </button>
-
-            <button
-              name="purchaseRequest "
-              *ngIf="
-                userSession.userRole == userRoleType.BUYER &&
-                paymentMethodActive == 'sinDefinir'
-              "
-              (click)="purchaseRequest()"
-              class="btn btn-lg btn-secondary w-100 text-center"
-            >
-              Solicitar Compra *
-            </button>
-            <!-- End::solicitar compra -->
-          </div>
-
-          <div
-            class="mt-1 col-12 py-0 px-1"
-            *ngIf="userSession.userRole == userRoleType.BUYER"
-          >
-            <em
-              >* Se generará una solicitud de compra y debe ser aprobada por tu
-              supervisor antes de generar el pedido.
-            </em>
-          </div>
-
-          <div class="mt-1 col-12 py-0 px-1">
-            <a
-              [href]="config.fullUrl"
-              style="color: #118565; text-align: center; font-weight: bold"
-            >
-              Seguir comprando</a
-            >
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</ng-container>
-<!-- End::resumen de tu compra (mobile) (no existe en desktop)-->
+    </ng-container>
+    <!-- End::resumen de tu compra (mobile) (no existe en desktop)-->
 
 <button
   #openModalButton
