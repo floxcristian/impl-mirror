@@ -90,7 +90,6 @@ export class ProductCardB2cFichaComponent implements OnInit {
     public currency: CurrencyService,
     public sanitizer: DomSanitizer,
     private readonly _gtmService: GtmService,
-    // Services V2
     private readonly sessionService: SessionService,
     public readonly cartService: CartV2Service
   ) {

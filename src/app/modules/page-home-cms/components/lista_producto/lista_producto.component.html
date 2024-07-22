@@ -55,8 +55,6 @@
         >
           <ng-template carouselSlide>
             <app-product-card-b2c-ficha
-              (mouseover)="over($event)"
-              (mouseleave)="leave($event)"
               [product]="prod"
               [origen]="[ruta, '', prod.name.trim(), '']"
               [home]="true"

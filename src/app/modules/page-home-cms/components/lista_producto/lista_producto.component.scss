@@ -4,21 +4,21 @@
 
 ::ng-deep.carouselLista .owl-carousel .owl-stage-outer {
   @media (min-width: 576px) {
-    position: relative;
-    overflow: hidden;
-    top: 7px;
+    //position: relative;
+    //overflow: hidden;
+    // top: 7px;
     // height: 435px;
-    -webkit-transform: translate3d(0, 0, 0);
+    //-webkit-transform: translate3d(0, 0, 0);
   }
 
   @media (max-width: 576px) {
-    position: relative;
-    overflow: hidden;
-    top: 7px;
+    //position: relative;
+    //overflow: hidden;
+    //top: 7px;
     // height: 395px;
-    height: 405px;
-    margin-bottom: -20px;
-    -webkit-transform: translate3d(0, 0, 0);
+    //height: 405px;
+    //margin-bottom: -20px;
+    //-webkit-transform: translate3d(0, 0, 0);
   }
 }
 
@@ -82,15 +82,15 @@
 ::ng-deep.carouselLista .owl-carousel .owl-item {
   //   padding: 0px 10px;
   @media (min-width: 576px) {
-    display: flex;
+    //display: flex;
     //   border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 20px;
+    /*border-radius: 20px;
     margin-left: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 10px;*/
     // align-items: center;
 
     app-product-card-b2b {
-      display: flex;
+      //display: flex;
       width: 115%;
 
       .product-card {
@@ -99,7 +99,7 @@
     }
 
     app-product-card-b2c-ficha {
-      display: flex;
+      //display: flex;
       width: 100%;
 
       .product-card {
@@ -109,14 +109,14 @@
   }
 
   @media (max-width: 576px) {
-    display: flex;
+    //display: flex;
     //   border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 20px;
-    margin-left: 10px;
+    //border-radius: 20px;
+    //margin-left: 10px;
     // align-items: center;
 
     app-product-card-b2b {
-      display: flex;
+      //display: flex;
       width: 115%;
 
       .product-card {
@@ -125,19 +125,19 @@
     }
 
     app-product-card-b2c-ficha {
-      display: flex;
+      //display: flex;
       width: 100%;
 
       .product-card {
         flex: 1 1 auto !important;
-        padding: 10px;
+        //padding: 10px;
       }
     }
   }
 }
 
 ::ng-deep.carouselLista .owl-carousel .owl-stage {
-  display: flex !important;
+  //display: flex !important;
 }
 
 .cargandoCent {

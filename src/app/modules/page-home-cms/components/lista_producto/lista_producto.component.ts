@@ -51,6 +51,7 @@ export class Lista_productoComponent implements OnInit {
     responsiveClass: true,
     autoplay: false,
     autoplayTimeout: 4000,
+    margin: 10,
     responsive: {
       1100: { items: 5 },
       920: { items: 5 },
@@ -89,7 +90,7 @@ export class Lista_productoComponent implements OnInit {
 
   ngOnInit(): void {
     this.ruta = this.router.url === '/inicio' ? 'home' : this.router.url;
-    this.user = this.sessionService.getSession(); //this.root.getDataSesionUsuario();
+    this.user = this.sessionService.getSession();
     this.get_productos();
   }
 
@@ -126,6 +127,7 @@ export class Lista_productoComponent implements OnInit {
     }
   }
 
+  /*
   over(event: any) {
     let el: any = event.target.parentNode;
     let clase: any = el.classList;
@@ -146,5 +148,5 @@ export class Lista_productoComponent implements OnInit {
     }
 
     el.style['box-shadow'] = 'none';
-  }
+  }*/
 }

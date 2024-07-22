@@ -39,17 +39,18 @@ export class ProductSlideshowComponent
   layout = 'grid-lg';
   carouselOptions = {
     lazyLoad: true,
-    items: 6,
+    items: 5,
     nav: true,
     navText: [
       `<i class="fas fa-chevron-left"></i>`,
       `<i class="fas fa-chevron-right"></i>`,
     ],
+    slideBy: 'page',
     dots: true,
     loop: true,
-    slideBy: 'page',
     // autoplay: true,
     // autoplayTimeout: 4000,
+    margin: 10,
     responsive: {
       1366: { items: 6 },
       1100: { items: 6 },
@@ -205,6 +206,7 @@ export class ProductSlideshowComponent
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
+  /*
   over(event: any) {
     let el: any = event.target.parentNode;
     let clase: any = el.classList;
@@ -214,8 +216,9 @@ export class ProductSlideshowComponent
     }
 
     el.style['box-shadow'] = '0 4px 4px 0 rgb(0 0 0 / 50%)';
-  }
+  }*/
 
+  /*
   leave(event: any) {
     let el: any = event.target.parentNode;
     let clase: any = el.classList;
@@ -225,5 +228,5 @@ export class ProductSlideshowComponent
     }
 
     el.style['box-shadow'] = 'none';
-  }
+  }*/
 }
