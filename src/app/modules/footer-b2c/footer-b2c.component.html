@@ -321,10 +321,8 @@
 </div>
 
 <!-- Start::footer (+lg) -->
-<div
-  class="site-footer hidden lg:block"
-  [hidden]="HideFooter() ? true : false"
->
+@if(HideFooter()){
+<div class="site-footer hidden lg:block">
   <div class="container">
     <div class="py-2">
       <div class="row m-0">
@@ -352,6 +350,8 @@
 
   <div style="height: 30px; background-color: #000"></div>
 </div>
+}
+
 <!-- End::footer (+lg) -->
 
 <!-- Start::footer xs, sm y md -->
