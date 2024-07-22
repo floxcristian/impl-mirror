@@ -211,19 +211,18 @@ a {
   max-width: 50%;
 }
 
-// cargar del carrosel
 ::ng-deep.carouselProducto .owl-carousel .owl-stage-outer {
   @media (min-width: 576px) {
     position: relative;
     overflow: hidden;
-    top: 7px;
+    /*top: 7px;*/
     -webkit-transform: translate3d(0, 0, 0);
   }
 
   @media (max-width: 576px) {
     position: relative;
     overflow: hidden;
-    top: 7px;
+    /*top: 7px;*/
     -webkit-transform: translate3d(0, 0, 0);
   }
 }
@@ -254,9 +253,9 @@ a {
   }
 }
 
-::ng-deep.carouselProducto .owl-carousel .owl-item img {
+::ng-deep.owl-carousel .owl-item img {
   display: block;
-  width: 90% !important;
+  width: 80% !important;
 }
 
 ::ng-deep.carouselProducto .owl-prev:hover {
@@ -300,7 +299,7 @@ a {
   @media (max-width: 576px) {
     display: flex;
     border-radius: 20px;
-    margin-left: 10px;
+    /*margin-left: 10px;*/
 
     app-product-card-b2b {
       display: flex;
@@ -554,7 +553,7 @@ a {
     font-size: 1.35rem;
     font-weight: bold;
     white-space: nowrap;
-    padding-left: 10px;
+    /*padding-left: 10px;*/
   }
 
   @media (max-width: 400px) {
@@ -596,7 +595,6 @@ a {
   }
 }
 
-
 .image-link {
   position: absolute;
   bottom: 22px;
@@ -612,4 +610,11 @@ a {
 
 .image-link span {
   margin-left: 5px;
+}
+
+/****
+** Nuevos estilos OWL
+*******/
+::ng-deep .owl-carousel .owl-item {
+  display: flex;
 }

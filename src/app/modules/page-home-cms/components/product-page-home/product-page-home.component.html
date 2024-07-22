@@ -120,6 +120,7 @@
     class="products-view__list products-list"
     data-layout="grid-5-full"
     data-with-features="false"
+    style="background-color: blue"
   >
     <owl-carousel-o
       class="carouselTitulo"
@@ -172,6 +173,7 @@
     class="products-view__list products-list"
     data-layout="grid-5-full"
     data-with-features="false"
+    style="background-color: pink"
   >
     <owl-carousel-o
       class="carouselImagen"
@@ -214,11 +216,7 @@
     data-layout="grid-5-full"
     data-with-features="false"
   >
-    <owl-carousel-o
-      class="carouselProducto"
-      [options]="carouselOptions"
-      appOwlPreventClick
-    >
+    <owl-carousel-o [options]="carouselOptions" appOwlPreventClick>
       @for (prod of producto_selecionado.articles; track $index) {
       <ng-container class="products-list__item">
         <ng-template carouselSlide>

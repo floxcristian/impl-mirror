@@ -148,7 +148,8 @@
 }
 
 .alturaimg {
-  min-height: 202.8px;
+  // min-height: 202.8px;
+  height: 120px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -274,10 +275,11 @@
   box-shadow: 0 16px 32px 0 rgba(0, 0, 0, 0.08);
 }
 
+/*
 .product-card__buttons {
-  /*padding: 0px;*/
-  margin-top: 2px;
-}
+  padding: 0px;
+  // margin-top: 2px;
+}*/
 
 .new_price {
   font-size: 1.8rem;
@@ -614,7 +616,7 @@
 }
 
 .product-card__info {
-  flex-grow: 1 !important;
+  /*flex-grow: 1 !important;*/
 }
 .modal-header {
   .btn {
