@@ -29,11 +29,11 @@
       border-style: solid;
     "
   >
-    <div class="row p-2">
-      <div class="col-md-8 col-sm-9">
-        <div class="row">
+    <div class="row p-1">
+      <div class="md:col-8 sm:col-9 py-0">
+        <div class="row m-0">
           <div
-            class="col-md-12 col-sm-12 p-0"
+            class="col-12 p-0"
             [ngClass]="preciosLista.length > 1 ? 'altoDescripcion3Precios' : 'altoDescripcion'"
           >
             <img
@@ -67,7 +67,7 @@
             </div>
 
             <div
-              class="col-md-12 card-headertext-center p-0"
+              class="col-12 card-headertext-center p-0"
               style="
                 text-align: left;
                 line-height: 1;
@@ -81,7 +81,7 @@
               >
             </div>
             <div
-              class="col-md-12 p-0 mt-1"
+              class="col-12 p-0 mt-1"
               style="
                 font-size: 14px;
                 text-align: left;
@@ -94,7 +94,7 @@
               slice:0:100 }}
             </div>
             <div
-              class="col-md-12 p-0 mt-1"
+              class="col-12 p-0 mt-1"
               style="font-size: 14px; text-align: left; color: #000000"
             >
               SKU {{ isString(plana.products.attributes[0].value) | uppercase
@@ -105,7 +105,7 @@
           <div
             *ngIf="plana.products.precioEscala && plana.products.cyber === 1"
           >
-            <div class="col-md-12 flex p-0">
+            <div class="col-12 flex p-0">
               <img
                 style="width: 100px; border-radius: 2px"
                 src="assets/images/catalogo/llevaMasPagaMenos/mas_menos_rectangular.svg"
@@ -145,9 +145,8 @@
               />
             </picture>
           </div>
-
-          <div class="col-md-12 col-sm-12 flex p-0">
-            <div *ngIf="precios" class="col-md-9 col-sm-9 p-0">
+          <div class="col-12 flex p-0">
+            <div *ngIf="precios" class="md:col-9 sm:col-9 p-0">
               <div *ngIf="preciosLista.length === 3 && tipo!='Automatico'">
                 <table
                   class="table2 p-0 m-0 borderless"
@@ -470,11 +469,11 @@
 
             <!-- COMPARTIR Y CARRO -->
             <div
-              class="col-md-3 col-sm-3 p-0 pb-2"
+              class="md:col-3 sm:col-3 p-0 pb-2"
               *ngIf="!plana.products.cantidad"
             >
-              <div class="row h-100 w-100" style="align-items: flex-end">
-                <div class="col-md-12 flex">
+              <div class="row h-100 w-100 m-0" style="align-items: flex-end">
+                <div class="col-12 py-0 flex">
                   <app-icon
                     *ngIf="carro"
                     name="cart-20"
@@ -498,7 +497,7 @@
       </div>
 
       <ng-container *ngIf="plana.products.images; else anterior">
-        <div class="col-md-4 col-sm-3 justify-content-between pt-3">
+        <div class="md:col-4 sm:col-3 py-0 justify-content-between pt-3">
           <img
             *ngIf="plana.products.images[0][0] == 1"
             class="img-fluid"
@@ -527,7 +526,7 @@
 
       <ng-template #anterior>
         <div
-          class="col-md-4 col-sm-3 justify-content-between pt-3"
+          class="md:col-4 sm:col-3 justify-content-between pt-3"
           style="height: 225px"
         >
           <img
@@ -562,11 +561,11 @@
     "
   >
     <div class="row py-2 px-4">
-      <div class="col-md-9 col-sm-9">
-        <div class="row">
-          <div class="col-md-12 col-sm-12 p-0">
+      <div class="md:col-9 sm:col-9 py-0">
+        <div class="row m-0">
+          <div class="col-12 p-0">
             <div
-              class="col-md-12 card-headertext-center p-0"
+              class="col-12 card-headertext-center p-0"
               style="
                 text-align: left;
                 line-height: 1;
@@ -607,7 +606,7 @@
               </span>
             </div>
             <div
-              class="col-md-12 p-0 mt-1"
+              class="col-12 p-0 mt-1"
               style="
                 font-size: 12px;
                 text-align: left;
@@ -620,7 +619,7 @@
               capitalizeFirst }}
             </div>
             <div
-              class="col-md-12 p-0 mt-1"
+              class="col-12 p-0 mt-1"
               style="font-size: 10px; text-align: left; color: #000000"
             >
               <span>
@@ -630,8 +629,8 @@
             </div>
           </div>
 
-          <div class="col-md-12 col-sm-12 flex p-0">
-            <div *ngIf="precios" class="col-md-9 col-sm-9 p-0">
+          <div class="col-12 flex p-0">
+            <div *ngIf="precios" class="md:col-9 sm:col-9 p-0">
               <div>
                 <table class="table2 p-0 m-0 borderless">
                   <tbody>
@@ -701,7 +700,7 @@
 
       <ng-container *ngIf="plana.products.images; else anterior">
         <div
-          class="col-md-3 col-sm-3 justify-content-between p-0 m-0 align-items"
+          class="md:col-3 sm:col-3 justify-content-between p-0 m-0 align-items"
           style="display: flex"
         >
           <img
@@ -734,7 +733,7 @@
       </ng-container>
       <ng-template #anterior>
         <div
-          class="col-md-4 col-sm-3 justify-content-between pt-3"
+          class="md:col-4 sm:col-3  justify-content-between pt-3"
           style="height: 225px"
         >
           <img

@@ -27,10 +27,10 @@
       border-style: solid;
     "
   >
-    <div class="row p-2">
+    <div class="row m-0 p-1">
       <!-- ATRIBUTOS -->
-      <div class="col-md-12 col-sm-12 p-0">
-        <div class="col-12 col-sm-12 p-0">
+      <div class="col-12 p-0">
+        <div class="col-12 p-0">
           <img
             *ngIf="imagen"
             src="https://images.implementos.cl/marcas/small/{{ isString(plana.products.attributes[5].value) | uppercase}}.png"
@@ -53,15 +53,15 @@
             IMPLEMENTOS
           </div>
         </div>
-        <div class="col-12 col-sm-12 fw-bold p-0" style="font-size: 19px">
+        <div class="col-12 fw-bold p-0" style="font-size: 19px">
           {{ isString(plana.products.attributes[1].value) | slice:0:46 }}
         </div>
-        <div class="col-12 col-sm-12 p-0" style="font-size: 16px">
+        <div class="col-12  p-0" style="font-size: 16px">
           {{ isString(plana.products.attributes[2].value) | titlecase |
           slice:0:52 }}
         </div>
         <div
-          class="col-12 col-sm-12 p-0"
+          class="col-12 p-0"
           style="font-size: 16px; z-index: 9999"
         >
           SKU {{ isString(plana.products.attributes[0].value) | uppercase }}
@@ -73,7 +73,7 @@
         class="row justify-content-around m-1 w-100"
         style="height: 265px; align-items: center"
       >
-        <div class="col-md-8 col-sm-8 text-center">
+        <div class="md:col-8 sm:col-8 text-center">
           <div>
             <img
               class="img-fluid"
@@ -85,7 +85,7 @@
             />
           </div>
         </div>
-        <div class="col-md-4 col-sm-4 p-1">
+        <div class="md:col-4 sm:col-4 p-1">
           <img
             *ngIf="visibleImg2"
             class="img-fluid mb-1"
@@ -107,11 +107,11 @@
       </div>
 
       <!-- PRECIOS -->
-      <div class="col-md-12 col-sm-12 flex p-0">
+      <div class="col-12 flex p-0">
         <div
           *ngIf="plana.products.precioEscala && plana.products.cyber === 1 && precios"
         >
-          <div class="col-md-12 flex p-0">
+          <div class="col-12 flex p-0">
             <img
               style="
                 width: 100px;
@@ -171,7 +171,7 @@
         </div>
 
         <!-- PRECIOS ESCALA -->
-        <div *ngIf="precios" class="col-md-8 col-sm-8 p-0">
+        <div *ngIf="precios" class="md:col-8 sm:col-8 p-0">
           <div *ngIf="preciosLista.length === 3">
             <table
               class="table p-0 m-0 borderless"
@@ -285,9 +285,9 @@
         </div>
 
         <!-- COMPARTIR Y CARRO -->
-        <div class="col-md-4 col-sm-4 pb-2">
-          <div class="row h-100 w-100" style="align-items: flex-end">
-            <div class="col-md-12 flex">
+        <div class="md:col-4 sm:col-4 pb-2">
+          <div class="row h-100 w-100 m-0" style="align-items: flex-end">
+            <div class="col-12 flex">
               <app-icon
                 *ngIf="carro"
                 name="cart-20"
