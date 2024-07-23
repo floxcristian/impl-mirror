@@ -76,6 +76,7 @@ export class ProductPageHomeComponent implements OnInit {
     lazyLoad: true,
     autoplayTimeout: 4000,
     // center: true,
+    stagePadding: 50,
     margin: 10,
     //autoHeight: false,
     autoWidth: true,

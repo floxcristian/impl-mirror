@@ -47,6 +47,7 @@ export class ProductCardB2cCmsComponent implements OnInit {
   @Input() cartpopver: boolean = false;
   preciosEscalas: any[] | undefined = [];
   @Output() precioEscalaEvent: EventEmitter<any> = new EventEmitter();
+  showDelivery!: boolean;
 
   @Input() popoverContent: any;
   isVacio = isVacio;
@@ -55,6 +56,12 @@ export class ProductCardB2cCmsComponent implements OnInit {
   @Input() set product(value: IArticle) {
     this.productData = value;
     this.productData.name = this.root.limpiarNombres(this.productData.name);
+    this.showDelivery =
+      value.deliverySupply?.deliveryLocation &&
+      value.deliverySupply?.pickupLocation &&
+      (value.stockSummary.branchStock || value.stockSummary.companyStock)
+        ? true
+        : false;
     this.generateTags(this.productData.metaTags);
   }
 

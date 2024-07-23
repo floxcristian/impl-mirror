@@ -446,6 +446,14 @@ a {
 ::ng-deep.carouselTitulo .owl-carousel .owl-stage {
   display: flex !important;
 }
+::ng-deep.owl-carousel .owl-stage {
+  display: flex !important;
+}
+
+::ng-deep.owl-carousel .owl-item {
+  display: flex !important;
+  flex: 1 0 auto !important;
+}
 
 ::ng-deep.carouselTitulo .owl-dots {
   @media (min-width: 992px) {
