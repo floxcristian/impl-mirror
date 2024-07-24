@@ -1,11 +1,11 @@
 <app-loading-bar />
 <!-- <app-loading *ngIf="loadingPage"></app-loading> -->
 
-<div *ngIf="innerWidth < 450">
-  <app-menu-categoria-b2c-mobile></app-menu-categoria-b2c-mobile>
+<div class="block sm:hidden">
+  <app-menu-categoria-b2c-mobile />
 </div>
-<div *ngIf="innerWidth > 450">
-  <app-menu-categorias-b2c></app-menu-categorias-b2c>
+<div class="hidden sm:block">
+  <app-menu-categorias-b2c />
 </div>
 <!-- site -->
 <div class="site site_b2c">
@@ -23,14 +23,14 @@
 
   <!-- site__body -->
   <div class="site__body">
-    <router-outlet></router-outlet>
+    <router-outlet />
   </div>
   <!-- site__body / end -->
 
   <!-- site__footer -->
-  <!--<footer class="site__footer">
+  <footer class="site__footer">
     <app-footer-b2c />
-  </footer>-->
+  </footer>
   <!-- site__footer / end -->
   <!-- <app-chat *ngIf="isBrowser"></app-chat> -->
 </div>

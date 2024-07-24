@@ -1,11 +1,5 @@
 // Angular
-import {
-  Component,
-  PLATFORM_ID,
-  Inject,
-  AfterViewInit,
-  HostListener,
-} from '@angular/core';
+import { Component, PLATFORM_ID, Inject, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { Title } from '@angular/platform-browser';
@@ -21,7 +15,6 @@ import { CanonicalService } from '../../shared/services/canonical.service';
 export class B2cComponent implements AfterViewInit {
   loadingPage = true;
 
-  innerWidth: number;
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     public root: RootService,
@@ -30,10 +23,6 @@ export class B2cComponent implements AfterViewInit {
     private titleService: Title,
     private canonicalService: CanonicalService
   ) {
-    this.innerWidth = isPlatformBrowser(this.platformId)
-      ? window.innerWidth
-      : 900;
-
     this.root.path = this.router
       .createUrlTree(['./'], { relativeTo: route })
       .toString();
@@ -64,12 +53,5 @@ export class B2cComponent implements AfterViewInit {
     } else {
       this.loadingPage = false;
     }
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    this.innerWidth = isPlatformBrowser(this.platformId)
-      ? window.innerWidth
-      : 900;
   }
 }

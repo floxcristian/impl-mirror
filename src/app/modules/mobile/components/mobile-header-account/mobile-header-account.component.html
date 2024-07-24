@@ -64,7 +64,7 @@
     >
       <p class="fw-bold title-sesion">
         Bienvenido
-        <span *ngIf="this.usuario != null">
+        <span *ngIf="this.usuario">
           {{ usuario.firstName | capitalizeFirst : true }}
           {{ usuario.lastName | capitalizeFirst : true }}
         </span>
