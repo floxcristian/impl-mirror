@@ -25,9 +25,7 @@ export class CustomerPreferenceService {
    */
   getCustomerPreferences(): Observable<ICustomerPreference> {
     const preferences = this.customerPreferenceStorage.get();
-    if (preferences.deliveryAddress) {
-      return of(preferences);
-    }
+    if (preferences.deliveryAddress) return of(preferences);
 
     const { documentId } = this.sessionService.getSession();
     return this.customerAddressApiService

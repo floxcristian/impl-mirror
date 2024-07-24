@@ -44,7 +44,6 @@ export class AccountComponent implements OnInit {
   constructor(
     public localS: LocalStorageService,
     private cd: ChangeDetectorRef,
-    // Services V2
     private readonly sessionService: SessionService,
     private readonly authStateService: AuthStateServiceV2,
     private readonly menuService: MenuService,

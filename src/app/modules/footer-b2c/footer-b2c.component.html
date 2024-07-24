@@ -58,8 +58,8 @@
 
       <!-- Start::devoluciones (xs) -->
       <div
-        class="col-12 py-0 block lg:hidden"
-        style="cursor: pointer; margin-bottom: 15px"
+        class="col-12 py-0 block lg:hidden cursor-pointer"
+        style="margin-bottom: 15px"
         [routerLink]="['/sitio/politicas/cambios-devolucion']"
       >
         <div class="row m-0">
@@ -241,7 +241,6 @@
     </div>
   </div>
 </div>
-} @if(!HideFooter()){
 <div class="newsletter position-relative">
   <picture>
     <source
@@ -317,10 +316,8 @@
     <!-- End::newsletter (xs) -->
   </div>
 </div>
-}
 
 <!-- Start::footer (+lg) -->
-@if(!HideFooter()){
 <div class="site-footer hidden lg:block">
   <div class="container">
     <div class="py-2">
@@ -349,11 +346,9 @@
 
   <div style="height: 30px; background-color: #000"></div>
 </div>
-}
 <!-- End::footer (+lg) -->
 
 <!-- Start::footer xs, sm y md -->
-@if(!HideFooter()){
 <div class="site-footer block lg:hidden">
   <app-fotter-site-mobile>-</app-fotter-site-mobile>
 </div>

@@ -15,10 +15,10 @@ export class FooterB2cComponent implements OnInit {
   constructor(public router: Router, private renderer: Renderer2) {}
 
   ngOnInit() {
-    const body_e = this.renderer.selectRootElement('body', true); // safari
+    /*const body_e = this.renderer.selectRootElement('body', true); // safari
     this.renderer.setProperty(body_e, 'scrollTop', 0);
     const html_e = this.renderer.selectRootElement('html', true); //other
-    this.renderer.setProperty(html_e, 'scrollTop', 0);
+    this.renderer.setProperty(html_e, 'scrollTop', 0);*/
   }
 
   // Funcion utilizada para ocultar footer para dispositivos mobiles en las pantallas de seleccion de despacho y pago.
