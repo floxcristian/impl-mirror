@@ -14,7 +14,6 @@ import { AuthRoutingModule } from './auth-routing.module';
 // Modules
 import { BlocksModule } from '../modules/blocks/blocks.module';
 import { HeaderModule } from '../modules/header/header.module';
-import { HeaderB2bModule } from '../modules/account/components/header/header-b2b.module';
 import { MobileModule } from '../modules/mobile/mobile.module';
 import { SharedModule } from '../shared/shared.module';
 import { CatalogoModule } from '../modules/catalogo/catalogo.module';
@@ -43,7 +42,7 @@ import { PageMesDelCamioneroComponent } from '../pages/page-mes-del-camionero/pa
     LayoutComponent,
     PageDevolucionesComponent,
     DevolucionOkModalComponent,
-    PageMesDelCamioneroComponent
+    PageMesDelCamioneroComponent,
   ],
   imports: [
     AuthRoutingModule,
@@ -56,7 +55,6 @@ import { PageMesDelCamioneroComponent } from '../pages/page-mes-del-camionero/pa
     // modules
     BlocksModule,
     HeaderModule,
-    HeaderB2bModule,
     FooterB2cModule,
     MobileModule,
     CatalogoModule,
