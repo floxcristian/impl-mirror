@@ -8,8 +8,8 @@
   </div>
 </div>
 <div *ngIf="dispositivo === 'smartphone'">
-  <div class="container m-0 p-0">
-    <div class="mobile-header" *ngIf="tags.length">
+  <div class="m-0 p-0">
+    <div class="mobile-header" *ngIf="tags.length" class="py-0">
       <app-template-menu-catalogo
         [tags]="tags"
         [tipoDispositivo]="dispositivo"
@@ -112,10 +112,10 @@
                 </div>
               </div>
 
-              <div class="container">
-                <div class="row pl-2 m-0">
+              <div>
+                <div class="row px-1 m-0">
                   <div
-                    class="col-6 py-0"
+                    class="col-6 py-0 col2p"
                     *ngIf="pagina[0] && pagina[0].products"
                   >
                     <app-template-mobile
@@ -128,7 +128,7 @@
                     </app-template-mobile>
                   </div>
                   <div
-                    class="col-6 py-0"
+                    class="col-6 py-0 col2p"
                     *ngIf="pagina[1] && pagina[1].products"
                   >
                     <app-template-mobile
@@ -141,7 +141,7 @@
                     </app-template-mobile>
                   </div>
                   <div
-                    class="col-6 py-0"
+                    class="col-6 py-0 col2p"
                     *ngIf="pagina[2] && pagina[2].products"
                   >
                     <app-template-mobile
@@ -154,7 +154,7 @@
                     </app-template-mobile>
                   </div>
                   <div
-                    class="col-6 py-0"
+                    class="col-6 py-0 col2p"
                     *ngIf="pagina[3] && pagina[3].products"
                   >
                     <app-template-mobile
@@ -167,7 +167,7 @@
                     </app-template-mobile>
                   </div>
                   <div
-                    class="col-6 py-0"
+                    class="col-6 py-0 col2p"
                     *ngIf="pagina[4] && pagina[4].products"
                   >
                     <app-template-mobile
@@ -180,7 +180,7 @@
                     </app-template-mobile>
                   </div>
                   <div
-                    class="col-6 py-0"
+                    class="col-6 py-0 col2p"
                     *ngIf="pagina[5] && pagina[5].products"
                   >
                     <app-template-mobile
@@ -193,7 +193,7 @@
                     </app-template-mobile>
                   </div>
                   <div
-                    class="col-6 py-0"
+                    class="col-6 py-0 col2p"
                     *ngIf="pagina[6] && pagina[6].products"
                   >
                     <app-template-mobile
@@ -206,7 +206,7 @@
                     </app-template-mobile>
                   </div>
                   <div
-                    class="col-6 py-0"
+                    class="col-6 py-0 col2p"
                     *ngIf="pagina[7] && pagina[7].products"
                   >
                     <app-template-mobile
@@ -330,7 +330,7 @@
     >
       <a
         [href]="root.url('/productos/caro-compra')"
-        class="indicator__button flex-column mt-3"
+        class="indicator__button flex-column mt-2"
         (click)="$event.preventDefault(); cartDropdown.toggle()"
       >
         <span class="indicator__area indicator__area-cart">
@@ -463,7 +463,7 @@
                 <!-- LISTA DE MARCAS A -->
                 <div
                   *ngIf="!pagina.leftTitle && tipoCatalogo != 'Automatico'"
-                  class="container"
+                  class=""
                 >
                   <div
                     *ngIf="pagina.marcas"
@@ -575,11 +575,11 @@
                   <!-- LISTA DE MARCAS B -->
                   <div
                     *ngIf="!pagina.rightTitle && tipoCatalogo != 'Automatico'"
-                    class="container"
+                    class=""
                   >
                     <div
                       *ngIf="pagina.marcas"
-                      class="row justify-content-around flex lista-marcas"
+                      class="row m-0 justify-content-around flex lista-marcas"
                     >
                       <div class="col py-0">
                         <img
@@ -648,7 +648,7 @@
               <div class="row m-0">
                 <ng-container *ngFor="let plana of pagina">
                   <!-- Producto S - size:1  -->
-                  <div *ngIf="plana.size == 1">
+                  <div *ngIf="plana.size == 1" class="p-0">
                     <app-template-s
                       [plana]="plana"
                       [tipo]="tipoCatalogo"
@@ -658,17 +658,17 @@
                     </app-template-s>
                   </div>
                   <!-- Producto M - size:2  -->
-                  <div *ngIf="plana.size == 2">
+                  <div *ngIf="plana.size == 2" class="p-0">
                     <app-template-m [plana]="plana" [tipo]="tipoCatalogo">
                     </app-template-m>
                   </div>
                   <!-- Producto L - size:3  -->
-                  <div *ngIf="plana.size == 3">
+                  <div *ngIf="plana.size == 3" class="p-0">
                     <app-template-l [plana]="plana" [tipo]="tipoCatalogo">
                     </app-template-l>
                   </div>
                   <!-- Producto XL - size:4  -->
-                  <div *ngIf="plana.size == 4">
+                  <div *ngIf="plana.size == 4" class="p-0">
                     <app-template-xl [plana]="plana" [tipo]="tipoCatalogo">
                     </app-template-xl>
                   </div>
@@ -677,7 +677,7 @@
 
               <div *ngIf="i % 2 === 0; else otroFooter">
                 <div class="row m-0">
-                  <div class="md:col-12">
+                  <div class="md:col-12 py-0">
                     <div *ngIf="folio">
                       <img
                         class="img-fluid"
@@ -704,7 +704,7 @@
               </div>
               <ng-template #otroFooter>
                 <div class="row m-0">
-                  <div class="md:col-12">
+                  <div class="md:col-12 py-0">
                     <div class="text-end" *ngIf="folio">
                       <img
                         class="img-fluid"
@@ -1065,7 +1065,7 @@
 
             <ng-container *ngFor="let plana of pagina">
               <!-- Producto S - size:1  -->
-              <div *ngIf="plana.size == 1">
+              <div *ngIf="plana.size == 1" class="p-0">
                 <app-template-s
                   [plana]="plana"
                   [tipo]="tipoCatalogo"
@@ -1075,17 +1075,17 @@
                 </app-template-s>
               </div>
               <!-- Producto M - size:2  -->
-              <div *ngIf="plana.size == 2">
+              <div *ngIf="plana.size == 2" class="p-0">
                 <app-template-m [plana]="plana" [tipo]="tipoCatalogo">
                 </app-template-m>
               </div>
               <!-- Producto L - size:3  -->
-              <div *ngIf="plana.size == 3">
+              <div *ngIf="plana.size == 3" class="p-0">
                 <app-template-l [plana]="plana" [tipo]="tipoCatalogo">
                 </app-template-l>
               </div>
               <!-- Producto XL - size:4  -->
-              <div *ngIf="plana.size == 4">
+              <div *ngIf="plana.size == 4" class="p-0">
                 <app-template-xl [plana]="plana" [tipo]="tipoCatalogo">
                 </app-template-xl>
               </div>
