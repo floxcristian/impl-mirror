@@ -28,14 +28,12 @@
       "
     >
       <span
-        class="font-medium inline text-base lg:text-sm lg:block"
+        class="font-medium inline text-base lg:text-xs lg:block"
         style="line-height: normal; text-align: center"
       >
-        @if(usuario.login_temp == false){
-
+        @if(!usuario.login_temp){
         {{ usuario.firstName | capitalizeFirst : true }}
         {{ usuario.lastName | capitalizeFirst : true }}
-
         } @else { Mi Cuenta }
       </span>
     </div>
