@@ -1915,7 +1915,7 @@ table thead tr {
 .table > tfoot > tr > th,
 .table > thead > tr > td,
 .table > thead > tr > th {
-  padding: 8px 15px !important;
+  padding: 8px 15px;
 }
 
 table th:first-child {
@@ -1943,9 +1943,9 @@ table {
 
 table tbody td,
 table thead th {
-  border-bottom: 1px solid #e7e7e7 !important;
+  border-bottom: 1px solid #e7e7e7;
   font-size: 0.9375rem;
-  padding: 8px 15px !important;
+  padding: 8px 15px;
 }
 
 .table-shadow > thead {

@@ -22,7 +22,7 @@
   [ngStyle]="{ 'font-family': folio ? 'Lato, sans-serif': 'AvenirLTStd, sans-serif' }"
 >
   <div
-    class="container rounded"
+    class="container-s rounded"
     style="
       border-color: rgb(214, 214, 214);
       border-width: 1px;
@@ -30,7 +30,7 @@
     "
   >
     <div class="row p-1">
-      <div class="md:col-8 sm:col-9 py-0">
+      <div class="md:col-8 sm:col-9 py-0 px-1">
         <div class="row m-0">
           <div
             class="col-12 p-0"
@@ -296,8 +296,8 @@
                 <table class="table2 p-0 m-0 borderless">
                   <tbody>
                     <tr>
-                      <td class="p-0 txtNormal">&nbsp;</td>
-                      <td class="p-0 pull-right txtNormal">&nbsp;</td>
+                      <td class="p-0 txtNormal"></td>
+                      <td class="p-0 pull-right txtNormal"></td>
                     </tr>
                     <tr *ngIf="precioEspecial">
                       <td class="p-0 txtNormal">Unidad</td>
@@ -358,16 +358,16 @@
                 <table class="table2 p-0 m-0 borderless">
                   <tbody>
                     <tr *ngIf="!plana.products.cantidad">
-                      <td class="p-0 txtNormal">&nbsp;</td>
-                      <td class="p-0 pull-right txtNormal">&nbsp;</td>
+                      <td class="p-0 txtNormal"></td>
+                      <td class="p-0 pull-right txtNormal"></td>
                     </tr>
                     <tr *ngIf="!(precioEspecial && tipo==='Automatico')">
-                      <td class="p-0 txtNormal">&nbsp;</td>
-                      <td class="p-0 pull-right txtNormal">&nbsp;</td>
+                      <td class="p-0 txtNormal"></td>
+                      <td class="p-0 pull-right txtNormal"></td>
                     </tr>
 
                     <tr *ngIf="precioEspecial && tipo==='Automatico'">
-                      <td class="p-0 txtNormal fw-bold text-start">&nbsp;</td>
+                      <td class="p-0 txtNormal fw-bold text-start"></td>
                       <td
                         class="p-0 pull-right product-card__old-price"
                         title="Precio con descuento cliente"
@@ -497,7 +497,7 @@
       </div>
 
       <ng-container *ngIf="plana.products.images; else anterior">
-        <div class="md:col-4 sm:col-3 py-0 justify-content-between pt-3">
+        <div class="md:col-4 sm:col-3 px-1 pb-0 justify-content-between pt-3">
           <img
             *ngIf="plana.products.images[0][0] == 1"
             class="img-fluid"
@@ -526,7 +526,7 @@
 
       <ng-template #anterior>
         <div
-          class="md:col-4 sm:col-3 justify-content-between pt-3"
+          class="md:col-4 sm:col-3 pb-0 px-1 justify-content-between pt-3"
           style="height: 225px"
         >
           <img
