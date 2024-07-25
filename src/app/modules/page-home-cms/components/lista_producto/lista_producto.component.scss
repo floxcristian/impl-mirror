@@ -136,9 +136,10 @@
   }
 }
 
+/*
 ::ng-deep.carouselLista .owl-carousel .owl-stage {
   //display: flex !important;
-}
+}*/
 
 .cargandoCent {
   font-size: 2rem;
@@ -229,4 +230,13 @@
     color: #0d61bb;
     margin-bottom: -15px;
   }
+}
+
+::ng-deep.owl-carousel .owl-stage {
+  display: flex !important;
+}
+
+::ng-deep.owl-carousel .owl-item {
+  display: flex !important;
+  flex: 1 0 auto !important;
 }

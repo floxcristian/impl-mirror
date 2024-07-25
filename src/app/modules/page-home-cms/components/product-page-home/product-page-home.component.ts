@@ -69,16 +69,14 @@ export class ProductPageHomeComponent implements OnInit {
   }
   carouselOptions: OwlOptions = {
     items: 5,
-    nav: false,
+    nav: false, //
     dots: true,
     loop: true,
     autoplay: false,
-    lazyLoad: true,
     autoplayTimeout: 4000,
-    // center: true,
-    stagePadding: 50,
+    lazyLoad: true, //
+    // stagePadding: 50, //
     margin: 10,
-    //autoHeight: false,
     autoWidth: true,
     responsive: {
       920: { items: 4 },

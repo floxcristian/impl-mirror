@@ -154,7 +154,8 @@
 }
 
 .alturaimg {
-  min-height: 202.8px;
+  /*min-height: 202.8px;*/
+  // height: 120px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -164,7 +165,8 @@
 @media (max-width: 500px) {
   .alturaimg {
     // min-height: 152.63px;
-    min-height: 159.59px;
+    /*min-height: 159.59px;*/
+    // height: 159.59px;
     display: flex;
     justify-content: center;
     align-items: center;

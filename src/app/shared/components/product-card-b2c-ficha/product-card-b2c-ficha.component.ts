@@ -56,6 +56,12 @@ export class ProductCardB2cFichaComponent implements OnInit {
   @Input() set product(value: any) {
     this.productData = value;
     this.productData.name = this.root.limpiarNombres(this.productData.name);
+    this.showDelivery =
+      value.deliverySupply?.deliveryLocation &&
+      value.deliverySupply?.pickupLocation &&
+      (value.stockSummary.branchStock || value.stockSummary.companyStock)
+        ? true
+        : false;
     this.generateTags(this.productData.metaTags);
   }
 
@@ -81,6 +87,7 @@ export class ProductCardB2cFichaComponent implements OnInit {
   cyberMonday: number = 0;
   isOfficial: number = 0;
   imageOEM: string = '';
+  showDelivery!: boolean;
 
   constructor(
     private cd: ChangeDetectorRef,

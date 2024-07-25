@@ -10,13 +10,11 @@
   }"
   style="height: 100%; overflow: hidden"
 >
-  <!-- min-height: 380px -->
   <span class="floating-offers" *ngIf="layout === 'horizontal'"> 50% </span>
 
   @if(productData.priceInfo.hasScalePrice){
   <div
     class="product-card__badges-list hidden lg:block"
-    *ngIf="productData.priceInfo.hasScalePrice"
     style="margin-left: 15px !important"
   >
     <div *ngIf="!preciosEscalas">
@@ -113,7 +111,10 @@
   }
 
   <!-- Start::imagen -->
-  <div class="alturaimg lg:h-12rem" [class.text-center]="home || cartClass">
+  <div
+    class="alturaimg h-10rem lg:h-12rem"
+    [class.text-center]="home || cartClass"
+  >
     <a
       class="flex align-items-center justify-content-center"
       style="max-width: 90%; height: auto"
@@ -125,7 +126,7 @@
     >
       <img
         [src]="root.getUrlImagenMiniatura(productData)"
-        class="img-fluid lazyload"
+        class="lazyload"
         [class.imgH]="home"
         [class.imgC]="cartClass"
         [alt]="productData.name"
@@ -135,7 +136,7 @@
   </div>
   <!-- End::imagen -->
 
-  <div class="product-card__info relative px-0">
+  <div class="product-card__info relative px-0" style="outline: 1px solid red">
     <!-- Start::badge cybermonday -->
     @if(cyberMonday){
     <div class="product-card__badges-list-right">
@@ -173,6 +174,7 @@
     </div>
     <!-- End::badge producto oficial -->
 
+    <!-- Start::badge cyberday -->
     <div
       class="product-card__badges-list-right"
       *ngIf="cyber && cyberMonday === 0"
@@ -194,6 +196,7 @@
         </picture>
       </div>
     </div>
+    <!-- End::badge cyberday -->
 
     <div class="product-card__name">
       <!-- Start::marca -->
@@ -236,7 +239,7 @@
     productData.stockSummary.companyStock){
     <!-- outline: 1px solid red -->
     <div
-      class="product-card__prices flex flex-column mt-2 justify-content-center"
+      class="product-card__prices flex flex-column justify-content-center mt-2"
       style="height: 39px"
       [ngStyle]="{
         'align-items':
@@ -248,6 +251,7 @@
     >
       @if(productData.priceInfo.commonPrice ===
       productData.priceInfo.customerPrice) {
+      <!-- Start::precio normal -->
       <div class="product-card__new-price py-0">
         {{
           (session.preferences.iva
@@ -257,11 +261,10 @@
         }}
         <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
       </div>
+      <!-- End::precio normal -->
       } @else {
-      <div
-        class="product-card__new-price text-red-500 py-0"
-        style="padding-left: 0 !important; padding-right: 5px !important"
-      >
+      <!--- Start::precio oferta y normal --->
+      <div class="product-card__new-price text-red-500 py-0">
         {{
           (session.preferences.iva
             ? productData.priceInfo.customerPrice
@@ -270,15 +273,7 @@
         }}
         <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
       </div>
-      <div
-        tooltip="Precio normal"
-        class="product-card__old-price py-0"
-        style="
-          text-align: left;
-          padding-left: 0 !important;
-          padding-right: 5px !important;
-        "
-      >
+      <div tooltip="Precio normal" class="product-card__old-price py-0">
         {{
           (session.preferences.iva
             ? productData.priceInfo.commonPrice
@@ -286,8 +281,8 @@
           ) | currencyFormat
         }}
         <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
-        <br />
       </div>
+      <!--- End::precio oferta y normal --->
       }
     </div>
     }
@@ -414,7 +409,6 @@
   <!-- Start::sujeto a disponibilidad -->
   @if(!productData.stockSummary.branchStock &&
   !productData.stockSummary.companyStock){
-  <!-- style="outline: 1px solid red; height: 39px" -->
   <div
     class="product-card__info px-0 mt-2 justify-content-center"
     style="height: 39px"

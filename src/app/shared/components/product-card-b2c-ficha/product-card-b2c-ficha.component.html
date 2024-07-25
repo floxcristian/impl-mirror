@@ -1,5 +1,6 @@
 <div
   class="product-card p-2 lg-p-3"
+  [style.min-height]="showDelivery ? '377px' : '335px'"
   [ngClass]="{
     'product-card--layout--grid product-card--size--sm': layout === 'grid-sm',
     'product-card--layout--grid product-card--size--nl': layout === 'grid-nl',
@@ -7,12 +8,12 @@
     'product-card--layout--list': layout === 'list',
     'product-card--layout--horizontal': layout === 'horizontal'
   }"
-  style="height: 100%; overflow: hidden; min-height: 385px"
+  style="height: 100%; overflow: hidden"
 >
   <span class="floating-offers" *ngIf="layout === 'horizontal'"> 50% </span>
 
   @if(productData.priceInfo.hasScalePrice){
-  <div class="product-card__badges-list" style="margin-left: 0px !important">
+  <div class="product-card__badges-list">
     <div
       class="cursor-pointer"
       [ngbPopover]="popoverContent"
@@ -94,13 +95,17 @@
     </div>
   </div>
 
-  <div
-    [ngClass]="
+  <!-- Start::imagen -->
+  <!--  [ngClass]="
       isOnProductPage ? 'recommended_image__product_page' : 'alturaimg'
-    "
+    " -->
+  <div
+    class="alturaimg h-10rem lg:h-12rem"
     [class.text-center]="home || cartClass"
   >
     <a
+      class="flex align-items-center justify-content-center"
+      style="max-width: 90%; height: auto"
       appClick
       (click)="cartService.setProductOrigin(origen)"
       [routerLink]="
@@ -109,13 +114,14 @@
     >
       <img
         [src]="root.getUrlImagenMiniatura(productData)"
-        class="img-fluid lazyload"
+        class="lazyload"
         [class.imgH]="home"
         [class.imgC]="cartClass"
         [alt]="productData.name"
       />
     </a>
   </div>
+  <!-- End::imagen -->
 
   <div class="product-card__info">
     <div class="product-card__name">
@@ -158,7 +164,7 @@
     @if(productData.stockSummary.branchStock ||
     productData.stockSummary.companyStock){
     <div
-      class="product-card__prices flex flex-column mt-2"
+      class="product-card__prices flex flex-column justify-content-center mt-2"
       style="height: 39px"
       [ngStyle]="{
         'align-items':
@@ -186,10 +192,7 @@
       <!-- End::precio normal -->
       } @else {
       <!--- Start::precio oferta y normal --->
-      <div
-        class="product-card__new-price text-red-500 py-0"
-        style="padding-left: 0 !important; padding-right: 5px !important"
-      >
+      <div class="product-card__new-price text-red-500 py-0">
         {{
           (session.preferences.iva
             ? productData.priceInfo.customerPrice
@@ -198,15 +201,7 @@
         }}
         <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
       </div>
-      <div
-        tooltip="Precio normal"
-        class="product-card__old-price py-0"
-        style="
-          text-align: left;
-          padding-left: 0 !important;
-          padding-right: 5px !important;
-        "
-      >
+      <div tooltip="Precio normal" class="product-card__old-price py-0">
         {{
           (session.preferences.iva
             ? productData.priceInfo.commonPrice
@@ -214,153 +209,147 @@
           ) | currencyFormat
         }}
         <em> {{ session.preferences.iva ? 'c/iva' : 's/iva' }} </em>
-        <br />
       </div>
       <!--- End::precio oferta y normal --->
-
       }
     </div>
     }
+    <!-- End::precios -->
   </div>
 
   <!-- Start::fecha retiro y recibo -->
-  <ng-container
-    *ngIf="
-      productData.deliverySupply?.deliveryLocation &&
-      productData.deliverySupply?.pickupLocation &&
-      (productData.stockSummary.branchStock ||
-        productData.stockSummary.companyStock)
-    "
-  >
-    <div class="product-card__info flex-column mt-1">
-      <ng-container>
-        <div class="flex align-items-center">
-          <ng-container *ngIf="productData.deliverySupply?.deliveryIsToday">
-            <i class="fas fa-shipping-fast me-2"></i>
-            <div
-              style="
-                margin-top: 2px;
-                padding: 0px 5px;
-                background-color: #00800033;
-                border-radius: 4px;
-              "
-            >
-              <i
-                style="
-                  color: green;
-                  font-weight: bold;
-                  font-style: normal;
-                  font-size: 12px;
-                "
-                >Llega hoy</i
-              >
-            </div>
-          </ng-container>
-          <ng-container *ngIf="!productData.deliverySupply?.deliveryIsToday">
-            <div
-              *ngIf="
-                productData.deliverySupply?.deliveryDate == null;
-                else fechaDelivery
-              "
-            >
-              <i class="fas fa-shipping-fast me-2" style="color: grey"></i>
-              <i style="color: grey; font-style: normal; font-size: 12px"
-                >No disponible</i
-              >
-            </div>
-            <ng-template #fechaDelivery>
-              <i class="fas fa-shipping-fast me-2"></i>
-              <i
-                style="
-                  color: black;
-                  font-weight: bold;
-                  font-style: normal;
-                  font-size: 12px;
-                "
-                >Llega
-                {{
-                  productData.deliverySupply?.deliveryDate
-                    | date : 'dd/MM'
-                    | uppercase
-                }}</i
-              >
-            </ng-template>
-          </ng-container>
-        </div>
-        <ng-container
-          *ngIf="
-            productData.deliverySupply?.pickupIsToday !== null &&
-            productData.deliverySupply?.pickupIsToday
+  @if(showDelivery){
+  <div class="product-card__info flex-column mt-1 mt-1 lg:mt-2 px-0">
+    <div class="flex align-items-center">
+      <ng-container *ngIf="productData.deliverySupply?.deliveryIsToday">
+        <i class="fas fa-shipping-fast me-2"></i>
+        <div
+          style="
+            margin-top: 2px;
+            padding: 0px 5px;
+            background-color: #00800033;
+            border-radius: 4px;
           "
         >
-          <div class="flex align-items-center">
-            <i class="fas fa-store me-2"></i>
-            <div
-              style="
-                margin-top: 2px;
-                padding: 0px 5px;
-                background-color: #00800033;
-                border-radius: 4px;
-              "
-            >
-              <i
-                style="
-                  color: green;
-                  font-weight: bold;
-                  font-style: normal;
-                  font-size: 12px;
-                "
-                >Retira hoy</i
-              >
-            </div>
-          </div>
-        </ng-container>
-        <ng-container
-          *ngIf="
-            productData.deliverySupply?.pickupIsToday == null ||
-            !productData.deliverySupply?.pickupIsToday
-          "
-        >
-          <div
-            style="margin-top: 2px"
-            *ngIf="
-              productData.deliverySupply?.pickupDate == null;
-              else fechaEntregaRetiro
+          <i
+            style="
+              color: green;
+              font-weight: bold;
+              font-style: normal;
+              font-size: 12px;
             "
+            >Llega hoy</i
           >
-            <i class="fas fa-store me-2" style="color: grey"></i>
-            <i style="color: grey; font-style: normal; font-size: 12px"
-              >No disponible</i
-            >
-          </div>
-          <ng-template #fechaEntregaRetiro>
-            <div style="margin-top: 2px">
-              <i class="fas fa-store me-2"></i>
-              <i
-                style="
-                  color: black;
-                  font-weight: bold;
-                  font-style: normal;
-                  font-size: 12px;
-                "
-                >Retira
-                {{
-                  productData.deliverySupply?.pickupDate
-                    | date : 'dd/MM'
-                    | uppercase
-                }}</i
-              >
-            </div>
-          </ng-template>
-        </ng-container>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!productData.deliverySupply?.deliveryIsToday">
+        <div
+          *ngIf="
+            productData.deliverySupply?.deliveryDate == null;
+            else fechaDelivery
+          "
+        >
+          <i class="fas fa-shipping-fast me-2" style="color: grey"></i>
+          <i style="color: grey; font-style: normal; font-size: 12px"
+            >No disponible</i
+          >
+        </div>
+        <ng-template #fechaDelivery>
+          <i class="fas fa-shipping-fast me-2"></i>
+          <i
+            style="
+              color: black;
+              font-weight: bold;
+              font-style: normal;
+              font-size: 12px;
+            "
+            >Llega
+            {{
+              productData.deliverySupply?.deliveryDate
+                | date : 'dd/MM'
+                | uppercase
+            }}</i
+          >
+        </ng-template>
       </ng-container>
     </div>
-  </ng-container>
+    <ng-container
+      *ngIf="
+        productData.deliverySupply?.pickupIsToday !== null &&
+        productData.deliverySupply?.pickupIsToday
+      "
+    >
+      <div class="flex align-items-center">
+        <i class="fas fa-store me-2"></i>
+        <div
+          style="
+            margin-top: 2px;
+            padding: 0px 5px;
+            background-color: #00800033;
+            border-radius: 4px;
+          "
+        >
+          <i
+            style="
+              color: green;
+              font-weight: bold;
+              font-style: normal;
+              font-size: 12px;
+            "
+            >Retira hoy</i
+          >
+        </div>
+      </div>
+    </ng-container>
+    <ng-container
+      *ngIf="
+        productData.deliverySupply?.pickupIsToday == null ||
+        !productData.deliverySupply?.pickupIsToday
+      "
+    >
+      <div
+        style="margin-top: 2px"
+        *ngIf="
+          productData.deliverySupply?.pickupDate == null;
+          else fechaEntregaRetiro
+        "
+      >
+        <i class="fas fa-store me-2" style="color: grey"></i>
+        <i style="color: grey; font-style: normal; font-size: 12px"
+          >No disponible</i
+        >
+      </div>
+      <ng-template #fechaEntregaRetiro>
+        <div style="margin-top: 2px">
+          <i class="fas fa-store me-2"></i>
+          <i
+            style="
+              color: black;
+              font-weight: bold;
+              font-style: normal;
+              font-size: 12px;
+            "
+            >Retira
+            {{
+              productData.deliverySupply?.pickupDate
+                | date : 'dd/MM'
+                | uppercase
+            }}</i
+          >
+        </div>
+      </ng-template>
+    </ng-container>
+  </div>
+  }
   <!-- End::fecha retiro y recibo -->
 
-  <!-- Start::sujeto a disponibilidad -->@if(!productData.stockSummary.branchStock
-  && !productData.stockSummary.companyStock){
-  <div class="product-card__info px-0 mt-2">
+  <!-- Start::sujeto a disponibilidad -->
+  @if(!productData.stockSummary.branchStock &&
+  !productData.stockSummary.companyStock){
+  <div
+    class="product-card__info px-0 mt-2 justify-content-center"
+    style="height: 39px"
+  >
     <div class="no_stock text-center bg-red-500 text-50 border-round-md">
       <span>Sujeto a disponibilidad </span>
     </div>

@@ -1,4 +1,5 @@
-<div class="cargandoCent text-center" *ngIf="cargar">
+@if(cargar){
+<div class="cargandoCent text-center">
   <i
     class="fak fa-implementos fa-bounce"
     style="font-size: 48px; color: #0063b9"
@@ -14,16 +15,14 @@
     Cargando productos...
   </div>
 </div>
-
-<div *ngIf="!cargar" class="container-product" style="margin-top: 10px">
+} @else {
+<div class="container-product" style="margin-top: 10px">
   <div class="row mt-2">
     <div
       class="col-sm-12 flex justify-content-center"
       [ngStyle]="{ 'margin-bottom': !isVacio(subtitle) ? '0px' : '1.8rem' }"
     >
-      <h1 class="text-h1">
-        {{ title }}
-      </h1>
+      <h1 class="text-h1">{{ title }}</h1>
     </div>
   </div>
   <div class="row mt-3" *ngIf="!isVacio(subtitle)">
@@ -67,3 +66,4 @@
     </div>
   </div>
 </div>
+}
