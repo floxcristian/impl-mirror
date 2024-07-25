@@ -303,6 +303,7 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
       this.tienda = null;
       this.buildForm();
     }
+    this.updateStep()
 
     this.idArchivo = uuidv1();
     this.idArchivoMobile = uuidv1();
@@ -423,6 +424,10 @@ export class PageCartPaymentMethodComponent implements OnInit, OnDestroy {
     if (!this.userSession?.businessLine && !this.guest) {
       this.obtenerGiros();
     }
+  }
+
+  updateStep(){
+    if(this.cartSession._id) this.cartService.saveStep(this.cartSession._id,3).subscribe()
   }
 
   private async updateReceive() {

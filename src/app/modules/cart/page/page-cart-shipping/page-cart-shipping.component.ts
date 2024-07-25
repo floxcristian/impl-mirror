@@ -216,9 +216,8 @@ export class PageCartShippingComponent implements OnInit {
   }
 
   async ngOnInit() {
-    console.log('this.cartSession: ', this.cartSession);
     this.isLoggedIn = this.sessionService.isLoggedIn();
-
+    this.updateStep()
     this.setNotificationContact();
     this.obtieneDireccionesCliente();
     this.loadStores();
@@ -254,7 +253,6 @@ export class PageCartShippingComponent implements OnInit {
         )
       )
       .subscribe((items) => {
-        console.log('itemsx: ', this.items);
         this.items = items;
       });
 
@@ -266,6 +264,10 @@ export class PageCartShippingComponent implements OnInit {
 
   ngAfterContentChecked(): void {
     this.cd.detectChanges();
+  }
+
+  updateStep(){
+    if(this.cartSession._id) this.cart.saveStep(this.cartSession._id,2).subscribe()
   }
 
   async obtieneDireccionesCliente(isDelete: boolean = false) {
@@ -322,10 +324,11 @@ export class PageCartShippingComponent implements OnInit {
     this.invitado = this.guestStorage.get() as IGuest;
     const contact = SessionUtils.getContact(this.userSession, this.invitado);
     if (contact?.name) {
+      console.log('odis')
       this.cart.setNotificationContact(
         this.cartSession._id!.toString(),
         contact
-      );
+      ).subscribe();
     }
   }
 
@@ -441,7 +444,6 @@ export class PageCartShippingComponent implements OnInit {
         this.selectedShippingIdStore = selectedStoreDetail.id;
         this.tempShippingIdStore = this.selectedShippingIdStore;
         this.wereLoadedStores = true;
-        console.log('loadStores');
         this.getPickup(false);
       },
     });
@@ -451,7 +453,6 @@ export class PageCartShippingComponent implements OnInit {
    * Obtener fechas para retiro en tienda.
    */
   async getPickup(removeShipping = true) {
-    console.log('isLoadingPickupDates1: true');
     this.isLoadingPickupDates = true;
 
     this.fechas = [];
@@ -531,11 +532,9 @@ export class PageCartShippingComponent implements OnInit {
           this.shippingDaysStore,
           this.fecha_actual
         );
-        console.log('isLoadingPickupDates2: false');
         this.isLoadingPickupDates = false;
       } catch (e) {
         console.log(e);
-        console.log('isLoadingPickupDates3: false');
         this.isLoadingPickupDates = false;
         this.shippingDaysStore = [];
       }
@@ -564,7 +563,6 @@ export class PageCartShippingComponent implements OnInit {
       this.usuarioInv = this.guestStorage.get()!;
     }
 
-    console.log('this.shippingDays2: ', this.shippingDays[pos]);
     this.grupoShippingActive = this.shippingDays[pos].grupo ?? null;
     this.productosSeleccionado = this.shippingDays[pos].productodespacho;
 
@@ -593,8 +591,6 @@ export class PageCartShippingComponent implements OnInit {
   seleccionaRetiro(item: ShippingService, pos: number): void {
     this.obj_fecha[pos] = item;
     this.cardShippingActiveStore = item.index;
-    console.log('pos: ', pos);
-    console.log('this.shippingDaysStore1: ', this.shippingDaysStore);
     // FIXME: shippingDaysStore queda vacio.
     this.grupoShippingActive = this.shippingDaysStore[pos].grupo ?? null;
     this.shippingSelected = (this.shippingDaysStore[pos].fechas || []).find(
@@ -738,7 +734,6 @@ export class PageCartShippingComponent implements OnInit {
     event: any,
     formaEntrega: 'retiro' | 'despacho' | 'sucursal'
   ): void {
-    console.log('onSelect');
     this.loadingResumen = true;
     this.select_grupos = false;
     this.confirmar = false;

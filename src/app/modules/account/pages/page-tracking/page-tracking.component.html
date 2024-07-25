@@ -15,13 +15,13 @@
     <div class="card pt-0">
       <div style="margin-top: 10px">
         <app-trakingb2c
-          *ngIf="['temp', 'compradorb2c'].includes(usuario?.userRole || '')"
+          *ngIf="['temp', 'b2c'].includes(usuario?.userRole || '')"
           [OV]="OV || ''"
         ></app-trakingb2c>
         <app-page-tracking-ov
           *ngIf="
             usuario?.userRole &&
-            !['temp', 'compradorb2c'].includes(usuario?.userRole || '')
+            !['temp', 'b2c'].includes(usuario?.userRole || '')
           "
         ></app-page-tracking-ov>
       </div>

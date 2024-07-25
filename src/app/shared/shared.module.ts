@@ -79,6 +79,7 @@ import { ModalScalePriceComponent } from './components/modal-scale-price/modal-s
 import { RelativeTimePipe } from './pipes-v2/relative-time.pipe';
 import { CountdownTimerModule } from './components/countdown-timer/countdown-timer.module';
 import { TranslateStatusPipe } from './pipes-v2/translate-status.pipe';
+import { WhatsappComponent } from './components/whatsapp/whatsapp.component';
 
 const BOOSTRAP_MODULES = [NgbPopoverModule, NgbNavModule];
 
@@ -137,6 +138,7 @@ const BOOSTRAP_MODULES = [NgbPopoverModule, NgbNavModule];
     ModalScalePriceComponent,
     RelativeTimePipe,
     TranslateStatusPipe,
+    WhatsappComponent
   ],
   imports: [
     CommonModule,
@@ -210,6 +212,7 @@ const BOOSTRAP_MODULES = [NgbPopoverModule, NgbNavModule];
     BlockHeaderComponent,
     RelativeTimePipe,
     TranslateStatusPipe,
+    WhatsappComponent
   ],
   providers: [DecimalPipe, DatePipe],
 })

@@ -1073,4 +1073,8 @@ export class CartService {
       salesId,
     });
   }
+
+  saveStep(shoppingCartId:string, step:number){
+    return this.http.put(`${API_CART}/update-step`,{shoppingCartId,step})
+  }
 }
