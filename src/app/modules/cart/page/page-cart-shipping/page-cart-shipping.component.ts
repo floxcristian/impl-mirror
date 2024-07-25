@@ -317,7 +317,6 @@ export class PageCartShippingComponent implements OnInit {
    * Establecer contacto para notificaciones del carro.
    */
   private setNotificationContact(): void {
-    //this.guest = this.guestStorage.get() as IGuest;
     const contact = SessionUtils.getContact(this.userSession, this.guest);
     if (!contact?.name) return;
     this.cart
@@ -794,14 +793,12 @@ export class PageCartShippingComponent implements OnInit {
   // evento ejecutado cuando un invitado agrega una nueva direccion.
   async direccionVisita(direccion: any, removeShipping = true) {
     this.showAddress = true;
-    let invitado = this.guestStorage.get() as IGuest;
-
-    invitado.street = direccion.calle;
-    invitado.commune = direccion.comuna;
-    invitado.completeComune = direccion.comunaCompleta;
-    invitado.number = direccion.numero;
-    invitado.department = direccion.depto ? direccion.depto : 0;
-    this.guestStorage.set(invitado);
+    this.guest.street = direccion.calle;
+    this.guest.commune = direccion.comuna;
+    this.guest.completeComune = direccion.comunaCompleta;
+    this.guest.number = direccion.numero;
+    this.guest.department = direccion.depto ? direccion.depto : 0;
+    this.guestStorage.set(this.guest);
     this.usuarioInv = this.guestStorage.get()!;
     this.loadingShipping = true;
     this.shippingSelected = null;
@@ -820,29 +817,28 @@ export class PageCartShippingComponent implements OnInit {
     this.cardShippingActive = 0;
     let i = 0;
 
-    const documentId = invitado.documentId ?? '';
     const createGuestRequest: ICreateGuest = {
-      email: invitado.email ?? '',
-      documentId: documentId,
+      email: this.guest.email ?? '',
+      documentId: this.guest.documentId,
       documentType: environment.country.toUpperCase(),
-      firstName: invitado.firstName ?? '',
-      lastName: invitado.lastName ?? '',
-      phone: invitado.phone ?? '',
+      firstName: this.guest.firstName ?? '',
+      lastName: this.guest.lastName ?? '',
+      phone: this.guest.phone ?? '',
       address: {
-        location: invitado.completeComune
-          ? invitado.completeComune.split('@')[0]
+        location: this.guest.completeComune
+          ? this.guest.completeComune.split('@')[0]
           : 'SAN BERNARDO',
-        city: invitado.completeComune
-          ? invitado.completeComune.split('@')[0]
+        city: this.guest.completeComune
+          ? this.guest.completeComune.split('@')[0]
           : 'SAN BERNARDO',
-        region: invitado.completeComune
-          ? invitado.completeComune.split('@')[2]
+        region: this.guest.completeComune
+          ? this.guest.completeComune.split('@')[2]
           : '13',
-        province: invitado.completeComune
-          ? invitado.completeComune.split('@')[1]
+        province: this.guest.completeComune
+          ? this.guest.completeComune.split('@')[1]
           : '134',
-        number: invitado.number ?? '',
-        street: invitado.street ?? '',
+        number: this.guest.number ?? '',
+        street: this.guest.street ?? '',
         departmentOrHouse: direccion.depto ?? '',
         reference: direccion.referencia ?? '',
         latitude: direccion.latitud ?? 0,
