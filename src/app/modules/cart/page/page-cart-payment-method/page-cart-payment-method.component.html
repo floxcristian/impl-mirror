@@ -771,7 +771,7 @@
                         </div>
                       </div>
 
-                      <div class="col-10 py-0">
+                      <div class="col-10 py-0 text-center">
                         <span>
                           <i
                             *ngIf="item.iconImage"
@@ -1557,7 +1557,7 @@
               <div class="mt-2 col-6 py-0 px-1" *ngIf="!cd_ver">
                 <a
                   [routerLink]="['/', 'carro-compra', 'metodo-de-envio']"
-                  class="btn btn-border-primary w-100 btn-lg text-center"
+                  class="btn btn-border-primary text-sm w-100 btn-lg text-center"
                 >
                   <i
                     class="fas fa-chevron-left"
@@ -1592,7 +1592,7 @@
                       selectedDocument === invoiceType.INVOICE &&
                       !selectedGiro)
                   "
-                  class="btn btn-lg btn-secondary w-100 text-center"
+                  class="btn btn-lg text-sm text-sm btn-secondary w-100 text-center"
                 >
                   Ir a pagar
                   <i
@@ -1623,7 +1623,7 @@
                       selectedDocument === invoiceType.INVOICE &&
                       !selectedGiro)
                   "
-                  class="btn btn-lg btn-secondary w-100 text-center"
+                  class="btn btn-lg text-sm btn-secondary w-100 text-center"
                 >
                   Ir a pagar
                   <i
@@ -1638,7 +1638,7 @@
                   name="paymentwebpay2 "
                   [disabled]="true"
                   *ngIf="!paymentMethodActive && guest"
-                  class="btn btn-lg btn-secondary w-100 text-center"
+                  class="btn btn-lg text-sm btn-secondary w-100 text-center"
                 >
                   Ir a pagar
                   <i
@@ -1665,7 +1665,7 @@
                     !guest
                   "
                   (click)="paymentMercadopago()"
-                  class="btn btn-lg btn-secondary w-100 text-center"
+                  class="btn btn-lg text-sm btn-secondary w-100 text-center"
                 >
                   Ir a pagar
                   <i
@@ -1692,7 +1692,7 @@
                       (!formDireccion.valid || !tienda))
                   "
                   (click)="paymentMercadopago()"
-                  class="btn btn-lg btn-secondary w-100 tex-tcenter"
+                  class="btn btn-lg text-sm btn-secondary w-100 tex-tcenter"
                 >
                   Ir a pagar
                   <i
@@ -1718,7 +1718,7 @@
                     !guest
                   "
                   (click)="paymentKhipu()"
-                  class="btn btn-lg btn-secondary w-100 text-center"
+                  class="btn btn-lg text-sm btn-secondary w-100 text-center"
                 >
                   Ir a pagar
                   <i
@@ -1745,7 +1745,7 @@
                   "
                   *ngIf="guest && paymentMethodActive == 'khipu'"
                   (click)="paymentKhipu()"
-                  class="btn btn-lg btn-secondary w-100 tex-tcenter"
+                  class="btn btn-lg text-sm btn-secondary w-100 tex-tcenter"
                 >
                   Ir a pagar
                   <i
@@ -1771,7 +1771,7 @@
                     !guest
                   "
                   (click)="creteateTransactionTransBank()"
-                  class="btn btn-lg btn-secondary w-100 text-center"
+                  class="btn btn-lg text-sm btn-secondary w-100 text-center"
                 >
                   Ir a pagar
                   <i
@@ -1798,7 +1798,7 @@
                   "
                   *ngIf="guest && paymentMethodActive == 'webPay'"
                   (click)="creteateTransactionTransBank()"
-                  class="btn btn-lg btn-secondary w-100 text-center"
+                  class="btn btn-lg text-sm btn-secondary w-100 text-center"
                 >
                   Ir a pagar
                   <i
@@ -1831,7 +1831,7 @@
                     paymentMethodActive == 'sinDefinir'
                   "
                   (click)="purchaseRequest()"
-                  class="btn btn-lg btn-secondary w-100 text-center"
+                  class="btn btn-lg text-sm btn-secondary w-100 text-center"
                 >
                   Solicitar Compra *
                 </button>
@@ -2439,7 +2439,7 @@
                       selectedDocument === invoiceType.INVOICE &&
                       !selectedGiro)
                   "
-                  class="btn btn-lg btn-secondary w-100 text-center"
+                  class="btn btn-lg text-sm btn-secondary w-100 text-center"
                 >
                   Ir a pagar
                   <i class="fas fa-chevron-right" style="margin-left: 10px"></i>
@@ -2466,7 +2466,7 @@
                       selectedDocument === invoiceType.INVOICE &&
                       !selectedGiro)
                   "
-                  class="btn btn-lg btn-secondary w-100 text-center"
+                  class="btn btn-lg text-sm btn-secondary w-100 text-center"
                 >
                   Ir a pagar<i
                     class="fa-solid fa-comment-sms"
@@ -2491,7 +2491,7 @@
                     !guest
                   "
                   (click)="creteateTransactionTransBank()"
-                  class="btn btn-lg btn-secondary w-100 text-center"
+                  class="btn btn-lg text-sm btn-secondary w-100 text-center"
                 >
                   Ir a pagar <i class="fas fa-chevron-right"></i>
                 </button>
@@ -2514,7 +2514,7 @@
                       (!formDireccion.valid || !tienda))
                   "
                   (click)="creteateTransactionTransBank()"
-                  class="btn btn-lg btn-secondary w-100 text-center"
+                  class="btn btn-lg text-sm btn-secondary w-100 text-center"
                 >
                   Ir a pagar <i class="fas fa-chevron-rightp"></i>
                 </button>
@@ -2537,7 +2537,7 @@
                     !guest
                   "
                   (click)="paymentMercadopago()"
-                  class="btn btn-lg btn-secondary w-100 text-center"
+                  class="btn btn-lg text-sm btn-secondary w-100 text-center"
                 >
                   Ir a pagar <i class="fas fa-chevron-right"></i>
                 </button>
@@ -2561,7 +2561,7 @@
                       (!formDireccion.valid || !tienda))
                   "
                   (click)="paymentMercadopago()"
-                  class="btn btn-lg btn-secondary w-100 tex-tcenter"
+                  class="btn btn-lg text-sm btn-secondary w-100 tex-tcenter"
                 >
                   Ir a pagar <i class="fas fa-chevron-right"></i>
                 </button>

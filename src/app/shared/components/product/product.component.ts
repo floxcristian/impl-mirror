@@ -99,7 +99,6 @@ export class ProductComponent implements OnInit, OnChanges {
     this.quantity.setValue(1);
 
     this.dataProduct = value;
-    console.log('dataProduct', this.dataProduct);
     this.images = GalleryUtils.formatImageSlider(value);
     this.generateTags(this.product.metaTags);
   }
@@ -275,7 +274,6 @@ export class ProductComponent implements OnInit, OnChanges {
   }
 
   generateTags(tags: MetaTag[] | undefined) {
-    console.log('tags', tags);
     if (tags) {
       tags.forEach((tag: MetaTag) => {
         if (tag.code === 'cyber')
@@ -291,7 +289,6 @@ export class ProductComponent implements OnInit, OnChanges {
         // else this.isOfficial = 0;
       });
     }
-    console.log('cyber value:', this.cyber);
   }
 
   ngOnChanges(): void {
