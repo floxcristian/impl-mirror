@@ -93,7 +93,7 @@ export class PageCartShippingComponent implements OnInit {
   usuarioInvitado: boolean = false;
 
   // ???
-  invitado!: IGuest;
+  guest!: IGuest;
   usuarioInv!: IGuest;
 
   showAddress: boolean = false;
@@ -207,7 +207,7 @@ export class PageCartShippingComponent implements OnInit {
 
     this.tienda_actual = this.geolocationStorage.get();
     this.userSession = this.sessionService.getSession();
-    this.invitado = this.guestStorage.get() as IGuest;
+    this.guest = this.guestStorage.get() as IGuest;
     this.cartSession = this.shoppingCartStorage.get()!;
     this.direccionConfigurada = this.customerPreferencesStorage.get();
   }
@@ -232,8 +232,6 @@ export class PageCartShippingComponent implements OnInit {
     this.cart.shippingValidateProducts$.subscribe(
       (r: IShoppingCartProduct[]) => {
         this.productsValidate = r;
-
-        this.invitado = this.guestStorage.get() as IGuest;
         this.userSession = this.sessionService.getSession();
         this.grupoShippingCart.grupo = [];
       }
@@ -254,7 +252,7 @@ export class PageCartShippingComponent implements OnInit {
       });
 
     if (isPlatformBrowser(this.platformId)) {
-      this.onSelectShippingType(null, 'despacho');
+      this.onSelectShippingType(null, 'retiro');
       this._gmtService.beginCheckout(dataLayer, this.cartSession);
     }
   }
@@ -319,8 +317,8 @@ export class PageCartShippingComponent implements OnInit {
    * Establecer contacto para notificaciones del carro.
    */
   private setNotificationContact(): void {
-    this.invitado = this.guestStorage.get() as IGuest;
-    const contact = SessionUtils.getContact(this.userSession, this.invitado);
+    //this.guest = this.guestStorage.get() as IGuest;
+    const contact = SessionUtils.getContact(this.userSession, this.guest);
     if (!contact?.name) return;
     this.cart
       .setNotificationContact(this.cartSession._id!.toString(), contact)
@@ -543,18 +541,14 @@ export class PageCartShippingComponent implements OnInit {
    * @param pos
    */
   seleccionaDespacho(item: ShippingService, pos: number): void {
-    let invitado: any = null;
-
     if (this.isLoggedIn) {
       this.recibeYoname = SessionUtils.getFullName(this.userSession);
       this.recidDireccion = this.selectedShippingId;
       this.obj_fecha[pos] = item;
-    }
-    if (this.invitado) {
-      invitado = this.guestStorage.get();
-      this.recibeYoname = SessionUtils.getFullName(invitado);
+    } else if (this.guest) {
+      this.recibeYoname = SessionUtils.getFullName(this.guest);
       this.recidDireccion = 0;
-      this.guestStorage.set(invitado);
+      this.guestStorage.set(this.guest);
       this.usuarioInv = this.guestStorage.get()!;
     }
     this.grupoShippingActive = this.shippingDays[pos]?.grupo ?? null;
@@ -774,11 +768,9 @@ export class PageCartShippingComponent implements OnInit {
       this.retiroFlag = false;
     }
 
-    let invitado = this.guestStorage.get();
-    if (invitado) {
-      invitado.deliveryType = 'RC';
-      this.guestStorage.remove();
-      this.guestStorage.set(invitado);
+    if (this.guest) {
+      this.guest.deliveryType = 'RC';
+      this.guestStorage.set(this.guest);
       this.usuarioInv = this.guestStorage.get()!;
 
       this.getDeliveries();
@@ -809,7 +801,6 @@ export class PageCartShippingComponent implements OnInit {
     invitado.completeComune = direccion.comunaCompleta;
     invitado.number = direccion.numero;
     invitado.department = direccion.depto ? direccion.depto : 0;
-    this.guestStorage.remove();
     this.guestStorage.set(invitado);
     this.usuarioInv = this.guestStorage.get()!;
     this.loadingShipping = true;

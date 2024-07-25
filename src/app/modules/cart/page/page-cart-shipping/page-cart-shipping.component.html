@@ -12,7 +12,7 @@
           <app-login-register
             [innerWidth]="innerWidth"
             (outInvitado)="usuarioVisita($event)"
-            [invitado]="invitado"
+            [invitado]="guest"
           />
         </div>
       </div>
@@ -229,11 +229,6 @@
                   </div>
                 </div>
 
-                <!--<pre>
-                  isLoadingPickupDates: {{ isLoadingPickupDates }}
-                  stores.length: {{ stores.length }}
-                  TiendasCargadas: {{ wereLoadedStores }}
-                </pre> -->
                 <app-loading-element
                   *ngIf="
                     isLoadingPickupDates ||
@@ -1026,20 +1021,22 @@
                 </div>
 
                 <div class="mt-1 col-6 py-0 px-1">
-                  <!-- || !cartSession.shipment?.addressId ||
-                      !productsValidate.length ||
-                      recibeOtra -->
                   <button
                     name="next"
                     *ngIf="
                       userSession.userRole != 'comprador' &&
                       userSession.userRole != 'buyer'
                     "
-                    [disabled]="!shippingSelected"
+                    [disabled]="
+                      !shippingSelected ||
+                      !cartSession.shipment?.addressId ||
+                      !productsValidate.length ||
+                      recibeOtra
+                    "
                     (click)="goToPaymentPage()"
                     class="btn btn-lg btn-secondary w-100 text-center"
                   >
-                    Ir a pagarx <i class="fas fa-chevron-right"></i>
+                    Ir a pagar <i class="fas fa-chevron-right"></i>
                   </button>
 
                   <button
@@ -1057,15 +1054,6 @@
                 </div>
               </div>
             </ng-container>
-            <pre style="background-color: yellow">
-              shippingSelected: {{ shippingSelected }}
-              cartSession.shipment?.addressId: {{
-                cartSession.shipment?.addressId
-              }}
-              productsValidate.length: {{ productsValidate.length }}
-              recibeOtra: {{ recibeOtra }}
-
-            </pre>
 
             <div
               class="row text-primary mt-3"
