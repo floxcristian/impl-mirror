@@ -1240,7 +1240,7 @@
                     <div *ngIf="guest" class="row mt-2">
                       <div
                         *ngFor="let item of paymentMethods"
-                        class="col-6 py-0"
+                        class="col-12 py-0"
                         [class.mb-1]="innerWidth < 450"
                       >
                         <div
@@ -2399,7 +2399,7 @@
                   color: rgba(0, 0, 0, 0.1);
                 "
               ></div>
-    
+
               <div class="card-body text-justify" style="font-size: 14px">
                 <app-detalle-carro-productos
                   [shippingType]="cartSession.shipment?.deliveryMode"
@@ -2415,7 +2415,7 @@
               (renv_cod)="paymentOvSms()"
             >
             </app-codigo-oc>
-    
+
             <div class="row">
               <div class="mt-2 col-12 py-0 px-1">
                 <!-- Start::ir a pagar (mobile) (ir a pagar10)  -->
@@ -2445,7 +2445,7 @@
                   <i class="fas fa-chevron-right" style="margin-left: 10px"></i>
                 </button>
                 <!-- End::ir a pagar (mobile) (ir a pagar10) -->
-    
+
                 <!-- Start:: (ir a pagar11) -->
                 <button
                   name="paymentOvSms "
@@ -2474,7 +2474,7 @@
                   ></i>
                 </button>
                 <!-- End::(ir a pagar11) -->
-    
+
                 <!-- Start::pagar con webpay (no comprador ni invitado) (mobile) (ir a pagar12) -->
                 <button
                   name="paymentWebpay "
@@ -2496,7 +2496,7 @@
                   Ir a pagar <i class="fas fa-chevron-right"></i>
                 </button>
                 <!-- End::pagar con webpay (no comprador ni invitado) (mobile) (ir a pagar12) -->
-    
+
                 <!-- Start::pagar con webpay siendo invitado (mobile) (ir a pagar13) -->
                 <button
                   name="paymentwebpay2"
@@ -2519,7 +2519,7 @@
                   Ir a pagar <i class="fas fa-chevron-rightp"></i>
                 </button>
                 <!-- End::pagar con webpay siendo invitado (mobile) (ir a pagar13) -->
-    
+
                 <!-- Start::pagar con mercadopago (no comprador ni invitado) (mobile) (ir a pagar14) -->
                 <button
                   name="paymentMercadopago"
@@ -2542,7 +2542,7 @@
                   Ir a pagar <i class="fas fa-chevron-right"></i>
                 </button>
                 <!-- End::pagar con mercadopago (no comprador ni invitado) (mobile) (ir a pagar14) -->
-    
+
                 <!-- Start::pagar con mercadopago siendo invitado (mobile) (ir a pagar15) -->
                 <button
                   *ngIf="guest && paymentMethodActive == 'mercadopago'"
@@ -2566,7 +2566,7 @@
                   Ir a pagar <i class="fas fa-chevron-right"></i>
                 </button>
                 <!-- End::pagar con mercadopago siendo invitado (mobile) (ir a pagar15) -->
-    
+
                 <!-- Start::solicitar compra -->
                 <button
                   name="purchaseRequestAll "
@@ -2580,7 +2580,6 @@
                 >
                   Solicitar Compra *
                 </button>
-    
                 <button
                   name="purchaseRequest "
                   *ngIf="
@@ -2594,7 +2593,6 @@
                 </button>
                 <!-- End::solicitar compra -->
               </div>
-    
               <div
                 class="mt-1 col-12 py-0 px-1"
                 *ngIf="userSession.userRole == userRoleType.BUYER"
@@ -2604,7 +2602,6 @@
                   supervisor antes de generar el pedido.
                 </em>
               </div>
-    
               <div class="mt-1 col-12 py-0 px-1">
                 <a
                   [href]="config.fullUrl"
