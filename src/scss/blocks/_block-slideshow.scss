@@ -15,20 +15,6 @@ $local-dot-size: $local-dots-height - $local-dots-padding * 2;
   position: relative;
 
   .owl-carousel {
-    .owl-dots {
-      transform: translateX(-50%);
-      bottom: -20px;
-      position: absolute;
-      background: $block-slideshow-dots-bg;
-      display: flex;
-      padding: $local-dots-padding;
-      border-radius: calc($local-dots-height / 2);
-
-      @include direction {
-        #{$inset-inline-start}: 50%;
-      }
-    }
-
     .owl-dot {
       width: 50px;
       height: 5px;

@@ -272,11 +272,6 @@ a {
 
 ::ng-deep.carouselProducto .owl-carousel .owl-item {
   @media (min-width: 576px) {
-    display: flex;
-    border-radius: 20px;
-    margin-left: 10px;
-    margin-bottom: 10px;
-
     app-product-card-b2b {
       display: flex;
       width: 115%;
@@ -297,10 +292,6 @@ a {
   }
 
   @media (max-width: 576px) {
-    display: flex;
-    border-radius: 20px;
-    /*margin-left: 10px;*/
-
     app-product-card-b2b {
       display: flex;
       width: 115%;
@@ -324,15 +315,6 @@ a {
 
 ::ng-deep.carouselProducto .owl-carousel .owl-stage {
   display: flex !important;
-}
-
-::ng-deep.carouselProducto .owl-dots {
-  @media (min-width: 992px) {
-    background: none;
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-  }
 }
 
 ::ng-deep.carouselProducto .owl-dot {
@@ -418,50 +400,8 @@ a {
   }
 }
 
-::ng-deep.carouselTitulo .owl-carousel .owl-item {
-  @media (min-width: 400px) {
-    display: flex;
-    font-size: 1.35rem;
-    font-weight: bold;
-    white-space: nowrap;
-    border-bottom: 1px solid #ccc;
-    border-right: 2px solid #005db9;
-    padding-right: 5px;
-    padding-left: 10px;
-  }
-
-  @media (max-width: 400px) {
-    display: flex;
-    font-size: 1.2rem;
-    text-overflow: ellipsis !important;
-    font-weight: bold;
-    white-space: nowrap;
-    border-bottom: 1px solid #ccc;
-    border-right: 1px solid #005db9;
-    padding-right: 5px;
-    padding-left: 10px;
-  }
-}
-
-::ng-deep.carouselTitulo .owl-carousel .owl-stage {
-  display: flex !important;
-}
 ::ng-deep.owl-carousel .owl-stage {
   display: flex !important;
-}
-
-::ng-deep.owl-carousel .owl-item {
-  display: flex !important;
-  flex: 1 0 auto !important;
-}
-
-::ng-deep.carouselTitulo .owl-dots {
-  @media (min-width: 992px) {
-    background: none;
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-  }
 }
 
 ::ng-deep.carouselProducto .owl-dot {
@@ -554,37 +494,8 @@ a {
     color: #094cac;
   }
 }
-
-::ng-deep.carouselImagen .owl-carousel .owl-item {
-  @media (min-width: 400px) {
-    display: flex;
-    font-size: 1.35rem;
-    font-weight: bold;
-    white-space: nowrap;
-    /*padding-left: 10px;*/
-  }
-
-  @media (max-width: 400px) {
-    display: flex;
-    font-size: 1.2rem;
-    text-overflow: ellipsis !important;
-    font-weight: bold;
-    white-space: nowrap;
-    padding-left: 10px;
-  }
-}
-
 ::ng-deep.carouselImagen .owl-carousel .owl-stage {
   display: flex !important;
-}
-
-::ng-deep.carouselImagen .owl-dots {
-  @media (min-width: 992px) {
-    background: none;
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-  }
 }
 
 ::ng-deep.carouselImagen .owl-dot {
@@ -618,11 +529,4 @@ a {
 
 .image-link span {
   margin-left: 5px;
-}
-
-/****
-** Nuevos estilos OWL
-*******/
-::ng-deep .owl-carousel .owl-item {
-  display: flex;
 }

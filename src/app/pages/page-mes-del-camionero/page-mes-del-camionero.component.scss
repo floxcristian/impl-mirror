@@ -1,4 +1,3 @@
-
 @font-face {
   font-family: Myriad Pro;
   font-weight: bold;
@@ -35,13 +34,6 @@
   }
 }
 
-::ng-deep.carouselLista .owl-dots {
-  background: none;
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
-
 ::ng-deep.carouselLista .owl-dot {
   @media (min-width: 992px) {
     width: 13px;
@@ -62,7 +54,7 @@
 
 ::ng-deep.carouselLista .owl-dot.active {
   // @media (min-width: 992px) {
-    background: #094cac;
+  background: #094cac;
   // }
 }
 
@@ -159,15 +151,15 @@ input.error {
   border: 1px solid #ff000080 !important;
 }
 
-input[type="file"] {
+input[type='file'] {
   display: none;
 }
 
 .custom-file-upload {
   cursor: pointer;
-    color: #444;
-    background-color: #ddd;
-    width: 100%;
-    border-radius: 3px;
-    padding: 10px;
+  color: #444;
+  background-color: #ddd;
+  width: 100%;
+  border-radius: 3px;
+  padding: 10px;
 }

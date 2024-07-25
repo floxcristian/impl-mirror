@@ -80,15 +80,7 @@
 }
 
 ::ng-deep.carouselLista .owl-carousel .owl-item {
-  //   padding: 0px 10px;
   @media (min-width: 576px) {
-    //display: flex;
-    //   border: 1px solid rgba(0, 0, 0, 0.2);
-    /*border-radius: 20px;
-    margin-left: 10px;
-    margin-bottom: 10px;*/
-    // align-items: center;
-
     app-product-card-b2b {
       //display: flex;
       width: 115%;
@@ -147,13 +139,6 @@
   padding-top: 5%;
   border: 1px solid #0063b9;
   border-radius: 20px;
-}
-
-::ng-deep.carouselLista .owl-dots {
-  background: none;
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
 }
 
 ::ng-deep.carouselLista .owl-dot {
@@ -234,9 +219,4 @@
 
 ::ng-deep.owl-carousel .owl-stage {
   display: flex !important;
-}
-
-::ng-deep.owl-carousel .owl-item {
-  display: flex !important;
-  flex: 1 0 auto !important;
 }

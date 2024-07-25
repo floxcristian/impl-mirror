@@ -362,9 +362,6 @@ div #saveCartModal.show {
 }
 
 ::ng-deep.carouselCart .owl-carousel .owl-item {
-  padding: 10px;
-  display: flex;
-
   app-product-card-b2b {
     display: flex;
     width: 115%;

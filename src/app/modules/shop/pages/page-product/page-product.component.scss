@@ -107,9 +107,6 @@ ul.product-card__features-list {
 }
 
 ::ng-deep.carouselFicha .owl-carousel .owl-item {
-  // padding: 10px;
-  //display: flex;
-
   img {
     max-height: 105px;
   }
@@ -132,19 +129,6 @@ ul.product-card__features-list {
 
 ::ng-deep .owl-carousel .owl-stage {
   display: flex;
-}
-
-::ng-deep.owl-carousel .owl-item {
-  display: flex !important;
-  flex: 1 0 auto !important;
-}
-
-::ng-deep.carouselFicha .owl-dots {
-  @media (min-width: 992px) {
-    background: none;
-    display: flex;
-    justify-content: center;
-  }
 }
 
 ::ng-deep.carouselFicha .owl-dot {

@@ -70,12 +70,6 @@
   }
 }
 
-::ng-deep.carouselConcepto .owl-carousel .owl-item {
-  display: flex;
-  border-radius: 20px;
-  margin-right: 10px;
-}
-
 ::ng-deep.carouselConcepto .owl-carousel .owl-stage {
   display: flex !important;
 }
@@ -87,12 +81,7 @@
   border: 1px solid #0063b9;
   border-radius: 20px;
 }
-::ng-deep.carouselConcepto .owl-dots {
-  background: none;
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
+
 ::ng-deep.carouselConcepto .owl-dot {
   width: 50px;
   height: 5px;
@@ -104,7 +93,6 @@
 ::ng-deep.carouselConcepto .owl-dot.active {
   background: #094cac;
 }
-
 
 .customized-title {
   text-align: center;
@@ -134,10 +122,18 @@
     color: #0d61bb;
     font-size: 1.1rem;
     font-weight: 500;
-    line-height: 1.5
+    line-height: 1.5;
   }
 }
-@mixin grid-gallery($columns, $column-width, $rows, $row-height, $row-gap, $column-gap, $margin-left: 0) {
+@mixin grid-gallery(
+  $columns,
+  $column-width,
+  $rows,
+  $row-height,
+  $row-gap,
+  $column-gap,
+  $margin-left: 0
+) {
   display: grid;
   grid-template-columns: repeat($columns, $column-width);
   grid-template-rows: repeat($rows, $row-height);
@@ -157,4 +153,3 @@
     @include grid-gallery(8, 75px, 6, 77px, 1px, 1px);
   }
 }
-

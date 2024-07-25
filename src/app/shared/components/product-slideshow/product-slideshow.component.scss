@@ -7,13 +7,6 @@
 }
 
 ::ng-deep.carouselLista .owl-carousel .owl-item {
-  /*padding: 5px;*/
-  display: flex;
-
-  // img {
-  //   max-height: 105px;
-  // }
-
   app-product-card-b2c-ficha {
     display: flex;
     width: 115%;
@@ -83,13 +76,6 @@
   padding-top: 5%;
   border: 1px solid #0063b9;
   border-radius: 20px;
-}
-
-::ng-deep.carouselLista .owl-dots {
-  background: none;
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
 }
 
 ::ng-deep.carouselLista .owl-dot {

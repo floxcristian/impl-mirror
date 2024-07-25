@@ -1,0 +1,14 @@
+.owl-carousel .owl-stage {
+  display: flex;
+}
+
+.owl-item {
+  display: flex;
+  flex: 1 0 auto;
+}
+
+.owl-dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
