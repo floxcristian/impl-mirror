@@ -223,7 +223,7 @@
 
 .product-card--layout--horizontal .product-card__info {
   margin: 0px;
-  padding: 0 0 0 1.875rem !important;
+  // padding: 0 0 0 1.875rem !important;
 }
 
 .product-card--layout--horizontal .product-card__image {
@@ -428,9 +428,10 @@
     padding: 0px 12px !important;
   }
 
+  /*
   .product-card__info {
     padding: 0 5px 0px !important;
-  }
+  }*/
 
   .product-card_fecha {
     font-size: 0.9rem;
@@ -609,6 +610,7 @@
   padding: 5px;
 }
 
+/*
 .product-card__info {
   flex-grow: 1 !important;
-}
+}*/

@@ -13,7 +13,7 @@
 
 <div>
   <div class="container">
-    <div class="card pt-2">
+    <div class="card px-0 pt-2">
       <div class="col-12 col-lg-12 mt-3" *ngIf="product?.visible === 0">
         <div class="alert alert-info text-center">
           No se encontro el producto.
@@ -312,7 +312,7 @@
             >
               <owl-carousel-o
                 class="carouselFicha"
-                [options]="carouselOptions"
+                [options]="carrouselOptionsMobile"
                 appOwlPreventClick
               >
                 <ng-container
@@ -376,7 +376,7 @@
             >
               <owl-carousel-o
                 class="carouselFicha"
-                [options]="carouselOptions"
+                [options]="carrouselOptionsMobile"
                 appOwlPreventClick
               >
                 <ng-container
@@ -732,7 +732,7 @@
                   *ngFor="let item of relatedProducts"
                   class="products-list__item"
                 >
-                  <ng-template carouselSlide [dataMerge]="2">
+                  <ng-template carouselSlide>
                     <app-product-card-b2c-ficha
                       [product]="item"
                       [origen]="[origen[0], origen[1], origen[2], 'matriz']"
@@ -757,7 +757,7 @@
         </div>
         <!-- Fin Relacionados de productos -->
         <!-- Recomendados de productos -->
-        <div class="mt-3" *ngIf="recommendedProducts.length > 0">
+        <div class="mt-3" *ngIf="recommendedProducts.length">
           <div class="flex flex-column align-items-center mb-3">
             <div
               class="text-center"
@@ -796,7 +796,7 @@
                   *ngFor="let item of recommendedProducts"
                   class="products-list__item"
                 >
-                  <ng-template carouselSlide [dataMerge]="2">
+                  <ng-template carouselSlide>
                     <app-product-card-b2c-ficha
                       [product]="item"
                       [origen]="[origen[0], origen[1], origen[2], 'matriz']"

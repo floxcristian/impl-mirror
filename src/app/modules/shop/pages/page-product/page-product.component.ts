@@ -24,7 +24,7 @@ import { forkJoin } from 'rxjs';
 import { environment } from '@env/environment';
 // Constants
 import {
-  CarouselDesktopOptions,
+  // CarouselDesktopOptions,
   CarouselMobileOptions,
 } from './constants/carousel-config';
 // Pipes
@@ -89,7 +89,7 @@ export class PageProductComponent implements OnInit {
   breadcrumbs: IBreadcrumbItem[] = [];
 
   relleno: any[] = [1, 2, 3, 4, 5, 6];
-  carouselOptions: OwlOptions;
+  //carouselOptions: OwlOptions;
   carrouselOptionsMobile: OwlOptions;
 
   acordion = [
@@ -124,8 +124,6 @@ export class PageProductComponent implements OnInit {
     private seoService: SeoService,
     private canonicalService: CanonicalService,
     private renderer: Renderer2,
-    private el: ElementRef,
-    // Services V2
     private readonly sessionService: SessionService,
     private readonly authStateService: AuthStateServiceV2,
     private readonly articleService: ArticleService,
@@ -137,7 +135,7 @@ export class PageProductComponent implements OnInit {
     private readonly cartService: CartV2Service,
     private readonly cartApiService: CartService
   ) {
-    this.carouselOptions = CarouselDesktopOptions;
+    // this.carouselOptions = CarouselDesktopOptions;
     this.carrouselOptionsMobile = CarouselMobileOptions;
     this.tiendaSeleccionada = this.geolocationService.getSelectedStore();
     this.preferenciaCliente = this.customerPreferenceStorage.get();

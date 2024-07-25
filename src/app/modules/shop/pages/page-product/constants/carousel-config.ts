@@ -1,5 +1,6 @@
 import { OwlOptions } from 'ngx-owl-carousel-o';
 
+/*
 export const CarouselDesktopOptions: OwlOptions = {
   items: 6,
   nav: true,
@@ -17,20 +18,20 @@ export const CarouselDesktopOptions: OwlOptions = {
     500: { items: 3 },
     0: { items: 2 },
   },
-};
+};*/
 
 export const CarouselMobileOptions: OwlOptions = {
   items: 6,
-  nav: false,
+  nav: true,
   dots: true,
   slideBy: 'page',
-  merge: true,
+  margin: 10,
   responsive: {
     1366: { items: 6 },
     1100: { items: 6 },
-    920: { items: 6 },
+    920: { items: 6, nav: true, slideBy: 'page' },
     680: { items: 3 },
     500: { items: 3 },
-    0: { items: 5, nav: false, mergeFit: true },
+    0: { items: 2, nav: false, dots: true },
   },
 };
