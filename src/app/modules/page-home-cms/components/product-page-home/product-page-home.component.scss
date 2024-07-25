@@ -400,6 +400,31 @@ a {
   }
 }
 
+::ng-deep.carouselTitulo .owl-carousel .owl-item {
+  @media (min-width: 400px) {
+    display: flex;
+    font-size: 1.35rem;
+    font-weight: bold;
+    white-space: nowrap;
+    border-bottom: 1px solid #ccc;
+    border-right: 2px solid #005db9;
+    padding-right: 5px;
+    padding-left: 10px;
+  }
+
+  @media (max-width: 400px) {
+    display: flex;
+    font-size: 1.2rem;
+    text-overflow: ellipsis !important;
+    font-weight: bold;
+    white-space: nowrap;
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #005db9;
+    padding-right: 5px;
+    padding-left: 10px;
+  }
+}
+
 ::ng-deep.owl-carousel .owl-stage {
   display: flex !important;
 }

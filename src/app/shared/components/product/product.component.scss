@@ -354,15 +354,6 @@ table thead tr {
   padding: 1px 15px;
 }
 
-::ng-deep.product-gallery__featured .owl-carousel .owl-dot {
-  @media (max-width: 992px) {
-    width: 100px;
-    height: 3px;
-    background: #e0e0e0;
-    margin-left: 5px;
-  }
-}
-
 ::ng-deep.product-gallery__featured .owl-carousel .owl-dot.active {
   @media (max-width: 992px) {
     background: #005db9;
@@ -433,6 +424,12 @@ table thead th {
   @media screen and (max-width: 1111px) {
     transform: translate(-44%, -49%) rotate(90deg);
   }
+}
+
+::ng-deep .vertical-owl-carousel .owl-carousel .owl-item {
+  transform-origin: center;
+  height: 275px;
+  z-index: 3;
 }
 
 ::ng-deep .vertical-owl-carousel .owl-item img {
