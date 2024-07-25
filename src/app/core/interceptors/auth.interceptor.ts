@@ -54,13 +54,20 @@ export class AuthInterceptor implements HttpInterceptor {
         this.authdata = 'c2VydmljZXM6MC49ajNEMnNzMS53Mjkt';
       }
 
-      newReq = request.clone({
-        headers: request.headers.set(
-          'Authorization',
-          'Basic ' + this.authdata
-        ),
-        // .set('X-Ecommerce-User', session?.email || ''),
-      });
+      if (!request.url.includes('api/cliente/')) {
+        newReq = request.clone({
+          headers: request.headers
+            .set('Authorization', 'Basic ' + this.authdata)
+            .set('X-Ecommerce-User', session?.email || ''),
+        });
+      } else {
+        newReq = request.clone({
+          headers: request.headers.set(
+            'Authorization',
+            'Basic ' + this.authdata
+          ),
+        });
+      }
     }
 
     if (request.url.includes('api/v1/auth/refresh')) {
