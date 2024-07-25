@@ -87,6 +87,7 @@ export class PageCartComponent implements OnInit, OnDestroy {
       0: { items: 2 },
     },
   };
+  /*
   carrouselOptionsMobile = {
     items: 6,
     nav: false,
@@ -102,7 +103,7 @@ export class PageCartComponent implements OnInit, OnDestroy {
       500: { items: 3 },
       0: { items: 5, nav: false, mergeFit: true },
     },
-  };
+  };*/
   preferenciaCliente!: IPreference;
   config: IConfig;
 

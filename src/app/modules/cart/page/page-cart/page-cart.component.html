@@ -18,14 +18,14 @@
 </div>
 
 <div *ngIf="items.length">
-  <div class="container container-cart site_b2c">
-    <app-guided-steps [step]="1"></app-guided-steps>
+  <div class="container container-cart site_b2c px-0">
+    <app-guided-steps [step]="1" />
     <div class="row">
       <div class="col-12 xl:col-8 lg:col-8 py-0">
         <div class="card h-100 p-4">
           <div class="card-header" style="display: inline-block">
             <div
-              class="col-12 py-0 text-h1"
+              class="py-0 text-h1"
               [ngStyle]="{ 'font-size': innerWidth < 450 ? '16px' : '18px' }"
             >
               <i
@@ -434,7 +434,7 @@
                       @if (recommendedProducts.length) {
                       <owl-carousel-o
                         class="carouselCart"
-                        [options]="carrouselOptionsMobile"
+                        [options]="carouselOptions"
                         appOwlPreventClick
                       >
                         <ng-container *ngFor="let item of recommendedProducts">
