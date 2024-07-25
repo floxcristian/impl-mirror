@@ -25,7 +25,6 @@ import {
 } from '../../../../shared/interfaces/address';
 import { Banner } from '../../../../shared/interfaces/banner';
 // Components
-import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { ModalConfirmDatesComponent } from './components/modal-confirm-dates/modal-confirm-dates.component';
 // Constants
 
@@ -78,7 +77,6 @@ import { CartShippingUtils } from './utils/cart-shipping-utils.service';
 import { SessionUtils } from './utils/session-utils.service';
 declare let dataLayer: any;
 
-export let browserRefresh = false;
 @Component({
   selector: 'app-page-cart-shipping',
   templateUrl: './page-cart-shipping.component.html',
@@ -87,7 +85,6 @@ export let browserRefresh = false;
 })
 export class PageCartShippingComponent implements OnInit {
   productCart!: IShoppingCartProduct[];
-  @ViewChild('tabsShipping', { static: false }) tabsShipping!: TabsetComponent;
 
   innerWidth: number;
   //loadingSucursal: boolean = true;
@@ -217,7 +214,7 @@ export class PageCartShippingComponent implements OnInit {
 
   async ngOnInit() {
     this.isLoggedIn = this.sessionService.isLoggedIn();
-    this.updateStep()
+    this.updateStep();
     this.setNotificationContact();
     this.obtieneDireccionesCliente();
     this.loadStores();
@@ -266,8 +263,9 @@ export class PageCartShippingComponent implements OnInit {
     this.cd.detectChanges();
   }
 
-  updateStep(){
-    if(this.cartSession._id) this.cart.saveStep(this.cartSession._id,2).subscribe()
+  updateStep(): void {
+    if (this.cartSession._id)
+      this.cart.saveStep(this.cartSession._id, 2).subscribe();
   }
 
   async obtieneDireccionesCliente(isDelete: boolean = false) {
@@ -323,13 +321,10 @@ export class PageCartShippingComponent implements OnInit {
   private setNotificationContact(): void {
     this.invitado = this.guestStorage.get() as IGuest;
     const contact = SessionUtils.getContact(this.userSession, this.invitado);
-    if (contact?.name) {
-      console.log('odis')
-      this.cart.setNotificationContact(
-        this.cartSession._id!.toString(),
-        contact
-      ).subscribe();
-    }
+    if (!contact?.name) return;
+    this.cart
+      .setNotificationContact(this.cartSession._id!.toString(), contact)
+      .subscribe();
   }
 
   /**
@@ -562,12 +557,11 @@ export class PageCartShippingComponent implements OnInit {
       this.guestStorage.set(invitado);
       this.usuarioInv = this.guestStorage.get()!;
     }
-
-    this.grupoShippingActive = this.shippingDays[pos].grupo ?? null;
-    this.productosSeleccionado = this.shippingDays[pos].productodespacho;
+    this.grupoShippingActive = this.shippingDays[pos]?.grupo ?? null;
+    this.productosSeleccionado = this.shippingDays[pos]?.productodespacho;
 
     this.cardShippingActive = item.index;
-    this.shippingSelected = (this.shippingDays[pos].fechas || []).find(
+    this.shippingSelected = (this.shippingDays[pos]?.fechas || []).find(
       (item) => item.index === this.cardShippingActive
     );
 
@@ -1111,7 +1105,7 @@ export class PageCartShippingComponent implements OnInit {
    * @return
    */
   setSeleccionarEnvio(item: any, i: any) {
-    if (this.shippingType == 'despacho') {
+    if (this.shippingType === 'despacho') {
       if (this.isLoggedIn || this.usuarioInvitado)
         this.seleccionaDespacho(item, i);
       //else if (this.usuarioInvitado) this.seleccionaDespachoInvitado(item, i);

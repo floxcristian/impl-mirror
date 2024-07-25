@@ -2,7 +2,7 @@
   class="container container-cart site_b2c margencarro px-2"
   (window:resize)="onResize($event)"
 >
-  <app-guided-steps [step]="2"></app-guided-steps>
+  <app-guided-steps [step]="2" />
 
   <div class="row m-0">
     <!-- formulario inicio sesión -->
@@ -279,32 +279,31 @@
                         [index]="item_0.grupo"
                         [length]="shippingDaysStore.length"
                         [grupo_producto]="item_0.productodespacho"
-                      >
-                      </app-grupo-detalle-productos>
+                      />
                       <app-grupo-detalle-fechas
                         *ngIf="innerWidth > 1720"
                         [DIAS_SEMANA]="10"
                         (itemSeleccionado)="setSeleccionarEnvio($event, i)"
                         [index]="i"
                         [fletes]="item_0.fechas"
-                      >
-                      </app-grupo-detalle-fechas>
+                      />
+
                       <app-grupo-detalle-fechas
                         *ngIf="innerWidth > 1420 && innerWidth <= 1720"
                         [DIAS_SEMANA]="8"
                         (itemSeleccionado)="setSeleccionarEnvio($event, i)"
                         [index]="i"
                         [fletes]="item_0.fechas"
-                      >
-                      </app-grupo-detalle-fechas>
+                      />
+
                       <app-grupo-detalle-fechas
                         *ngIf="innerWidth > 450 && innerWidth <= 1420"
                         [DIAS_SEMANA]="7"
                         (itemSeleccionado)="setSeleccionarEnvio($event, i)"
                         [index]="i"
                         [fletes]="item_0.fechas"
-                      >
-                      </app-grupo-detalle-fechas>
+                      />
+
                       <app-grupo-detalle-fechas-mobile
                         *ngIf="innerWidth <= 450"
                         (itemSeleccionado)="
@@ -312,13 +311,13 @@
                         "
                         [index]="i"
                         [fletes]="item_0.fechas"
-                      >
-                      </app-grupo-detalle-fechas-mobile>
+                      />
                     </div>
                   </ng-container>
                 </div>
 
-                <div class="ms-2 mt-4" *ngIf="shippingDaysStore.length">
+                @if(shippingDaysStore.length){
+                <div class="ms-2 mt-4">
                   <div class="mb-3 col-12 py-0" style="color: #0063b9">
                     <label>Seleccione quien retira el pedido</label>
                     <div class="clearfix"></div>
@@ -341,7 +340,7 @@
                                 class="input-check__icon"
                                 name="check-9x7"
                                 size="19x19"
-                              ></app-icon>
+                              />
                             </span>
                           </span>
                           <label class="form-check-label" for="retiroYo"
@@ -367,7 +366,7 @@
                                 class="input-check__icon"
                                 name="check-9x7"
                                 size="19x19"
-                              ></app-icon>
+                              />
                             </span>
                           </span>
                           <label class="form-check-label" for="retiraOtro"
@@ -431,15 +430,15 @@
                     </div>
                   </div>
                 </div>
+                }
                 <div
                   class="row"
-                  *ngIf="recibeType == 'otra' && recibeOtraname.length == 0"
+                  *ngIf="recibeType == 'otra' && !recibeOtraname.length"
                 >
                   <div class="col-12 p-0">
                     <app-register-reception
                       (returnReceptionEvent)="reciboPedido($event)"
-                    >
-                    </app-register-reception>
+                    />
                   </div>
                 </div>
 
@@ -611,7 +610,7 @@
                     [invitado]="true"
                     *ngIf="usuarioInvitado && !showAddress"
                     (respuestaInvitado)="direccionVisita($event)"
-                  ></app-add-address>
+                  />
 
                   <div *ngIf="usuarioInvitado && showAddress">
                     <div class="row ms-2 mt-3">
@@ -757,7 +756,7 @@
                                   [index]="item_0.grupo"
                                   [length]="shippingDays.length"
                                   [grupo_producto]="item_0.productodespacho"
-                                ></app-grupo-detalle-productos>
+                                />
 
                                 <app-grupo-detalle-fechas
                                   *ngIf="innerWidth > 1720"
@@ -767,7 +766,7 @@
                                   "
                                   [index]="i"
                                   [fletes]="item_0.fechas"
-                                ></app-grupo-detalle-fechas>
+                                />
                                 <app-grupo-detalle-fechas
                                   *ngIf="
                                     innerWidth > 1420 && innerWidth <= 1720
@@ -778,7 +777,7 @@
                                   "
                                   [index]="i"
                                   [fletes]="item_0.fechas"
-                                ></app-grupo-detalle-fechas>
+                                />
                                 <app-grupo-detalle-fechas
                                   *ngIf="
                                     innerWidth > 450 && innerWidth <= 1420
@@ -789,7 +788,7 @@
                                   "
                                   [index]="i"
                                   [fletes]="item_0.fechas"
-                                ></app-grupo-detalle-fechas>
+                                />
                                 <app-grupo-detalle-fechas-mobile
                                   *ngIf="innerWidth <= 450"
                                   (itemSeleccionado)="
@@ -797,7 +796,7 @@
                                   "
                                   [index]="i"
                                   [fletes]="item_0.fechas"
-                                ></app-grupo-detalle-fechas-mobile>
+                                />
                               </div>
                             </ng-container>
                           </div>
@@ -823,7 +822,7 @@
                                       class="input-check__icon"
                                       name="check-9x7"
                                       size="19x19"
-                                    ></app-icon>
+                                    />
                                   </span>
                                 </span>
                                 <label
@@ -851,7 +850,7 @@
                                       class="input-check__icon"
                                       name="check-9x7"
                                       size="19x19"
-                                    ></app-icon>
+                                    />
                                   </span>
                                 </span>
                                 <label
@@ -929,8 +928,7 @@
                         <div class="sm:col-12">
                           <app-register-reception
                             (returnReceptionEvent)="reciboPedido($event)"
-                          >
-                          </app-register-reception>
+                          />
                         </div>
                       </div>
                       <!-- Fin Segmento correspondiente al formulario asociado a la persona que recibe el producto-->
@@ -943,7 +941,7 @@
                     <app-add-address
                       [invitado]="false"
                       (respuesta)="respuesta($event)"
-                    ></app-add-address>
+                    />
                   </div>
                 </div>
                 <!-- End::agregar dirección -->
@@ -966,7 +964,7 @@
             </div>
         </div> -->
     <!-- Segmento asociado al detalle del pedido. -->
-    <ng-container *ngIf="innerWidth >= 992; px">
+    <ng-container *ngIf="innerWidth >= 992">
       <div
         class="col-12 lg:col-5 xl:col-4"
         [hidden]="showAllAddress ? true : false"
@@ -1028,22 +1026,20 @@
                 </div>
 
                 <div class="mt-1 col-6 py-0 px-1">
+                  <!-- || !cartSession.shipment?.addressId ||
+                      !productsValidate.length ||
+                      recibeOtra -->
                   <button
                     name="next"
                     *ngIf="
                       userSession.userRole != 'comprador' &&
                       userSession.userRole != 'buyer'
                     "
-                    [disabled]="
-                      shippingSelected == null ||
-                      !cartSession.shipment?.addressId ||
-                      !productsValidate.length ||
-                      recibeOtra
-                    "
+                    [disabled]="!shippingSelected"
                     (click)="goToPaymentPage()"
                     class="btn btn-lg btn-secondary w-100 text-center"
                   >
-                    Ir a pagar <i class="fas fa-chevron-right"></i>
+                    Ir a pagarx <i class="fas fa-chevron-right"></i>
                   </button>
 
                   <button
@@ -1061,6 +1057,15 @@
                 </div>
               </div>
             </ng-container>
+            <pre style="background-color: yellow">
+              shippingSelected: {{ shippingSelected }}
+              cartSession.shipment?.addressId: {{
+                cartSession.shipment?.addressId
+              }}
+              productsValidate.length: {{ productsValidate.length }}
+              recibeOtra: {{ recibeOtra }}
+
+            </pre>
 
             <div
               class="row text-primary mt-3"
@@ -1117,7 +1122,7 @@
 
     <!-- End Segmento asociado al detalle del pedido. -->
     <!--- Segmento asociado el detalle del pedido en tabler-->
-    <ng-container *ngIf="innerWidth >= 450 && innerWidth < 992; px">
+    <ng-container *ngIf="innerWidth >= 450 && innerWidth < 992">
       <div
         class="col-12 lg:col-5 xl:col-4"
         style="
@@ -1362,7 +1367,3 @@
     </div>
   </div>
 </ng-container>
-
-<!-- <ng-template #modalAddress>
-    <app-address-modal [modalAddressRef]="modalAddressRef" (respuesta)="respuesta($event)"></app-address-modal>
-</ng-template> -->
