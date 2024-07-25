@@ -76,6 +76,7 @@ export class PageCartComponent implements OnInit, OnDestroy {
     dots: true,
     loop: true,
     autoplay: true,
+    margin: 10,
     autoplayTimeout: 4000,
     responsive: {
       1366: { items: 6 },
@@ -92,6 +93,7 @@ export class PageCartComponent implements OnInit, OnDestroy {
     dots: true,
     slideBy: 'page',
     merge: true,
+    margin: 10,
     responsive: {
       1366: { items: 6 },
       1100: { items: 6 },
@@ -131,7 +133,7 @@ export class PageCartComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const _this = this;
-    this.updateStep()
+    this.updateStep();
     this.user = this.sessionService.getSession();
     this.shoppingCartService.items$
       .pipe(
@@ -165,10 +167,11 @@ export class PageCartComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateStep(){
+  updateStep() {
     let cartSession: IShoppingCart =
-    this.shoppingCartStorage.get() as IShoppingCart;
-    if(cartSession._id) this.shoppingCartService.saveStep(cartSession._id,1).subscribe()
+      this.shoppingCartStorage.get() as IShoppingCart;
+    if (cartSession._id)
+      this.shoppingCartService.saveStep(cartSession._id, 1).subscribe();
   }
 
   gtmViewCart() {
